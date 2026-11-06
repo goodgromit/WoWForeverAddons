@@ -32,6 +32,8 @@ git submodule update --init --recursive
 | AtlasLootClassic (+ _Collections, _Crafting, _Data, _DungeonsAndRaids, _Factions, _Options, _PvP) | sliccer | GPL v2 (`AtlasLootClassic/LICENSE`) | |
 | AtlasBIStooltips | - | 표시 없음 | AtlasLootClassic 필요 |
 | WhatsTraining | Sveng | MIT (`WhatsTraining/LICENSE`) | |
+| RangeDisplay (+ RangeDisplay_Options) | mitch0 | Public Domain | |
+| ForeverNameplateRange | Maro | 표시 없음 | |
 
 다른 사람이 만든 애드온은 원래 배포본을 그대로 넣은 것이며, 저작권은 각 제작자에게 있습니다.
 

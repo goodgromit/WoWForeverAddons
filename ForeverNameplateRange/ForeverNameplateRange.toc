@@ -1,0 +1,14 @@
+## Interface: 16001
+## Title: Forever Nameplate Range
+## Notes: Estimated range beside the selected enemy nameplate. /npr
+## Notes-koKR: 선택한 적 이름표 왼쪽에만 거리 구간 표시. /npr
+## Author: Maro
+## Version: 1.1.0
+## SavedVariables: ForeverNameplateRangeDB
+
+Libs\LibStub.lua
+Libs\LibRangeCheck-3.0.lua
+RangeLabel.lua
+ReferenceSpell.lua
+Nameplates.lua
+Options.lua
