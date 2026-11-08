@@ -1,0 +1,16 @@
+## Interface: 120100, 120105, 16001
+## Title: ForeverQuestMark
+## Notes: Shows a quest icon on nameplates of units related to your active quests. /fqm for settings.
+## Author: Ugge Zen
+## IconTexture: Interface/AddOns/ForeverQuestMark/Media/Family/ForeverQuestMark
+## X-License: MIT
+## X-Curse-Project-ID: 1702963
+## Version: 1.6.1
+## SavedVariables: ForeverQuestMarkDB
+## SavedVariablesPerCharacter: ForeverQuestMarkDBC
+## AddonCompartmentFunc: ForeverQuestMark_OpenSettings
+
+Kit.lua
+KitUI.lua
+KitOverview.lua
+ForeverQuestMark.lua
