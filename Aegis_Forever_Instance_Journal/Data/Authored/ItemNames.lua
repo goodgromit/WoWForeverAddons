@@ -1,0 +1,345 @@
+local _, ns = ...
+
+--[[
+	The names of the journal's items, from foreverchanges.pro (2026-10-09): its dungeon pages'
+	loot tables, and its item pages for items no dungeon page lists. Read in the browser; only
+	each item's name, slot (as "Head, Mail"; recipes as "Recipe, Tailoring") and quality.
+
+	Some of our sources give a drop by its item ID alone, and the game's server does not describe
+	every item: Blizzard has not revealed some of them in Forever yet. Without a name here, such a
+	row would say "Item 7723" for ever. The server's own name, once it sends one, still wins.
+
+	Loads after every file that adds loot or quests, and fills in the rows that have no name: loot,
+	a quest's rewards, and what a quest gives with them (rewards.also).
+]]
+
+local ITEMS = {
+	[1488] = { "Avenger's Armor", "Chest, Mail", 3 },
+	[1925] = { "Defias Rapier", "Main Hand, Sword", 2 },
+	[1930] = { "Stonemason Cloak", "Back, Cloth", 2 },
+	[1943] = { "Goblin Mail Leggings", "Legs, Mail", 2 },
+	[1944] = { "Metalworking Gloves", "Hands, Leather", 2 },
+	[1945] = { "Woodworking Gloves", "Hands, Leather", 2 },
+	[1992] = { "Swampchill Fetish", "Held In Off-hand", 3 },
+	[2262] = { "Mark of Kern", "Finger", 3 },
+	[3569] = { "Vicar's Robe", "Chest, Cloth", 2 },
+	[4411] = { "Schematic: Flame Deflector", "Recipe, Engineering", 2 },
+	[4413] = { "Schematic: Discombobulator Ray", "Recipe, Engineering", 2 },
+	[4415] = { "Schematic: Craftsman's Monocle", "Recipe, Engineering", 3 },
+	[5756] = { "Sliverblade", "One-Hand, Dagger", 3 },
+	[5943] = { "Rift Bracers", "Wrist, Mail", 2 },
+	[6341] = { "Eerie Stable Lantern", "Held In Off-hand", 3 },
+	[6681] = { "Thornspike", "One-Hand, Dagger", 3 },
+	[5819] = { "Sunblaze Coif", "Head, Mail", 3 },
+	[6679] = { "Armor Piercer", "Two-Hand, Polearm", 2 },
+	[6802] = { "Sword of Omen", "One-Hand, Sword", 3 },
+	[6803] = { "Prophetic Cane", nil, 3 },
+	[6829] = { "Sword of Serenity", "One-Hand, Sword", 3 },
+	[6830] = { "Bonebiter", "Two-Hand, Axe", 3 },
+	[6831] = { "Black Menace", "One-Hand, Dagger", 3 },
+	[6893] = { "Workshop Key", "Key", 1 },
+	[7191] = { "Fused Wiring", "Parts", 1 },
+	[7717] = { "Ravager", "Two-Hand, Axe", 3 },
+	[7718] = { "Herod's Shoulder", "Shoulder, Mail", 3 },
+	[7719] = { "Raging Berserker's Helm", "Head, Mail", 3 },
+	[7720] = { "Whitemane's Chapeau", "Head, Cloth", 3 },
+	[7721] = { "Hand of Righteousness", "Main Hand, Mace", 3 },
+	[7722] = { "Triune Amulet", "Neck", 3 },
+	[7723] = { "Mograine's Might", "Two-Hand, Mace", 3 },
+	[7724] = { "Gauntlets of Divinity", "Hands, Mail", 3 },
+	[7726] = { "Aegis of the Scarlet Commander", "Off Hand, Shield", 3 },
+	[7727] = { "Watchman Pauldrons", "Shoulder, Leather", 3 },
+	[7728] = { "Beguiler Robes", "Chest, Cloth", 3 },
+	[7729] = { "Chesterfall Musket", "Ranged, Gun", 3 },
+	[7730] = { "Cobalt Crusher", "Two-Hand, Mace", 3 },
+	[7736] = { "Fight Club", "One-Hand, Mace", 3 },
+	[7742] = { "Schematic: Gnomish Cloaking Device", "Recipe, Engineering", 1 },
+	[7752] = { "Dreamslayer", "Main Hand, Mace", 3 },
+	[7753] = { "Bloodspiller", "Two-Hand, Axe", 3 },
+	[7754] = { "Harbinger Boots", "Feet, Leather", 3 },
+	[7755] = { "Flintrock Shoulders", "Shoulder, Leather", 3 },
+	[7757] = { "Windweaver Staff", "Two-Hand, Staff", 3 },
+	[7758] = { "Ruthless Shiv", "Two-Hand, Polearm", 3 },
+	[7759] = { "Archon Chestpiece", "Chest, Mail", 3 },
+	[7760] = { "Warchief Kilt", "Legs, Leather", 3 },
+	[7761] = { "Steelclaw Reaver", "Main Hand, Axe", 3 },
+	[7786] = { "Headsplitter", "One-Hand, Axe", 3 },
+	[7787] = { "Resplendent Guardian", "Off Hand, Shield", 3 },
+	[8225] = { "Tainted Pierce", "One-Hand, Sword", 3 },
+	[8226] = { "The Butcher", "Main Hand, Sword", 3 },
+	[8490] = { "Cat Carrier (Siamese)", "Pet", 1 },
+	[8492] = { "Parrot Cage (Green Wing Macaw)", "Pet", 1 },
+	[9279] = { "White Punch Card", "Quest", 1 },
+	[9280] = { "Yellow Punch Card", "Quest", 1 },
+	[9281] = { "Red Punch Card", "Quest", 1 },
+	[9282] = { "Blue Punch Card", "Quest", 1 },
+	[9308] = { "Grime-Encrusted Object", "Quest", 1 },
+	[9316] = { "Prismatic Punch Card", "Quest", 1 },
+	[9326] = { "Grime-Encrusted Ring", "Quest", 1 },
+	[9327] = { "Security DELTA Data Access Card", "Quest", 2 },
+	[9444] = { "Techbot CPU Shell", "Off Hand, Shield", 1 },
+	[10328] = { "Scarlet Chestpiece", "Chest, Mail", 3 },
+	[10329] = { "Scarlet Belt", "Waist, Mail", 3 },
+	[10330] = { "Scarlet Leggings", "Legs, Mail", 3 },
+	[10331] = { "Scarlet Gauntlets", "Hands, Mail", 3 },
+	[10332] = { "Scarlet Boots", "Feet, Mail", 3 },
+	[10333] = { "Scarlet Wristguards", "Wrist, Mail", 3 },
+	[10711] = { "Dragon's Blood Necklace", nil, 3 },
+	[11262] = { "Orb of Lorica", nil, 3 },
+	[11827] = { "Schematic: Lil' Smoky", "Recipe, Engineering", 2 },
+	[11828] = { "Schematic: Pet Bombling", "Recipe, Engineering", 2 },
+	-- The Key to Scholomance's reward, from QuestieDB's Forever data (a key; no quality given).
+	[13704] = { "Skeleton Key", "Key", nil },
+	-- Blackrock Depths' keys, quest items and rewards given with a choice, from QuestieDB's Forever
+	-- data (no quality given; the Prison Cell Key's is its loot row's)
+	[3928] = { "Superior Healing Potion", "Consumable", nil },
+	[6149] = { "Greater Mana Potion", "Consumable", nil },
+	[10999] = { "Ironfel", "Quest", nil },
+	[11000] = { "Shadowforge Key", "Key", nil },
+	[11140] = { "Prison Cell Key", "Key", 1 },
+	[12003] = { "Dark Dwarven Lager", "Consumable", nil },
+	-- The Relic Coffer Key and the Lost Thunderbrew Recipe, which Before you go names (quest items in
+	-- QuestieDB's Forever data, no quality given; the deep audit of 2026-10-30)
+	[11078] = { "Relic Coffer Key", "Quest", nil },
+	[11312] = { "Lost Thunderbrew Recipe", "Quest", nil },
+	[21986] = { "Banner of Provocation", "Quest", nil },
+	[22047] = { "Top Piece of Lord Valthalak's Amulet", "Quest", nil },
+	-- Lower and Upper Blackrock Spire's quest items, start items and rewards, from QuestieDB's Forever
+	-- data (no quality given)
+	[9224] = { "Elixir of Demonslaying", "Consumable", nil },
+	[12339] = { "Vaelan's Gift", "Quest", nil },
+	[12533] = { "Roughshod Pike", "Consumable", nil }, -- a consumable in QuestieDB (class 0), not a quest item
+	[12563] = { "Warlord Goretooth's Command", "Quest", nil },
+	[12821] = { "Plans: Dawn's Edge", "Recipe, Blacksmithing", nil },
+	[18987] = { "Blackhand's Command", "Quest", nil },
+	[22049] = { "Brazier of Beckoning", "Quest", nil },
+	[22056] = { "Brazier of Beckoning", "Quest", nil },
+	-- Stratholme: Sweet Serenity's and Corruption's plans, from QuestieDB's Forever data (no quality given)
+	[12824] = { "Plans: Enchanted Battlehammer", "Recipe, Blacksmithing", nil },
+	[12825] = { "Plans: Blazing Rapier", "Recipe, Blacksmithing", nil },
+	-- Dire Maul East and North: Isalien's brazier, from QuestieDB's Forever data, and The Gordok Taste
+	-- Test's rewards, from foreverchanges.pro's Dire Maul pages (no quality given)
+	[22050] = { "Brazier of Beckoning", "Quest", nil },
+	[18269] = { "Gordok Green Grog", "Consumable", nil },
+	[18284] = { "Kreeg's Stout Beatdown", "Consumable", nil },
+	-- Dire Maul West and the rest of Dire Maul: the Libram quests' Arcanums, the repeatable Gordok Ogre
+	-- Suit's suit and Volume II's plans, from foreverchanges.pro's quest pages, and Volume II's book,
+	-- from QuestieDB's Forever data (no quality or slot given for the Arcanums)
+	[18329] = { "Arcanum of Rapidity", nil, nil },
+	[18330] = { "Arcanum of Focus", nil, nil },
+	[18331] = { "Arcanum of Protection", nil, nil },
+	[18258] = { "Gordok Ogre Suit", nil, nil },
+	[12726] = { "Plans: Enchanted Thorium Leggings", "Recipe, Blacksmithing", nil },
+	[18770] = { "Enchanted Thorium Platemail", "Quest", nil },
+	-- Dire Maul and Scholomance (the deep audit of 2026-10-30, step 3): Volume I's and Volume III's plans
+	-- and Volume III's book, Shards of the Felvine's choice and The Darkreaver Menace's helm, from
+	-- foreverchanges.pro's quest pages (their colours; none for the plans) and QuestieDB's Forever data
+	-- (the kind of item: a recipe, a quest item, a shield, mail; the Lexicon's slot is not given)
+	[12727] = { "Plans: Enchanted Thorium Breastplate", "Recipe, Blacksmithing", nil },
+	[12725] = { "Plans: Enchanted Thorium Helm", "Recipe, Blacksmithing", nil },
+	[18771] = { "Enchanted Thorium Platemail", "Quest", nil },
+	[18535] = { "Milli's Shield", "Off Hand, Shield", 3 },
+	[18536] = { "Milli's Lexicon", nil, 3 },
+	[20134] = { "Skyfury Helm", "Head, Mail", 4 },
+	-- Scarlet Monastery: Vorrel's Revenge's boots, given with the choice, from foreverchanges.pro's quest
+	-- page (its quality, in the item's link) and QuestieDB's Forever data (leather; the deep audit of
+	-- 2026-10-30)
+	[7751] = { "Vorrel's Boots", "Feet, Leather", 2 },
+	-- City of Dalaran: Opportunistic Education's choice, from foreverchanges.pro's quest page (no quality
+	-- or slot given)
+	[279845] = { "Solid Gold Band", nil, nil },
+	[279846] = { "Larcenist's Belt", nil, nil },
+	-- Blackfathom Deeps: the Fathom Core of Amongst the Ruins, and Seeking the Kor Gem's reward, from
+	-- QuestieDB's Forever data (no quality given)
+	[16762] = { "Fathom Core", "Quest", nil },
+	[272448] = { "Purified Kor Gem", "Quest", nil },
+	-- Razorfen Kraul: Blueleaf Tubers' three tools in Ratchet and its reward, from QuestieDB's Forever
+	-- data (no quality given)
+	[5880] = { "Crate With Holes", "Quest", nil },
+	[6684] = { "Snufflenose Command Stick", "Quest", nil },
+	[5897] = { "Snufflenose Owner's Manual", "Quest", nil },
+	[6755] = { "A Small Container of Gems", nil, nil },
+	-- The Crone of the Kraul's and A Vengeful Fate's gun, given with the choice: "New in Forever", from
+	-- foreverchanges.pro's quest pages (its quality) and QuestieDB's Forever data (a gun; the deep audit
+	-- of 2026-10-30)
+	[274084] = { "Quilboar Blaster", "Ranged, Gun", 3 },
+	-- Uldaman, Zul'Farrak and Maraudon: rewards, a start item and the items Before you go names, from
+	-- QuestieDB's Forever data and foreverchanges.pro's quest pages (no quality or slot given; the
+	-- Executioner's Key's quality is its loot row's)
+	[9030] = { "Restorative Potion", "Consumable", nil },
+	[9587] = { "Thawpelt Sack", nil, nil },
+	[7666] = { "Shattered Necklace", "Quest", nil },
+	[7667] = { "Talvash's Phial of Scrying", "Quest", nil },
+	[8444] = { "Executioner's Key", "Consumable", 1 }, -- a consumable in QuestieDB (class 0), not a key
+	[9240] = { "Mallet of Zul'Farrak", "Quest", nil },
+	[9241] = { "Sacred Mallet", "Quest", nil },
+	[17191] = { "Scepter of Celebras", "Quest", nil },
+	-- The Temple of Atal'Hakkar: the nine class quests' rewards, with their slots and qualities, from
+	-- foreverchanges.pro's quest pages (2026-10-30); the egg and essence Before you go names, from
+	-- QuestieDB's Forever data (no quality or slot given)
+	[19982] = { "Duskbat Drape", "Back, Cloth", 3 },
+	[19984] = { "Ebon Mask", "Head, Leather", 3 },
+	[19990] = { "Blessed Prayer Beads", "Trinket", 3 },
+	[19991] = { "Devilsaur Eye", "Trinket", 3 },
+	[19992] = { "Devilsaur Tooth", "Trinket", 3 },
+	[20006] = { "Circle of Hope", "Finger", 3 },
+	[20035] = { "Glacial Spike", "One-Hand, Dagger", 3 },
+	[20036] = { "Fire Ruby", "Trinket", 3 },
+	[20037] = { "Arcane Crystal Pendant", "Neck", 3 },
+	[20082] = { "Woestave", "Ranged, Wand", 3 },
+	[20083] = { "Hunting Spear", "Two-Hand, Polearm", 3 },
+	[20130] = { "Diamond Flask", "Trinket", 3 },
+	[20255] = { "Whisperwalk Boots", "Feet, Leather", 3 },
+	[20369] = { "Azurite Fists", "Hands, Mail", 3 },
+	[20503] = { "Enamored Water Spirit", "Trinket", 3 },
+	[20504] = { "Lightforged Blade", "Two-Hand, Sword", 3 },
+	[20505] = { "Chivalrous Signet", "Finger", 3 },
+	[20512] = { "Sanctified Orb", "Trinket", 3 },
+	[20517] = { "Razorsteel Shoulders", "Shoulder, Plate", 3 },
+	[20521] = { "Fury Visor", "Head, Plate", 3 },
+	[20530] = { "Robes of Servitude", "Chest, Cloth", 3 },
+	[20534] = { "Abyss Shard", "Trinket", 3 },
+	[20536] = { "Soul Harvester", "Two-Hand, Staff", 3 },
+	[20556] = { "Wildstaff", "Two-Hand, Staff", 3 },
+	[20620] = { "Holy Mightstone", "Junk", 1 },
+	[22272] = { "Forest's Embrace", "Chest, Leather", 3 },
+	[22274] = { "Grizzled Pelt", "Chest, Leather", 3 },
+	[22458] = { "Moonshadow Stave", "Two-Hand, Staff", 3 },
+	[10465] = { "Egg of Hakkar", "Quest", nil },
+	[10662] = { "Filled Egg of Hakkar", "Quest", nil },
+	[10663] = { "Essence of Hakkar", "Quest", nil },
+	-- Stratholme: the brazier that calls Jarien and Sothos, from QuestieDB's Forever data
+	[22051] = { "Brazier of Beckoning", "Quest", nil },
+	-- Forever's own dungeons: the items Before you go and the quests name, from QuestieDB's Forever data,
+	-- with foreverchanges.pro's quest pages' qualities (2026-10-30)
+	[274268] = { "Dark Iron Map", "Quest", 1 },
+	[281030] = { "Treaty of Understanding", "Quest", 1 },
+	[268518] = { "Head of the Baron", "Quest", 1 },
+	[270865] = { "Titan Relic", "Quest", 1 },
+	[270866] = { "Titan Relic", "Quest", 1 },
+	[16782] = { "Strange Water Globe", "Quest", 2 },
+	-- Wailing Caverns: the Glowing Shard Before you go names, from QuestieDB's Forever data (no quality given)
+	[10441] = { "Glowing Shard", "Quest", nil },
+	-- Hidden Enemies' (5730) and In Nightmares' (3369, 3370) choices, listed again on 2026-11-03: names
+	-- and colours from foreverchanges.pro's quest pages (their item pages, and so their slots, unread)
+	[15424] = { "Axe of Orgrimmar", nil, 3 },
+	[15443] = { "Kris of Orgrimmar", nil, 3 },
+	[15444] = { "Staff of Orgrimmar", nil, 3 },
+	[15445] = { "Hammer of Orgrimmar", nil, 3 },
+	[10657] = { "Talbar Mantle", nil, 2 },
+	[10658] = { "Quagmire Galoshes", nil, 2 },
+	[17008] = { "Small Scroll", "Junk", 1 },
+	[19507] = { "Inquisitor's Shawl", "Shoulder, Cloth", 3 },
+	[19508] = { "Branded Leather Bracers", "Wrist, Leather", 3 },
+	[19509] = { "Dusty Mail Boots", "Feet, Mail", 3 },
+	[23192] = { "Tabard of the Scarlet Crusade", "Tabard", 1 },
+	-- Onyxia's Lair: each side's Head of Onyxia, which starts its Victory quest, from QuestieDB's Forever
+	-- data (Onyxia drops both; no quality given)
+	[18422] = { "Head of Onyxia", "Quest", nil },
+	[18423] = { "Head of Onyxia", "Quest", nil },
+	-- From the site's item pages: no dungeon page lists these
+	[789] = { "Stout Battlehammer", "Main Hand, Mace", 2 },
+	[1206] = { "Moss Agate", "Trade Goods", 2 },
+	[1468] = { "Murloc Fin", "Trade Goods, Cooking", 1 },
+	[1712] = { "Scroll of Spirit II", "Consumable, Scrolls", 1 },
+	[1745] = { "Laced Mail Vest", "Chest, Mail", 0 },
+	[1748] = { "Linked Chain Bracers", "Wrist, Mail", 0 },
+	[1789] = { "Patched Leather Bracers", "Wrist, Leather", 0 },
+	[1817] = { "Stock Shortsword", "Main Hand, Sword", 0 },
+	[2765] = { "Hunting Knife", "One-Hand, Dagger", 0 },
+	[5125] = { "Charged Scale", "Junk", 0 },
+	[5442] = { "Head of Arugal", "Quest", 1 },
+	[6561] = { "Seer's Padded Armor", "Chest, Cloth", 2 },
+	[6564] = { "Shimmering Cloak", "Back, Cloth", 2 },
+	[6570] = { "Shimmering Sash", "Waist, Cloth", 2 },
+	[6579] = { "Defender Spaulders", "Shoulder, Mail", 1 },
+	[9738] = { "Gem of Cobrahn", "Quest", 1 },
+	[9739] = { "Gem of Anacondra", "Quest", 1 },
+	[9740] = { "Gem of Pythas", "Quest", 1 },
+	[9741] = { "Gem of Serpentis", "Quest", 1 },
+	[9772] = { "Greenweave Leggings", "Legs, Cloth", 2 },
+	[10407] = { "Raider's Shoulderpads", "Shoulder, Mail", 1 },
+	[14166] = { "Buccaneer's Bracers", "Wrist, Cloth", 2 },
+	[14540] = { "Taragaman the Hungerer's Heart", "Quest", 1 },
+	[14561] = { "Prospector's Cuffs", "Wrist, Leather", 2 },
+	[15210] = { "Raider Shortsword", "One-Hand, Sword", 2 },
+	[15304] = { "Grizzly Jerkin", "Chest, Leather", 2 },
+	[15499] = { "Outrunner's Cuffs", "Wrist, Mail", 2 },
+	[15507] = { "Grunt's Bracers", "Wrist, Mail", 2 },
+	-- Scourge Invasion drops: the site says Blizzard keeps all but the choker hidden in Forever
+	[23168] = { "Scorn's Focal Dagger", "Main Hand, Dagger", 3 },
+	[23169] = { "Scorn's Icy Choker", "Neck", 3 },
+	[23170] = { "The Frozen Clutch", "Hands, Mail", 3 },
+	[23171] = { "The Axe of Severing", "Two-Hand, Axe", 3 },
+	[23173] = { "Abomination Skin Leggings", "Legs, Cloth", 3 },
+	-- Forever's own items and recipes
+	[251363] = { "Plans: Acolyte's Gloves", "Recipe, Blacksmithing", 3 },
+	[251379] = { "Plans: Crusader's Silvered Chain Leggings", "Recipe, Blacksmithing", 3 },
+	[251383] = { "Plans: Acolyte's Silvered Chain Helm", "Recipe, Blacksmithing", 3 },
+	[251384] = { "Plans: Crusader's Silvered Chain Helm", "Recipe, Blacksmithing", 3 },
+	[252455] = { "Defender's Leather Helm", "Head, Leather", 3 },
+	[252456] = { "Totemic Leather Helm", "Head, Leather", 3 },
+	[252512] = { "Brawler's Leather Helm", "Head, Leather", 3 },
+	[252513] = { "Trapper's Leather Helm", "Head, Leather", 3 },
+	[252514] = { "Stormrider's Leather Helm", "Head, Leather", 3 },
+	[252515] = { "Wisdom's Leather Helm", "Head, Leather", 3 },
+	[252778] = { "Pattern: Trapper's Leather Gloves", "Recipe, Leatherworking", 3 },
+	[252780] = { "Pattern: Totemic Leather Gloves", "Recipe, Leatherworking", 3 },
+	[252798] = { "Pattern: Brawler's Leather Hood", "Recipe, Leatherworking", 3 },
+	[252799] = { "Pattern: Trapper's Leather Hood", "Recipe, Leatherworking", 3 },
+	[252801] = { "Pattern: Totemic Leather Hood", "Recipe, Leatherworking", 3 },
+	[252820] = { "Pattern: Brawler's Leather Legguards", "Recipe, Leatherworking", 3 },
+	[252821] = { "Pattern: Trapper's Leather Legguards", "Recipe, Leatherworking", 3 },
+	[252822] = { "Pattern: Defender's Leather Kilt", "Recipe, Leatherworking", 3 },
+	[253904] = { "Pattern: Filigreed Silky Gown", "Recipe, Tailoring", 3 },
+	[253906] = { "Pattern: Filigreed Flame Gown", "Recipe, Tailoring", 3 },
+	[253908] = { "Pattern: Filigreed Shadow Gown", "Recipe, Tailoring", 3 },
+	[253912] = { "Pattern: Filigreed Shining Gown", "Recipe, Tailoring", 3 },
+	[253938] = { "Pattern: Filigreed Pristine Leggings", "Recipe, Tailoring", 3 },
+	[253940] = { "Pattern: Filigreed Silky Leggings", "Recipe, Tailoring", 3 },
+	[253942] = { "Pattern: Filigreed Flame Leggings", "Recipe, Tailoring", 3 },
+	[253944] = { "Pattern: Filigreed Shadow Leggings", "Recipe, Tailoring", 3 },
+	[253948] = { "Pattern: Filigreed Shining Leggings", "Recipe, Tailoring", 3 },
+	[253976] = { "Pattern: Filigreed Pristine Circlet", "Recipe, Tailoring", 3 },
+	[273087] = { "Blueprint: Journeyman Campfire", "Recipe, Cooking", 2 },
+	[273096] = { "Blueprint: Tanning Rack", "Recipe, Leatherworking", 2 },
+	[273098] = { "Blueprint: Field Guide", "Recipe, Book", 2 },
+	[273103] = { "Blueprint: Arcane Salvager", "Recipe, Enchanting", 2 },
+	[274049] = { "Schematic: 9-60 Battery Pack", "Recipe, Engineering", 2 },
+	[274292] = { "Houndmaster Boomerang", "Thrown", 3 },
+	[274294] = { "Library Walkers", "Feet, Cloth", 2 },
+	[275443] = { "Highly Toxic Strain", "Quest", 1 },
+	[276158] = { "Crystallized Shard", "Junk", 0 },
+	[276160] = { "Mana Fragment", "Junk", 0 },
+	[280438] = { "Abominable Head", "Quest", 1 },
+	-- Seen in a recorded run (Skep, 2026-10-19); slot and armour from the client's item table.
+	[286987] = { "Violet Sorcerer's Sandals", "Feet, Cloth", 3 },
+	-- Dalaran's trash, on the site's list since November: names, slots and quality from the client's item data
+	[286988] = { "Violet Sorcerer's Leggings", "Legs, Cloth", 3 },
+	[286989] = { "Violet Sorcerer's Wraps", "Hands, Cloth", 3 },
+	-- Forever's recipes seen dropping in the owner's recorded runs (2026-11-08 to 11-10): names and quality
+	-- from the client's item data
+	[251340] = { "Plans: Veteran's Chain Shirt", "Recipe, Blacksmithing", 3 },
+	[251352] = { "Plans: Protector's Chain Helm", "Recipe, Blacksmithing", 3 },
+	[252775] = { "Pattern: Stormrider's Leather Armor", "Recipe, Leatherworking", 3 },
+	[252794] = { "Pattern: Defender's Leather Pants", "Recipe, Leatherworking", 3 },
+	[253984] = { "Pattern: Filigreed Pearly Circlet", "Recipe, Tailoring", 3 },
+}
+
+local function Fill(row)
+	local item = not row.name and row.itemID and ITEMS[row.itemID]
+	if not item then return end
+	row.name, row.slot, row.quality = item[1], row.slot or item[2], row.quality or item[3]
+end
+
+for _, kind in ipairs({ "dungeon", "raid" }) do
+	for _, instance in ipairs(ns.GetInstances(kind)) do
+		for _, boss in ipairs(instance.bosses or {}) do
+			for _, row in ipairs(boss.loot or {}) do Fill(row) end
+		end
+		for _, quest in ipairs(instance.quests or {}) do
+			for _, row in ipairs(quest.rewards and quest.rewards.items or {}) do Fill(row) end
+			for _, row in ipairs(quest.rewards and quest.rewards.also or {}) do Fill(row) end
+		end
+	end
+end
