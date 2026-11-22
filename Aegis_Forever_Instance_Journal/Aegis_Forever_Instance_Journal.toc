@@ -46,6 +46,7 @@ Core\GearFinder.lua
 Core\PawnLink.lua
 Core\SpokenLore.lua
 Core\Run.lua
+Core\QuestTitles.lua
 
 Data\Authored\LevelBrackets.lua
 Data\Authored\ZoneLevels.lua

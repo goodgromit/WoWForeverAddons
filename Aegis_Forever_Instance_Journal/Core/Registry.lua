@@ -34,6 +34,7 @@ local function DataChanged()
 	drops, moreDrops, dropInstance = nil, nil, nil
 	dataVersion = dataVersion + 1
 end
+ns.DataChanged = DataChanged	-- 로컬 수정: 게임 퀘스트 제목 적용 후 다시 계산하도록 (Core/QuestTitles.lua)
 
 -- Art given as a list of files the client may have: the first it has, else nil.
 local function FirstFile(candidates)
