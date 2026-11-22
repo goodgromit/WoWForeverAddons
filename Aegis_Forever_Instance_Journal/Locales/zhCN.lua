@@ -25,7 +25,7 @@ L.DOCK_ON = "窗口现在会在左上角打开，位于游戏自带窗口旁边�
 L.DOCK_OFF = "窗口已恢复自由：它会在你上次拖动到的位置打开。"
 L.DOCK_AFTER_COMBAT = "此项将在战斗结束后生效。"
 -- Its /aegis style sentence (2026-11-03; drafted, to be checked).
-L.SLASH_HELP = "/aegis（或 /ij）打开手册。/aegis record 开始或停止记录。/aegis reset 将窗口移回默认位置。/aegis dock 将窗口停靠在左上角、游戏窗口旁边，或再次取消停靠。/aegis perf 测量手册的内存占用和速度。/aegis where 和 /aegis taxi 报告你所在的位置和地图上的飞行点。/aegis travel 为世界地图保存一处船、飞艇、地铁或传送门。/aegis items 找出手册所列物品中服务器一无所知的那些。/aegis gear 打开装备查找器，/aegis weights 打开其属性权重；/aegis gearscan 保存它从你的装备中读取的内容，用于检查其评分。/aegis options 打开手册的选项。/aegis style 再次显示手册风格的选择。/aegis lang 以手册的另一种语言预览手册。 /aegis run 显示或隐藏地下城进度框（在地下城外显示你上一轮的记录）；/aegis run new 开始新的一轮。"
+L.SLASH_HELP = "/aegis（或 /ij）打开手册。/aegis record 开始或停止记录。/aegis reset 将窗口移回默认位置。/aegis dock 将窗口停靠在左上角、游戏窗口旁边，或再次取消停靠。/aegis perf 测量手册的内存占用和速度。/aegis where 和 /aegis taxi 报告你所在的位置和地图上的飞行点。/aegis travel 为世界地图保存一处船、飞艇、地铁或传送门。/aegis items 找出手册所列物品中服务器一无所知的那些。/aegis gear 打开装备查找器，/aegis weights 打开其属性权重；/aegis gearscan 保存它从你的装备中读取的内容，用于检查其评分。/aegis options 打开手册的选项。/aegis style 再次显示手册风格的选择。/aegis lang 以手册的另一种语言预览手册。 /aegis run 显示或隐藏地下城进度框（在地下城外显示你上一轮的记录）；/aegis run new 开始新的一轮。/aegis test 打开测试模式。"
 L.LANG_USAGE = "/aegis lang de、fr、ru、cn、tw、es、mx、pt 或 ko 可在你下次 /reload 后以德语、法语、俄语、中文（简体或繁体）、西班牙语（西班牙或拉丁美洲）、巴西葡萄牙语或韩语显示手册，用于检查翻译；/aegis lang off 恢复为你客户端的语言。当前：%s。"
 L.LANG_SET = "从你下次 /reload 起，手册将使用%s：只有手册自己的文字会改变，游戏本身的名称仍是你客户端的语言。现在输入 /reload；/aegis lang off 可恢复。"
 L.LANG_OFF = "从你下次 /reload 起，手册将恢复使用你客户端的语言。现在输入 /reload。"
@@ -33,11 +33,66 @@ L.LANG_FONTS = "中文需要中文客户端的字体：在你的客户端上，�
 L.LANG_FONTS_KO = "韩语需要韩语客户端的字体：在你的客户端上，部分文字可能无法显示。"
 L.LANG_ON = "正在以%s预览手册。/aegis lang off 可结束预览。"
 L.LANG_UNAVAILABLE = "此客户端在读取已保存的设置之前就载入了手册，因此无法开始语言预览。"
+-- A map addon the owner asked us to warn about, while it is loaded: its name twice (2026-11-12; drafted, to be checked).
+L.MAP_ADDON_HIDES = "%s已启用。它会覆盖世界地图，因此手册的部分地图和功能可能会被遮住。建议关闭%s。"
 L.AREAS_START = "正在为手册中的%d个区域名称查找其在客户端中的ID……"
 L.AREAS_DONE = "已找到%d个区域名称的ID（共%d个）。输入/reload即可保存。"
 L.AREAS_MISSING = "未找到：%s。"
 L.AREAS_SCANNING = "仍在查找区域名称。"
 L.AREAS_ENGLISH = "请在英文客户端上运行 /aegis areas：它查找的名称是英文的。"
+-- Test mode (UI/TestPanel.lua, UI/TestRun.lua, UI/FogTest.lua): the owner's fog test of 2026-11-13, made test
+-- mode on 2026-11-18, for this session only (2026-11-18; drafted, to be checked).
+L.FOGTEST_FOG_OFF = "此角色的迷雾已关闭，因此只有标记会变化。要看到迷雾，请在地图图例中开启战争迷雾，或使用冒险模式。"
+L.FOGTEST_PIN_CLICK = "测试模式：点击标记为已击败，或恢复为未击败。"
+L.TEST_TITLE = "测试模式"
+L.TEST_PICK = "选择地下城"
+L.TEST_NO_MAP = "这里还没有地图。"
+L.TEST_INSIDE = "假装我在里面"
+L.TEST_INSIDE_TIP = "进度框会像你刚进入时那样显示这个地下城：没有击杀，计时器等待第一次开战（点播放即可开始）。你标记的首领会像真实击杀一样计入。这些都不会保存。"
+L.TEST_INSIDE_RAID = "进度框用于地下城，不用于团队副本。"
+L.TEST_INSIDE_REAL = "你正在%s里：进度框显示你真实的进度。"
+L.TEST_TRACKER_COMBAT = "请等战斗结束：进度框在任务追踪内。"
+L.TEST_WALK_IN = "进入"
+L.TEST_WALK_IN_TIP = "血色修道院的进度会在门口等待，直到某个区的第一个房间或第一场战斗确定区域。点击进入即确定为：%s。"
+L.TEST_FOUND = "显示为已发现（冒险模式）"
+L.TEST_FOUND_TIP = "勾选：手册会把这个地下城当作已发现，就像你进去过一样。它的首领、战利品和任务仍然只在你发现时，或测试击杀解锁时才显示。不勾选：按你的角色实际发现的情况显示。测试击杀也会让它算作已发现。"
+L.TEST_FOUND_OFF = "你的角色不在冒险模式中，所以一切都已显示。"
+L.TEST_FOUND_REAL = "你的角色已经发现了它。"
+L.TEST_BOSSES = "首领"
+L.TEST_DEFEATED = "已击败 %d/%d"
+L.TEST_TAG_RARE = "稀有"
+L.TEST_TAG_SUMMONED = "召唤"
+L.TEST_TAG_NOT_COUNTED = "不计入"
+L.TEST_TAG_MAYBE = "可能"
+L.TEST_TAG_QUEST = "任务"
+L.TEST_TAG_OUTSIDE = "外面"
+L.TEST_TAG_FINAL = "最终"
+L.TEST_TIP_RARE = "稀有：进度框上没有圆圈也没有行，并且不阻挡迷雾。"
+L.TEST_TIP_SUMMONED = "召唤：不阻挡迷雾。"
+L.TEST_TIP_NOT_COUNTED = "不计入：击杀后在进度框上有一行，没有圆圈。"
+L.TEST_TIP_MAYBE = "可能：只有部分进度会遇到他。击杀后在进度框上有一行，没有圆圈。"
+L.TEST_TIP_QUEST = "任务：某个任务的目标。击杀后在进度框上有一行，没有圆圈。测试之外，点他的标记会打开他的任务。"
+L.TEST_TIP_OUTSIDE = "外面：他在地下城外，所以进度框从不显示他。"
+L.TEST_TIP_FINAL = "最终：击杀他会停止本轮的计时器。"
+L.TEST_END = "结束测试"
+L.TEST_ON = "测试模式已开启，仅限本次登录：不会保存任何内容。点结束测试或 /reload 即可关闭。"
+L.TEST_OFF = "测试模式已关闭：一切恢复原样。"
+L.TEST_RUN_TITLE = "%s（测试）"
+L.TEST_RUN_ENDED = "你进入了地下城，所以测试的假装进度已结束。"
+L.TEST_STATE_INSIDE = "在里面"
+L.TEST_STATE_DOOR = "在门口（哪个区？）"
+L.TEST_STATE_OUTSIDE = "在外面"
+L.TEST_STATE_DEFEATED = "已击败 %d/%d"
+L.TEST_STATE_FOG_ON = "迷雾开"
+L.TEST_STATE_FOG_OFF = "迷雾关"
+L.TEST_STATE_NO_FOG = "无迷雾"
+L.TEST_STATE_FOUND = "显示为已发现"
+L.TEST_STATE_REAL = "按角色"
+L.TEST_STATE_KILL_FOUND = "由测试击杀发现"
+L.TEST_STATE_REAL_INSIDE = "真的在里面"
+L.TEST_STATE_NOT_ADVENTURE = "非冒险模式"
+L.TEST_STATE_COMBAT = "战斗中"
+L.TEST_USAGE = "/ij test 打开测试模式。/ij test off 结束测试。/ij test debug 输出它正在做的事。"
 L.ITEMS_START = "正在向服务器查询手册所列的%d件物品。大约%d秒后会有结果，你可以继续游戏。"
 L.ITEMS_SCANNING = "仍在查询服务器，结果马上就到。"
 L.ITEMS_DONE = "在%d件物品中，服务器对其中%d件一无所知：它们很可能尚未加入Forever。在服务器或一次记录下的通关确认之前，手册会隐藏它们。完整列表将在你下次/reload或登出时写入保存文件。"
@@ -61,6 +116,10 @@ L.WHERE_BELOW_BELOW = "下方"
 L.WHERE_BELOW_TOP = "顶部"
 L.WHERE_BELOW_NOTHING = "无"
 L.WHERE_BELOW_CHANGE = "  %s  %s  地图 %s  区域“%s”  x %s  y %s：%s -> %s"
+L.WHERE_GAMEPAD = "手柄界面：战斗开始时交还手柄：%d（最近一次由 %s）；太迟：%d；收到的战斗限制事件：%d；等待中的跳过标记：%d"
+L.WHERE_FLOOR = "%s：地图在第%d层（%s），依据区域“%s”"
+L.WHERE_FLOOR_KEPT = "%s：地图保持第%d层（%s）：区域“%s”不属于任何一层"
+L.WHERE_FLOOR_HELD = "%s：地图在第%d层（%s），不跟随区域“%s”：已选定一层或整张地图"
 L.TAXI = "地图 %s  自带飞行点显示：%s  其上飞行点：%d（已发现%d）  %s"
 L.TAXI_ATLASES = "交通图标：%s"
 L.YES = YES or "是"
@@ -147,7 +206,7 @@ L.OPTIONS_BOSS_LEVELS = "在首领列表上显示首领等级"
 L.OPTIONS_BOSS_LEVELS_TIP = "在每个首领的头像上显示其等级标记，颜色表示该首领对你的难度：灰色、绿色、黄色、橙色或红色。"
 L.OPTIONS_ARROWS = "用绿色箭头标记提升"
 L.OPTIONS_MINIMAP = "显示小地图按钮"
-L.OPTIONS_PAWN_WEIGHTS = "在装备查找器中使用Pawn的属性权重"
+L.OPTIONS_PAWN_WEIGHTS = "使用Pawn的属性权重"
 L.OPTIONS_PAWN_WEIGHTS_TIP = "安装了Pawn时，显示的是它的物品鼠标提示和提升箭头。勾选：装备查找器用你专精的Pawn权重方案为物品评分。不勾选：Pawn改为显示手册对你专精的权重（作为手册的一个权重方案），并且在你勾选此项之前，Pawn自己的权重方案在此角色上会被隐藏。"
 L.PAWN_ASK = "Pawn也已安装。将显示它的物品鼠标提示和提升箭头。\n\nPawn和装备查找器应共同使用谁的属性权重？\n\n手册的：Pawn为你的专精显示手册的权重，并在此角色上隐藏它自己的权重方案。\nPawn的：装备查找器使用你的Pawn权重方案。"
 L.PAWN_USE_PAWN = "Pawn的"
@@ -158,15 +217,32 @@ L.PAWN_RELOAD_NOW = "重载界面"
 L.PAWN_RELOAD_LATER = "稍后"
 L.WEIGHTS_SOURCE_PAWN_LIVE = "Pawn的%s权重方案。可在Pawn中更改，或在手册的选项中改用手册的权重。"
 L.OPTIONS_MINIMAP_TIP = "小地图边缘上的手册按钮：点击打开手册，右键点击打开这些选项，拖动可移动它。"
+-- The journal's line in the minimap's addon menu, its box beside the minimap button's (UI/Options.lua; 2026-11-20; drafted, to be checked).
+L.OPTIONS_ADDON_MENU = "在插件菜单中显示"
+L.OPTIONS_ADDON_MENU_TIP = "小地图插件菜单（带数字的小按钮）中的手册条目：点击打开手册，右键点击打开这些选项。取消勾选后，它会在/reload后从菜单中消失。"
 L.OPTIONS_DOCK = "将窗口停靠在左上角"
 L.OPTIONS_DOCK_TIP = "勾选：手册会在屏幕左上角打开，也就是游戏打开自身窗口的位置；当那里打开游戏的某个窗口时，它会像游戏窗口之间那样让到一旁；如果放不下两个窗口，游戏会关闭较早打开的那个。拖动它可以移到任意位置：下次打开时会重新停靠。不勾选：它会在你上次拖动到的位置打开。"
+-- Test mode's button, last on the options' page (UI/Options.lua; 2026-11-18; drafted, to be checked).
+L.OPTIONS_TEST = "测试模式"
+L.OPTIONS_TEST_BUTTON = "打开"
+L.OPTIONS_TEST_TIP = "无需进入，就能查看任何地下城的地图、迷雾和进度框：选择地下城，标记已击败的首领，假装你在里面。仅限本次登录：不会保存任何内容，/reload 即可结束。"
+L.OPTIONS_DUNGEON_FOG = "地下城地图上的战争迷雾"
+L.OPTIONS_DUNGEON_FOG_TIP = "地下城地图开始时笼罩在迷雾中，只有入口是清晰的。你的队伍每击败一个首领，就会驱散它的房间和返回路上的迷雾，击败最后一个首领后整张地图都会显现；驱散的迷雾不会再回来。在冒险模式中始终开启。仅对此角色生效。"
+-- Adventure Mode's news: the chat line for new finds, the minimap button's line while it glows, and their two
+-- boxes in the options (2026-11-11; translation drafted, to be checked).
+L.ADVENTURE_NEWS = "手册中的新内容：%s"
+L.MINIMAP_NEWS = "你的手册中有新内容。"
+L.OPTIONS_ADVENTURE_CHAT = "在聊天中提示新发现"
+L.OPTIONS_ADVENTURE_CHAT_TIP = "在冒险模式中，当你为手册找到新内容时，在聊天中显示一行：地下城、首领、掉落、任务、阵营或飞行路线。点击名称即可打开其页面（飞行路线没有页面）。对你的所有角色生效。"
+L.OPTIONS_ADVENTURE_GLOW = "有新发现时小地图按钮发光"
+L.OPTIONS_ADVENTURE_GLOW_TIP = "在冒险模式中，如果你自上次打开手册后有了新发现，小地图按钮会发光，直到你打开手册。对你的所有角色生效。"
 L.MINIMAP_LEFT_CLICK = "点击打开或关闭手册。"
 L.MINIMAP_RIGHT_CLICK = "右键点击打开其选项。"
 L.MINIMAP_DRAG = "拖动可将它沿小地图边缘移动。"
 L.OPTIONS_ARROWS_TIP = "按照装备查找器的计算，在对你的专精有提升的物品上显示绿色箭头：包括背包中、拾取窗口中和拾取掷骰时的物品。"
-L.WEIGHTS_SHOW_GAINS = "在鼠标提示中显示属性权重"
+L.WEIGHTS_SHOW_GAINS = "鼠标提示中显示属性权重"
 L.WEIGHTS_SHOW_GAINS_TIP = "在每件物品下方，为你的每个专精显示一行：该物品按其权重计算的价值；如果它是提升，还会显示绿色箭头及其为你的装备增加的数值。对你的所有角色生效（需开启装备查找器）。安装了Pawn时，此项改为在Pawn中显示或隐藏手册的权重方案，并随之显示或隐藏Pawn按手册权重给出的提升箭头：Pawn只为它显示的权重方案标记提升。"
-L.OPTIONS_SOURCES = "在鼠标提示中显示物品的掉落来源"
+L.OPTIONS_SOURCES = "在鼠标提示中显示掉落来源"
 L.OPTIONS_SOURCES_TIP = "在手册中的地下城和团队副本掉落的每件物品下方，显示一行掉落它的首领和地下城：包括背包中、角色身上、聊天链接、商人处，以及游戏显示该物品的其他任何地方。对你的所有角色生效。"
 L.GEAR_WHY_CUSTOM = "%s（你的权重）"
 L.GEAR_SPEC_NAMES = {
@@ -283,6 +359,7 @@ L.RECORD_NEW = "新"
 L.RECORD_QUARTERMASTERS = "军需官"
 L.RECORD_WARES = "%s：%d件商品，%s件为新"
 L.RECORD_TRAVEL = "交通标记：%d"
+L.RECORD_MODELS = "模型：%d"
 L.FOREVER_LINE = "WoW: Forever新增。"
 L.LOCATION_LINE = "位置：%s"
 
@@ -305,6 +382,17 @@ L.LOOT_KIND = {
 L.LOOT_KIND_ALL = { EQUIPMENT = "所有装备", RECIPE = "所有配方" }
 L.LOOT_KIND_ONE = { MOUNT = "坐骑", PET = "宠物", TOY = "玩具" }
 L.LOOT_RECIPE = "配方"
+-- A loot row's type where the client cannot describe the item (2026-11-19; drafted, to be checked).
+L.LOOT_QUEST_ITEM = "任务物品"
+L.LOOT_WORDS = {
+	Alchemy = "炼金术", Blacksmithing = "锻造", Cooking = "烹饪", Enchanting = "附魔", Engineering = "工程学",
+	["First Aid"] = "急救", Fishing = "钓鱼", Leatherworking = "制皮", Tailoring = "裁缝", Book = "书籍", Blueprint = "蓝图",
+	Bag = "背包", ["Ammo Pouch"] = "弹药袋", Quiver = "箭袋", Arrow = "箭", Bullet = "子弹", Consumable = "消耗品",
+	["Food & Drink"] = "食物和饮料", Potions = "药水", Junk = "垃圾", Key = "钥匙", Other = "其它", Parts = "零件", Reagent = "材料",
+	Weapon = "武器", Cloth = "布甲", Leather = "皮甲", Mail = "锁甲", Plate = "板甲", Shield = "盾牌", Idol = "神像", Libram = "圣契",
+	Totem = "图腾", Axe = "斧", Bow = "弓", Crossbow = "弩", Dagger = "匕首", ["Fist Weapon"] = "拳套", Gun = "枪械", Mace = "锤",
+	Polearm = "长柄武器", Staff = "法杖", Sword = "剑", Wand = "魔杖",
+}
 L.LOOT_FAVORITES = "收藏"
 L.LOOT_FAVORITES_ONLY = "仅显示收藏"
 L.LOOT_FAVORITE = "添加到收藏"
@@ -312,9 +400,17 @@ L.LOOT_UNFAVORITE = "从收藏中移除"
 L.LOOT_PINNED = "已置顶"
 L.LOOT_ALL = "战利品"
 L.LOOT_TRASH = "地下城小怪"
+L.LOOT_BOSSES_AND_RARES = "任意首领或稀有怪"
+L.LOOT_BOSSES_AND_RARES_NOTE = "由该地下城的首领和稀有怪掉落，小怪不会掉落。"
+-- A Recipes page's row the bosses drop, and a row not seen dropping yet (2026-11-20; drafted, to be checked).
+L.LOOT_ANY_BOSS = "任意首领"
+L.LOOT_ANY_BOSS_NOTE = "由该地下城的首领掉落，小怪不会掉落。"
+L.LOOT_NOT_SEEN_NOTE = "尚未见到掉落。"
 L.DROPS_FROM_BOSS = "掉落自：%s（%s）"
 L.DROPS_FROM_TRASH = "掉落自：小怪（%s）"
 L.DROPS_FROM_BOSSES = "掉落自：%d个首领（%s）"
+L.DROPS_FROM_BOSSES_AND_RARES = "掉落自：首领和稀有怪（%s）"
+L.DROPS_FROM_ANY_BOSS = "掉落自：首领（%s）"
 L.DROPS_IN = "掉落于：%s"
 L.DROPS_ALSO_IN = "也掉落于：%s"
 L.LEGEND_CLICK_HIDE = "点击在地图上隐藏这些标记。"
@@ -328,7 +424,28 @@ L.PREPARE_PROGRESS = "你已完成%d个任务（共%d个）。"
 -- The same for a key with one quest (2026-10-30; drafted, to be checked).
 L.PREPARE_PROGRESS_ONE = "你还没有完成它的任务。"
 L.PREPARE_HAVE = "你已拥有。"
-L.PREPARE_QUEST_HINT = "点击在“任务”标签页中查看。"
+-- A chain of quests done, Before you go (2026-11-12; drafted, to be checked).
+L.PREPARE_CHAIN_DONE = "你已完成它的任务。"
+-- Before you go's line on a dungeon's overview, pointing to the Quests tab (2026-11-13; drafted, to be checked).
+L.PREPARE_POINTER = "出发之前：%d条提示，在“任务”标签页。"
+L.PREPARE_POINTER_ONE = "出发之前：1条提示，在“任务”标签页。"
+-- The Play button beside the lore, which plays Spoken's recorded story; "Spoken" kept as it is (2026-11-13; drafted, to be checked).
+L.SPOKEN_PLAY = "播放故事"
+L.SPOKEN_REPLAY = "重新播放故事"
+L.SPOKEN_STOP = "停止"
+L.SPOKEN_BY = "由Spoken朗读。"
+L.SPOKEN_REQUIRES = "需要Spoken"
+L.SPOKEN_ABOUT_PLACE = "朗读此地的故事。"
+L.SPOKEN_ABOUT_BOSS = "朗读此首领的故事。"
+L.SPOKEN_NO_STORY_PLACE = "Spoken没有此地的故事录音。"
+L.SPOKEN_NO_STORY_BOSS = "Spoken没有此首领的故事录音。"
+-- Spoken's own story API says no, the reason not known (2026-11-14; drafted, to be checked).
+L.SPOKEN_NO_STORY_YET = "Spoken在这里还没有可播放的故事。"
+L.SPOKEN_NEEDS_BOSS_VOICES = "需要Spoken的首领语音，但尚未安装。"
+L.SPOKEN_NEEDS_PLACE_VOICES = "需要Spoken的地点语音，但尚未安装。"
+L.SPOKEN_OFF = "已在Spoken的设置中关闭。"
+L.SPOKEN_LOCKED_PLACE = "发现此地后，Spoken才会讲述这个故事。"
+L.SPOKEN_LOCKED_BOSS = "遇到此首领后，Spoken才会讲述这个故事。"
 L.QUESTS_DUNGEON = "地下城任务"
 -- The same on a raid's Quests tab (2026-10-30; drafted, to be checked).
 L.QUESTS_RAID = "团队副本任务"
@@ -336,6 +453,9 @@ L.QUESTS_RAID = "团队副本任务"
 L.QUESTS_CLASS = "职业任务"
 L.TRASH = "小怪"
 L.TRASH_DESCRIPTION = "地下城中其他生物掉落的值得关注的物品：稀有和史诗装备、配方以及任务物品。"
+-- The recipes' entry in a dungeon's boss list, and its page (drafted, to be checked).
+L.RECIPES = "配方"
+L.RECIPES_DESCRIPTION = "在地下城中掉落的配方、设计图和图样，来自首领和其他生物。首领自己的配方也会显示在该首领的页面上。"
 L.LOOT_BOSS_LINE = BOSS_INFO_STRING or "首领：%s"
 L.LOOT_FILTER_BAR = "过滤：%s"
 L.LOOT_RETRIEVING = RETRIEVING_ITEM_INFO or "正在获取物品信息"
@@ -392,6 +512,8 @@ L.QUESTMAP_OBJECTIVE_TAKE_NAMED = "拿取：%s"
 L.QUESTMAP_TITLE_QUOTED = "“%s”"
 L.QUESTMAP_OBJECTIVE_USE = "使用：%s"
 L.QUESTMAP_OBJECTIVE_EXPLORE = "探索此地"
+-- At the Drowned City's tablets of I'lalai, a rubbing with the hide and charcoal (2026-11-12; drafted, to be checked).
+L.QUESTMAP_OBJECTIVE_RUBBING = "用兽皮和木炭拓印"
 -- A Matrix Punchograph's step, what goes in, then what comes out, in short words ("Yellow > Blue"), and the punch
 -- cards' colors, as the cards' own names in the language have them (2026-11-12, the owner's "Blue > Red"; drafted, to
 -- be checked); where what goes in drops (2026-11-12; drafted, to be checked).
@@ -452,9 +574,32 @@ L.REP_NOT_CAPTURED_TEXT = "还没有人记录过这个阵营的军需官。找�
 L.REP_LISTED_TIP = "其奖励来自游戏的物品数据，尚未在军需官处得到确认。"
 L.REP_LISTED_TEXT = "这些奖励来自游戏的物品数据，而非军需官，因此没有价格，其中少数可能根本不出售。找到这个阵营的一位军需官，打开其商店，在“声望”标签页上点击“记录商人”，然后把你的记录发到我们的Discord。你的名字将列入手册的贡献者名单。"
 L.REP_COMING_SOON_TEXT = "WoW: Forever新增，尚未记录。一旦它加入游戏，请找到其军需官，打开其商店，在“声望”标签页上点击“记录商人”，然后把你的记录发到我们的Discord。"
+-- The Reputation tab's Vendors: a page for each currency a vendor takes for wares that need no standing (2026-11-12; drafted, to be checked).
+L.REP_VENDORS = "商人"
+L.CURRENCY_YOU_HAVE = "你拥有：%s"
+L.CURRENCY_VENDOR = "商人：%s"
+L.CURRENCY_CARD_CLICK = "点击查看出售的商品。"
+L.REP_CAPTURED_CURRENCY = "%s：保存了%d件商品，用%s购买。"
+-- Where Carved Centaur Totems come from, on its Vendors card and page (2026-11-13; drafted, to be checked: %s is the item's name as the client writes it; the quests keep their English names, their names in this language not known).
+L.CURRENCY_NOTE_CENTAUR_TOTEM = "%s：凄凉之地任何部族的半人马都会掉落，任务“Khan Hratha”会给予十个。联盟和部落的任务“Carved Centaur Totems”都需要五个。"
 L.MAP_SHOW = ENCOUNTER_JOURNAL_SHOW_MAP or "显示地图"
 L.MAP_SHOW_UNEXPLORED = "显示未探索区域"
 L.OPTIONS_UNEXPLORED_TIP = "在世界地图上将每个区域中尚未探索的部分显示为阴影。"
+-- The map legend's Fog of War switch, the last of Movement's, and its tooltip (2026-11-11; translation drafted, to be checked).
+L.LEGEND_FOG = "战争迷雾"
+L.LEGEND_FOG_TOOLTIP = "隐藏区域中你尚未探索的部分，以及地下城地图上你的队伍尚未驱散迷雾的部分。"
+L.LEGEND_FOG_ZONE_HIDDEN = "地图只显示此区域中你已探索的部分。"
+L.LEGEND_FOG_ZONE_SHOWN = "此区域中你尚未探索的部分也会显示，颜色稍暗。"
+L.LEGEND_FOG_ZONE_SHOW = "点击显示尚未探索的部分。"
+L.LEGEND_FOG_ZONE_HIDE = "点击只显示已探索的部分。"
+L.LEGEND_FOG_DUNGEON_ON = "迷雾笼罩着此地图上你尚未驱散的部分。你的队伍每击败一个首领，就会驱散它的房间里的迷雾。"
+L.LEGEND_FOG_DUNGEON_OFF = "迷雾已关闭：整张地图都会显示。"
+L.LEGEND_FOG_DUNGEON_CLEARED = "迷雾已经散去：整张地图都可见。"
+L.LEGEND_FOG_DUNGEON_LIFT = "点击关闭迷雾。"
+L.LEGEND_FOG_DUNGEON_LAY = "点击开启迷雾。"
+L.LEGEND_FOG_ADVENTURE = "在冒险模式中无法关闭。"
+L.LEGEND_FOG_NONE = "此地图上没有战争迷雾。"
+L.LEGEND_FOG_ZONE_EXPLORED = "你已探索此区域的全部。"
 L.MAP_FILTER_QUESTS = "可接任务"
 L.MAP_FILTER_DUNGEONS = "地下城入口"
 L.MAP_FILTER_RAIDS = "团队副本入口"
@@ -463,10 +608,18 @@ L.MAP_FILTER_CAVES = "洞穴入口"
 L.MAP_FILTER_TRANSPORT = "船、飞艇、地铁和传送门"
 L.MAP_PIN_OPEN = "点击在手册中打开。"
 L.MAP_DEFEATED = DUNGEON_ENCOUNTER_DEFEATED or "已击败"
+L.MAP_FOG_HINT = "击败它以驱散此处的迷雾。"
+L.MAP_UNMET_HINT = "尚未遇到。"
 L.MAP_LEVEL = "等级%d"
 L.MAP_FLOOR = "第%d层"
 L.MAP_STEP_ELSEWHERE = "%s（%s）"
 L.MAP_GO_TO = "前往%s"
+-- Under a way between floors, where two lead to one floor (the Drowned City's), where it comes out
+-- (2026-11-17; drafted, to be checked).
+L.MAP_WAY_OUT_SOUTHWEST = "出口在西南端"
+L.MAP_WAY_OUT_NORTHEAST = "出口在东北端"
+L.MAP_WAY_OUT_DEEP_ARCHIVES = "出口在深层档案馆"
+L.MAP_WAY_OUT_CENTRAL_POOL = "出口在中央水池"
 L.MAP_YOU_ARE_HERE = "你在这里"
 L.ENTRANCE_DUNGEON = LFG_TYPE_DUNGEON or "地下城"
 L.ENTRANCE_RAID = LFG_TYPE_RAID or "团队副本"
@@ -513,8 +666,13 @@ L.SEARCH_TYPE_QUEST = "任务"
 L.SEARCH_TYPE_FACTION = FACTION or "阵营"
 L.MAP_PIN_CLEAR = "点击移除此标记。"
 L.MAP_PIN_COMBAT = "战斗中无法打开地图。"
+L.GAMEPAD_HUD_UP = "请先退出手柄界面的HUD模式，然后再试一次。"
 L.MAP_PIN_IN_ZONE = "%s已标记在%s的地图上。"
 L.MAP_LEVEL_LINK_CLICK = "左键点击查看那一层的地图"
+-- A place worth knowing on a dungeon's map (UI/DungeonMap.lua's MapSpot): its kind's name, and the Drowned City's
+-- hidden chest's line under it (2026-11-17; drafted, to be checked).
+L.MAP_SPOT_CHEST = "隐藏的宝箱"
+L.MAP_SPOT_DROWNED_CHEST = "在巨蛇敏洛斯之后的破船上。宝箱没有上锁，任何人都可以打开，里面有随机物品和材料。"
 L.DOOR_SPIRE_ONE_INSTANCE = "黑石塔下层和黑石塔上层是同一个副本，只有一个入口。"
 L.DOOR_SPIRE_LOWER = "黑石塔下层：最多10名玩家，但其任务只能在5人或更少的队伍中完成。"
 L.DOOR_SPIRE_UPPER = "黑石塔上层：位于更深处，在一扇需要晋升印章的封印之门后。最多10名玩家。"
@@ -524,6 +682,8 @@ L.AND_MORE = "以及另外%d个"
 L.BULLET_AREA = "位于%s。"
 L.BULLET_RARE = "稀有刷新：并非每次通关都能遇到。"
 L.BULLET_SUMMONED = "需要你自己召唤的隐藏首领：召唤方法见上方说明。"
+-- The same where his note names several bosses, not a hidden boss (2026-11-19; drafted, to be checked).
+L.BULLET_CALLED_UP = "需要你自己召唤的首领：召唤方法见上方说明。"
 -- A quest's mob, on the map only, on his page (2026-11-11; translation drafted, to be checked).
 L.BULLET_QUEST_TARGET = "任务目标，不算作本地下城的首领。"
 L.BULLET_LEVEL = "%d级首领战。"
@@ -589,11 +749,33 @@ L.EQUIP_PATTERNS = {
 -- here" and a wing's areas match these (Core/Areas.lua). Unconfirmed ones are listed in
 -- the translation's to-check list.
 L.AREA_NAMES = {
+	-- The Drowned City's areas (Data/Authored/Upcoming.lua's floors: Abyssal Dais, Altar of the Serpent, Deep
+	-- Archives, Eternal Amphitheater, the Flooded Shrine (the central pool) and Sunken Hollow on the city's map,
+	-- Ataal'Byzal and Atal'Byzal on Atal'byzal), as a player's English recording (2026-11-13) and the client's
+	-- English tables (2026-11-17) name them: drafted, to be checked (GetSubZoneText there)
+	["Abyssal Dais"] = "深渊高台",
 	["Aku'mai's Lair"] = "阿库麦尔的巢穴",
+	-- Alcaz Prison's two names for its rooms (Data/Authored/Upcoming.lua's floors: Alcaz Prison on the first,
+	-- Maximum Security on the second), as the client's English tables name them (2026-11-17): drafted, to be checked
+	-- (GetSubZoneText there); Alcaz Prison as the dungeon's name in this language
+	["Alcaz Prison"] = "奥卡兹监狱",
+	-- (the Drowned City's, drafted: see Abyssal Dais)
+	["Altar of the Serpent"] = "巨蛇祭坛",
 	["Anvilmar's Rest"] = "安威玛尔安息之地",
+	-- (the Drowned City's shrine: its rooms' area and the building's own name, drafted: see Abyssal Dais)
+	["Ataal'Byzal"] = "阿塔拜萨尔",
+	["Atal'Byzal"] = "阿塔拜萨尔",
 	["Athenaeum"] = "藏书馆",
+	-- Blackmaw Hold's areas (Data/Authored/Upcoming.lua's floors: Blackmaw Grove, Blackmaw Stillwater, Bonesnout's
+	-- Thicket, the Festering Grotto and the depths' four levels), by the labels on Santiago Reyes's maps, not read in
+	-- game yet: drafted, to be checked (GetSubZoneText there). The client's tables keep the hold's own names in
+	-- encrypted rows
+	["Blackmaw Grove"] = "黑喉林地",
+	["Blackmaw Stillwater"] = "黑喉静水",
 	["Blackrock Stadium"] = "黑石竞技场",
 	["Blackrock Stronghold"] = "黑石要塞",
+	-- (Blackmaw Hold's, drafted: see Blackmaw Grove)
+	["Bonesnout's Thicket"] = "骨鼻灌木丛",
 	-- City of Dalaran's rooms (Data/Authored/CityOfDalaran.lua's floors: Cantrips & Crows, City of
 	-- Dalaran, Dalaran, Magus Commerce Exchange, Path of Renewal, Presage Plaza, Runeweaver Square, Sewer,
 	-- The Eventide, The Purple Parlor, The Underbelly, The Violet Citadel, The Violet Hold): the city's
@@ -616,7 +798,14 @@ L.AREA_NAMES = {
 	["Crusaders' Square"] = "十字军广场",
 	["Dalaran"] = "达拉然",
 	["Dark Iron Ingress"] = "黑铁入口",
+	-- (the Drowned City's, drafted: see Abyssal Dais)
+	["Deep Archives"] = "深层档案馆",
 	["Defias Hideout"] = "迪菲亚藏身处",
+	-- (Blackmaw Hold's, drafted: see Blackmaw Grove)
+	["Depths of Forbidden Magic"] = "禁忌魔法深处",
+	["Depths of the Burrow"] = "巢穴深处",
+	["Depths of the Elders"] = "长者深处",
+	["Depths of the Fallen Grove"] = "陨落林地深处",
 	["Dig One"] = "一号挖掘点",
 	["Dragonspire Hall"] = "龙塔大厅",
 	["Dreamer's Rock"] = "沉睡者之岩",
@@ -624,9 +813,19 @@ L.AREA_NAMES = {
 	["Eldre' Thalas"] = "埃德雷·萨拉斯",
 	["Eldreth Row"] = "埃德雷斯街",
 	["Engineering Labs"] = "工程实验室",
+	-- (the Drowned City's, drafted: see Abyssal Dais)
+	["Eternal Amphitheater"] = "永恒圆形剧场",
 	["Excavation Center"] = "挖掘中心",
+	-- (Blackmaw Hold's, drafted: see Blackmaw Grove)
+	["Festering Grotto"] = "溃烂洞穴",
 	["Festival Lane"] = "节日小道",
+	-- (the Drowned City's, drafted: see Abyssal Dais)
+	["Flooded Shrine"] = "淹没神殿",
 	["Footman's Armory"] = "步兵军械库",
+	-- City of Dalaran's city rooms a player's recording read (Data/Authored/CityOfDalaran.lua, 2026-11-13: Forge of
+	-- Fate, Talismanic Textiles, Tempered Tomes, The Atrium of Fortune, The Silver Enclave, Violet Plates and
+	-- Framing), with no area id. Drafted, to be checked in game (GetSubZoneText there)
+	["Forge of Fate"] = "命运熔炉",
 	["Forgewright's Tomb"] = "铸造者之墓",
 	["Forlorn Cloister"] = "荒凉回廊",
 	["Gallery of Treasures"] = "珍宝陈列馆",
@@ -648,6 +847,8 @@ L.AREA_NAMES = {
 	["Loading Room"] = "装载室",
 	["Magus Commerce Exchange"] = "魔法商业区",
 	["Market Row"] = "市场街",
+	-- (Alcaz Prison's lower floor, drafted: see Alcaz Prison)
+	["Maximum Security"] = "最高警戒区",
 	["Mast Room"] = "桅杆室",
 	["Mok'Doom"] = "莫克杜姆",
 	["Moonshrine Ruins"] = "月神殿废墟",
@@ -664,8 +865,24 @@ L.AREA_NAMES = {
 	["Skitterweb Tunnels"] = "蛛网隧道",
 	["Slaughter Square"] = "屠杀广场",
 	["South Common Hall"] = "南部公共大厅",
+	-- Razorfen Downs' rooms (Data/Instances/RazorfenDowns.lua: Spiral of Thorns, The Bone Pile, The Caller's Chamber
+	-- and The Murder Pens), as a player's recording read them in English (2026-11-13): the dungeon building's own
+	-- names, with no area id. Drafted, to be checked in game (GetSubZoneText there)
+	["Spiral of Thorns"] = "荆棘螺旋",
+	-- (the Drowned City's, drafted: see Abyssal Dais)
+	["Sunken Hollow"] = "沉没洼地",
+	-- (City of Dalaran's, drafted: see Forge of Fate)
+	["Talismanic Textiles"] = "护符织物店",
 	["Tazz'Alaor"] = "塔萨洛尔",
 	["Tazz'Alor"] = "塔萨洛尔",
+	-- (City of Dalaran's, drafted: see Forge of Fate)
+	["Tempered Tomes"] = "淬炼典籍",
+	-- (City of Dalaran's, drafted: see Forge of Fate)
+	["The Atrium of Fortune"] = "财富中庭",
+	-- (Razorfen Downs', drafted: see Spiral of Thorns)
+	["The Bone Pile"] = "骸骨堆",
+	-- (Razorfen Downs', drafted: see Spiral of Thorns)
+	["The Caller's Chamber"] = "召唤者之厅",
 	-- Gnomeregan's Clean Zone, a room the map follows since 0.39.21 (2026-11-12; drafted, to be checked)
 	["The Clean Zone"] = "清洁区",
 	["The Clockwerk Run"] = "发条小径",
@@ -682,12 +899,16 @@ L.AREA_NAMES = {
 	["The Hoard"] = "宝库",
 	["The Masonary"] = "石匠区",
 	["The Molten Span"] = "熔火之桥",
+	-- (Razorfen Downs', drafted: see Spiral of Thorns)
+	["The Murder Pens"] = "屠杀围栏",
 	["The Pool of Ask'ar"] = "阿斯卡之池",
 	["The Purple Parlor"] = "紫色天台",
 	["The Rookery"] = "孵化室",
 	["The Scarlet Bastion"] = "血色堡垒",
 	["The Sealed Hall"] = "封印大厅",
 	["The Shrine of Eldretharr"] = "埃德雷萨之祠",
+	-- (City of Dalaran's, drafted: see Forge of Fate)
+	["The Silver Enclave"] = "银色领地",
 	["The Slaughter House"] = "屠宰场",
 	["The Storehouse"] = "仓库",
 	["The Underbelly"] = "达拉然下水道",
@@ -698,9 +919,16 @@ L.AREA_NAMES = {
 	-- Gnomeregan's way in, as the Loading Room above
 	["Train Depot"] = "地铁站",
 	["Training Grounds"] = "训练场",
+	-- (City of Dalaran's, drafted: see Forge of Fate)
+	["Violet Plates and Framing"] = "紫罗兰板甲与框架",
 	["Warpwood Quarter"] = "扭木广场",
+	-- Wailing Caverns' Winding Chasm (Data/Authored/WailingCaverns.lua, 2026-11-13): the game's name for it in this language, to be checked in game
+	["Winding Chasm"] = "狂风裂口",
 	-- Gnomeregan's way in, as the Loading Room above
 	["Workshop Entrance"] = "车间入口",
+	-- (Blackmaw Hold's, drafted: see Blackmaw Grove; Zedrik's Rest a best guess from the label on a newer version
+	-- of Santiago Reyes's whole hold, 2026-11-18)
+	["Zedrik's Rest"] = "泽德里克安息之地",
 	-- The Temple of Atal'Hakkar's way in (Data/Authored/SubMaps.lua, 2026-10-30): its nine rooms have no area id,
 	-- so they are found by these names alone. Pool of Tears, Sorrowmurk and the temple's own name have ids (74,
 	-- 1778, 1477): a scan (/aegis areas, Dev/bake_area_ids.py) can replace those three. LibBabble-SubZone's names,
@@ -730,10 +958,66 @@ L.STYLE_MODERN = "现代"
 L.STYLE_MODERN_DESC = "手册现有的全部功能：装备查找器、入口路线地图，以及它在世界地图上的标记。"
 L.STYLE_CUSTOM = "自定义"
 L.STYLE_CUSTOM_DESC = "由你决定。选择此项会打开手册的设置，每项功能都有自己的勾选框。"
+-- Adventure Mode, in the options' list of styles, and what it does (2026-11-05; drafted, to be checked).
+L.STYLE_ADVENTURE = "冒险模式"
+L.STYLE_ADVENTURE_DESC = "手册一开始是空的，随着你的游戏进程逐渐填满：地下城、首领、掉落和任务会在你发现它们时出现。"
+-- Adventure Mode's name on its box in the question at login, one word like Classic and Modern (2026-11-07).
+L.STYLE_ADVENTURE_BOX = "冒险"
+-- Adventure Mode's pages: an unmet boss's line, the closed tabs' tooltips, the loot list with nothing seen
+-- yet, and an item seen with its boss unknown (2026-11-05; drafted, to be checked).
+L.ADVENTURE_BOSS_UNMET = "你还没有遇到过它。"
+L.ADVENTURE_ABILITIES_CLOSED = "与这个首领战斗后即可了解它的技能。"
+L.ADVENTURE_MODEL_CLOSED = "遇到这个首领后即可在此查看。"
+L.ADVENTURE_LOOT_NONE = "尚未在这里见到任何掉落。"
+L.ADVENTURE_LOOT_IN_DUNGEON = "掉落于：%s"
+-- Adventure Mode's Quests tab, a step not offered yet and no quests found yet; the Reputation tab, no
+-- faction met yet, and a faction's rewards not seen yet (2026-11-05; drafted, to be checked).
+L.ADVENTURE_QUEST_UNKNOWN = "你还没有接到过这个任务。"
+L.ADVENTURE_QUESTS_NONE = "尚未找到这个地下城的任务。"
+L.ADVENTURE_REP_NONE = "你还没有结识这些阵营中的任何一个。"
+L.ADVENTURE_REP_TITLE = "待发现的奖励"
+L.ADVENTURE_REP_SEEN = "在它的军需官处见到奖励后，奖励会显示在这里。"
+L.ADVENTURE_REP_SEEN_AT = "在它的军需官（%s）处见到奖励后，奖励会显示在这里。"
+L.ADVENTURE_REP_NONE_SEEN = "尚未见到它的任何奖励。"
+L.ADVENTURE_DOOR_TITLE = "传闻"
+L.ADVENTURE_DOOR_LINE = "“%s”"
+L.ADVENTURE_DOOR_UNKNOWN = "关于这个地方，目前所知甚少。"
+L.ADVENTURE_DOOR_DUNGEON = "传闻中的地下城"
+L.ADVENTURE_DOOR_RAID = "传闻中的团队副本"
+L.ADVENTURE_DOOR_NTH = "%s %d"
+L.ADVENTURE_DOOR_CHOICE = "%s（%s）"
+L.ADVENTURE_DOOR_VIA = "它的传送门在下方：从洞穴入口下去。"
+L.ADVENTURE_DOOR_VIA_BUILDING = "它的传送门在内部：从入口进入。"
+L.ADVENTURE_DOOR_WAYPOINT_SET = "已在传闻所指之处设置路径点。"
+L.ADVENTURE_CAVE_LEADS_TO = "通往传闻之地的路"
+L.ADVENTURE_CAVE_LEFT_CLICK = "左键点击查看入口通路的地图"
+-- Adventure Mode's quest marks on the world map (UI/QuestMap.lua): a quest not offered yet is a faint "!", a
+-- rumor, under "A rumor" (ADVENTURE_DOOR_TITLE) and in ADVENTURE_DOOR_LINE's quotation marks: there may be work
+-- there, from someone or something (inside a dungeon, a tablet or a crest). It names no quest, dungeon or
+-- place (2026-11-11; translation drafted, to be checked).
+L.ADVENTURE_QUEST_RUMOR = "这里或许有差事等着你。"
+-- Adventure Mode's Gear Finder: an upgrade not seen to drop yet, a rumour's place (zone, level range), the
+-- tooltip's line for one not seen, the click lines, and Show on map for a rumour's door (2026-11-10; translation
+-- drafted, to be checked).
+L.GEAR_ADVENTURE_BETTER = "更好的东西"
+L.GEAR_ADVENTURE_PLACE = "%s · %s"
+L.GEAR_ADVENTURE_UNSEEN = "你还没有见到它掉落。"
+L.GEAR_ADVENTURE_CELL_CLICK = "点击查看最佳提升；右键点击查看该地下城。"
+L.GEAR_ADVENTURE_PICK_CLICK = "点击在此处显示它；右键点击查看该地下城。"
+L.GEAR_ADVENTURE_ROW_CLICK = "点击查看该地下城。"
+L.GEAR_ADVENTURE_MAP_CLICK = "点击在世界地图上查看前往该处的路。"
+L.GEAR_ADVENTURE_NO_DOOR = "尚不知道入口在哪里。"
+L.GEAR_ADVENTURE_SHOW_MAP = "在地图上显示"
+-- The Gear Finder's rumour slot with upgrades to pick: its picture leads to the door, its words to the picks;
+-- and the picks' right-click where the slot has no link (2026-11-10; translation drafted, to be checked).
+L.GEAR_ADVENTURE_MAP_PICK_CLICK = "点击图标在世界地图上查看前往该处的路；点击文字查看可选的提升。"
+L.GEAR_ADVENTURE_RUMOUR_PICKS = "右键点击查看可选的提升。"
 L.STYLE_STARTING = "初始设置："
 L.STYLE_LINE_ON = "%s：开启"
 L.STYLE_LINE_OFF = "%s：关闭"
-L.STYLE_LINE_CHOOSE = "%s：由你选择"
+L.STYLE_LINE_ADVENTURE_HIDDEN = "地下城、首领和掉落起初隐藏"
+L.STYLE_LINE_ADVENTURE_FOG = "击败首领前地下城地图笼罩迷雾"
+L.STYLE_LINE_ADVENTURE_ON = "装备查找器、入口地图和标记开启"
 L.STYLE_GEAR = "装备查找器和属性权重"
 L.STYLE_GEAR_TIP = "装备查找器标签、角色面板上的标签、物品鼠标提示中的属性权重行、绿色提升箭头，以及手册在Pawn中的权重。它们都使用同一套权重，所以一起开关。仅对此角色生效。"
 L.STYLE_WAY_IN = "入口路线地图和洞穴"
@@ -746,7 +1030,7 @@ L.STYLE_CLOSE_NOTE = "关闭此窗口将保持%s。"
 L.STYLE_CHOSEN = "手册风格：%s。你可以随时在手册的选项中更改（/aegis options）。"
 L.STYLE_OPTIONS_AFTER_COMBAT = "战斗结束后将打开手册的选项。"
 L.STYLE_OPTION = "手册风格"
-L.STYLE_OPTION_TIP = "经典、现代或自定义，仅对此角色生效。勾选或取消下方的任一功能会变为自定义。"
+L.STYLE_OPTION_TIP = "经典、现代、冒险模式或自定义，仅对此角色生效。勾选或取消下方的任一功能会变为自定义（冒险模式保持开启）。"
 -- The Reset button under the style's dropdown, and its question (2026-11-03; drafted, to be checked).
 L.STYLE_RESET = "重置地下城手册"
 L.STYLE_RESET_BUTTON = "重置"
@@ -783,23 +1067,44 @@ L.RUN_NOT_INSIDE = "进入地下城后才能开始新的一轮。"
 L.RUN_HIDDEN = "本轮的进度框已隐藏。输入 /ij run 可再次显示。"
 L.RUN_NONE = "还没有地下城记录。"
 L.RUN_IS_OFF = "地下城进度追踪已关闭。请在手册的选项中开启（/aegis options）。"
-L.RUN_FREE_ON = "拖动进度框的标题即可移动它。/ij run lock 会把它放回任务追踪旁。"
 L.RUN_FREE_OFF = "进度框已回到任务追踪旁。"
-L.RUN_USAGE = "/ij run 显示或隐藏进度框（在地下城外显示你上一轮的记录）。/ij run new 开始新的一轮。/ij run unlock 可拖动它；/ij run lock 和 /ij run reset 把它放回任务追踪旁。/ij run debug 显示它统计了什么。"
+-- The run block's header lock and its chat lines, /ij run lock and unlock now the lock's, and /ij run's usage reworded for them (2026-11-17; drafted, to be checked).
+L.RUN_USAGE = "/ij run 显示或隐藏进度框（在地下城外显示你上一轮的记录）。/ij run new 开始新的一轮。/ij run lock 和 /ij run unlock 将它锁定在原位或让你重新拖动它，与标题上的锁相同；/ij run reset 把它放回任务追踪旁。/ij run debug 显示它统计了什么。"
+L.RUN_LOCKED = "已锁定"
+L.RUN_LOCKED_TIP = "点击解锁，然后拖动进度框的标题来移动它。"
+L.RUN_UNLOCKED = "已解锁"
+L.RUN_UNLOCKED_TIP = "拖动进度框的标题即可移动它。点击可将它锁定在原位。"
+L.RUN_LOCK_ON = "进度框已锁定在原位。"
+L.RUN_LOCK_OFF = "进度框已解锁：拖动它的标题即可移动它。"
+L.RUN_LOCK_NOT_FREE = "只有自由放置时才能移动它（选项中的“%s”）。"
+-- The clock's buttons on the run block, between the time and the count (2026-11-14; drafted, to be checked).
+L.RUN_CLOCK_START = "立即开始计时"
+L.RUN_CLOCK_WAITING = "否则会在第一场战斗时自动开始。"
+L.RUN_CLOCK_PAUSE = "暂停计时"
+L.RUN_CLOCK_RESUME = "继续计时"
+L.RUN_CLOCK_DONE = "本轮已完成，计时已停止。"
+L.RUN_RESTART = "新的一轮"
+L.RUN_RESTART_CONFIRM = "开始新的一轮？这会清除本轮的击杀记录并重新开始计时。"
+-- The run block's one line inside a Scarlet Monastery wing before the wing is known (2026-11-17; drafted, to be checked).
+L.RUN_WHICH_WING = "哪个区？"
+-- /ij run new or New run before the wing is known: the new run starts once it is (2026-11-17; drafted, to be checked).
+L.RUN_NEW_WING = "确定所在区后将开始新的一轮。"
 L.OPTIONS_RUN = "地下城进度追踪"
 L.OPTIONS_RUN_TIP = "在地下城中，任务追踪旁的框会显示本轮用时、首领和你的收获。关闭后不会统计任何内容。"
 L.OPTIONS_RUN_NUMBERS = "显示经验和金钱"
 L.OPTIONS_RUN_NUMBERS_TIP = "经验和金钱（拾取的金钱加上所得物品的商人售价），各自附带每小时的数值，以及你获得的物品数量。"
 L.OPTIONS_RUN_FREE = "自由放置"
-L.OPTIONS_RUN_FREE_TIP = "拖动框的标题，可放在屏幕上任意位置。关闭时它位于任务追踪旁，并随之移动。"
+-- "Place it freely" on by default since 0.39.23: its tip says so, and what unticking it does (2026-11-17; drafted, to be checked).
+L.OPTIONS_RUN_FREE_TIP = "拖动框的标题，可放在屏幕上任意位置。默认开启：在你拖动之前，它停在任务追踪旁。关闭时它位于任务追踪旁，并随之移动。“放入任务追踪内”优先于此选项。"
 -- The run block's dark mode: its gold art darkened, else the tracker's tint (UI/RunTracker.lua Paint), 2026-11-12; drafted, to be checked.
 L.OPTIONS_RUN_DARK_MODE = "深色模式"
 L.OPTIONS_RUN_DARK_MODE_TIP = "让进度框标题和边框的金色变暗。关闭时，进度框跟随任务追踪标题的样子：你的界面把它们变暗时，它也是暗的。"
 L.OPTIONS_RUN_SUMMARY = "聊天中的总结"
 L.OPTIONS_RUN_SUMMARY_TIP = "一轮的计时停止一分钟后（若你先离开则立即），在聊天中显示一行。你未完成就离开的一轮，在它结束时显示：地下城重置时，或离开半小时后。"
--- The run block inside the quest tracker: an experiment, off by default (UI/RunTrackerInside.lua), 2026-11-12; drafted, to be checked.
-L.OPTIONS_RUN_INSIDE = "放入任务追踪内（实验性）"
-L.OPTIONS_RUN_INSIDE_TIP = "进度框会放入任务追踪内，紧贴“" .. (TRACKER_ALL_OBJECTIVES or "所有目标") .. "”之下，追踪的各个部分（" .. (TRACKER_HEADER_QUESTS or "任务") .. "及其他）下移到它下面。你在编辑模式中移动过的任务追踪只有那里设置的高度那么高：若太短放不下它，它就像关闭时一样位于任务追踪旁，下面的按钮可以把任务追踪加高。这是一项测试：若游戏报告某个操作被阻止，它会自动关闭。使用过之后，需要 /reload 才会完全关闭。"
+-- The run block inside the quest tracker: off by default (the owner's call of 2026-11-13; on in 0.39.22's tests), its tip warning of blocked actions in combat until a /reload once the block has been inside the tracker (the owner's words, 2026-11-13), its name marked as a test (UI/RunTrackerInside.lua), 2026-11-12; drafted, to be checked.
+L.OPTIONS_RUN_INSIDE = "放入任务追踪内（测试）"
+-- Its tip: beside the tracker with this off only while "Place it freely" is unticked too, since that is on by default (2026-11-17; drafted, to be checked).
+L.OPTIONS_RUN_INSIDE_TIP = "进度框会放入任务追踪内，紧贴“" .. (TRACKER_ALL_OBJECTIVES or "所有目标") .. "”之下，追踪的各个部分（" .. (TRACKER_HEADER_QUESTS or "任务") .. "及其他）下移到它下面。默认关闭。你在编辑模式中移动过的任务追踪只有那里设置的高度那么高：若太短放不下它，手册会在你的编辑模式布局中把这个高度加高一次，并在聊天中说明（/reload 后可见；下面的按钮可再做一次）。在那之前，它就像关闭此项且未勾选“自由放置”时一样位于任务追踪旁。进度框一旦放入过任务追踪，在 /reload 之前，它可能导致战斗中的操作被阻止。这是一项测试：若游戏报告某个操作被阻止，它会自动关闭。使用过之后，需要 /reload 才会完全关闭。"
 L.RUN_INSIDE_BLOCKED = "游戏阻止了手册的一个操作（%s），因此“放入任务追踪内”现已关闭，进度框回到任务追踪旁。请报告这一行。输入 /reload 可将它完全移出任务追踪。"
 L.RUN_INSIDE_RELOAD = "“放入任务追踪内”现已关闭，进度框回到任务追踪旁。输入 /reload 可将它完全移出任务追踪。"
 -- The tracker too short for the block inside: the Height it needs, and the options' Make taller button (UI/RunTrackerInside.lua), 2026-11-12; drafted, to be checked.
@@ -816,6 +1121,11 @@ L.RUN_TALLER_ENOUGH = "任务追踪已经足够高，放得下进度框。"
 L.RUN_TALLER_FAILED = "无法从这里更改你的编辑模式布局。请自行设置：%s，选择“%s”，%s %d 或以上。"
 L.RUN_TALLER_DONE = "%s – %s：现在为 %d（编辑模式布局“%s”）。现在输入 /reload 即可看到。"
 L.RUN_TALLER_MOST = "这是编辑模式允许的最大值，进度框可能仍然放不下。"
+-- The tracker's Height raised once by the journal itself when too short, 0.39.22 (UI/RunTrackerInside.lua AutoTaller), 2026-11-12; drafted, to be checked.
+L.RUN_INSIDE_AUTO = "任务追踪太短，放不下进度框，因此手册把它的%s从 %d 改为 %d（编辑模式布局“%s”）。输入 /reload 即可看到。可在%s中改回。"
+L.RUN_INSIDE_SAVED_TIP = "你的编辑模式布局现在将任务追踪的%s设为 %d。输入 /reload 即可看到。"
+-- Edit Mode opened before the /reload after the journal saved a Height: its old copy (UI/RunTrackerInside.lua EditModeEntered), 2026-11-12; drafted, to be checked.
+L.RUN_INSIDE_EDIT_MODE_OLD = "输入 /reload 之前，%s仍显示任务追踪的旧%s。现在在那里保存任何内容，都会恢复旧值。"
 
 -- Matched against the client's own text: the client's language's only, previewed or not.
 if client then client.EQUIP_PATTERNS, client.AREA_NAMES = L.EQUIP_PATTERNS, L.AREA_NAMES end

@@ -891,6 +891,286 @@ ns.SetAbilities({
 			encounterID = 3496,
 		},
 	},
+	RazorfenKraul = {
+		Roogug = {
+			abilities = {
+				{
+					spellID = 9532,
+					name = "Lightning Bolt",
+					school = 8,
+					hit = { 90, 133, 120 },
+					every = { 4, 15 },
+					firstCast = 0,
+				},
+			},
+			adds = {
+				{
+					name = "Razorfen Totemic",
+					npcID = 4440,
+					abilities = {
+						{
+							spellID = 4971,
+							name = "Healing Ward",
+							school = 1,
+							firstCast = 7,
+						},
+						{
+							spellID = 8376,
+							name = "Earthgrab Totem",
+							school = 1,
+							firstCast = 9,
+						},
+					},
+				},
+				{
+					name = "Razorfen Beast Trainer",
+					npcID = 4531,
+					abilities = {
+						{
+							spellID = 6660,
+							name = "Shoot",
+							school = 1,
+							hit = { 38, 47, 43 },
+							every = { 2, 4 },
+							firstCast = 0,
+						},
+						{
+							spellID = 6984,
+							name = "Frost Shot",
+							school = 16,
+							firstCast = 11,
+							hit = { 60, 60, 60 },
+						},
+					},
+				},
+				{
+					name = "Death's Head Adept",
+					npcID = 4516,
+					abilities = {
+						{
+							spellID = 9672,
+							name = "Frostbolt",
+							school = 16,
+							hit = { 79, 96, 88 },
+							every = { 4, 7 },
+							firstCast = 0,
+						},
+					},
+				},
+				{
+					name = "Quilguard Champion",
+					npcID = 4623,
+					abilities = {
+						{
+							spellID = 15572,
+							name = "Sunder Armor",
+							school = 1,
+							every = { 1, 9 },
+							firstCast = 6,
+						},
+					},
+				},
+			},
+			encounterID = 2773,
+		},
+		["Aggem Thorncurse"] = {
+			abilities = {
+				{
+					spellID = 8286,
+					name = "Summon Boar Spirit",
+					school = 1,
+					firstCast = 4,
+				},
+			},
+			adds = {
+				{
+					name = "Razorfen Beast Trainer",
+					npcID = 4531,
+					abilities = {
+						{
+							spellID = 6984,
+							name = "Frost Shot",
+							school = 16,
+							hit = { 51, 51, 51 },
+							firstCast = 1,
+						},
+					},
+				},
+			},
+			encounterID = 2774,
+		},
+		["Death Speaker Jargba"] = {
+			abilities = {
+				{
+					spellID = 9613,
+					name = "Shadow Bolt",
+					school = 32,
+					hit = { 113, 125, 117 },
+					every = { 6, 11 },
+					firstCast = 0,
+				},
+				{
+					spellID = 14515,
+					name = "Dominate Mind",
+					school = 32,
+					firstCast = 26,
+				},
+			},
+			adds = {
+				{
+					name = "Razorfen Groundshaker",
+					npcID = 4523,
+					abilities = {
+						{
+							spellID = 8046,
+							name = "Earth Shock",
+							school = 8,
+							hit = { 132, 137, 134 },
+							firstCast = 1,
+							every = { 16, 16 },
+						},
+						{
+							spellID = 6524,
+							name = "Ground Tremor",
+							school = 1,
+							every = { 19, 19 },
+							firstCast = 4,
+						},
+					},
+				},
+				{
+					name = "Death's Head Acolyte",
+					npcID = 4515,
+					abilities = {
+						{
+							spellID = 15785,
+							name = "Mana Burn",
+							school = 32,
+							every = { 9, 12 },
+							firstCast = 8,
+							hit = { 180, 320, 250 },
+						},
+					},
+				},
+			},
+			encounterID = 2775,
+		},
+		["Overlord Ramtusk"] = {
+			abilities = {
+				{
+					spellID = 9128,
+					name = "Battle Shout",
+					school = 1,
+					every = { 27, 27 },
+					firstCast = 9,
+				},
+				{
+					spellID = 15548,
+					name = "Thunderclap",
+					school = 8,
+					hit = { 34, 70, 63 },
+					every = { 19, 23 },
+					firstCast = 8,
+				},
+			},
+			adds = {
+				{
+					name = "Razorfen Spearhide",
+					npcID = 4438,
+					abilities = {
+						{
+							spellID = 8148,
+							name = "Thorns Aura",
+							school = 8,
+							every = { 33, 33 },
+							firstCast = 0,
+						},
+						{
+							spellID = 8259,
+							name = "Whirling Barrage",
+							school = 1,
+							hit = { 29, 66, 52 },
+							every = { 5, 16 },
+							firstCast = 7,
+						},
+					},
+				},
+				{
+					name = "Death's Head Sage",
+					npcID = 4518,
+					abilities = {
+						{
+							spellID = 4971,
+							name = "Healing Ward",
+							school = 1,
+							every = { 8, 8 },
+							firstCast = 12,
+						},
+						{
+							spellID = 8262,
+							name = "Elemental Protection Totem",
+							school = 1,
+							firstCast = 23,
+						},
+					},
+				},
+				{
+					name = "Razorfen Totemic",
+					npcID = 4440,
+					abilities = {
+						{
+							spellID = 8376,
+							name = "Earthgrab Totem",
+							school = 1,
+							firstCast = 18,
+						},
+					},
+				},
+			},
+			encounterID = 2776,
+		},
+		["Agathelos the Raging"] = {
+			abilities = {
+				{
+					spellID = 8285,
+					name = "Rampage",
+					school = 1,
+					hit = { 47, 83, 70 },
+					firstCast = 25,
+				},
+			},
+			encounterID = 2777,
+		},
+		["Charlga Razorflank"] = {
+			abilities = {
+				{
+					spellID = 8292,
+					name = "Chain Bolt",
+					school = 8,
+					hit = { 156, 317, 281 },
+					every = { 3, 17 },
+					firstCast = 0,
+				},
+				{
+					spellID = 8361,
+					name = "Purity",
+					school = 2,
+					every = { 39, 39 },
+					firstCast = 3,
+					onSelf = true,
+				},
+				{
+					spellID = 6077,
+					name = "Renew",
+					school = 2,
+					every = { 23, 23 },
+					firstCast = 22,
+					onSelf = true,
+				},
+			},
+			encounterID = 2778,
+		},
+	},
 	RuinsOfLordaeron = {
 		["The Baron"] = {
 			abilities = {
@@ -991,6 +1271,304 @@ ns.SetAbilities({
 				},
 			},
 			encounterID = 3411,
+		},
+	},
+	ScarletMonasteryArmory = {
+		Herod = {
+			encounterID = 448,
+		},
+	},
+	ScarletMonasteryCathedral = {
+		["High Inquisitor Fairbanks"] = {
+			abilities = {
+				{
+					spellID = 15090,
+					name = "Dispel Magic",
+					school = 2,
+					every = { 6, 7 },
+					firstCast = 1,
+				},
+				{
+					spellID = 8399,
+					name = "Sleep",
+					school = 32,
+					firstCast = 12,
+				},
+				{
+					spellID = 12096,
+					name = "Fear",
+					school = 32,
+					firstCast = 12,
+				},
+				{
+					spellID = 8282,
+					name = "Curse of Blood",
+					school = 32,
+					firstCast = 5,
+				},
+				{
+					spellID = 12039,
+					name = "Heal",
+					school = 2,
+					firstCast = 10,
+				},
+			},
+			encounterID = 449,
+		},
+		["Scarlet Commander Mograine"] = {
+			abilities = {
+				{
+					spellID = 5589,
+					name = "Hammer of Justice",
+					school = 2,
+					every = { 60, 60 },
+					firstCast = 8,
+				},
+				{
+					spellID = 14518,
+					name = "Crusader Strike",
+					school = 1,
+					hit = { 89, 98, 94 },
+					every = { 7, 41 },
+					firstCast = 7,
+				},
+				{
+					spellID = 9257,
+					name = "Lay on Hands",
+					school = 2,
+					firstCast = 48,
+				},
+				{
+					spellID = 8990,
+					name = "Retribution Aura",
+					school = 2,
+					firstCast = 54,
+				},
+				{
+					spellID = 1020,
+					name = "Divine Shield",
+					school = 2,
+					firstCast = 22,
+					onSelf = true,
+				},
+			},
+			adds = {
+				{
+					name = "High Inquisitor Whitemane",
+					npcID = 3977,
+					abilities = {
+						{
+							spellID = 9481,
+							name = "Holy Smite",
+							school = 2,
+							hit = { 347, 526, 419 },
+							every = { 3, 27 },
+							firstCast = 27,
+						},
+						{
+							spellID = 9256,
+							name = "Deep Sleep",
+							school = 32,
+							firstCast = 37,
+						},
+						{
+							spellID = 9232,
+							name = "Scarlet Resurrection",
+							school = 1,
+							firstCast = 41,
+						},
+						{
+							spellID = 22187,
+							name = "Power Word: Shield",
+							school = 2,
+							firstCast = 57,
+						},
+						{
+							spellID = 12039,
+							name = "Heal",
+							school = 2,
+							firstCast = 61,
+						},
+					},
+				},
+			},
+			encounterID = 450,
+		},
+		["High Inquisitor Whitemane"] = {
+			abilities = {
+				{
+					spellID = 9481,
+					name = "Holy Smite",
+					school = 2,
+					hit = { 347, 526, 419 },
+					every = { 3, 27 },
+					firstCast = 27,
+				},
+				{
+					spellID = 9256,
+					name = "Deep Sleep",
+					school = 32,
+					firstCast = 37,
+				},
+				{
+					spellID = 9232,
+					name = "Scarlet Resurrection",
+					school = 1,
+					firstCast = 41,
+				},
+				{
+					spellID = 22187,
+					name = "Power Word: Shield",
+					school = 2,
+					firstCast = 57,
+				},
+				{
+					spellID = 12039,
+					name = "Heal",
+					school = 2,
+					firstCast = 61,
+				},
+			},
+			adds = {
+				{
+					name = "Scarlet Commander Mograine",
+					npcID = 3976,
+					abilities = {
+						{
+							spellID = 14518,
+							name = "Crusader Strike",
+							school = 1,
+							hit = { 89, 98, 94 },
+							every = { 7, 41 },
+							firstCast = 7,
+						},
+						{
+							spellID = 5589,
+							name = "Hammer of Justice",
+							school = 2,
+							every = { 60, 60 },
+							firstCast = 8,
+						},
+						{
+							spellID = 9257,
+							name = "Lay on Hands",
+							school = 2,
+							firstCast = 48,
+						},
+						{
+							spellID = 8990,
+							name = "Retribution Aura",
+							school = 2,
+							firstCast = 54,
+						},
+					},
+				},
+			},
+			encounterID = 450,
+		},
+	},
+	ScarletMonasteryGraveyard = {
+		["Interrogator Vishas"] = {
+			abilities = {
+				{
+					spellID = 2767,
+					name = "Shadow Word: Pain",
+					school = 32,
+					tick = { 48, 48 },
+					every = { 6, 9 },
+					firstCast = 2,
+				},
+			},
+			encounterID = 444,
+		},
+		["Bloodmage Thalnos"] = {
+			abilities = {
+				{
+					spellID = 9613,
+					name = "Shadow Bolt",
+					school = 32,
+					every = { 7, 7 },
+					firstCast = 0,
+				},
+				{
+					spellID = 8053,
+					name = "Flame Shock",
+					school = 4,
+					every = { 10, 10 },
+					firstCast = 12,
+				},
+				{
+					spellID = 12470,
+					name = "Fire Nova",
+					school = 4,
+					hit = { 259, 326, 285 },
+					firstCast = 13,
+				},
+				{
+					spellID = 8814,
+					name = "Flame Spike",
+					school = 4,
+					hit = { 276, 276, 276 },
+					tick = { 104, 104 },
+					firstCast = 14,
+				},
+			},
+			encounterID = 2779,
+		},
+	},
+	ScarletMonasteryLibrary = {
+		["Houndmaster Loksey"] = {
+			abilities = {
+				{
+					spellID = 6742,
+					name = "Bloodlust",
+					school = 8,
+					firstCast = 16,
+				},
+			},
+			encounterID = 446,
+		},
+		["Arcanist Doan"] = {
+			abilities = {
+				{
+					spellID = 9433,
+					name = "Arcane Explosion",
+					school = 64,
+					hit = { 57, 217, 195 },
+					every = { 2, 29 },
+					firstCast = 1,
+				},
+				{
+					spellID = 8988,
+					name = "Silence",
+					school = 8,
+					every = { 11, 19 },
+					firstCast = 8,
+				},
+				{
+					spellID = 13323,
+					name = "Polymorph",
+					school = 1,
+					every = { 21, 21 },
+					firstCast = 21,
+				},
+				{
+					spellID = 9438,
+					name = "Arcane Bubble",
+					school = 2,
+					firstCast = 29,
+					onSelf = true,
+				},
+				{
+					spellID = 9435,
+					name = "Detonation",
+					school = 4,
+					hit = { 412, 730, 571 },
+					every = { 5, 5 },
+					firstCast = 30,
+				},
+			},
+			encounterID = 447,
 		},
 	},
 	ShadowfangKeep = {

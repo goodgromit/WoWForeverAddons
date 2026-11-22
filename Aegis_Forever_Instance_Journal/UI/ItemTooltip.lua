@@ -17,7 +17,9 @@ local L = ns.L
 	Below them, where the item drops: "Drops from Edwin VanCleef in The Deadmines", on the item
 	itself (the main tooltip and a chat link's, not the ones beside them with what is worn), for
 	every item a dungeon's or raid's loot lists (ns.ItemDrops). An item of several bosses there or
-	of a dungeon's trash says so; one of several dungeons names the dungeons. A faction's wares
+	of a dungeon's trash says so (one its Trash page lists for its bosses and rares, offBosses, names
+	them instead, and one its Recipes page lists for its bosses, offBosses = "bosses", any boss); one of
+	several dungeons names the dungeons. A faction's wares
 	are sold, not dropped, and an item hidden until the server confirms it gets no line. The
 	journal's own frames say where themselves (ItemTooltip:UseSource): a loot row names only the
 	other dungeons, the Gear Finder and the search none. The journal's options turn it off; Pawn
@@ -179,11 +181,22 @@ function ItemTooltip:UseSource(owner, itemID, instance)
 	givenSource[owner] = itemID and { itemID = itemID, instance = instance or false } or nil
 end
 
--- Whether a boss's drop counts: a boss's always, a dungeon's trash only where its Trash page lists it.
+-- Whether a boss's drop counts: a boss's always, a dungeon's recipes' always (each one listed), a dungeon's trash only
+-- where its Trash page lists it.
 local function Counts(boss, itemID)
 	if not boss.trash then return true end
 	for _, row in ipairs(boss.loot or {}) do
 		if row.itemID == itemID then return not ns.Items:Unremarkable(boss, row) end
+	end
+	return false
+end
+
+-- Whether a dungeon's Trash page lists an item its bosses and rares drop, and its trash never does (offBosses = true:
+-- Data/Authored/Upcoming.lua's OffBosses), or its Recipes page one its bosses drop ("bosses": Data/Authored/SiteLoot.lua's
+-- AnyBoss): which, else false.
+local function OffBosses(boss, itemID)
+	for _, row in ipairs(boss.loot or {}) do
+		if row.itemID == itemID then return row.offBosses or false end
 	end
 	return false
 end
@@ -205,18 +218,34 @@ end
 	The line for an item, or nil: the places it drops in, in the journal's order, without
 	`except` (the dungeon the frame shows it in). One place names its boss, its number of bosses,
 	or its trash (named only where no boss there drops it); several places are named in a list.
+	A dungeon's recipes (ns.IsLootSection) name no boss: a boss's own recipe is on his list too, and
+	names him; one the recipes alone list drops off the trash, and says so, as the trash's own do. One the Trash
+	page lists for the bosses and rares (offBosses) names them, not the trash; one the Recipes page lists for the
+	bosses (offBosses = "bosses"), any boss.
+	In Adventure Mode (Core/Discovery.lua), only what the character has seen of it: the dungeons it was seen to
+	drop in, and there the bosses it was seen to drop from; a dungeon with none of them is "Drops in" it (its
+	trash too: a find off no boss does not say it was trash). Nothing seen, no line.
 ]]
 function ItemTooltip:SourceText(itemID, except)
+	local discovery = ns.Style:Adventure() and ns.Discovery or nil
 	local places, byInstance = {}, {}
 	for _, boss, instance in ns.ItemDrops(itemID) do
-		if instance ~= except and Counts(boss, itemID) then
+		if instance ~= except and Counts(boss, itemID)
+			and not (discovery and not discovery:Knows("item", itemID, instance)) then
 			local place = byInstance[instance]
 			if not place then
 				place = { instance = instance, bosses = {} }
 				byInstance[instance] = place
 				places[#places + 1] = place
 			end
-			if boss.trash then
+			local section = ns.IsLootSection(boss)
+			local off = section and OffBosses(boss, itemID)
+			if discovery and (section or not discovery:Knows("item", itemID, instance, boss)
+				or discovery:Unmet(instance, boss)) then
+				-- (the dungeon alone)
+			elseif off then
+				place.offBosses = off
+			elseif section then
 				place.trash = true
 			else
 				place.bosses[#place.bosses + 1] = boss
@@ -229,14 +258,21 @@ function ItemTooltip:SourceText(itemID, except)
 	local place = places[1]
 	if #place.bosses == 1 then return string.format(L.DROPS_FROM_BOSS, place.bosses[1].name, place.instance.name) end
 	if #place.bosses > 1 then return string.format(L.DROPS_FROM_BOSSES, #place.bosses, place.instance.name) end
+	if place.offBosses == "bosses" then return string.format(L.DROPS_FROM_ANY_BOSS, place.instance.name) end
+	if place.offBosses then return string.format(L.DROPS_FROM_BOSSES_AND_RARES, place.instance.name) end
+	if not place.trash then return string.format(L.DROPS_IN, place.instance.name) end
 	return string.format(L.DROPS_FROM_TRASH, place.instance.name)
 end
 
--- Each item's line once worked out, until the data changes (ns.DataVersion): false for none.
-local sourceLines, linesVersion = {}, nil
+-- Each item's line once worked out, until the data changes (ns.DataVersion) or, in Adventure Mode, the character
+-- finds something (Discovery:Version, which also goes up as Adventure Mode is turned on or off) or its record is
+-- another (`lines.store`): false for none.
+local sourceLines, linesVersion, lines = {}, nil, {}
 local function SourceLine(itemID)
-	local version = ns.DataVersion()
-	if version ~= linesVersion then sourceLines, linesVersion = {}, version end
+	local version, found, store = ns.DataVersion(), ns.Discovery:Version(), ns.charDB and ns.charDB.discovered
+	if version ~= linesVersion or found ~= lines.found or store ~= lines.store then
+		sourceLines, linesVersion, lines.found, lines.store = {}, version, found, store
+	end
 	local text = sourceLines[itemID]
 	if text == nil then
 		text = ItemTooltip:SourceText(itemID) or false

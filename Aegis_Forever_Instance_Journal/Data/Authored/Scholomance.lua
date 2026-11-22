@@ -108,7 +108,7 @@ end)
 
 ns.AmendInstance("Scholomance", {
 	--[[
-		Before you go (the overview, for the player's own side and class): the Skeleton Key, from each
+		Before you go (the Quests tab, for the player's own side and class): the Skeleton Key, from each
 		side's chain; the Viewing Room Key, Rattlegore's drop (2026-11-05); and the bosses the players call
 		themselves, with what calls them.
 	]]
@@ -172,6 +172,8 @@ ns.AmendInstance("Scholomance", {
 		{
 			title = "Kormok, a hidden boss",
 			boss = "Kormok",
+			-- His versions of the pieces call him up: Adventure Mode names him once one is offered.
+			summons = { 8969, 8992 },
 			-- Only Kormok's versions of the pieces (8969, 8992) give his brazier: their sourceItemId in
 			-- QuestieDB (the deep audit of 2026-10-30, g07-21).
 			text = "Use the {item:22052:Brazier of Beckoning} to call his spirit. Bodley, inside Blackrock Mountain, "
@@ -220,3 +222,13 @@ for _, quest in ipairs(ns.GetInstance("Scholomance").quests) do
 		quest.note = "Leads to The Last Barov, done outside the dungeon."
 	end
 end
+
+-- The fog of war (UI/DungeonFog.lua's Counts; the owner's answers of 2026-11-13): Kirtonos the Herald is called up with
+-- the Blood of Innocents at the porch's brazier, and Death Knight Darkreaver with the Divination Scryer, so neither
+-- holds back any fog at all (the owner's rule of 2026-11-14 for summoned bosses: Kirtonos's porch clears with the
+-- Chamber of Summoning, Darkreaver has no spot, and neither one's kill changes the fog). The fog's data says the same
+-- (its counts).
+ns.AmendInstance("Scholomance", { bosses = {
+	["Kirtonos the Herald"] = { summoned = true },
+	["Death Knight Darkreaver"] = { summoned = true },
+} })

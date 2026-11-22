@@ -85,7 +85,7 @@ ns.AmendInstance("DireMaulNorth", { artTint = { desaturate = true, color = { 1, 
 
 ns.AmendInstance("DireMaulEast", {
 	--[[
-		Before you go (the overview): the Crescent Key, which drops here, and Isalien, the boss the
+		Before you go (the Quests tab): the Crescent Key, which drops here, and Isalien, the boss the
 		players call themselves.
 	]]
 	prepare = {
@@ -94,6 +94,8 @@ ns.AmendInstance("DireMaulEast", {
 			title = "Isalien, a hidden boss",
 			-- She has no page of her own.
 			boss = "Isalien",
+			-- Her versions of the pieces call her up: Adventure Mode names her once one is offered.
+			summons = { 8967, 8990 },
 			text = "Bodley, inside Blackrock Mountain, gives you the {item:22050:Brazier of Beckoning} with the "
 				.. "Isalien versions of The Left Piece and The Right Piece of Lord Valthalak's Amulet. Use it in the "
 				.. "Shrine of Eldretharr to call her spirit, and kill her.",
@@ -109,7 +111,7 @@ ns.AmendInstance("DireMaulEast", {
 
 ns.AmendInstance("DireMaulNorth", {
 	--[[
-		Before you go (the overview): the Crescent Key, from the east wing, and the two keys the
+		Before you go (the Quests tab): the Crescent Key, from the east wing, and the two keys the
 		Gordok guards drop.
 	]]
 	prepare = {
@@ -167,7 +169,7 @@ do
 end
 
 --[[
-	Dire Maul West. Before you go (the overview): the Crescent Key, as on the other wings; Immol'thar,
+	Dire Maul West. Before you go (the Quests tab): the Crescent Key, as on the other wings; Immol'thar,
 	behind the force field the five pylons keep up; and, for warlocks, Lord Hel'nurath, whom the
 	Dreadsteed ritual calls.
 ]]
@@ -187,6 +189,8 @@ ns.AmendInstance("DireMaulWest", {
 			-- Only a warlock can do the ritual. He has no page of his own.
 			classOnly = "WARLOCK",
 			boss = "Lord Hel'nurath",
+			-- The quest whose ritual calls him up: Adventure Mode names him once it is offered (Core/Discovery.lua).
+			summons = { 7631 },
 			-- The quest's needs: QuestieDB. Calling Hel'nurath: the original game's, kept on the list of
 			-- things to check in game.
 			text = "Mor'zul Bloodbringer's quest Dreadsteed of Xoroth is done in the Prison of Immol'thar. It needs "

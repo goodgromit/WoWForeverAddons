@@ -2,8 +2,8 @@ local _, ns = ...
 
 --[[
 	The Temple of Atal'Hakkar's and Stratholme's notes before you go, quest notes and rewards, written
-	by hand over their data (Data/Instances/TempleOfAtalHakkar.lua, StratholmeMainGate.lua,
-	StratholmeServiceGate.lua) and the overlays before this file, from the quest audit of 2026-10-29
+	by hand over their data (Data/Instances/TempleOfAtalHakkar.lua, Stratholme.lua) and the overlays
+	before this file, from the quest audit of 2026-10-29
 	(Dev/docs/audit_2026-10-29, step 12 of its plan). Facts only, in our own words.
 
 	From QuestieDB's Forever data (Dev/questie, an October 10 snapshot of the live game):
@@ -29,17 +29,17 @@ local _, ns = ...
 	  Unfortunate Fate (8960, 9032). The Argent Hold (5265) is opened at Light's Hope Chapel (object
 	  176317) after Lord Maxwell Tyrosus (5264), both in Eastern Plaguelands, after Above and Beyond
 	  (5263). Houses of the Holy's 5 Superior Healing Potions and 5 Greater Mana Potions, given with
-	  the choice, are the site's quest page's (in Data/Instances/StratholmeMainGate.lua and
-	  StratholmeServiceGate.lua). Magistrate Barthilas drops the Key to the City (12382) every time
+	  the choice, are the site's quest page's (in Data/Instances/Stratholme.lua). Magistrate Barthilas
+	  drops the Key to the City (12382) every time
 	  (the site's Service Gate page). Stratholme's reputation is the audit's reputation pass's (step
 	  15c, 2026-10-30): QuestieDB's Forever data, which the site's quest pages match, the same at both
 	  gates. Dead Man's Plea (8945) has none: QuestieDB gives Argent Dawn +399, the site's quest page
 	  none, so it is on the list of things to check in game.
 
-	The Great Ezra Grimm (5214), at both gates: Forever renamed Fras Siabi. Forever's quest data
-	names the quest, its objective, its tobacco (13172) and npc 11058 for Ezra Grimm, as the site's
-	Ezra Grimm's Postbox Key (13307) already does; the quest's name and objective are written so in
-	Data/Instances/StratholmeMainGate.lua and StratholmeServiceGate.lua (the quest check of 2026-11-05).
+	The Great Ezra Grimm (5214): Forever renamed Fras Siabi. Forever's quest data names the quest, its
+	objective, its tobacco (13172) and npc 11058 for Ezra Grimm, as the site's Ezra Grimm's Postbox Key
+	(13307) already does; the quest's name and objective are written so in Data/Instances/Stratholme.lua
+	(the quest check of 2026-11-05).
 
 	The original game's, and said so in the notes: the statues touched in order calling
 	Atal'alarion; the egg used at the Altar of Hakkar, the guards' blood and the Eternal Flames
@@ -85,7 +85,7 @@ end
 
 ns.AmendInstance("TempleOfAtalHakkar", {
 	--[[
-		Before you go (the overview): the two bosses the players call themselves (also on their own
+		Before you go (the Quests tab): the two bosses the players call themselves (also on their own
 		pages).
 	]]
 	prepare = {
@@ -175,12 +175,14 @@ do
 	end
 end
 
--- Jarien and Sothos: on both gates, as their quests are (which side they are called on is not known).
+-- Jarien and Sothos (which side of the city they are called on is not known).
 local function JarienAndSothos()
 	return {
 		title = "Jarien and Sothos, hidden bosses",
 		-- They have no page of their own: no model or loot is known beyond the amulet's pieces.
 		boss = "Jarien and Sothos",
+		-- Their versions of the pieces call them up: Adventure Mode names them once one is offered.
+		summons = { 8968, 8991 },
 		text = "Bodley gives you the {item:22051:Brazier of Beckoning} with the Jarien and Sothos versions of The Left "
 			.. "Piece and The Right Piece of Lord Valthalak's Amulet. Use it in Stratholme to call their spirits, and "
 			.. "kill them for the piece.",
@@ -195,12 +197,15 @@ local PLEA_NOTE = "Also needs your class's An Earnest Proposition, before A Supe
 	.. "Extra-Dimensional Ghost Revealer, which Return to Deliana or Return to Mokvar gives you, at the entrance to "
 	.. "Stratholme."
 
-ns.AmendInstance("StratholmeMainGate", {
+ns.AmendInstance("Stratholme", {
 	--[[
-		Before you go (the overview): the Scarlet Key, Postmaster Malown and Jarien and Sothos, the
-		bosses the amulet's brazier calls. The key and Malown since the quest check of 2026-11-05 (the
-		owner's calls of that day): both are the original game's, kept on the list of things to check
-		in game.
+		Before you go (the Quests tab), in the owner's order of 2026-11-12: the two keys first, the Scarlet
+		Key and Stratholme's Key to the City, which Magistrate Barthilas drops (not the City of Dalaran's
+		quest of that name); then Postmaster Malown, then Jarien and Sothos, the bosses the amulet's brazier
+		calls. The Scarlet Key and Malown since the quest check of 2026-11-05 (the owner's calls of that
+		day): both are the original game's, kept on the list of things to check in game. The gates' pages
+		had these apart (the Main Gate the Scarlet Key and Malown, the Service Gate the Key to the City)
+		until 0.39.22.
 	]]
 	prepare = {
 		{
@@ -214,9 +219,20 @@ ns.AmendInstance("StratholmeMainGate", {
 				.. "rogue could pick both locks. This is not yet checked on Forever.",
 		},
 		{
+			title = "Stratholme's Key to the City",
+			kind = "key",
+			-- Its use is the original game's; kept on the list of things to check in game.
+			text = "Magistrate Barthilas always drops the {item:12382:Key to the City:2}. It is not the key from the "
+				.. "City of Dalaran's quest of the same name. In the original game, it opened the Service Gate from "
+				.. "outside, so a group could go straight to the Baron's side. This is not yet checked on "
+				.. "Forever.",
+		},
+		{
 			title = "Postmaster Malown, a hidden boss",
 			-- Shown on his own page's Overview too.
 			boss = "Postmaster Malown",
+			-- No quest calls him up (the postboxes do): Adventure Mode names him once he is met.
+			summons = {},
 			-- The Courier drops the postbox keys (Forever's quest data for items 13302-13307, npc 11082; his
 			-- loot here). The postboxes calling guards and Malown are the original game's (a second guide
 			-- says the same).
@@ -226,37 +242,15 @@ ns.AmendInstance("StratholmeMainGate", {
 		},
 		JarienAndSothos(),
 	},
-	questPatches = {
-		[8945] = { note = PLEA_NOTE },
-		-- What follows, listed on the Service Gate alone: Above and Beyond (5263, QuestieDB's
-		-- nextQuestInChain; the owner's calls of 2026-11-03)
-		[5262] = { followUp = "Then Duke Nicholas Zverenhoff gives Above and Beyond, done at the Service Gate." },
-	},
-})
-
-ns.AmendInstance("StratholmeServiceGate", {
-	--[[
-		Before you go (the overview): Stratholme's Key to the City, which Magistrate Barthilas drops
-		(not the City of Dalaran's quest of that name), and Jarien and Sothos.
-	]]
-	prepare = {
-		{
-			title = "Stratholme's Key to the City",
-			kind = "key",
-			-- Its use is the original game's; kept on the list of things to check in game.
-			text = "Magistrate Barthilas always drops the {item:12382:Key to the City:2}. It is not the key from the "
-				.. "City of Dalaran's quest of the same name. In the original game, it opened the Service Entrance's "
-				.. "gate from outside, so a group could go straight to the Baron's side. This is not yet checked on "
-				.. "Forever.",
-		},
-		JarienAndSothos(),
-	},
 
 	-- The Argent Hold, opened at Light's Hope Chapel, stays out: the owner's call of 2026-11-03.
 	removeQuests = { 5265 },
 
 	questPatches = {
 		[8945] = { note = PLEA_NOTE },
+		-- What follows: Above and Beyond (5263, QuestieDB's nextQuestInChain; the owner's calls of 2026-11-03),
+		-- on this page too since 0.39.22, so the line names no gate
+		[5262] = { followUp = "Then Duke Nicholas Zverenhoff gives Above and Beyond." },
 		[5263] = {
 			note = "Duke Nicholas Zverenhoff then sends you to Lord Maxwell Tyrosus at Light's Hope Chapel, who gives The "
 				.. "Argent Hold: open it for a choice of Argent Avenger, Argent Defender or Argent Crusader.",
@@ -272,17 +266,17 @@ ns.AmendInstance("StratholmeServiceGate", {
 })
 
 --[[
-	The amulet's quests on both gates take Blackrock Spire's chains (Data/Authored/
+	The amulet's quests here take Blackrock Spire's chains (Data/Authored/
 	BlackrockSpire.lua; Lower's Mor Grayhoof pieces, listed there alone since 2026-11-03), with their steps any one of several will do (ns.OneOf): your side's Bodley's
 	Unfortunate Fate before Three Kings of Flame, one of the four Components of Importance before
 	8968, and for 8991 one of the four Left Pieces and one of the four More Components of Importance
-	too (QuestieDB's preQuestSingle). The Quests tab shows those itself. The Main Gate's copies had
-	listed only Components of Importance (8964) or I See Alcaz Island... (8970), and the Service
-	Gate's 8964 and More Components of Importance (8987), which would lock them for a player who did
-	another version. The notes keep what the chain can't show: Bodley's Unfortunate Fate comes after
-	the class's own Anthion's Parting Words, and, on the Right Pieces (8991, 8992), that Final
-	Preparations (8994, QuestieDB's nextQuestInChain) follows on Blackrock Spire's pages (the owner's
-	calls of 2026-11-03). Each gets its own copy, so the translations are laid over each once.
+	too (QuestieDB's preQuestSingle). The Quests tab shows those itself. The data had listed only
+	Components of Importance (8964) or I See Alcaz Island... (8970), or 8964 and More Components of
+	Importance (8987), which would lock them for a player who did another version. The notes keep what
+	the chain can't show: Bodley's Unfortunate Fate comes after the class's own Anthion's Parting Words,
+	and, on the Right Pieces (8991, 8992), that Final Preparations (8994, QuestieDB's nextQuestInChain)
+	follows on Blackrock Spire's pages (the owner's calls of 2026-11-03). Each gets its own copy, so the
+	translations are laid over each once.
 ]]
 do
 	local lower = QuestsOf("LowerBlackrockSpire")
@@ -294,13 +288,11 @@ do
 	end
 	local fate = "Bodley's Unfortunate Fate comes after your class's Anthion's Parting Words."
 	local preparations = "Then Bodley gives Final Preparations, which goes on in Blackrock Spire."
-	for _, key in ipairs({ "StratholmeMainGate", "StratholmeServiceGate" }) do
-		local quests = QuestsOf(key)
-		quests[8968].prerequisites = Copy(lower[8966].prerequisites)
-		quests[8968].note = fate
-		quests[8991].prerequisites = Copy(lower[8989].prerequisites)
-		quests[8991].note, quests[8991].followUp = fate, preparations
-	end
+	local stratholme = QuestsOf("Stratholme")
+	stratholme[8968].prerequisites = Copy(lower[8966].prerequisites)
+	stratholme[8968].note = fate
+	stratholme[8991].prerequisites = Copy(lower[8989].prerequisites)
+	stratholme[8991].note, stratholme[8991].followUp = fate, preparations
 	-- Kormok's in Scholomance (8969, 8992) the same (the deep audit of 2026-10-30, g07-01/g10-01): they
 	-- had the old fixed chain (Components of Importance 8965 only; I See Alcaz Island... and 8988 only,
 	-- without Bodley's Unfortunate Fate), which locked out a player who did another version and kept
@@ -312,12 +304,12 @@ do
 	scholomance[8992].note, scholomance[8992].followUp = fate, preparations
 end
 
--- The Medallion of Faith (5122, added by Data/Authored/FromForeverChanges.lua after the gates' own
+-- The Medallion of Faith (5122, added by Data/Authored/FromForeverChanges.lua after the dungeon's own
 -- quests) is listed just before Aurius' Reckoning (5125), which needs it (QuestieDB's preQuestSingle;
 -- the deep audit of 2026-10-30, S7). The Flesh Does Not Lie comes before The Active Agent in the
--- Service Gate's own file.
-for _, key in ipairs({ "StratholmeMainGate", "StratholmeServiceGate" }) do
-	local list = ns.GetInstance(key).quests
+-- dungeon's own file.
+do
+	local list = ns.GetInstance("Stratholme").quests
 	local medallion
 	for index, quest in ipairs(list) do
 		if quest.questID == 5122 then
@@ -338,7 +330,7 @@ end
 
 --[[
 	Collection of Goods (7642), the Alliance paladin's charger step whose Stratholme Holy Water is
-	gathered here, on both gates (the owner's call of 2026-11-03 on the deep audit's S10): QuestieDB's
+	gathered here (the owner's call of 2026-11-03 on the deep audit's S10): QuestieDB's
 	Forever data for all of it (Grimand Elmore gives and takes it; the steps before it, its objective,
 	Ironforge +100), and its XP as its step page had it (the original game's, so marked). The holy water
 	(13180) comes only from Stratholme's two kinds of supply crate (objects 176224 and 181085, in no
@@ -348,8 +340,8 @@ end
 	done on Tendris Warpwood and listed in Dire Maul West; QuestieDB's preQuestSingle; the owner's calls of
 	2026-11-03).
 ]]
-for _, key in ipairs({ "StratholmeMainGate", "StratholmeServiceGate" }) do
-	ns.AmendInstance(key, {
+do
+	ns.AmendInstance("Stratholme", {
 		addQuests = {
 			{
 				questID = 7642, name = "Collection of Goods", level = 60, requiredLevel = 60, faction = "Alliance",
@@ -364,6 +356,8 @@ for _, key in ipairs({ "StratholmeMainGate", "StratholmeServiceGate" }) do
 					.. "inside Stratholme.",
 				followUp = "Then Lord Grayson Shadowbreaker gives Ancient Equine Spirit, done in Dire Maul's Capital "
 					.. "Gardens.",
+				-- (the quest it names that is named after someone: Adventure Mode hides it as a quest)
+				namesQuests = { 7643 },
 				prerequisites = {
 					{ questID = 7638, name = "Lord Grayson Shadowbreaker" },
 					{ questID = 7637, name = "Emphasis on Sacrifice" },
@@ -376,3 +370,12 @@ for _, key in ipairs({ "StratholmeMainGate", "StratholmeServiceGate" }) do
 		},
 	})
 end
+
+-- The fog of war (UI/DungeonFog.lua's Counts; the owner's answers of 2026-11-13): Postmaster Malown comes with the
+-- third postbox opened, and the Crimson Hammersmith and the Black Guard Swordsmith only when called up, so none of
+-- them holds the fog back (none has a spot on the map). The fog's data says the same (its counts).
+ns.AmendInstance("Stratholme", { bosses = {
+	["Postmaster Malown"] = { summoned = true },
+	["Crimson Hammersmith"] = { summoned = true },
+	["Black Guard Swordsmith"] = { summoned = true },
+} })

@@ -12,7 +12,9 @@ local sourceTextures = {
     discovery = "Interface\\WorldMap\\WorldMap-MagnifyingGlass",
 }
 
-function wt.CreateSkillsRecipeList(page, scoped)
+function wt.CreateSkillsRecipeList(page, scoped, maxRows)
+    local rowCount = maxRows or ROWS
+    local dirty = true
     local prefix = page:GetName()
     local view = CreateFrame("Frame", nil, page)
     view.scoped = scoped
@@ -24,8 +26,8 @@ function wt.CreateSkillsRecipeList(page, scoped)
     search:SetPoint("TOPLEFT", 8, -8)
     search:HookScript("OnHide", function(self) self:ClearFocus() end)
     view.searchBox = search
-    local dropdown = CreateFrame("DropdownButton", prefix .. "Filter", view,
-        "WowStyle1FilterDropdownTemplate")
+    local dropdown = wt.gameVersion == "forever" and wt.Forever.createDropdown(view, prefix .. "Filter", true)
+        or CreateFrame("DropdownButton", prefix .. "Filter", view, "WowStyle1FilterDropdownTemplate")
     dropdown.resizeToText = false
     dropdown:SetSize(90, 20)
     dropdown:SetPoint("TOPRIGHT", -8, -8)
@@ -50,11 +52,10 @@ function wt.CreateSkillsRecipeList(page, scoped)
         GameTooltip:Show()
     end
 
-    GameTooltip:HookScript("OnTooltipSetSpell", function(tooltip)
+    local function addRecipeTooltip(tooltip, spellID)
         local row = view.tooltipRow
         if not row or not tooltip:IsOwned(row) then return end
         local data = row.data
-        local _, spellID = tooltip:GetSpell()
         if not data or not data.recipe or spellID ~= data.recipe.spell then return end
         tooltip:AddLine(string.format(wt.L.PROFESSION_SKILL, data.profession,
             data.requiredSkill or wt.L.UNKNOWN_SKILL_VALUE), 1, 0.82, 0)
@@ -67,7 +68,17 @@ function wt.CreateSkillsRecipeList(page, scoped)
                 data.reputationMet and 1 or 0, 0, true)
         end
         tooltip:Show()
-    end)
+    end
+    if wt.gameVersion == "forever" then
+        TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Spell, function(tooltip, data)
+            addRecipeTooltip(tooltip, data.id)
+        end)
+    else
+        GameTooltip:HookScript("OnTooltipSetSpell", function(tooltip)
+            local _, spellID = tooltip:GetSpell()
+            addRecipeTooltip(tooltip, spellID)
+        end)
+    end
 
     function view:Paint()
         local tooltipRow = self.tooltipRow
@@ -75,7 +86,7 @@ function wt.CreateSkillsRecipeList(page, scoped)
         if tooltipRow and not GameTooltip:IsOwned(tooltipRow) then tooltipRow = nil end
         self.tooltipRow = nil
         local offset = FauxScrollFrame_GetOffset(scroll)
-        local maxOffset = math.max(0, #self.items - ROWS)
+        local maxOffset = math.max(0, #self.items - rowCount)
         if offset > maxOffset then
             offset = maxOffset
             scroll.offset = offset
@@ -83,7 +94,7 @@ function wt.CreateSkillsRecipeList(page, scoped)
         end
         for index, row in ipairs(self.rows) do
             if GameTooltip:IsOwned(row) then GameTooltip:Hide() end
-            local data = self.items[index + offset]
+            local data = index <= rowCount and self.items[index + offset] or nil
             row.data = data
             row:SetShown(data ~= nil)
             if data then
@@ -138,7 +149,7 @@ function wt.CreateSkillsRecipeList(page, scoped)
                     and "Interface\\Buttons\\UI-MinusButton-Up" or "Interface\\Buttons\\UI-PlusButton-Up"))
             end
         end
-        FauxScrollFrame_Update(scroll, #self.items, ROWS, ROW_HEIGHT)
+        FauxScrollFrame_Update(scroll, #self.items, rowCount, ROW_HEIGHT)
         empty:SetShown(#self.items == 0)
         if tooltipRow and tooltipRow:IsVisible() and tooltipRow.data and tooltipRow.data.recipe
             and tooltipRow.data.recipe.spell == tooltipSpell then showTooltip(tooltipRow) end
@@ -206,13 +217,14 @@ function wt.CreateSkillsRecipeList(page, scoped)
     end
 
     function view:Refresh()
+        dirty = false
         WT_Crafting = WT_Crafting or {}
         WT_Crafting.expandedProfessions = WT_Crafting.expandedProfessions or {{}, {}, {}, {}, {}}
         WT_Crafting.selectedProfessions = WT_Crafting.selectedProfessions or {}
         WT_Crafting.selectedSources = WT_Crafting.selectedSources or {trainer = true, vendor = true, quest = true,
             drop = false, crafted = false, world_object = false}
         WT_Crafting.settings = WT_Crafting.settings or {}
-        for _, key in ipairs({"showReputationRecipes", "showOtherFactionRecipes"}) do
+        for _, key in ipairs({"showReputationRecipes", "showMerchantsFavorRecipes", "showOtherFactionRecipes"}) do
             if WT_Crafting.settings[key] == nil then WT_Crafting.settings[key] = false end
         end
         self.expanded = WT_Crafting.expandedProfessions
@@ -227,71 +239,87 @@ function wt.CreateSkillsRecipeList(page, scoped)
         self:Filter()
     end
 
-    for index = 1, ROWS do
-        local row = CreateFrame("Button", nil, view)
-        view.rows[index] = row
-        row:SetHeight(ROW_HEIGHT)
-        row:SetPoint("TOPLEFT", 4, -36 - (index - 1) * ROW_HEIGHT)
-        row:SetPoint("RIGHT", scroll)
-        row:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-        row.rankBackground = row:CreateTexture(nil, "BACKGROUND")
-        row.rankBackground:SetAllPoints()
-        row.icon = row:CreateTexture(nil, "ARTWORK")
-        row.icon:SetSize(16, 16)
-        row.skill = row:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-        row.skill:SetPoint("RIGHT", -2, 0)
-        row.skill:SetWidth(24)
-        row.skill:SetJustifyH("RIGHT")
-        row.source = row:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-        row.source:SetPoint("RIGHT", row.skill, "LEFT", -2, 0)
-        row.source:SetWordWrap(false)
-        row.label = row:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-        row.label:SetWordWrap(false)
-        row.notice = row:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-        row.notice:SetPoint("LEFT", row.label, "RIGHT", 8, 0)
-        row.notice:SetPoint("RIGHT", -4, 0)
-        row.notice:SetJustifyH("LEFT")
-        row.notice:SetWordWrap(false)
-        local highlight = row:CreateTexture(nil, "HIGHLIGHT")
-        highlight:SetAllPoints()
-        highlight:SetColorTexture(1, 1, 1, 0.06)
-        row:SetScript("OnClick", function(self, button)
-            local data = self.data
-            if not data then return end
-            if button == "RightButton" then
-                local menuData, professions = data, view.groups[data.category]
-                if not data.recipe and not data.profession then
-                    menuData = {category = data.category, items = {}}
-                    for _, profession in ipairs(professions) do
-                        for _, recipe in ipairs(profession.items) do tinsert(menuData.items, recipe) end
-                    end
-                end
-                MenuUtil.CreateContextMenu(self, function(_, menu)
-                    wt.GenerateRecipeRowMenu(menuData, menu, not view.scoped and function(isCollapsed)
+    local function createRows()
+        for index = #view.rows + 1, rowCount do
+            local row = CreateFrame("Button", nil, view)
+            view.rows[index] = row
+            row:SetHeight(ROW_HEIGHT)
+            row:SetPoint("TOPLEFT", 4, -36 - (index - 1) * ROW_HEIGHT)
+            row:SetPoint("RIGHT", scroll)
+            row:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+            row.rankBackground = row:CreateTexture(nil, "BACKGROUND")
+            row.rankBackground:SetAllPoints()
+            row.icon = row:CreateTexture(nil, "ARTWORK")
+            row.icon:SetSize(16, 16)
+            row.skill = row:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+            row.skill:SetPoint("RIGHT", -2, 0)
+            row.skill:SetWidth(24)
+            row.skill:SetJustifyH("RIGHT")
+            row.source = row:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+            row.source:SetPoint("RIGHT", row.skill, "LEFT", -2, 0)
+            row.source:SetWordWrap(false)
+            row.label = row:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+            row.label:SetWordWrap(false)
+            row.notice = row:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+            row.notice:SetPoint("LEFT", row.label, "RIGHT", 8, 0)
+            row.notice:SetPoint("RIGHT", -4, 0)
+            row.notice:SetJustifyH("LEFT")
+            row.notice:SetWordWrap(false)
+            local highlight = row:CreateTexture(nil, "HIGHLIGHT")
+            highlight:SetAllPoints()
+            highlight:SetColorTexture(1, 1, 1, 0.06)
+            row:SetScript("OnClick", function(self, button)
+                local data = self.data
+                if not data then return end
+                if button == "RightButton" then
+                    local menuData, professions = data, view.groups[data.category]
+                    if not data.recipe and not data.profession then
+                        menuData = {category = data.category, items = {}}
                         for _, profession in ipairs(professions) do
-                            if view.query ~= "" then view.searchCollapsed[profession.key] = isCollapsed
-                            else view.expanded[data.category][profession.id] = not isCollapsed end
+                            for _, recipe in ipairs(profession.items) do tinsert(menuData.items, recipe) end
                         end
-                        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-                        view:Filter()
-                        return MenuResponse.Close
+                    end
+                    local openMenu = wt.gameVersion == "forever" and wt.Forever.openContextMenu or MenuUtil.CreateContextMenu
+                    openMenu(self, function(_, menu)
+                        wt.GenerateRecipeRowMenu(menuData, menu, not view.scoped and function(isCollapsed)
+                            for _, profession in ipairs(professions) do
+                                if view.query ~= "" then view.searchCollapsed[profession.key] = isCollapsed
+                                else view.expanded[data.category][profession.id] = not isCollapsed end
+                            end
+                            PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+                            view:Filter()
+                            return MenuResponse.Close
+                        end)
                     end)
-                end)
-            elseif button == "LeftButton" and data.recipe then
-                wt.LinkRecipe(data.recipe)
-            elseif button == "LeftButton" and data.items then
-                if view.query ~= "" then view.searchCollapsed[data.key] = not view.searchCollapsed[data.key]
-                else view.expanded[data.category][data.id] = not view.expanded[data.category][data.id] end
-                view:Filter()
+                elseif button == "LeftButton" and data.recipe then
+                    wt.LinkRecipe(data.recipe)
+                elseif button == "LeftButton" and data.items then
+                    if view.query ~= "" then view.searchCollapsed[data.key] = not view.searchCollapsed[data.key]
+                    else view.expanded[data.category][data.id] = not view.expanded[data.category][data.id] end
+                    view:Filter()
+                end
+            end)
+            row:SetScript("OnEnter", showTooltip)
+            local function hide(self)
+                if view.tooltipRow == self then view.tooltipRow = nil end
+                if GameTooltip:IsOwned(self) then GameTooltip:Hide() end
             end
-        end)
-        row:SetScript("OnEnter", showTooltip)
-        local function hide(self)
-            if view.tooltipRow == self then view.tooltipRow = nil end
-            if GameTooltip:IsOwned(self) then GameTooltip:Hide() end
+            row:SetScript("OnLeave", hide)
+            row:SetScript("OnHide", hide)
         end
-        row:SetScript("OnLeave", hide)
-        row:SetScript("OnHide", hide)
+    end
+    createRows()
+    if scoped and not maxRows then
+        local function resize(_, _, height)
+            if height <= 0 then return end
+            local count = math.max(1, math.floor(height / ROW_HEIGHT))
+            if count == rowCount then return end
+            rowCount = count
+            createRows()
+            view:Paint()
+        end
+        scroll:SetScript("OnSizeChanged", resize)
+        resize(scroll, nil, scroll:GetHeight())
     end
     search:HookScript("OnTextChanged", function()
         view.searchCollapsed = {}
@@ -302,20 +330,23 @@ function wt.CreateSkillsRecipeList(page, scoped)
     end)
     view:EnableMouseWheel(true)
     view:SetScript("OnMouseWheel", function(_, delta)
-        local offset = math.max(0, math.min(#view.items - ROWS, FauxScrollFrame_GetOffset(scroll) - delta * 3))
+        local offset = math.max(0, math.min(#view.items - rowCount, FauxScrollFrame_GetOffset(scroll) - delta * 3))
         scroll.ScrollBar:SetValue(offset * ROW_HEIGHT)
     end)
 
     local queued = false
     local function request()
+        dirty = true
         if queued or not view:IsVisible() then return end
         queued = true
         RunNextFrame(function()
             queued = false
-            if view:IsVisible() then view:Refresh() end
+            if view:IsVisible() and dirty then view:Refresh() end
         end)
     end
-    view:SetScript("OnShow", request)
+    view:SetScript("OnShow", function()
+        if dirty then request() else view:Filter() end
+    end)
     for _, event in ipairs({"SKILL_LINES_CHANGED", "SPELLS_CHANGED", "NEW_RECIPE_LEARNED", "PLAYER_LEVEL_UP",
         "UPDATE_FACTION", "SPELL_DATA_LOAD_RESULT"}) do view:RegisterEvent(event) end
     view:SetScript("OnEvent", function(_, event, spellID, success)

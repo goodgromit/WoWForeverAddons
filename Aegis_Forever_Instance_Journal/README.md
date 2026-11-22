@@ -1,6 +1,6 @@
 <p align="center"><img src="docs/images/logo.png" alt="Aegis Instance Journal" width="220"></p>
 
-# Aegis: Forever Instance Journal (v0.39.21)
+# Aegis: Forever Instance Journal (v0.40.1)
 
 **Retail's instance journal and dungeon maps, brought to WoW: Forever.**
 
@@ -42,54 +42,69 @@ and to send in your recorded runs.
 
 ### 📖 The journal
 
-| Dungeons | City of Dalaran |
+| Dungeons | City of Dalaran's Before you go |
 |:---:|:---:|
-| <img src="docs/images/dungeons.png" alt="The Dungeons tab, Forever's own marked with its emblem" width="430"> | <img src="docs/images/journal-city-of-dalaran.jpg" alt="The journal open on City of Dalaran: its bosses, New in WoW: Forever, Alterac Mountains, level 28-33, and Before you go: The Dalaran Sewer Key and Lyn the Ignored, a hidden boss" width="430"> |
+| <img src="docs/images/dungeons.png" alt="The Dungeons tab, Forever's own marked with its emblem" width="430"> | <img src="docs/images/journal-city-of-dalaran-before-you-go.jpg" alt="City of Dalaran's Before you go: The Dalaran Sewer Key opened with its two quests checked off, Lyn the Ignored, a hidden boss, and Dungeon Quests 4/4, beside An Alarming Request's page with Show Start and Show End" width="430"> |
+| **The Shaper's Terrace** | **Krol'dok Stronghold in Adventure Mode** |
+| <img src="docs/images/journal-shapers-terrace.jpg" alt="The journal open on the Shaper's Terrace: Titanosaur, Venomridge, Thunderhoof, the Direhorn Matriarch and the Ravasaur Hunters, each marked level 61, beside the terrace's picture and how four of its bosses are called up with Power Crystals" width="430"> | <img src="docs/images/journal-adventure-krol-dok.jpg" alt="Krol'dok Stronghold in Adventure Mode: the bosses met so far with their names and pictures, the others shown as ???, beside the dungeon's picture, Show Map, its level range and Not yet tested" width="430"> |
 
 - **Retail's Encounter Journal**, rebuilt to its measurements (Blizzard's own
   doesn't load on Forever): breadcrumb bar, search box, and five tabs:
   **Dungeons · Raids · Reputation · Gear Finder · Record**.
-- **35 dungeons**: the classics from Ragefire Chasm to Stratholme, Forever's own
+- **34 dungeons**: the classics from Ragefire Chasm to Stratholme, and Forever's own
   (The Hall of Thanes, Ruins of Lordaeron, Excavation Site: Wetlands, City of
-  Dalaran), and the five Blizzard has announced.
+  Dalaran, The Drowned City, Krol'dok Stronghold, Alcaz Prison, Blackmaw Hold and
+  the Shaper's Terrace).
 - **3 raids, coming soon**: Barrow Deeps, Hyjal Summit and Onyxia's Lair.
 - A **level-range filter**; **WoW: Forever's emblem** marks what Forever added;
   **Not yet tested** marks what still needs a recorded run.
-- **Docked like the game's own windows** in the Classic and Custom styles: it opens
+- **Docked like the game's own windows** in Classic, Custom and Adventure Mode: it opens
   at the top left and moves aside when one of them opens there, and you can drag it
   anywhere until it closes. In Modern it opens where you last left it. Tick or untick
   docking in its options, or type `/aegis dock`, to choose for all your characters.
-- **Before you go**, in most dungeons: keys, attunements, hidden bosses and the
-  quests that lead to them. Onyxia's attunement is in for both sides.
+- **Lore**: Spoken's own story of each dungeon and boss, word for word, where Spoken
+  tells one. With Spoken installed, **Play** beside it reads the story aloud, and its
+  words light up as they're read.
+- **Before you go**, in most dungeons, at the top of the Quests tab: keys, attunements,
+  hidden bosses and the quests that lead to them. Onyxia's attunement is in for both sides.
 - **Where it drops**: an item's tooltip names the boss and dungeon that drop it,
   wherever you see the item.
 - **Its icon** is Forever's journal book with its emblem. On the minimap button and
-  the journal's window, its swirl takes your class's colour.
+  the journal's window, its swirl takes your class's color.
 
 **Choose your journal**: each character is asked once, at its first login with the
 journal, how much it should add to the game.
+
+<p align="center"><img src="docs/images/choose-your-journal.jpg" alt="The style question: Classic, Modern and Adventure side by side, each with its starting settings, and Custom as a bar beneath them" width="860"></p>
+<p align="center"><em>The style question: Classic, Modern and Adventure Mode side by side, Custom beneath them.</em></p>
 
 - **Classic**: a more original-style journal. The Gear Finder and stat weights, the
   way-in maps and caves, and the journal's marks on the world map start off.
 - **Modern**: everything the journal has, all on. Closing the question keeps the
   style you have, Modern at first.
-- **Custom**: opens the journal's options, where each of those has its own box to tick.
-- The bosses, loot, quests and dungeon maps are there in every style, and the Record
-  tab has its own box, on in every style. Change the style any time in the options;
-  `/aegis style` asks again, and **Reset Instance Journal** puts the options back as
-  at install and asks again.
-
-| Choose your journal |
-|:---:|
-| <img src="docs/images/choose-your-journal.jpg" alt="The Choose your journal question: Classic, Modern and Custom with their starting settings, Modern marked Your style now, and Closing this keeps Modern" width="430"> |
+- **Adventure Mode**: the journal starts empty and fills in as you play. A dungeon
+  you haven't been inside is a rumor; its bosses show as "???" until you meet them,
+  their abilities once you fight them, and its loot item by item as you see it drop.
+  Quests show once you're offered them, factions once they're on your Reputation tab,
+  and dungeon maps start under fog. What a character did before counts where the game
+  can tell: quests done, factions met, flight paths known, and the bosses the dungeon
+  map and the run block still keep as killed from your last run of each dungeon. Each
+  character keeps its own finds.
+- **Custom**, the bar beneath them: opens the journal's options, where each of those
+  has its own box to tick.
+- The bosses, loot, quests and dungeon maps are there in every style (in Adventure
+  Mode once you find them), and the Record tab has its own box, on in every style.
+  Change the style any time in the options; `/aegis style` asks again, and **Reset
+  Instance Journal** puts the options back as at install and asks again. Picking
+  another style turns Adventure Mode off, and what you found is kept.
 
 ### 🗡️ Boss pages
 
 Five side tabs, as in retail, plus one:
 
 - **Overview**: fight notes and quick facts.
-- **Loot**: filter by class, armour and type (equipment by slot, recipes by
-  profession, consumables, mounts, pets, toys), ★ favourites, pin an item to the
+- **Loot**: filter by class, armor and type (equipment by slot, recipes by
+  profession, consumables, mounts, pets, toys), ★ favorites, pin an item to the
   map. Items the server doesn't know yet stay hidden until someone sees one drop.
 - **Abilities**: retail's collapsible tree: what each ability does in the fight, its
   role alerts, stages, and the damage and timings your recorded runs measured.
@@ -116,6 +131,15 @@ Five side tabs, as in retail, plus one:
   Temple and Stratholme open on one map with every boss pinned. Maraudon's and the
   Temple's are Blizzard's drawn maps; the other three are redrawn by Torchlite. The
   Temple's lower level has Atal'alarion and the Spawn of Hakkar.
+- **Fog of war** on 34 dungeons' maps: where you come in is clear, and each boss
+  your group kills clears its rooms and the way back; once every boss is down, the
+  whole map clears. Rare spawns and bosses you call up yourself hold no fog back.
+  Always on in Adventure Mode; in the other styles, tick **Fog of war on dungeon
+  maps** in the options, or click **Fog of War** in the map legend.
+- **Test mode** (`/aegis test`, or **Test mode** at the bottom of the options): see any
+  dungeon's map, fog and run block without going in. Pick a dungeon, mark bosses
+  defeated, show it as found in Adventure Mode, or pretend you're inside. Nothing is
+  saved: **End test** or a `/reload` puts everything back.
 - **A boss with several possible spots** gets small faded pins; hover one and
   all of its spots light up.
 - **Forever's own dungeons** use Santiago Reyes's hand-drawn maps.
@@ -128,6 +152,8 @@ Five side tabs, as in retail, plus one:
 | <img src="docs/images/map-maraudon-whole.jpg" alt="Maraudon's whole map with boss portraits from the Noxious Hollow and Foulspore Cavern down to Zaetar's Grave, beside the map legend" width="430"> | <img src="docs/images/map-city-of-dalaran.jpg" alt="City of Dalaran's map with its boss portraits, The Sewers and The City in the location bar's menu, and the Shade of the Archmage's tooltip: the last boss, in the Purple Parlor of the Violet Citadel" width="430"> |
 | **The Hall of Thanes** | **Old Ironforge** |
 | <img src="docs/images/map-hall-of-thanes.jpg" alt="The Hall of Thanes map" width="430"> | <img src="docs/images/map-old-ironforge.jpg" alt="Old Ironforge map" width="430"> |
+| **Fog of war in Krol'dok Stronghold** | **Fog of War in the map legend** |
+| <img src="docs/images/map-krol-dok-fog.jpg" alt="Krol'dok Stronghold's map under fog of war: three bosses killed and crossed out with the rooms around them clear, the rest of the map hidden, the other three bosses shown as a red ?, beside the map legend with Fog of War under Movement" width="430"> | <img src="docs/images/world-map-fog-of-war.jpg" alt="The Riverglades on the world map with the legend's Fog of War tooltip: it hides the parts of a zone you haven't explored and the parts of a dungeon's map your group hasn't cleared" width="430"> |
 
 ### 🏰 Maps of the ways in
 
@@ -177,23 +203,23 @@ look inside before you go.
   and portals** where Forever actually put them: blue for the Alliance, red for the
   Horde, gold for everyone.
 - **Quest marks that follow your log**: **!** where an available quest starts,
-  a grey **!** where one you can't take yet starts (its tooltip says what it
+  a gray **!** where one you can't take yet starts (its tooltip says what it
   needs), **?** where a finished one is handed in.
 - The map's **Quests** and **Map Legend** tabs are back, and the legend lights
   up the journal's icons. Click one of the journal's icons in the legend to hide
   those on the map; the game's own quest icons follow the game's map filters.
 - **Zone level ranges**: hover a zone on a continent map and its range shows
-  after its name, coloured for your level, Forever's new zones included.
-- **The map's filter menu** has an Instance Journal part: tick **Show unexplored
-  areas** to see the parts of a zone you haven't explored yet, a little darker, and
-  untick dungeon or raid entrances, flight points, cave entrances,
-  or boats, zeppelins, trams and portals to hide them.
+  after its name, colored for your level, Forever's new zones included.
+- **Fog of War** in the legend, under Movement: on a zone it shows the parts you
+  haven't explored yet, a little darker, or hides them (**Show unexplored areas** in
+  the options); on a dungeon's map with fog, it turns the fog on or off.
+- **In Adventure Mode** a dungeon's door is a rumor until you have been inside, flight
+  points show once you know the path, and a dungeon quest you haven't been offered yet
+  is a faint **!** with no name.
 
-| Kalimdor: the legend's Transport | Eastern Kingdoms: the filter menu |
+| Kalimdor: the legend's Transport | Feralas: the wings' doors and the way into the ruins |
 |:---:|:---:|
-| <img src="docs/images/world-map-kalimdor-transport.jpg" alt="Kalimdor with dungeon and raid doors and transports, and the legend's Transport tooltip: blue serves the Alliance, red the Horde, gold everyone" width="430"> | <img src="docs/images/world-map-eastern-kingdoms-filter.jpg" alt="Eastern Kingdoms with dungeon doors, cave entrances and transports, and the map's filter menu open on its Instance Journal part" width="430"> |
-| **Feralas: the wings' doors and the way into the ruins** | **Riverglades: Show unexplored areas** |
-| <img src="docs/images/world-map-feralas.jpg" alt="Feralas with Dire Maul's three wing doors and the entrance icon of its ruins" width="430"> | <img src="docs/images/world-map-unexplored.png" alt="Riverglades with Show unexplored areas ticked in the map's filter menu, the parts not yet explored a little darker" width="430"> |
+| <img src="docs/images/world-map-kalimdor-transport.jpg" alt="Kalimdor with dungeon and raid doors and transports, and the legend's Transport tooltip: blue serves the Alliance, red the Horde, gold everyone" width="430"> | <img src="docs/images/world-map-feralas.jpg" alt="Feralas with Dire Maul's three wing doors and the entrance icon of its ruins" width="430"> |
 
 ### 🛡️ Reputation
 
@@ -231,15 +257,21 @@ look inside before you go.
   agree with the Gear Finder. Pawn's: the Gear Finder scores with your Pawn scale.
 - **On the character panel too**: its own tab turns the panel to your character,
   with your stat weights where the stats are, and a button to the Gear Finder.
+- **In Adventure Mode** it shows the upgrades you have seen drop. One you haven't seen
+  is **Something better** in its dungeon, with its slot's own picture, and one in a
+  dungeon you haven't been to is a rumor, with **Show on map** for its door.
 
 | Gear Finder | Stat weights on the character panel |
 |:---:|:---:|
 | <img src="docs/images/gear-finder.png" alt="The Gear Finder tab: an upgrade for each slot and the suggested dungeon" width="430"> | <img src="docs/images/gear-finder-weights.png" alt="The Stat Weights window over the character panel's stats" width="430"> |
 
+<p align="center"><img src="docs/images/gear-finder-adventure.jpg" alt="The Gear Finder in Adventure Mode: upgrades not seen yet as Something better with each slot's own picture and where they drop, and the suggested dungeon a rumor in the Riverglades, level 40-45, with Show on map" width="640"></p>
+<p align="center"><em>The Gear Finder in Adventure Mode: upgrades you haven't seen yet, and a dungeon you haven't been to as a rumor.</em></p>
+
 ### 🔍 Search
 
 Three letters find dungeons, bosses, abilities, loot, quests and factions. A
-click opens the right page.
+click opens the right page. In Adventure Mode it finds only what you have found.
 
 ### 🔴 Record: help fill in Forever's journal
 
@@ -265,7 +297,7 @@ them. `/aegis perf` measures it in your own game.
 ## Santiago Reyes's maps
 
 The maps of **The Hall of Thanes, Ruins of Lordaeron, Excavation Site: Wetlands,
-City of Dalaran, The Drowned City, Krol'dok Stronghold, Shaper's Terrace and Alcaz Prison** are
+City of Dalaran, The Drowned City, Krol'dok Stronghold, Shaper's Terrace, Alcaz Prison and Blackmaw Hold** are
 Santiago Reyes's, from his project *Atlas de Azeroth: Forever*. They are his own reinterpretations, not official World of Warcraft art,
 and he isn't affiliated with Blizzard. Showing them in a video or a stream?
 Please credit him in its description. Never alter them or remove his watermark.
@@ -297,14 +329,16 @@ Please credit him in its description. Never alter them or remove his watermark.
   only roughly placed, and some bosses have no spot on the map yet, until
   someone records a run.
 - **Damage and timings come only from recorded runs.** Many bosses have none yet.
-- **The announced dungeons and the raids** hold only what Blizzard has said so
-  far. Their pages say *Coming soon*.
+- **Forever's newest dungeons** (Krol'dok Stronghold, Alcaz Prison, Blackmaw Hold
+  and the Shaper's Terrace) are marked *Not yet tested*: some of what they show is a
+  best guess until someone records a run.
+- **The raids** hold only what Blizzard has said so far. Their pages say *Coming soon*.
 
 ---
 
 ## Something broken?
 
-1. Check the **version** in the AddOns list (`0.39.0`) and quote it.
+1. Check the **version** in the AddOns list (`0.40.1`) and quote it.
 2. A red line under **Recent** on the Record tab says what went wrong.
    Screenshot it.
 3. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)**.
@@ -323,6 +357,9 @@ versions up to 0.38.0 was released under the MIT License, and copies of those ke
 - **Torchlite's maps**, each signed "Redrawn by Torchlite", were all rights reserved from the
   start. See [LICENSE-MAPS.md](LICENSE-MAPS.md).
 - **Santiago Reyes's maps** are his, used with his permission. See [CREDITS.md](CREDITS.md).
+- **The dungeon and boss stories from Spoken** are Spoken's text, used with its author's
+  permission. Those adapted from a CC BY-SA 4.0 source stay under that license. See
+  [LICENSE-LORE.md](LICENSE-LORE.md).
 
 World of Warcraft, its art and its game data are Blizzard Entertainment's; this addon is not
 made or endorsed by Blizzard.

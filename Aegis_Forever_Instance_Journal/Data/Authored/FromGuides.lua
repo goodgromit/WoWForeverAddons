@@ -60,11 +60,12 @@ AddQuests("Gnomeregan", {
 		startObject = { name = "Grime-Encrusted Ring", note = "Dropped by Dark Iron Agents in Gnomeregan." },
 		objective = "Find a way to clean the grime off the ring: the Sparklematic 5200 in Gnomeregan will.",
 		note = "Leads to Return of the Ring.",
-		-- 6,592 on Forever: the owner's recording, 2026-11-11 (the original game's 2,700 until then; the owner: "go with
-		-- recording"). One quest for both sides: no twin to set. To check (0.39.21's review): the recordings' turn-in
-		-- experience reads 3% over the quest window since 2026-11-10 (Return of the Ring 4,996 against 4,850), so the
-		-- window most likely says 6,400; the owner reads it in game.
-		rewards = { xp = 6592 },
+		-- 6,400 on Forever: the quest window's number. The owner's recording of 2026-11-11 read 6,592 at the turn-in,
+		-- which carries the sleeping bag's +3% XP (the owner, 2026-11-12: "this is because of the 3% xp buff from the
+		-- sleeping bag most likely"; Return of the Ring read 4,996 against its window's 4,850). 6,592 / 1.03 = 6,400,
+		-- a number the game's quest XP rounding gives (to 50 over 1,000). 0.39.21 had 6,592; the original game's is
+		-- 2,700. One quest for both sides: no twin to set.
+		rewards = { xp = 6400 },
 	},
 	{
 		questID = 2947, name = "Return of the Ring", level = 30, requiredLevel = 10, faction = "Alliance",
@@ -110,8 +111,9 @@ AddQuests("ScarletMonasteryLibrary", {
 	{
 		questID = 1951, name = "Rituals of Power", level = 40, requiredLevel = 30, faction = "Both", classOnly = "MAGE",
 		pickup = "Magus Tirth, Shimmering Flats, Thousand Needles", startMap = { mapID = 1441, x = 0.783, y = 0.757 },
-		turnin = "Magus Tirth, Shimmering Flats, Thousand Needles",
-		objective = "Bring the book Rituals of Power, from the Library, to Magus Tirth.",
+		-- (taken back by Tabetha, not Tirth: Data/Authored/QuestAudit.lua's audit, 2026-10-29, which adds her spot)
+		turnin = "Tabetha, Dustwallow Marsh",
+		objective = "Bring the book Rituals of Power, from the Library, to Tabetha in Dustwallow Marsh.",
 		note = "Follows Journey to the Marsh. The book lies at the north end of the hallway to Arcanist Doan.",
 		rewards = { xp = 3150 },
 	},

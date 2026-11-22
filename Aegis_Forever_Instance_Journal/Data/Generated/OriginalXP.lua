@@ -10,10 +10,12 @@ local _, ns = ...
 	quest lists and pages (plain numbers, or pages that call the quest unchanged) and the chain steps'
 	rewards (Data/Generated/QuestSteps.lua), whose numbers can't be told apart.
 
-	Marked by hand: 1394, 1654 and 7642, whose site pages the XP pass's cache lacks (HAND in
-	Dev/build_original_xp.py says why for each and keeps them on every rebuild).
-	Never marked: 2945 and 2948, whose XP the owner confirmed in game (CONFIRMED in
-	Dev/build_original_xp.py).
+	Marked by hand: 1394, 1654, 1948, 1952 and 7642, whose site pages the XP pass's cache lacks
+	(HAND and HAND_STEPS in Dev/build_original_xp.py say why for each and keep them on every
+	rebuild).
+	Never marked: 1051, 1142, 2945, 2948, 2952, 4605, 4606, 6981 and 95194, whose XP is Forever's
+	own: read in game, or a recording's turn-in less its +3% buff; 2952 and 4605 take 4606's
+	reading, a best guess (CONFIRMED in Dev/build_original_xp.py says how for each).
 	Kept while Quel'Serrar's chain is left out for now: 7508 and 7509 (The Forging of Quel'Serrar),
 	the marks the rules gave them while it was listed, so the chain comes back marked (LEFT_OUT
 	there).
@@ -59,7 +61,6 @@ ns.AddOriginalXP({
 	[1048] = 5150, -- Into The Scarlet Monastery
 	[1049] = 3550, -- Compendium of the Fallen
 	[1050] = 3550, -- Mythology of the Titans
-	[1051] = 3300, -- Vorrel's Revenge
 	[1052] = 1550, -- Down the Scarlet Path
 	[1053] = 4700, -- In the Name of the Light
 	[1100] = 1350, -- Lonebrow's Journal
@@ -67,7 +68,6 @@ ns.AddOriginalXP({
 	[1109] = 3300, -- Going, Going, Guano!
 	[1113] = 3300, -- Hearts of Zeal
 	[1139] = 5850, -- The Lost Tablets of Will
-	[1142] = 3050, -- Mortality Wanes
 	[1149] = 1050, -- Test of Faith
 	[1150] = 2450, -- Test of Endurance
 	[1151] = 3050, -- Test of Strength
@@ -106,9 +106,11 @@ ns.AddOriginalXP({
 	[1838] = 3650, -- Brutal Armor
 	[1848] = 3050, -- Brutal Hauberk
 	[1947] = 290, -- Journey to the Marsh
+	[1948] = 3150, -- Items of Power
 	[1949] = 1450, -- Hidden Secrets
 	[1950] = 1850, -- Get the Scoop
 	[1951] = 3150, -- Rituals of Power
+	[1952] = 3150, -- Mage's Wand
 	[1954] = 2350, -- The Infernal Orb
 	[1955] = 2350, -- The Exorcism
 	[1956] = 3900, -- Power in Uldaman
@@ -150,7 +152,6 @@ ns.AddOriginalXP({
 	[2935] = 2900, -- Consult Master Gadrin
 	[2936] = 4850, -- The Spider God
 	[2950] = 2750, -- Nogg's Ring Redo
-	[2952] = 2450, -- The Sparklematic 5200!
 	[2988] = 3900, -- Witherbark Cages
 	[2989] = 4400, -- The Altar of Zul
 	[2990] = 2100, -- Thadius Grimshade
@@ -220,7 +221,6 @@ ns.AddOriginalXP({
 	[4361] = 6400, -- The Bearer of Bad News
 	[4362] = 8050, -- The Fate of the Kingdom
 	[4363] = 9650, -- The Princess's Surprise
-	[4605] = 2450, -- The Sparklematic 5200!
 	[4701] = 6400, -- Put Her Down
 	[4724] = 6400, -- The Pack Mistress
 	[4726] = 5100, -- Broodling Essence

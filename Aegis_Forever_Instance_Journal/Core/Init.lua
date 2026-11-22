@@ -115,15 +115,64 @@ local function InitSavedVariables()
 	AegisJournalCharDB = AegisJournalCharDB or {}
 	ns.db = AegisJournalDB
 	ns.charDB = AegisJournalCharDB
+	-- Kills, runs and pins saved under a dungeon's old key (Stratholme's two gates, before 0.39.22) moved to its
+	-- key now, without a word (Core/Registry.lua).
+	ns.MoveRenamedKeys(ns.charDB)
 	-- The style is the character's own now: the account-wide keys of the test builds go.
 	ns.Style.DropAccountKeys(ns.db)
 	ns.Recorder:Init()
+	-- What this character has found, for Adventure Mode (Core/Discovery.lua).
+	ns.Discovery:Init()
 	-- The player's own /aegis items scan hides what it found, as the built-in one does.
 	if type(ns.db.missingItems) == "table" then ns.Items:AddUnconfirmed(ns.db.missingItems.items) end
 end
 
 -- Hidden items are asked about again a while after logging in, once a session.
 local RECHECK_DELAY = 10
+
+--[[
+	A map addon the owner asked us to warn about (2026-11-12): it takes over the world map, so it covers
+	the journal's dungeon maps, way-in maps and marks, and shows what Adventure Mode keeps hidden. While it
+	is loaded, one line in chat recommends turning it off, a few seconds after login so it comes after the
+	login's other lines. Once for each version of the journal on the account (AegisJournalDB.mapAddonNoted):
+	a player who keeps it is reminded after an update, not at every login. Its folder's name, or its API
+	table should its folder and TOC both be renamed. Not while its own "enable" box is off (its saved
+	worldmap.enabled): then it leaves the world map alone, and the line waits until the box is on again.
+	Nothing of it is touched, only read; should its saved layout change, the line shows as before.
+]]
+local MAP_ADDON = "OpenMap"
+local MAP_ADDON_DELAY = 5
+
+local function MapAddonLoaded()
+	local loaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
+	if type(loaded) == "function" then
+		local ok, result = pcall(loaded, MAP_ADDON)
+		if ok and result then return true end
+	end
+	return type(_G[MAP_ADDON .. "API"]) == "table"
+end
+
+local function JournalVersion()
+	local get = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
+	local ok, version = false, nil
+	if type(get) == "function" then ok, version = pcall(get, addonName, "Version") end
+	return ok and type(version) == "string" and version or "?"
+end
+
+-- Its own on/off box, off: loaded, but the world map is left to the game.
+local function MapAddonSwitchedOff()
+	local saved = _G[MAP_ADDON .. "DB"]
+	return type(saved) == "table" and type(saved.worldmap) == "table" and saved.worldmap.enabled == false
+end
+
+function ns.NoteMapAddon()
+	if not MapAddonLoaded() or MapAddonSwitchedOff() then return false end
+	local version = JournalVersion()
+	if ns.db.mapAddonNoted == version then return false end
+	ns.db.mapAddonNoted = version
+	ns.Print(string.format(L.MAP_ADDON_HIDES, MAP_ADDON, MAP_ADDON))
+	return true
+end
 
 function AegisJournal_Toggle()
 	ns.Journal:Toggle()
@@ -189,6 +238,13 @@ SlashCmdList.AEGISJOURNAL = function(message)
 		ns.Perf:Taxi()
 	elseif command == "items" then
 		ns.Perf:Items()
+	elseif command == "buttons" then
+		-- (a readout for checking the map buttons' labels in the game, unlisted like /aegis areas)
+		ns.QuestsPanel:DebugMapButtons()
+	elseif command == "spoken" then
+		-- (a readout for checking the words lit as Spoken reads a story, UI/SpokenWords.lua: unlisted, as above;
+		-- /aegis spoken debug the same)
+		ns.SpokenWords.Readout()
 	elseif command == "travel" then
 		ns.TravelMap:Capture(rest)
 	elseif command == "gear" then
@@ -203,6 +259,12 @@ SlashCmdList.AEGISJOURNAL = function(message)
 		ns.StylePopup:Ask()
 	elseif command == "areas" then
 		ns.Areas:Scan()
+	elseif command == "test" then
+		-- Test mode (UI/TestPanel.lua): its panel; /aegis test off ends it, /aegis test debug says what it is doing.
+		ns.TestPanel:Slash(rest)
+	elseif command == "fogtest" then
+		-- The owner's fog test of 2026-11-13, part of test mode since 2026-11-18: opens its panel, as /aegis test.
+		ns.TestPanel:Open()
 	elseif command == "lang" then
 		PreviewLanguage(rest)
 	elseif command == "run" then
@@ -227,6 +289,11 @@ events:SetScript("OnEvent", function(self, event, arg1)
 			ns.Recorder:ShareVendors()
 			ok, problem = pcall(ns.ApplyLocale)
 			if not ok then geterrorhandler()(problem) end
+			-- The kills the journal kept itself (the dungeon map's, the run block's runs), in Adventure Mode's record
+			-- (Core/Discovery.lua): read once its words are on the data, as each kill was kept under the boss's name in
+			-- them. Apart from Discovery:Init, which the checks call for an empty record.
+			ok, problem = pcall(ns.Discovery.BringKeptKills, ns.Discovery)
+			if not ok then geterrorhandler()(problem) end
 			self:UnregisterEvent("ADDON_LOADED")
 		end
 	elseif event == "PLAYER_LOGIN" then
@@ -246,6 +313,8 @@ events:SetScript("OnEvent", function(self, event, arg1)
 		if C_Timer and C_Timer.After then
 			C_Timer.After(RECHECK_DELAY, function() ns.Items:RecheckUnconfirmed() end)
 		end
+		-- The map addon that hides the journal's maps: checked once, a few seconds after login (above).
+		if C_Timer and C_Timer.After then C_Timer.After(MAP_ADDON_DELAY, ns.NoteMapAddon) else ns.NoteMapAddon() end
 	elseif event == "UPDATE_BINDINGS" then
 		ClaimDefaultKey()
 	elseif event == "PLAYER_REGEN_ENABLED" then

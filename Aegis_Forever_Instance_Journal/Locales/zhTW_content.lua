@@ -41,8 +41,7 @@ L.INSTANCE_NAMES = {
 	["Scholomance"] = "通靈學院",
 	["ShadowfangKeep"] = "影牙城堡",
 	["ShapersTerrace"] = "塑造者露臺",
-	["StratholmeMainGate"] = "斯坦索姆：正門",
-	["StratholmeServiceGate"] = "斯坦索姆：後門",
+	["Stratholme"] = "斯坦索姆",
 	["TempleOfAtalHakkar"] = "阿塔哈卡神廟",
 	["TheDeadmines"] = "死亡礦坑",
 	["TheDrownedCity"] = "沉沒之城",
@@ -163,6 +162,15 @@ L.SUBMAP_LEVELS = {
 	-- Prismatic Talus (drafted, to be checked: the client's tables have the cave only as its building's name, in English)
 	["Shaper's Terrace"] = "塑造者露臺",
 	["Prismatic Talus"] = "稜彩碎石坡",
+	-- Blackmaw Hold's map (Data/Authored/Upcoming.lua's floor names): the dungeon's name, its cave, the Festering
+	-- Grotto, and the four levels of its depths, as Santiago Reyes's maps label them (drafted, to be checked: the
+	-- client's tables keep the hold's own names in encrypted rows)
+	["Blackmaw Hold"] = "黑顎要塞",
+	["Festering Grotto"] = "潰爛洞穴",
+	["Depths of the Fallen Grove"] = "殞落林地深處",
+	["Depths of the Elders"] = "長者深處",
+	["Depths of the Burrow"] = "巢穴深處",
+	["Depths of Forbidden Magic"] = "禁忌魔法深處",
 }
 
 L.BOSS_NAMES = {
@@ -459,6 +467,32 @@ L.BOSS_NAMES = {
 	["Irradiated Horror"] = "輻射恐魔",
 	["Leprous Machinesmith"] = "痲瘋機械師",
 	["Mechano-Flamewalker"] = "機械火焰行者",
+	-- Razorfen Kraul's, from the owner's run of 2026-11-12 (drafted, to be checked)
+	["Death's Head Acolyte"] = "亡首侍僧",
+	["Death's Head Adept"] = "亡首能手",
+	["Death's Head Sage"] = "亡首賢者",
+	["Quilguard Champion"] = "刺衛勇士",
+	["Razorfen Beast Trainer"] = "剃刀沼澤馴獸師",
+	["Razorfen Groundshaker"] = "剃刀沼澤撼地者",
+	["Razorfen Totemic"] = "剃刀沼澤圖騰師",
+	-- Krol'dok Stronghold's, from a player's recorded run (2026-11-13; drafted, to be checked); the Brute and the
+	-- Shaman, Bossman Toof's, from a player's combat log (2026-11-12, the owner's call of 2026-11-14; drafted, to
+	-- be checked)
+	["Krol'dok Brute"] = "克羅爾多克蠻兵",
+	["Krol'dok Centurion"] = "克羅爾多克百夫長",
+	["Krol'dok Shaman"] = "克羅爾多克薩滿",
+	["Shadowhide Curseweaver"] = "暗皮咒術師",
+	["Snarlfang"] = "咆牙",
+	["Terrorhowl"] = "恐嚎",
+	["Twilight Warlock"] = "暮光術士",
+	-- The Drowned City's, from the owner's recorded run (2026-11-16) and a player's combat log (2026-11-11; drafted, to be checked)
+	["Brinescale Priestess"] = "鹽鱗女祭司",
+	["Deathless Guardian"] = "不死守護者",
+	["Deathless Sorcerer"] = "不死巫師",
+	["Deathless Watcher"] = "不死監視者",
+	["Saltseer Murderer"] = "鹽視者殺手",
+	-- The Shaper's Terrace's Izha'Rel, an add on the Ravasaur Hunters' page (2026-11-18): as the game names her
+	["Izha'Rel"] = "Izha'Rel",
 }
 
 L.ABILITY_NAMES = {
@@ -595,9 +629,54 @@ L.ABILITY_NAMES = {
 	["War Stomp"] = "戰爭踐踏",
 	["Whirling Barrage"] = "旋轉彈幕",
 	["Whirlwind"] = "旋風斬",
+	-- Scarlet Monastery's spells from the owner's recording (2026-11-16; drafted, to be checked: the game's own names in this language not read)
+	["Arcane Bubble"] = "秘法泡泡",
+	["Crusader Strike"] = "十字軍打擊",
+	["Deep Sleep"] = "深度睡眠",
+	["Dispel Magic"] = "驅散魔法",
+	["Lay on Hands"] = "聖療術",
 }
 
 L.STRINGS = {
+	-- Blackmaw Hold's new notes (facts from players' guides the owner OK'd on 2026-11-18; drafted, to be checked):
+	-- Bonesnout's Ritualists, the Blackmaw Behemoth's Clawbert, the Unbound Spirit's Elder Bramblesnap and totems, the
+	-- way down to Varrox Bleakhoof, and the two rares listed as best guesses. The creatures' own names stay as the game
+	-- names them in English (their names in this language are not known); the Ritualists and the totems by what they are.
+	["An undead boar guarded by four Legashi Ritualists. Each one still alive makes Bonesnout take a quarter less damage, so while all four stand it can't be hurt: kill them first."] = "一頭不死野豬，由四名雷加希儀式師守護。每有一名儀式師存活，Bonesnout受到的傷害就降低四分之一，所以四名都活著時牠無法被傷害：先擊殺他們。",
+	["To reach him, drop through the hole behind the Blackmaw Behemoth: you land in the pool in front of him. An updraft there takes you back up."] = "要到達他那裡，從Blackmaw Behemoth身後的洞口跳下去：你會落進他面前的水池。那裡的上升氣流會把你送回上面。",
+	["A huge dire furbolg. Clawbert, a furbolg shaman, fights beside it and keeps healing it: kill him first."] = "一隻巨大的凶猛熊怪。熊怪薩滿Clawbert在牠身邊作戰，並不斷治療牠：先擊殺他。",
+	["When Clawbert dies, the Behemoth heals and enrages."] = "Clawbert死亡時，Behemoth會恢復生命力並進入狂怒狀態。",
+	["An elemental, fought before Varrox Bleakhoof. Elder Bramblesnap, a friendly furbolg, starts it."] = "一個元素生物，在Varrox Bleakhoof之前與它交戰。友善的熊怪Elder Bramblesnap會開啟這場戰鬥。",
+	["The Spirit and its three Profane Totems start out immune. Bramblesnap makes the totems breakable one at a time: break each as he does."] = "靈魂和它的三個褻瀆圖騰一開始處於免疫狀態。Bramblesnap會逐一讓圖騰可以被摧毀：他每解除一個，就摧毀一個。",
+	["A rare, listed here as a best guess. It may spawn near the ramp down to the Blackmaw Behemoth."] = "稀有怪物，作為推測列在這裡。牠可能出現在通往Blackmaw Behemoth的下行坡道附近。",
+	["A rare spider, listed here as a best guess. Where it spawns is not known yet."] = "稀有蜘蛛，作為推測列在這裡。尚不清楚牠在哪裡出現。",
+	["A rare, listed here as a best guess. Where it spawns is not known yet."] = "稀有怪物，作為推測列在這裡。尚不清楚牠在哪裡出現。",
+	-- Varrox Bleakhoof's drops, the Mark of Xavius's quest known since 2026-11-19 (drafted, to be checked): the
+	-- items and quests by the names the game gives them in English (their names in this language are not known).
+	["Drops the Head of Varrox Bleakhoof, for Blackmaw Reclamation, and, rarely, the Mark of Xavius, for In Demand - Titan Relics."] = "掉落 Head of Varrox Bleakhoof（用於 Blackmaw Reclamation），偶爾也掉落 Mark of Xavius（用於 In Demand - Titan Relics）。",
+	-- The Drowned City's "Pyromancer" Braxton, a rare (the owner's call of 2026-11-18; drafted, to be checked): his
+	-- three notes and his Head Smash's words. His name and Captain Dreadrise's stay as the game names them in English, as
+	-- the city's other bosses keep theirs; Head Smash is told only as a blow to the head: the game's name for it in this
+	-- language is not known.
+	["A rare in the pirates' part of the city, not far from Captain Dreadrise. As a rare, he may not be there every run."] = "城中海盜區域的稀有怪物，離Captain Dreadrise不遠。作為稀有怪物，他不一定每次都在。",
+	["Despite his name, no fire spell is known for him yet: he hits with Head Smash, which stuns for 2 seconds."] = "儘管名字如此，目前還不知道他有任何火焰法術：他會重擊目標的頭部，使其昏迷2秒。",
+	["The kills recorded so far dropped one of his two items about every time."] = "目前記錄到的擊殺中，他幾乎每次都會掉落他的兩件物品之一。",
+	["Hits his target a little harder than a normal blow and stuns it for 2 seconds."] = "對目標造成比普通攻擊稍重的一擊，並使其昏迷2秒。",
+	-- Krol'dok Stronghold's Bossman Toof, in the owner's words, with a player's combat log (2026-11-12, the owner's
+	-- call of 2026-11-14; drafted, to be checked): his notes, and his shamans' and brutes' written abilities. His name
+	-- stays as the game names it.
+	["A series of add waves comes at you as you make your way to him. Bossman Toof himself is a warrior, with Mortal Strike, Thunderclap and Demoralizing Shout."] = "在前往他的路上，會有一波又一波的敵人向你襲來。Bossman Toof本人是一名戰士，會使用致死打擊、雷霆一擊和挫志怒吼。",
+	["Two Krol'dok Shamans and two Krol'dok Brutes fight beside him. The shamans cast Lightning Bolt and put Bloodlust on him: purge it if you can."] = "兩名克羅爾多克薩滿和兩名克羅爾多克蠻兵在他身邊作戰。薩滿會施放閃電箭，並對他施加嗜血術：如果可以，請將其淨化。",
+	["Lightning Bolt"] = "閃電箭",
+	["The Krol'dok Shamans cast it at players, one every 4 to 12 seconds between the two of them."] = "兩名克羅爾多克薩滿合計每4到12秒對玩家施放一次。",
+	["Cleave"] = "順劈斬",
+	["The Krol'dok Brutes' Cleave hits their target and the players next to it."] = "克羅爾多克蠻兵的順劈斬會擊中其目標及其身邊的玩家。",
+	-- Overseer Mugg's weapon changes and Mugg's Fury, on his Abilities tab (a player's combat log of 2026-11-12, the
+	-- owner's call of 2026-11-14; drafted, to be checked). His Crushing Slam is named only as a slam: the game's name
+	-- for it in this language is not known.
+	["He takes up two one-handed maces, and his melee hits harder. It came 52 seconds into one fight and 30 seconds into a faster kill, so it likely comes at a set point of his health (a best guess). With the maces his Crushing Slam can hit three players at once."] = "他拿起兩把單手錘，近戰攻擊變得更重。一場戰鬥中出現在第52秒，一次更快的擊殺中出現在第30秒，所以很可能在他的生命值降到某個點時出現（推測）。拿著雙錘時，他的猛擊可以同時擊中三名玩家。",
+	["He takes up two two-handed mauls, and his melee hits harder again. It came 72 seconds into one fight and 47 seconds into a faster kill, so it likely comes at a set point of his health too (a best guess)."] = "他拿起兩把雙手大錘，近戰攻擊又變得更重。一場戰鬥中出現在第72秒，一次更快的擊殺中出現在第47秒，所以很可能同樣在他的生命值降到某個點時出現（推測）。",
+	["Each of his melee hits makes him attack faster. It starts over each time he changes weapons."] = "他的每次近戰命中都會讓他攻擊得更快。每次更換武器時都會重新開始。",
 	["120 Merchant's Favor"] = "120 商人青睞",
 	["1200 Merchant's Favor"] = "1200 商人青睞",
 	["1500 Merchant's Favor"] = "1500 商人青睞",
@@ -633,6 +712,7 @@ L.STRINGS = {
 	["A Stone Rumbler stands with him and fights at his side."] = "一隻岩石轟鳴者陪在他身旁，與他並肩作戰。",
 	["A Taste of Flame"] = "烈焰的滋味",
 	["A Titan dig site above Whelgar's Excavation, caught out of time, where the Titans' constructs answer to no one now. Inside: the Lost Marsh, Stalker's Thicket, the Site of the Guardian and the Lost Dig Site."] = "位於維爾加挖掘場上方的泰坦挖掘場，被困在時間之外，泰坦的構造體如今已不聽命於任何人。內部區域：失落沼澤、潛獵者密林、守護者之地與失落挖掘場。",
+	["Inside: the Lost Marsh, Stalker's Thicket, the Site of the Guardian and the Lost Dig Site."] = "內部區域：失落沼澤、潛獵者密林、守護者之地與失落挖掘場。",
 	["A Titan vault buried under the Badlands, where Dark Iron dwarves and troggs dig for the secrets of the earthen, and the stone keeper Archaedas guards the deepest hall."] = "埋藏在荒蕪之地底下的泰坦寶庫，黑鐵矮人和穴居人在此挖掘土靈的秘密，而石之守護者阿扎達斯鎮守著最深處的大廳。",
 	["A Twilight's Hammer shaman patrolling the tunnels."] = "在通道中巡邏的暮光之錘薩滿。",
 	["A Vengeful Fate"] = "復仇的命運",
@@ -670,7 +750,7 @@ L.STRINGS = {
 	["A rare spawn: not every run meets him. At 15% health he runs for help."] = "稀有怪：不是每次都會遇到他。生命力15%時他會逃跑求援。",
 	["A rare. A Stone Rumbler fights with him; interrupt his Lightning Bolt, and finish him before he runs for help at 15% health."] = "稀有怪。一隻岩石轟鳴者會與他並肩作戰；打斷他的閃電箭，並在他生命力15%逃跑求救前解決他。",
 	["A rare. He calls two Burning Servants; interrupt his Fireball, and a priest or a shaman can remove his fire shield."] = "稀有怪。他會召喚兩個燃燒僕從；打斷他的火球術，牧師或薩滿可以移除他的火焰之盾。",
-	["A rare. He cuts the tank's armour by three quarters, and at 15% health runs for help: finish him first."] = "稀有怪。他會使坦克的護甲降低四分之三，生命力降到15%時會逃跑求援：務必搶先解決他。",
+	["A rare. He cuts the tank's armor by three quarters, and at 15% health runs for help: finish him first."] = "稀有怪。他會使坦克的護甲降低四分之三，生命力降到15%時會逃跑求援：務必搶先解決他。",
 	["A satyr on the walkway above Jergosh's chamber."] = "耶戈什房間上方走道上的薩特。",
 	["A slow heal (3.5 seconds) on himself or an ally. Interrupt it."] = "對自己或一名盟友施放的緩慢治療（3.5秒）。打斷它。",
 	["A storm of dust that hits the group for about 160 to 330 nature damage. Healers, be ready for it."] = "一陣塵暴，對隊伍造成約160到330點自然傷害。治療者要做好準備。",
@@ -723,7 +803,7 @@ L.STRINGS = {
 	["An Unsent Letter"] = "一封未寄出的信",
 	["An arcane golem by the Magus Commerce Exchange, guarded by Angry Tomes. Its Malfunction hits everyone within 25 yards."] = "魔導師商業交易所旁的秘法魔像，由憤怒的魔典守護。它的故障會擊中25碼內的所有人。",
 	["An escort: Grark is held at the Blackrock fortress in the Burning Steppes."] = "護送任務：格拉克被關在燃燒平原的黑石要塞。",
-	["An ogre foreman with heavy armour who hits hard; the first boss inside."] = "身穿重甲、攻擊沉重的巨魔工頭；副本內的第一個首領。",
+	["An ogre foreman with heavy armor who hits hard; the first boss inside."] = "身穿重甲、攻擊沉重的巨魔工頭；副本內的第一個首領。",
 	["An ogre stronghold packed with warriors, where the Twilight's Hammer has found willing allies."] = "一座擠滿戰士的巨魔要塞，暮光之錘在這裡找到了甘願合作的盟友。",
 	["An ogre who throws lightning that jumps between players."] = "一名巨魔，會施放在玩家之間跳躍的閃電。",
 	["An ooze soaked in radiation, in the Hall of Gears."] = "浸透輻射的軟泥怪，位於齒輪大廳。",
@@ -813,7 +893,6 @@ L.STRINGS = {
 	["Beneath Ironforge, Dun Morogh"] = "丹莫洛，鐵爐堡地底",
 	["Beneath Ironforge, someone has broken into the tomb of the dwarven kings."] = "在鐵爐堡地底，有人闖入了矮人諸王的陵墓。",
 	["Beneath Moonbrook lie the gold mines Stormwind abandoned during the First War. Edwin VanCleef's Defias Brotherhood has made them its stronghold, and deep inside, in a hidden sea cave, his crew is finishing a warship meant for Stormwind."] = "月溪鎮地底是暴風城在第一次大戰期間廢棄的金礦。艾德溫·范克里夫的迪菲亞兄弟會將這裡占為據點，而在礦坑深處一座隱密的海蝕洞中，他的手下正在趕造一艘用來對付暴風城的戰艦。",
-	["Beneath Orgrimmar's Cleft of Shadow runs a chasm of lava and stone where troggs, fire elementals and the Searing Blade, a cult of demon-worshippers, have taken root under the Horde's capital."] = "奧格瑪的暗影裂口下方，是一道由熔岩與岩石構成的裂谷。穴居人、火元素，以及崇拜惡魔的邪教灼熱之刃，已在部落首都的地底紮根。",
 	["Betina Bigglezink"] = "貝蒂娜·比格辛克",
 	["Betina Bigglezink, Eastern Plaguelands"] = "貝蒂娜·比格辛克，東瘟疫之地",
 	["Bijou's Belongings"] = "比修的物品",
@@ -898,7 +977,6 @@ L.STRINGS = {
 	["Bring the Tablet of Ryun'eh to Theldurin the Lost."] = "把雷烏納石板交給迷失者塞爾杜林。",
 	["Bring the Tiara of the Deep to Tabetha in Dustwallow Marsh."] = "把深淵頭冠帶給塵泥沼澤的塔貝薩。",
 	["Bring the Titan Relic to Prospector Whelgar at his excavation in the Wetlands."] = "把泰坦遺物帶給濕地挖掘場的勘察員維爾加。",
-	["Bring the book Rituals of Power, from the Library, to Magus Tirth."] = "把圖書館裡的《能量儀式》一書交給魔導師提爾斯。",
 	["Bring the following to Falrin Treeshaper inside Dire Maul: 1 Jeering Spectre's Essence, 4 Dark Runes and 8 Large Brilliant Shards."] = "把以下物品交給厄運之槌內的法琳·樹形者：1個嘲弄幽靈精華、4個黑暗符文和8個大型魔光碎片。",
 	["Bring twenty-four Robo-mechanical Guts to Shoni in Stormwind."] = "把二十四個機械內臟交給暴風城的修尼。",
 	["Brohann Caskbelly, Stormwind City"] = "布洛漢·桶腹，暴風城",
@@ -999,6 +1077,7 @@ L.STRINGS = {
 	["Dalaran"] = "達拉然",
 	["Dalaran Patrols"] = "達拉然巡邏隊",
 	["Dalaran, the city of the Kirin Tor, stands rebuilt in the Alterac Mountains, its magic barrier gone and its streets overrun. Go in through the sewers, to a portal at the end of a long pipe, then fight up through the streets to the Shade of the Archmage.\n\nImmunities: much of the city takes no Arcane damage. Constructs and elementals ignore bleeds and poisons, and the treants take no Nature damage, though they bleed.\n\nTrash: interrupt the Mana Phantoms' Mana Burn, and stand in the pool a Saturated Remnant leaves behind to regain mana. Every kill gives Kirin Tor reputation."] = "祈倫托之城達拉然已在奧特蘭克山脈重建，但魔法屏障已消失，街道也被敵人占據。從下水道進入，走到一條長管道盡頭的傳送門，再一路殺上街道，直到大法師之影。\n\n免疫：城中許多敵人不受秘法傷害。構造體和元素不受流血和毒素影響；樹人不受自然傷害，但會流血。\n\n小怪：打斷法力幻影的法力燃燒，並站進飽和殘餘留下的水池中回復法力。每次擊殺都能獲得祈倫托聲望。",
+	["Go in through the sewers, to a portal at the end of a long pipe, then fight up through the streets to the Shade of the Archmage.\n\nImmunities: much of the city takes no Arcane damage. Constructs and elementals ignore bleeds and poisons, and the treants take no Nature damage, though they bleed.\n\nTrash: interrupt the Mana Phantoms' Mana Burn, and stand in the pool a Saturated Remnant leaves behind to regain mana. Every kill gives Kirin Tor reputation."] = "從下水道進入，走到一條長管道盡頭的傳送門，再一路殺上街道，直到大法師之影。\n\n免疫：城中許多敵人不受秘法傷害。構造體和元素不受流血和毒素影響；樹人不受自然傷害，但會流血。\n\n小怪：打斷法力幻影的法力燃燒，並站進飽和殘餘留下的水池中回復法力。每次擊殺都能獲得祈倫托聲望。",
 	["Damp Note"] = "潮濕的便條",
 	["Dark Iron Legacy"] = "黑鐵的遺產",
 	["Data Rescue"] = "資料救援",
@@ -1399,7 +1478,9 @@ L.STRINGS = {
 	["It fears a player and slows another's casting."] = "它會恐懼一名玩家，並減緩另一名玩家的施法速度。",
 	["It keeps calling small Arcane Manalings. Kill them with area damage."] = "它會不斷召喚秘法小法力精。用範圍傷害擊殺它們。",
 	["It roots everyone near it, slows and stuns, and calls Dupe Bugs that its Patch turns into healing."] = "它會定身附近所有人、施放緩速和昏迷，還會召喚複製蟲，再用修補把牠們轉為治療。",
-	["It whirls at everyone close, and its thorns hurt whoever strikes it or an ally nearby, Ramtusk included."] = "牠會旋轉攻擊身邊所有人，牠的荊棘會傷害攻擊牠或附近盟友（包括拉姆塔斯）的人。",
+	-- Overlord Ramtusk's second note, Razorfen Spearhide's own before it became his guards (2026-11-13; drafted, to be
+	-- checked)
+	["His two guards whirl at everyone close, and their thorns hurt whoever strikes them or an ally nearby, Ramtusk included."] = "他的兩名護衛會旋轉攻擊身邊所有人，牠們的荊棘會傷害攻擊牠們或附近盟友（包括拉姆塔斯）的人。",
 	["Item start: Blood-Stained Letter, graveyard inside Ruins of Lordaeron"] = "物品觸發：染血的信，羅德隆廢墟內的墓地",
 	["Its Fathom Stone also calls up Baron Aquanis, an optional fight."] = "它的深淵之石還會喚出阿奎尼斯男爵，可選擊殺。",
 	["Its attack on the tank between the beams, a 1.5-second cast."] = "光束之間對坦克的攻擊，施法1.5秒。",
@@ -1554,8 +1635,31 @@ L.STRINGS = {
 	["Master Apothecary Faranell, Undercity"] = "藥劑大師法拉尼爾，幽暗城",
 	["Master Apothecary Faranell, the Apothecarium, Undercity"] = "藥劑大師法拉尼爾，煉金房，幽暗城",
 	["Master Gadrin, Durotar"] = "加德林大師，杜洛塔",
+	-- Alcaz Prison's Before you go (the owner's report, 2026-11-12; drafted, to be checked)
+	["Master Mathias Shaw, at SI:7 in Stormwind's Old Town, gives Our Man in Theramore. At the inn in Theramore, the dwarf Sully McCleary sends you to meet him behind the graveyard, then up Jaina Proudmoore's tower in disguise to listen in. After that, he gives The Secret Prison and A Bit of Wet Work."] = "暴風城舊城區軍情七處的馬迪亞斯·蕭爾大師給予Our Man in Theramore。在塞拉摩的旅店，矮人Sully McCleary要你到墓地後面與他會面，然後喬裝登上珍娜·普勞德摩爾的法師塔偷聽。之後，他給予The Secret Prison和A Bit of Wet Work。",
+	-- Alcaz Prison's Before you go, the Horde's (the owner's report, 2026-11-12; drafted, to be checked)
+	["Sergeant Ulka waits outside the prison on Alcaz Island. She sends you in after Commander Folkar and asks for A Little Payback; inside, Folkar sends you looking for King Varian Wrynn."] = "Sergeant Ulka在奧卡茲島的監獄外等候。她派你進去追趕Commander Folkar，並給予A Little Payback；在裡面，Folkar會派你去尋找瓦里安·烏瑞恩國王。",
 	["Master Mechanic Castpipe — Tinker Town, Ironforge"] = "大技師卡斯派普 — 鐵爐堡地精區",
 	["Master Mechanic Castpipe, Ironforge"] = "大技師卡斯派普，鐵爐堡",
+	-- Alcaz Prison's Before you go (the owner's report, 2026-11-12; drafted, to be checked)
+	["Mathias Shaw's errand"] = "馬迪亞斯·蕭爾的差事",
+	-- Alcaz Prison: the Alcaz Operative Insignia's chain (the owner's steps, 2026-11-13; drafted, to be checked). The
+	-- quest and new NPC names stay English, as the game shows them; the items' names as their pages in the language
+	-- give them (a best guess that they are the game's own, not checked in game); Renzik's and Nazgrel's names as
+	-- the game has them in the language
+	["Toy: Alcaz Operative Insignia"] = "玩具：Alcaz Operative Insignia",
+	["If you want this toy, skip The Questioner on your way in. At the end, the prisoner Mason Connery sends you back for The Questioner's key, then to the inn at Moonbrook in Westfall for a Document Box: don't sell it. Bring it to Renzik \"The Shiv\" at SI:7 in Stormwind for State Secrets. Six {item:279450:Fractured Insignia:2} make the {item:279471:Alcaz Operative Insignia:3}, and they can be traded."] = "如果你想要這件玩具，進去時先跳過The Questioner。在最後，囚犯Mason Connery會讓你回去取The Questioner的鑰匙，然後讓你去西部荒野月溪鎮的旅店取一個文件箱：不要賣掉它。把它交給暴風城軍情七處的『剃刃』雷吉克，接受State Secrets。六個{item:279450:破裂的徽記:2}可以合成{item:279471:Alcaz Operative Insignia:3}，而且它們可以交易。",
+	["If you want this toy, skip The Questioner on your way in. At the end, the prisoner Mason Connery sends you back for The Questioner's key, then to the inn at Moonbrook in Westfall for a Document Box: don't sell it. Bring it to Nazgrel, in Grommash Hold in Orgrimmar, for State Secrets. Six {item:279450:Fractured Insignia:2} make the {item:279471:Alcaz Operative Insignia:3}, and they can be traded."] = "如果你想要這件玩具，進去時先跳過The Questioner。在最後，囚犯Mason Connery會讓你回去取The Questioner的鑰匙，然後讓你去西部荒野月溪鎮的旅店取一個文件箱：不要賣掉它。把它交給奧格瑪葛羅姆許要塞的納茲格雷爾，接受State Secrets。六個{item:279450:破裂的徽記:2}可以合成{item:279471:Alcaz Operative Insignia:3}，而且它們可以交易。",
+	["If you want the Alcaz Operative Insignia toy, or the Alliance's Somber News and Shaw Needs To Know, skip him on your way in: his key is for Mason Connery's quest at the end, The Man in the Iron Chains, which they all need."] = "如果你想要玩具Alcaz Operative Insignia，或聯盟任務Somber News和Shaw Needs To Know，進去時先跳過他：他的鑰匙用於最後Mason Connery的任務The Man in the Iron Chains，它們都需要這個任務。",
+	["Mason Connery is a prisoner chained at the end of the prison. The Questioner must still be alive: skip him on your way in, then go back for him once you have this quest. He drops the Ornate Shackle Key. Everyone in the group should hand it in at the same time: once one player frees him, he walks off, and the others can't hand it in. This quest can't be shared."] = "Mason Connery是被鎖在監獄盡頭的囚犯。The Questioner必須還活著：進去時先跳過他，接到這個任務後再回去找他。他會掉落華麗鐐銬鑰匙。隊伍裡所有人應同時交任務：一旦有一名玩家解救了他，他就會走開，其他人便無法再交任務。此任務無法分享。",
+	["Mason Connery's treasure, upstairs in the inn at Moonbrook, Westfall"] = "Mason Connery的寶藏，西部荒野月溪鎮旅店二樓",
+	["Mason's note reads \"WF, 43.4, 67.8\": the inn at Moonbrook in Westfall. Upstairs, click the loose floorboard, then hand the quest in at Connery's Trunk beside it. Don't sell the Document Box it gives you (a vendor pays 25 gold): State Secrets needs it. This quest can't be shared."] = "Mason Connery的紙條上寫著「WF, 43.4, 67.8」：西部荒野月溪鎮的旅店。在二樓點擊鬆動的地板，然後在旁邊的Connery's Trunk交任務。不要賣掉它給你的文件箱（商人出價25金）：State Secrets需要它。此任務無法分享。",
+	["Renzik \"The Shiv\", SI:7, Old Town, Stormwind City"] = "『剃刃』雷吉克，暴風城舊城區軍情七處",
+	["Renzik \"The Shiv\""] = "『剃刃』雷吉克",
+	["Nazgrel, Grommash Hold, Orgrimmar"] = "納茲格雷爾，奧格瑪葛羅姆許要塞",
+	["Nazgrel"] = "納茲格雷爾",
+	["It needs the Document Box from More Valuable Than Gold. Its reward, the {item:279450:Fractured Insignia:2}, can be traded: six of them combine into the {item:279471:Alcaz Operative Insignia:3}, a toy. One run is enough: trade or buy the other five. This quest can't be shared. The Horde has its own State Secrets."] = "需要More Valuable Than Gold得到的文件箱。它的獎勵{item:279450:破裂的徽記:2}可以交易：六個可以合成玩具{item:279471:Alcaz Operative Insignia:3}。做一遍就夠了：其餘五個去交易或購買。此任務無法分享。部落有自己的State Secrets。",
+	["It needs the Document Box from More Valuable Than Gold. Its reward, the {item:279450:Fractured Insignia:2}, can be traded: six of them combine into the {item:279471:Alcaz Operative Insignia:3}, a toy. One run is enough: trade or buy the other five. This quest can't be shared. The Alliance has its own State Secrets."] = "需要More Valuable Than Gold得到的文件箱。它的獎勵{item:279450:破裂的徽記:2}可以交易：六個可以合成玩具{item:279471:Alcaz Operative Insignia:3}。做一遍就夠了：其餘五個去交易或購買。此任務無法分享。聯盟有自己的State Secrets。",
 	["Mathiel, Darnassus"] = "瑪希爾，達納蘇斯",
 	["Mathrengyl Bearwalker, Darnassus"] = "瑪斯雷·馭熊者，達納蘇斯",
 	["Maur Grimtotem's corpse, Ragefire Chasm"] = "瑪爾·恐怖圖騰的屍體，怒焰裂谷",
@@ -1624,7 +1728,7 @@ L.STRINGS = {
 	["Neeru Fireblade, Cleft of Shadow, Orgrimmar"] = "尼魯·火刃，奧格瑪暗影裂口",
 	["Nekrum's Medallion"] = "耐克魯姆的徽章",
 	["New in Forever. Where it starts isn't known yet."] = "Forever 新增內容。起始地點目前尚不清楚。",
-	["New in Forever: Arcanist Doan has the book."] = "Forever 新增：書在秘法師杜安身上。",
+	["New in Forever. The book is picked up in the monastery, most likely in the Library, not dropped by Arcanist Doan."] = "Forever 新增：書要在修道院內拾取，很可能在圖書館區；秘法師杜安不會掉落它。",
 	["New in Forever: part 2, given in the Undercity once the Abominable Head is with Master Apothecary Faranell."] = "Forever 新增：第二部分，將憎惡的頭顱交給藥劑大師法拉尼爾後，在幽暗城接取。",
 	["New in Forever: part 4, in the Undercity."] = "Forever 新增：第四部分，在幽暗城。",
 	["New in Forever: the last part, back to Master Apothecary Faranell in the Undercity."] = "Forever 新增：最後一部分，回到幽暗城找藥劑大師法拉尼爾。",
@@ -1753,6 +1857,49 @@ L.STRINGS = {
 	["Retrieve Mythology of the Titans from the Monastery and bring it to Librarian Mae Paledust in Ironforge."] = "從修道院取回《泰坦神話》，交給鐵爐堡的圖書管理員梅·蒼塵。",
 	["Retrieve The Lost Magic of the Runemasters from the Scarlet Monastery."] = "從血色修道院取回《符文大師的失落魔法》。",
 	["Retrieve a Fel Infused Blossom from Dalaran's central garden."] = "從達拉然的中央花園取回一朵魔能灌注之花。",
+	-- Alcaz Prison's way in from Stormwind (the owner's report, 2026-11-12; drafted, to be checked)
+	["Sully McCleary, behind Theramore's graveyard, Dustwallow Marsh"] = "Sully McCleary，塞拉摩墓地後面，塵泥沼澤",
+	["Sully leaves the inn first. Wait until he is gone, then meet him behind the graveyard outside town."] = "Sully會先離開旅店。等他走遠後，到鎮外墓地後面與他會面。",
+	["Sully's SI:7 Disguise Kit makes you look like a Kul Tiras marine. Don't go near Jaina: she sees through it. If you lose the disguise, Sully gives you another kit."] = "Sully的軍情七處偽裝工具組能讓你看起來像庫爾提拉斯水兵。不要靠近珍娜：她能看穿偽裝。偽裝遺失後，Sully會再給你一組。",
+	-- Krol'dok Stronghold's ways in (the owner's notes of 2026-11-18; drafted, to be checked): the steps' givers and
+	-- takers, the key's smiths and the follow-ups' taker too, and the steps' notes. The new people, places and items
+	-- keep the English names the game gives them; the quests' own names and objectives stay English
+	["Krom'rosh, Rog'mar, Riverglades"] = "Krom'rosh，Rog'mar，河澤林地",
+	["Tran'gul, Rog'mar, Riverglades"] = "Tran'gul，Rog'mar，河澤林地",
+	["Kreza Darkthorn, Rog'mar, Riverglades"] = "Kreza Darkthorn，Rog'mar，河澤林地",
+	["Clubtoe, under a ruined house in Sunnyglade, Riverglades"] = "Clubtoe，Sunnyglade一座廢墟房屋之下，河澤林地",
+	["A dead Twilight Brute, in the caves under Sunnyglade, Riverglades"] = "一具Twilight Brute的屍體，Sunnyglade下方的洞穴中，河澤林地",
+	["Clugfist, Bolder'ok, Riverglades"] = "Clugfist，Bolder'ok，河澤林地",
+	["Da'grosh, outside Krol'dok Stronghold, Riverglades"] = "Da'grosh，克洛多克要塞外，河澤林地",
+	["Crag'rog, in a cave near Da'grosh, Riverglades"] = "Crag'rog，Da'grosh附近的洞穴中，河澤林地",
+	["Demar Brant, Farholde Keep, Riverglades"] = "Demar Brant，Farholde Keep，河澤林地",
+	["Ashe Amberhall, Farholde Keep, Riverglades"] = "Ashe Amberhall，Farholde Keep，河澤林地",
+	["Alphonse Dumas, Farholde Keep, Riverglades"] = "Alphonse Dumas，Farholde Keep，河澤林地",
+	["Melanie Sable, Farholde Keep, Riverglades"] = "Melanie Sable，Farholde Keep，河澤林地",
+	["Sergeant Riftan, the Twilight's Shroud, Riverglades"] = "Sergeant Riftan，Twilight's Shroud，河澤林地",
+	["It can't be shared."] = "此任務無法分享。",
+	["An elite quest: bring friends. Overlord Kilgar is in the big hut in the Twilight's Shroud, at 26.6, 44.8."] = "菁英任務：帶上朋友。Overlord Kilgar在Twilight's Shroud的大棚屋裡，座標26.6, 44.8。",
+	["Da'grosh gives you the missive, Blood and Battle. It can't be shared."] = "Da'grosh會交給你信件Blood and Battle。此任務無法分享。",
+	["Few priests show at first: they take the scouts' places as those come back, so kill scouts until enough priests appear."] = "起初牧師很少：偵察兵重生時，牧師會取代他們出現，所以不斷擊殺偵察兵，直到出現足夠的牧師。",
+	["Clubtoe is down the stairs into a cellar under a ruined house in Sunnyglade, at 50, 46. Beat him until he gives in (it flags you for PvP)."] = "Clubtoe在Sunnyglade一座廢墟房屋下的地窖裡，順著樓梯下去即到，座標50, 46。揍他直到他屈服（這會讓你進入PvP狀態）。",
+	["The circles can't be used while shapeshifted."] = "變形狀態下無法使用這些法陣。",
+	["An elite quest: bring friends. Chogg'Zac is at the far end of the caves under Sunnyglade."] = "菁英任務：帶上朋友。Chogg'Zac在Sunnyglade下方洞穴的最深處。",
+	["Klunk has Skullbasher, the club this asks for. He is in the cave whose way in is at 76, 26, in a small pocket on its left."] = "任務要的棍棒Skullbasher在Klunk身上。他在入口位於76, 26的洞穴裡，左側的一個小凹處。",
+	["The Twilight Champions drop the Twilight Keys. The other side's scouts have cages of their own: if a cage won't open, try another."] = "Twilight Champion會掉落Twilight Key。另一陣營的偵察兵有自己的籠子：如果某個籠子打不開，就換一個試試。",
+	["The pages are small white maps on crates in Sunnyglade's ruined houses."] = "這些書頁是Sunnyglade廢墟房屋裡箱子上的白色小地圖。",
+	-- Krol'dok Stronghold's ways in before you go (the owner's notes of 2026-11-18; drafted, to be checked): each side's
+	-- chain's title and text; the quests' names and the new people and places keep the English the game gives them
+	["The road from Rog'mar"] = "從Rog'mar出發的路",
+	["Krom'rosh, in Rog'mar in the Riverglades, gives A Message in Blood and Food for the Taking, then Show Them How It's Done. Tran'gul, in the building just north of him, gives Twilight Missives, then Digging for Answers, which sends you to the ogre Clubtoe, under a ruined house in Sunnyglade. After Clubtoe's quests, take Chogg's head to Tran'gul and on to Clugfist in Bolder'ok, to the north. After his two quests, Clugfist's Decree takes you back to Krom'rosh for The Wayward Warrior. Da'grosh, west of Rog'mar, wants three quests and then his elite Bring Me His Head: bring friends. That opens his A Token of Vengeance, and his It Is Time, Brother... takes you back to Krom'rosh for Eye of Mugg; Tran'gul then gives Tome of Twilight."] = "河澤林地Rog'mar的Krom'rosh會給你A Message in Blood和Food for the Taking，之後是Show Them How It's Done。就在他北邊那座建築裡的Tran'gul會給你Twilight Missives，之後是Digging for Answers，它會把你派往Sunnyglade一座廢墟房屋之下的巨魔Clubtoe。完成Clubtoe的任務後，把Chogg的頭帶給Tran'gul，再帶到北方Bolder'ok的Clugfist那裡。完成他的兩個任務後，Clugfist's Decree會讓你回到Krom'rosh那裡接The Wayward Warrior。Rog'mar西邊的Da'grosh要你先完成三個任務，再完成他的菁英任務Bring Me His Head：帶上朋友。這會開啟他的A Token of Vengeance，而他的It Is Time, Brother...會讓你回到Krom'rosh那裡接Eye of Mugg；之後Tran'gul會給你Tome of Twilight。",
+	["The road from Farholde Keep"] = "從Farholde Keep出發的路",
+	["In Farholde Keep, in the Riverglades, do Ashe Amberhall's Scraps of Knowledge and Demar Brant's Saving Sunnyglade (one of them may be enough) for Brant's The Western Front, which sends you to Sergeant Riftan in the Twilight's Shroud. Do his No Soldier Left Behind and Carving a Path, then his elite Bring Me His Head: bring friends. Then Riftan gives Twilight Mementos, and Brant Eye of Mugg. Ashe's own Tome of Twilight comes after her Curious Trinkets and A Small Favor."] = "在河澤林地的Farholde Keep，完成Ashe Amberhall的Scraps of Knowledge和Demar Brant的Saving Sunnyglade（也許只需其中一個），以接到Brant的The Western Front，它會把你派往Twilight's Shroud的Sergeant Riftan那裡。完成他的No Soldier Left Behind和Carving a Path，再完成他的菁英任務Bring Me His Head：帶上朋友。之後Riftan會給你Twilight Mementos，Brant會給你Eye of Mugg。Ashe自己的Tome of Twilight在她的Curious Trinkets和A Small Favor之後。",
+	-- Alcaz Prison's way in from Orgrimmar (the owner's answer, 2026-11-12; drafted, to be checked)
+	["Orgrimmar's errand"] = "奧格瑪的差事",
+	["Eitrigg, in Grommash Hold in Orgrimmar, gives The Missing Kor'kron, which sends you to Nazeer Bloodpike in Brackenwall Village. He gives The Elite of the Elite, an elite quest: bring friends to find the missing Kor'kron on Alcaz Island. There, the wounded Sergeant Ulka gives Right Place, Wrong Time."] = "奧格瑪葛羅姆許要塞的伊崔格給予The Missing Kor'kron，讓你去蕨牆村找納澤爾‧血矛。他給予菁英任務The Elite of the Elite：帶上朋友，去奧卡茲島尋找失蹤的柯爾克隆。在那裡，受傷的Sergeant Ulka給予Right Place, Wrong Time。",
+	["Eitrigg, Grommash Hold, Orgrimmar"] = "伊崔格，奧格瑪葛羅姆許要塞",
+	["Nazeer Bloodpike, Brackenwall Village, Dustwallow Marsh"] = "納澤爾‧血矛，蕨牆村，塵泥沼澤",
+	["Nazeer Bloodpike"] = "納澤爾‧血矛",
+	["An elite quest: bring friends. Nazeer thinks the Kor'kron went to Alcaz Island."] = "菁英任務：帶上朋友。納澤爾認為柯爾克隆去了奧卡茲島。",
 	-- A Green Sample's note (the owner, 2026-11-11; drafted, to be checked)
 	["The Fel Infused Blossom grows on the ground near the Fel Ancient, in the central garden: pick it up there."] = "魔能灌注之花長在中央花園裡魔化古樹附近的地上，在那裡拾取即可。",
 	["Retrieve the 99-Year-Old Port from Mad Magglish in Wailing Caverns."] = "從哀嚎洞穴的瘋狂的馬格利什手中取回99年陳釀波特酒。",
@@ -2062,6 +2209,7 @@ L.STRINGS = {
 	["The Royal Rescue"] = "皇家救援",
 	["The Scarlet Crusade's armory and training halls, where Herod, the Scarlet Champion, drills the Crusade's soldiers."] = "血色十字軍的軍械庫和訓練大廳，血色勇士赫洛德在此操練十字軍的士兵。",
 	["The Scarlet Monastery was a seat of Lordaeron's priesthood until the Scarlet Crusade made it their stronghold after the Third War. In its graveyard wing the Crusade's interrogators work, and the dead buried there no longer rest."] = "血色修道院曾是羅德隆神職人員的據點，第三次大戰後被血色十字軍佔為要塞。十字軍的審訊者在墓地區工作，而葬在那裡的死者已不再安息。",
+	["In its graveyard wing the Crusade's interrogators work, and the dead buried there no longer rest."] = "十字軍的審訊者在墓地區工作，而葬在那裡的死者已不再安息。",
 	["The Scepter of Celebras"] = "塞雷布拉斯節杖",
 	["The Scourge still holds the ruins of the old capital, where a necromancer is building his strength."] = "天譴軍仍盤據著舊都的廢墟，一名死靈法師正在此積蓄力量。",
 	["The Shattered Necklace"] = "破碎的項鍊",
@@ -2090,10 +2238,10 @@ L.STRINGS = {
 	["The Wrath of Rath'mael"] = "拉斯瑪爾之怒",
 	["The braziers of the sanctum open the way to Aku'mai; each one lit calls a wave of enemies, so rest between them."] = "聖殿的火盆會開啟通往阿庫麥爾的路；每點燃一座就會引來一波敵人，所以每波之間要休息。",
 	["The broodmother of the black dragonflight waits in her lair beneath the Wyrmbog. Forever's version is not known yet."] = "黑龍軍團的龍后在巨龍沼澤下方的巢穴中等待。Forever 版本的內容目前尚未得知。",
+	["Forever's version is not known yet."] = "Forever 版本的內容目前尚未得知。",
 	["The chain starts with the Dark Iron Map, which Dark Iron Spies and Captain Beld in Dun Morogh drop."] = "此任務鏈始於黑鐵地圖，由丹莫洛的黑鐵間諜和貝爾德隊長掉落。",
 	["The creatures still alive in his room join the fight when he is pulled. Clear the room first."] = "拉到他時，房間裡還活著的生物都會加入戰鬥。先清空房間。",
 	["The crest is not always in the same place: on the floor of a tower near Bjork, or on the wall of the small temple at the far end, past him, among other spots."] = "紋章的位置不固定：可能在比約克附近一座塔的地板上，或在他後方最深處小神殿的牆上，也可能在其他地點。",
-	["The dead side of Stratholme: Baron Rivendare's ziggurats and slaughterhouse, where the Scourge readies its armies."] = "斯坦索姆的亡靈區：瑞文戴爾男爵的通靈塔與屠宰場，天譴軍在此整備大軍。",
 	["The eastern wing of Eldre'Thalas, the ruined night elf city, overrun by satyrs and corrupted treants under Alzzin the Wildshaper."] = "埃德雷薩拉斯的東翼。這座荒廢的夜精靈城市已被奧茲恩麾下的薩特與腐化樹人佔據。",
 	["The foreman is in the tunnels before the portal into the dungeon."] = "工頭位於副本傳送門前的隧道中。",
 	["The hydra at the end of the Deeps, and the hardest fight here: keep a steady tank and healer on it."] = "深淵盡頭的九頭蛇，也是這裡最難的戰鬥：需要穩定的坦克和治療者。",
@@ -2108,7 +2256,6 @@ L.STRINGS = {
 	["The last boss: a stone construct of the Titans."] = "最後一個首領：泰坦的石製構造體。",
 	["The last dungeon step of the Defias Brotherhood chain: do the earlier steps first."] = "迪菲亞兄弟會任務鏈在副本中的最後一步：請先完成前面的步驟。",
 	["The last step of the Hidden Enemies chain."] = "隱藏的敵人任務鏈的最後一步。",
-	["The living side of plagued Stratholme, where the Scarlet Crusade holds out against the Scourge under Grand Crusader Dathrohan, the dreadlord Balnazzar in disguise."] = "瘟疫蔓延的斯坦索姆中屬於生者的一側。血色十字軍在大十字軍戰士達索漢的率領下抵抗天譴軍，而他其實是恐懼魔王巴納札爾假扮的。",
 	["The locked vaults"] = "上鎖的寶庫",
 	["The longer the fight, the more worgs join him: a Bleak Worg after 30 to 45 seconds, then a Slavering Worg, then a Lupine Horror."] = "戰鬥拖得越久，加入他的座狼就越多：30到45秒後出現一隻荒涼座狼，接著是一隻垂涎座狼，然後是一隻狼人恐魔。",
 	["The longer the fight, the more worgs join him: kill him quickly."] = "戰鬥拖得越久，加入他的座狼就越多：盡快擊殺他。",
@@ -2286,7 +2433,6 @@ L.STRINGS = {
 	["When the tank reaches him: Nature damage and a 5-second stun around him."] = "坦克接近他時：對他周圍造成自然傷害並使其昏迷5秒。",
 	["Where the demigod Agamaggan fell, his blood grew into a sprawl of giant thorns, and the quilboar made it their sacred home. Undead envoys have lately been seen among them, and Charlga Razorflank rules the Kraul from its heart."] = "半神阿迦瑪甘倒下之處，他的鮮血長成了一大片巨大的荊棘，野豬人將這裡當作神聖的家園。近來有人在他們之中看見不死族的使者，而卡爾加·刺肋則在剃刀沼澤的中心統治著這裡。",
 	["White Punch Card"] = "白色穿孔卡片",
-	["Whoever strikes him or an ally near him, Overlord Ramtusk included, takes Nature damage."] = "攻擊他或他身邊盟友（包括主宰拉姆塔斯）的人會受到自然傷害。",
 	["Wilder Thistlenettle"] = "威爾德·刺蕁麻",
 	["Wilder Thistlenettle, Stormwind"] = "威爾德·刺蕁麻，暴風城",
 	["Wilder Thistlenettle, the Dwarven District, Stormwind"] = "威爾德·刺蕁麻，矮人區，暴風城",
@@ -2748,6 +2894,8 @@ L.STRINGS = {
 	["Rizzle's Schematics"] = "瑞茲爾的設計圖",
 	["Shattered Necklace"] = "破碎的項鍊",
 	["Optional: it leads to The Hidden Chamber."] = "可選：後續為「隱藏的房間」。",
+	-- Uldaman's Restoring the Necklace: take it before Archaedas (2026-11-18; drafted, to be checked)
+	["Hand in Find the Gems with the phial and take this before you fight Archaedas: he drops the power source only while it is in your log."] = "用小瓶交掉「尋找寶石」，並在與阿扎達斯戰鬥之前接下這個任務：只有當它在你的任務日誌裡時，他才會掉落能量源。",
 	["The Executioner's Key"] = "劊子手的鑰匙",
 	["The Sandfury Executioner drops the {item:8444:Executioner's Key:1}. In the original game, it opened the prisoners' cages on the pyramid, and freeing them started the fight on the stairs. This is not yet checked on Forever. Sergeant Bly drops the rod Chief Engineer Bilgewhizzle asks for."] = "沙怒劊子手會掉落{item:8444:Executioner's Key:1}。在原版遊戲中，它能打開金字塔上囚犯的籠子，放出他們就會引發台階上的戰鬥。這一點尚未在Forever上確認。布萊中士會掉落首席工程師比格維茲要的那根占卜棒。",
 	["Gahz'rilla, a hidden boss"] = "加茲瑞拉，隱藏首領",
@@ -2767,7 +2915,8 @@ L.STRINGS = {
 	["Offered once one of the four More Components of Importance quests is done. Three Kings of Flame also needs your side's Bodley's Unfortunate Fate, after your class's Anthion's Parting Words."] = "完成四個「更多重要的材料」任務之一後提供。「烈焰三巨頭」還需要完成你陣營的「布德利不幸的命運」，它接在你職業的「安希恩的離別感言」之後。",
 	["Duke Nicholas Zverenhoff then sends you to Lord Maxwell Tyrosus at Light's Hope Chapel, who gives The Argent Hold: open it for a choice of Argent Avenger, Argent Defender or Argent Crusader."] = "之後，尼古拉斯·瑟倫霍夫公爵會派你去聖光之願禮拜堂找麥斯威爾·泰羅索斯領主，他會給予「銀色要塞」：打開它，從銀色復仇者、銀色防禦者和銀色十字軍中選擇一個。",
 	["Stratholme's Key to the City"] = "斯坦索姆的城市之鑰",
-	["Magistrate Barthilas always drops the {item:12382:Key to the City:2}. It is not the key from the City of Dalaran's quest of the same name. In the original game, it opened the Service Entrance's gate from outside, so a group could go straight to the Baron's side. This is not yet checked on Forever."] = "巴瑟拉斯鎮長必定掉落{item:12382:Key to the City:2}。它不是達拉然城同名任務中的鑰匙。在原版遊戲中，它能從外面打開後門的大門，讓隊伍直接前往男爵那一側。這一點尚未在Forever上確認。",
+	-- (0.39.22: the Service Gate, as the page names that door; reworded, drafted, to be checked)
+	["Magistrate Barthilas always drops the {item:12382:Key to the City:2}. It is not the key from the City of Dalaran's quest of the same name. In the original game, it opened the Service Gate from outside, so a group could go straight to the Baron's side. This is not yet checked on Forever."] = "巴瑟拉斯鎮長必定掉落{item:12382:Key to the City:2}。它不是達拉然城同名任務中的鑰匙。在原版遊戲中，它能從外面打開後門，讓隊伍直接前往男爵那一側。這一點尚未在Forever上確認。",
 	-- Forever's own dungeons: Before you go's notes (the Dark Iron Map, the Titan Relic), the Treaty of Understanding and two quest notes (Unending Torment, part 2; Changing Tastes) (2026-10-30; drafted, to be checked)
 	["Treaty of Understanding"] = "諒解條約",
 	["The Dark Iron Map"] = "黑鐵地圖",
@@ -2805,7 +2954,6 @@ L.STRINGS = {
 	["A Crumpled Up Note, dropped by foes inside Blackrock Depths"] = "弄皺的便箋，由黑石深淵內的敵人掉落",
 	-- Another dungeon's quest giver on a chain's step, named as several wings share it or by the one wing keeping it (2026-10-30; drafted, to be checked)
 	["Ysida Harmon, inside Stratholme"] = "伊思達·哈爾蒙，斯坦索姆內",
-	["Ysida Harmon, inside Stratholme: Service Gate"] = "伊思達·哈爾蒙，斯坦索姆：後門內",
 	["Shen'dralar Ancient, inside Dire Maul: Capital Gardens"] = "辛德拉古靈，厄運之槌：中央花園內",
 	["Ancient Equine Spirit, inside Dire Maul: Capital Gardens"] = "上古聖馬之魂，厄運之槌：中央花園內",
 	-- Quests that start from an item: where the item is, without "Item start:" or "Use" (the Quests tab shows it on its own line) (2026-10-30; drafted, to be checked)
@@ -2991,8 +3139,8 @@ L.STRINGS = {
 	["Saving the Best for Last"] = "最好的留到最後",
 	["Back to the Beginning"] = "回到起點",
 	["Speak with Shoni"] = "與修尼談談",
-	["Talk to Furen Longbeard in Stormwind to get your armour."] = "與暴風城的弗倫·長鬚交談，領取你的盔甲。",
-	["Talk to Thun'grim Firegaze in the Barrens to get your armour."] = "與貧瘠之地的索恩格瑞姆·火眼交談，領取你的盔甲。",
+	["Talk to Furen Longbeard in Stormwind to get your armor."] = "與暴風城的弗倫·長鬚交談，領取你的盔甲。",
+	["Talk to Thun'grim Firegaze in the Barrens to get your armor."] = "與貧瘠之地的索恩格瑞姆·火眼交談，領取你的盔甲。",
 	["Kill 12 Mana Surges in the allowed time limit."] = "在限定時間內殺死12個法力湧動。",
 	["Talk to Tabetha in Dustwallow Marsh for your reward."] = "與塵泥沼澤的塔貝薩交談，領取你的獎勵。",
 	["Bring a Kor Gem to Thundris Windweaver in Darkshore."] = "把寇爾寶石交給黑海岸的桑迪斯·織風。",
@@ -3051,7 +3199,6 @@ L.STRINGS = {
 	["Then Falrin Treeshaper gives The Challenge, done at the Ring of Law in Blackrock Depths."] = "之後法琳·樹形者會給予「挑戰」，在黑石深淵的法律之環完成。",
 	["Then Lord Grayson Shadowbreaker gives The Divination Scryer. The chain ends with Judgment and Redemption in Scholomance."] = "之後格雷森·破影者領主會給予「預言水晶球」。任務鏈以通靈學院的「審判和救贖」結束。",
 	["Then Anthion Harmon gives Anthion's Strange Request. The chain goes on to Anthion's Old Friend in Dire Maul."] = "之後安希恩·哈莫會給予「安希恩奇怪的要求」。任務鏈會繼續到厄運之槌的「安希恩的老朋友」。",
-	["Then Duke Nicholas Zverenhoff gives Above and Beyond, done at the Service Gate."] = "之後尼古拉斯·瑟倫霍夫公爵會給予「超越極限」，在後門完成。",
 	["Optional: it leads to Blackfathom Villainy."] = "可選：後續為「黑暗深淵的惡行」。",
 	-- City of Dalaran: the Horde's Heart of Disruption names who starts the chain, as the Image of Archmage Modera gives the quest itself (2026-11-03; drafted, to be checked)
 	["Magus Wordeen Voidglare in Tarren Mill starts the chain with Prison Break In and Key to the City. At the Lordamere Internment Camp, kill four traitors for their artifacts (they take 5 to 10 minutes to come back) and take the Grimy Key from the Warden's Footlocker, upstairs in the two-storey building. Blood in the Streets then leads through the north sewers to the Image of Archmage Modera. It gives the Dalaran Sewer Key, and Shrewd Negotiations follows, to Archmage Celindra. The mote drops from the Shade of the Archmage, the last boss."] = "塔倫米爾的魔導師沃迪恩·虛光以「闖入監獄」和「城市之鑰」開始這條任務線。在洛丹米爾收容所擊殺四名叛徒，取得他們的神器（他們要5到10分鐘才會重生），並從兩層樓建築二樓的典獄官的提箱拿取骯髒的鑰匙。接著「血染街頭」會帶你穿過北側下水道，找到大法師莫德拉的影像。影像會給你達拉然下水道鑰匙，之後接續「精明的談判」，前往大法師賽琳卓處。微粒由最後一個首領大法師之影掉落。",
@@ -3123,6 +3270,16 @@ L.STRINGS = {
 	["Answer Parqual Fintallas' question successfully and then speak to him again. He will remain in the Undercity until you are ready."] = "正確回答帕奎爾·芬塔拉斯的問題，然後再和他談談。在你準備好之前，他會一直待在幽暗城。",
 	["Travel to the Dwarven District in Stormwind and find an engineer who can help."] = "前往暴風城的矮人區，找一位能幫忙的工程師。",
 	["Return to Alba Fairmoon in Westfall."] = "回到西部荒野的艾芭·晴月那裡。",
+	-- The quest check of 2026-11-05 (the owner's calls of that day): Elemental Aid's second giver, and Before you go's Viewing Room Key, Postmaster Malown, Stratholme's Scarlet Key and Uldaman's Keystone (2026-11-05; drafted, to be checked)
+	["Rau Cliffrunner (or Prate Cloudseer), Thousand Needles"] = "勞恩·峭壁行者（或普拉特·白雲），千針石林",
+	["The Viewing Room Key"] = "觀察室鑰匙",
+	["Rattlegore drops the {item:13873:Viewing Room Key:1}. In the original game, it opened the Viewing Room door, the way on to Vectus and Marduk Blackpool, and one key did for the whole group. This is not yet checked on Forever."] = "血骨傀儡會掉落{item:13873:Viewing Room Key:1}。在原版遊戲中，它能打開觀察室的門，那是通往維克圖斯和馬杜克·布萊克波爾的路，隊伍裡有一把鑰匙就夠了。這一點尚未在Forever上確認。",
+	["Postmaster Malown, a hidden boss"] = "郵差馬龍，隱藏首領",
+	["The Stratholme Courier drops the city's postbox keys. In the original game, each locked postbox you opened brought out guards, and Postmaster Malown came with the third. This is not yet checked on Forever."] = "斯坦索姆信使會掉落城裡郵箱的鑰匙。在原版遊戲中，每打開一個上鎖的郵箱都會引來守衛，打開第三個時郵差馬龍就會出現。這一點尚未在Forever上確認。",
+	["{item:7146:The Scarlet Key:2} is in Doan's Strongbox, in the Scarlet Monastery's Library. In the original game, it also opened the Bastion Door and the door of the Hall of High Command here, and a rogue could pick both locks. This is not yet checked on Forever."] = "{item:7146:The Scarlet Key:2}在血色修道院圖書館的杜安的保險箱裡。在原版遊戲中，它還能打開這裡的堡壘之門和最高指揮大廳的門，盜賊也能撬開這兩把鎖。這一點尚未在Forever上確認。",
+	["The Keystone"] = "基石",
+	-- Uldaman's Keystone for both sides, reworded: the owner's report, 2026-11-05 (drafted, to be checked)
+	["Revelosh drops {item:7741:The Shaft of Tsol:1}. Put together with the {item:7740:Gni'kiv Medallion} from Baelog's Chest, behind the Lost Dwarves, it makes the {item:7733:Staff of Prehistoria}, which works the Keystone in the Map Chamber, past Revelosh, and opens Ironaya's door. This is not yet checked on Forever."] = "魯維羅什會掉落{item:7741:The Shaft of Tsol:1}。把它和失蹤的矮人身後巴爾洛戈的箱子裡的{item:7740:Gni'kiv Medallion}合在一起，就能做成{item:7733:Staff of Prehistoria}，用它能啟動地圖室裡的基石（就在魯維羅什之後），打開艾隆納亞的門。這一點尚未在Forever上確認。",
 	-- The steps the Quests tab now lists one by one in a chain, numbered as parts of a name (The Tome of Valor, The True Masters, Down the Scarlet Path, Prospect of Faith, Passing Word of a Threat, The Smoldering Ruins of Thaurissan, Detonation at a Distance): their objectives and givers (2026-11-06; drafted, to be checked)
 	["Talk to someone in Stormwind Intelligence about acquiring a remote detonator."] = "和軍情七處的人談談，看看怎樣弄到一個遠程引爆器。",
 	["Bring the Remote Detonator Kit to Sprite Jumpsprocket in the Dwarven District of Stormwind."] = "把遠程引爆器套件交給暴風城矮人區的斯普萊特·跳鏈。",
@@ -3153,6 +3310,45 @@ L.STRINGS = {
 	["Royal Historian Archesonus, Ironforge"] = "皇家歷史學家阿克蘇瑞斯，鐵爐堡",
 	["Duthorian Rall, Stormwind City"] = "杜索里安·拉爾，暴風城",
 	["Daphne Stilwell, Westfall"] = "達芙妮·斯迪威，西部荒野",
+	-- Adventure Mode: the door rumours (Data/Authored/Rumours.lua), the owner's 38 lines of 2026-11-07
+	["Someone in Ironforge pays good coin for heirlooms brought up from the kings' resting place."] = "鐵爐堡有人願意出高價，收購從歷代國王安息之地帶上來的傳家寶。",
+	["Brill folk swear the plague's dead still walk the courtyards where the human kings once ruled."] = "布瑞爾的居民發誓說，死於瘟疫的亡者仍在人類諸王昔日統治的庭院中遊蕩。",
+	["At the end of a hidden dig in the Wetlands hills, a Titan figure of stone waits to be woken."] = "濕地山丘間有一處隱密的發掘地，在它的盡頭，一尊泰坦石像正等著被喚醒。",
+	["Fishers on Lordamere Lake say wild magic has taken the mages' city, and even its books attack."] = "洛丹米爾湖的漁民說，狂暴的魔法吞沒了法師之城，連那裡的書都會攻擊人。",
+	["Guards in Orgrimmar say chanting rises from the caves deep below the city."] = "奧格瑪的衛兵說，城底深處的洞穴裡傳來陣陣吟誦聲。",
+	["Barrens herders say the caves have twisted every creature inside, druids included."] = "貧瘠之地的牧民說，那些山洞扭曲了裡面的每一種生物，連德魯伊也不例外。",
+	["Westfall farmers see the Defias vanish into the Moonbrook mine and hear hammering below."] = "西部荒野的農夫看見迪菲亞的人消失在月溪鎮的礦洞裡，還聽見地底傳來敲打聲。",
+	["Travelers warn Pyrewood is not safe at night, and strange sounds can be heard from the keep!"] = "旅人們警告說，焚木村一到夜裡就不安全，還能聽見古堡裡傳出奇怪的聲音！",
+	["Zoram fishers see lights far under the waves, where cultists guard a shrine the sea took."] = "佐拉姆海岸的漁民看見海浪深處有光亮，據說邪教徒在那裡守護著一座被大海吞沒的聖殿。",
+	["From Lakeshire to Darkshire, bounties are posted on outlaws who run free in Stormwind's prison."] = "從湖畔鎮到夜色鎮，到處都貼著懸賞令，通緝那些在暴風城大牢裡橫行無忌的歹徒。",
+	["Gnome refugees mourn their lost home, still glowing from what they unleashed on the troggs."] = "地精難民為失去的家園哀嘆，那裡至今還因他們對付穴居人時釋放的東西而發著光。",
+	["Word on the Barrens road is that a goblin trader is held captive deep in quilboar country."] = "貧瘠之地的路上有傳言說，有個哥布林商人被關在野豬人領地的深處。",
+	["Anyone the Crusade suspects of carrying the plague is dragged to its crypts, and few come back."] = "凡是被十字軍懷疑帶有瘟疫的人，都會被拖進他們的地穴，很少有人能活著回來。",
+	["Scholars in Ironforge and the Undercity alike want books the zealots guard with hounds."] = "鐵爐堡和幽暗城的學者都想得到那些書，但狂信者們派了獵犬看守著。",
+	["Steel clashes from dawn to dusk where red-clad recruits train beside racks of fine weapons."] = "從早到晚刀劍鏗鏘，一身紅裝的新兵在一排排精良的兵器架旁操練。",
+	["Old knights whisper that the truth of the Ashbringer's death waits beside the Crusade's high altar."] = "老騎士們低聲說，灰燼使者之死的真相，就藏在十字軍的大祭壇旁。",
+	["By the road to Thousand Needles, quilboar bow to the walking dead among their burial mounds."] = "在通往千針石林的路旁，野豬人在他們的墳丘之間向行屍走肉俯首稱臣。",
+	["Badlands prospectors say troggs pour from a vault older than the dwarves, where Dark Irons now dig."] = "荒蕪之地的探勘者說，穴居人從一座比矮人還古老的地窟中不斷湧出，如今黑鐵矮人正在那裡挖掘。",
+	["Gadgetzan traders buy scarab shells and troll potions from anyone who dares enter the desert city."] = "加基森的商人會向任何敢闖那座沙漠之城的人收購聖甲蟲的甲殼和食人妖藥劑。",
+	["The centaurs of Desolace guard the grave of a god's son, where even the rocks attack intruders."] = "淒涼之地的半人馬守護著一位神之子的墳墓，在那裡，連岩石都會攻擊闖入者。",
+	["Swamp of Sorrows hunters hear troll drums from a flooded pit, beating for a god of blood."] = "悲傷沼澤的獵人聽見一處被水淹沒的深坑裡傳出食人妖的鼓聲，那是為一位鮮血之神而擂響的。",
+	["Searing Gorge miners swear the Dark Irons built a whole city of fire inside the mountain."] = "灼熱峽谷的礦工發誓說，黑鐵矮人在山腹中建起了一整座烈焰之城。",
+	["An orc who calls himself warchief is gathering an army halfway up the mountain, scouts report."] = "斥候回報說，一個自稱大酋長的獸人正在半山腰集結大軍。",
+	["Black dragons are bred for war at the mountain's peak, they say, and the way up is sealed."] = "據說山巔之上正培育著用於戰爭的黑龍，而通往那裡的路已被封死。",
+	["Feralas tales say the satyrs of the old city were elves once, until demons twisted them."] = "菲拉斯的傳說提到，古城裡的薩特曾經也是精靈，直到惡魔將他們腐化。",
+	["A gnome chained up among the ogres begs passers-by for cloth and leather to sew a disguise."] = "一個被巨魔鎖起來的地精懇求過路人給他布料和皮革，好縫一套偽裝。",
+	["Anyone who brings lost books home to the elves of the western halls earns a fine reward."] = "誰能把失落的書籍送回西側殿堂的精靈手中，就能獲得豐厚的獎賞。",
+	["Boatmen won't row to the island in Darrowmere Lake, where the living learn to raise the dead."] = "船夫們不肯划船去達隆米爾湖中的那座島，據說活人在那裡學習如何讓死者復生。",
+	["The Argent Dawn warns that the Crusade's leader in the burned city is not what he seems."] = "銀色黎明警告說，那座焚毀之城裡的十字軍首領並不是他看起來的那樣。",
+	["A ghost outside the walls begs the living to save the woman he loves before time runs out."] = "城牆外有個鬼魂懇求生者，趁時間還來得及，救出他心愛的女人。",
+	["Dustwallow trappers know of a black dragon in the Wyrmbog caves, guarded by swarms of whelps."] = "塵泥沼澤的獵戶知道巨龍沼澤的洞穴裡住著一頭黑龍，身邊有成群的幼龍守衛。",
+	["Night elves will not speak of the vaults beneath their forests, or of who was locked inside."] = "夜精靈對他們森林底下的地窟絕口不提，更不願說起裡面關著的是誰。",
+	["Druids on the mountain call for fighters to guard the great tree against an old enemy."] = "山上的德魯伊正在召集戰士，守護巨樹，抵禦一個古老的敵人。",
+	["Booty Bay sailors say the sea gave back an old troll city, and pirates got there first."] = "藏寶海灣的水手說，大海吐出了一座古老的食人妖城市，而海盜搶先一步佔了那裡。",
+	["The ogres of the Riverglades have new friends in Twilight robes."] = "河澤林地的巨魔交上了一群身穿暮光長袍的新朋友。",
+	["Naga swarm the island jail off the Dustwallow coast, and its Defias inmates never got out."] = "納迦湧上了塵泥沼澤外海的那座牢獄島，關在裡面的迪菲亞犯人始終沒能逃出來。",
+	["Travelers say the furbolg of northern Azshara have gone mad, sickened by something below."] = "旅人們說，艾薩拉北部的熊怪都瘋了，是地底下的某種東西讓牠們染上了病。",
+	["Past the dinosaurs lie stone halls that no one has mapped yet, or so the explorers whisper."] = "探險者們私下傳說，越過恐龍出沒之地，有一片至今無人繪出地圖的石砌殿堂。",
 	-- Ruins of Lordaeron: Unending Torment's objectives (parts 2, 4 and 5), and where Remember That I Love You
 	-- goes next (2026-11-10; drafted, to be checked)
 	["Bring the Head of the Baron to Othmar's body, the Unfinished Abomination, in the Undercity."] = "把男爵的頭顱帶到幽暗城中奧斯瑪的軀體，也就是未完成的憎惡那裡。",
@@ -3169,6 +3365,84 @@ L.STRINGS = {
 	["The Keystone"] = "基石",
 	-- Uldaman's Keystone for both sides, reworded: the owner's report, 2026-11-05 (drafted, to be checked)
 	["Revelosh drops {item:7741:The Shaft of Tsol:1}. Put together with the {item:7740:Gni'kiv Medallion} from Baelog's Chest, behind the Lost Dwarves, it makes the {item:7733:Staff of Prehistoria}, which works the Keystone in the Map Chamber, past Revelosh, and opens Ironaya's door. This is not yet checked on Forever."] = "魯維羅什會掉落{item:7741:The Shaft of Tsol:1}。把它和失蹤的矮人身後巴爾洛戈的箱子裡的{item:7740:Gni'kiv Medallion}合在一起，就能做成{item:7733:Staff of Prehistoria}，用它能啟動地圖室裡的基石（就在魯維羅什之後），打開艾隆納亞的門。這一點尚未在Forever上確認。",
+	-- Stratholme as one dungeon (0.39.22, the owner's calls of 2026-11-12): its description, its two doors' names (the zone
+	-- map's door pins, the boss list's side rows) and what follows The Truth Comes Crashing Down (drafted, to be checked)
+	["Plagued Stratholme is split in two: the Scarlet Crusade holds the Main Gate's side under Grand Crusader Dathrohan, the dreadlord Balnazzar in disguise, and Baron Rivendare's Scourge holds the ziggurats and slaughterhouse past the Service Gate."] = "瘟疫蔓延的斯坦索姆一分為二：血色十字軍在大十字軍戰士達索漢的率領下據守正門一側，而他其實是恐懼魔王巴納札爾假扮的；後門之後的通靈塔與屠宰場則由瑞文戴爾男爵的天譴軍佔據。",
+	["Then Duke Nicholas Zverenhoff gives Above and Beyond."] = "之後尼古拉斯·瑟倫霍夫公爵會給予「超越極限」。",
+	["Main Gate"] = "正門",
+	["Service Gate"] = "後門",
+	-- The Library: Rituals of Power's whole chain for mages, Items of Power, Mage's Wand, the road to it before you go
+	-- and Journey to the Marsh's other trainers (the owner's chain, 2026-11-13; drafted, to be checked)
+	["Items of Power"] = "力量之物",
+	["Bring 1 Jade and the Bolt Charged Bramble to Tabetha in Dustwallow Marsh."] = "把1塊翡翠和充能的荊棘交給塵泥沼澤的塔貝薩。",
+	["Jade comes from tin, iron and gold veins, chests, lockboxes and gem sacks. Witherbark trolls in Arathi Highlands drop Witherbark Totem Sticks: use 10 of them at the Stone of Outer Binding there (52, 51) to make the Bolt Charged Bramble."] = "翡翠可從錫礦、鐵礦和金礦、箱子、保險箱和寶石袋中取得。阿拉希高地的枯木食人妖會掉落枯木圖騰棒：在那裡的外層束縛之石（52, 51）使用10根，即可得到充能的荊棘。",
+	["Mage's Wand"] = "法師的魔杖",
+	["Speak with Tabetha after her ritual."] = "在塔貝薩的儀式結束後與她交談。",
+	["The road to Rituals of Power"] = "通往「能量儀式」之路",
+	["A mage trainer in Stormwind, Ironforge, Orgrimmar, Thunder Bluff or the Undercity gives Journey to the Marsh, to Tabetha in Dustwallow Marsh. Her Hidden Secrets sends you to Magus Tirth in the Shimmering Flats, in Thousand Needles. After his Get the Scoop, take Rituals of Power from him before you go in: the book is in the Library."] = "暴風城、鐵爐堡、奧格瑪、雷霆崖或幽暗城的法師訓練師會給予「沼澤之旅」，前往塵泥沼澤的塔貝薩處。她的「隱藏的秘密」會派你去千針石林閃光平原的魔導師提爾斯那裡。完成他的「解封咒語」後，進入前向他接受「能量儀式」：書就在圖書館裡。",
+	["Jennea Cannon, Stormwind City"] = "詹妮亞·坎農，暴風城",
+	["Anastasia Hartwell, Undercity"] = "安娜斯塔西婭·哈特威爾，幽暗城",
+	["Deino, Orgrimmar"] = "迪諾，奧格瑪",
+	["Bink, Ironforge"] = "彬克，鐵爐堡",
+	["Also given by Jennea Cannon (Stormwind City)."] = "也由詹妮亞·坎農（暴風城）發布。",
+	["Magus Tirth, Thousand Needles"] = "魔導師提爾斯，千針石林",
+	-- Scarlet Monastery's abilities from the owner's recording (2026-11-16; drafted, to be checked)
+	["At half health he becomes immune to all attacks and spells for 8 seconds, while he casts Detonation."] = "生命力降到一半時，他會在8秒內免疫所有攻擊與法術，同時施放引爆。",
+	["Removes a helpful magic effect from a player, or a harmful one from himself or an ally."] = "從一名玩家身上移除一個有益的魔法效果，或從自己或盟友身上移除一個有害效果。",
+	["Hits his target, which then takes more Holy damage; it stacks up to 5 times."] = "攻擊他的目標，使其之後受到更多神聖傷害，最多疊加5次。",
+	["Once Whitemane raises him, he heals her fully."] = "懷特邁恩將他復活後，他會把她的生命完全補滿。",
+	["Puts everyone near her to sleep for up to 10 seconds, just before she raises Mograine. Damage wakes a sleeper."] = "在復活莫格萊尼之前，讓她附近的所有人沉睡最多10秒。沉睡者受到傷害就會醒來。",
+	-- The Crest of Lordaeron's five places, each mark's line on the Ruins of Lordaeron map (2026-11-17; drafted, to be
+	-- checked)
+	["Mausoleum in the far north-west corner, on the wall"] = "西北角盡頭的陵墓，牆上",
+	["West tower, top floor, on the wall left of the doors"] = "西塔頂層，門左側的牆上",
+	["North-west tower, at the bottom, in front of the split staircase"] = "西北塔底層，分岔樓梯前",
+	["Behind the closed crypt doors, on the pitch-black wall"] = "緊閉的墓穴門後，漆黑的牆上",
+	["East tower, top floor, on the wall left of the doors"] = "東塔頂層，門左側的牆上",
+	-- The Shaper's Terrace filled in (2026-11-18; drafted, to be checked): where it is, the overview's note, Before
+	-- you go's note on how the four console bosses and Nanaya come (one since 2026-11-19), and its six quests'
+	-- givers and notes. The bosses' names, the quests' names and objectives, and the places and things new
+	-- in Forever (the Pillar of Assimilation, the Achromatic Crystal, the cartographer's kit) stay as the game names
+	-- them in English; the Power Crystals are item links, named by the client.
+	["The northern rim of Un'Goro Crater, up the stairs from Marshal's Refuge"] = "安戈洛環形山北緣，從馬紹爾營地沿階梯往上",
+	["Four of the bosses are summoned with Power Crystals, 15 of one color at each one's console: see Before you go. Nanaya, the last boss, comes once those four are dead; the other five bosses are optional. To leave, jump off the edge of the terrace."] = "其中四個首領需用能量水晶召喚，在各自的控制台放入15個同色水晶：見出發之前。最後的首領Nanaya會在這四個首領死後出現；其餘五個首領可以不打。要離開，從露台邊緣跳下即可。",
+	-- Before you go's one note on summoning the Shaper's Terrace's bosses, in place of its six (the owner's call of
+	-- 2026-11-19), in the owner's short form of 2026-11-20 (drafted, to be checked)
+	["Summoning the bosses"] = "召喚首領",
+	["Four bosses must be summoned and killed before you can summon Nanaya, the last boss. Summon each at its console:\n• Cinder: 15 × {item:11186:Red Power Crystal:1}, on the hill with the red crystals (southwest)\n• Snowtalon: 15 × {item:11184:Blue Power Crystal:1}, in the cave behind the left waterfall (northwest)\n• Bolt: 15 × {item:11188:Yellow Power Crystal:1}, by the yellow crystals south of the tar pits\n• Vitrix: 15 × {item:11185:Green Power Crystal:1}, in a cavern on the north side\nThen summon Nanaya at the console on the Pillar of Assimilation's island."] = "必須先召喚並擊殺四個首領，才能召喚最後的首領Nanaya。每個首領都在各自的控制台召喚：\n• Cinder：15 × {item:11186:Red Power Crystal:1}，在有紅色水晶的山丘上（西南方）\n• Snowtalon：15 × {item:11184:Blue Power Crystal:1}，在左邊瀑布後的洞穴裡（西北方）\n• Bolt：15 × {item:11188:Yellow Power Crystal:1}，在焦油坑南邊的黃色水晶旁\n• Vitrix：15 × {item:11185:Green Power Crystal:1}，在北側的一個洞穴裡\n然後在Pillar of Assimilation所在島上的控制台召喚Nanaya。",
+	["Curator Thorius, Hall of Explorers, Ironforge"] = "Curator Thorius，鐵爐堡探險者大廳",
+	["Curator Thorius — Hall of Explorers"] = "Curator Thorius — 探險者大廳",
+	["Chemist Fuely, the Apothecarium, Undercity"] = "Chemist Fuely，煉金房，幽暗城",
+	["Chemist Fuely — the Apothecarium"] = "Chemist Fuely — 煉金房",
+	["Mayena Earthseeker, Mulgore"] = "Mayena Earthseeker，莫高雷",
+	["Venomridge, a great diemetradon, is one of the optional bosses, on the plain south of the tar pits."] = "Venomridge是一隻巨大的異齒龍，屬於可選首領之一，位於焦油坑以南的平原。",
+	["Use the Explorers' League Cartographer's Kit you are given at the Pillar of Assimilation, the Achromatic Crystal, the Western Gates, the Regrowth Vestibule and the Unearthed Stone Watcher. It can't be shared."] = "在Pillar of Assimilation、Achromatic Crystal、Western Gates、Regrowth Vestibule和Unearthed Stone Watcher使用領取的Explorers' League Cartographer's Kit。此任務無法分享。",
+	["Who gives it is not listed yet. The pages drop from the ravasaurs inside. It can't be shared."] = "尚不清楚由誰發布。書頁從裡面的迅猛龍身上掉落。此任務無法分享。",
+	["Each most likely comes from a crystal fragment of its kind in the terrace. They are not the Power Crystals the consoles take."] = "每種水晶很可能都來自露台上同類的水晶碎片。它們不是控制台所需的能量水晶。",
+	["The essence drops from the small slimes in the pools by the Achromatic Crystal."] = "精華從Achromatic Crystal旁水池裡的小軟泥怪身上掉落。",
+	["The fragment lies on the ground near the Achromatic Crystal, a colorless crystal in the terrace."] = "碎片就在Achromatic Crystal附近的地上，那是露台上一塊無色的水晶。",
+}
+
+-- Adventure Mode's masking: what its rules can't tell of this language's names (Core/Discovery.lua;
+-- Locales/enUS.lua says what each list is for). Drafted, to be checked.
+L.MASK_GROUP_WORDS = {}
+L.MASK_PLACES = { "黑鐵酒吧", "達納蘇斯" }
+-- (on a boss's page and in a dungeon's description, a faction, a group or a word, not the quest of its name)
+L.MASK_NAMES = { "迪菲亞兄弟會", "尖牙德魯伊" }
+-- A name alone, without its title: the rules find it only where another name shares it.
+L.MASK_BOSS_FORMS = {
+	-- (a quest's giver, Doan Karhan, has his name: his strongbox is named whole)
+	["Arcanist Doan"] = { "杜安的保險箱" },
+	["Atrexis the Grave Knight"] = { "阿崔克希斯" },
+	["Emperor Dagran Thaurissan"] = { "索瑞森" },
+	["Lord Valthalak"] = { "瓦薩拉克" },
+	["Jammal'an the Prophet"] = { "迦瑪蘭" },
+	["Interrogator Vishas"] = { "韋沙斯" },
+	["Death Knight Darkreaver"] = { "達克雷爾" },
+}
+-- The God Hakkar's name is a boss's too: it counts as the quest's all the same.
+L.MASK_QUEST_FORMS = {
+	[3528] = { "哈卡神" },
 }
 
 -- The client's own names for the bosses, factions and places, which what it says of them (and the

@@ -152,6 +152,10 @@ ns.AddQuestLinks({
 		["Captain Dreadrise"] = {
 			{ questID = 95791, act = "kill" },
 		},
+		["Deathless Marrow"] = {
+			{ questID = 96774, act = "drop", item = 276894, itemName = "Ancient Gurubashi Idol" },
+			{ questID = 97130, act = "drop", item = 276894, itemName = "Ancient Gurubashi Idol" },
+		},
 	},
 	ScarletMonasteryArmory = {
 		["Herod"] = {
@@ -178,6 +182,11 @@ ns.AddQuestLinks({
 	KroldokStronghold = {
 		["Nar'gurk"] = {
 			{ questID = 94984, act = "kill" },
+			{ questID = 94972, act = "drop", item = 267104, itemName = "Tome of Twilight" },
+		},
+		["Overseer Mugg"] = {
+			{ questID = 94968, act = "drop", item = 267086, itemName = "Eye of Mugg" },
+			{ questID = 94982, act = "drop", item = 267086, itemName = "Eye of Mugg" },
 		},
 	},
 	Uldaman = {
@@ -230,14 +239,26 @@ ns.AddQuestLinks({
 	},
 	AlcazPrison = {
 		["The Questioner"] = {
-			{ questID = 96335, act = "kill" },
+			{ questID = 96335, act = "drop", item = 274029, itemName = "Ornate Shackle Key" },
 		},
 		["Tidemistress Ca'zass"] = {
 			{ questID = 96381, act = "drop", item = 273883, itemName = "Ca'zass's Head" },
 			{ questID = 96332, act = "drop", item = 273883, itemName = "Ca'zass's Head" },
 		},
+		["Katerina the Cleaner"] = {
+			{ questID = 95309, act = "kill" },
+			{ questID = 95309, act = "takes", who = "Commander Folkar" },
+			{ questID = 95454, act = "gives", who = "Commander Folkar" },
+			{ questID = 96369, act = "takes", who = "Commander Folkar" },
+			{ questID = 95483, act = "gives", who = "Commander Folkar" },
+		},
 		["Blazeroar"] = {
 			{ questID = 96772, act = "drop", item = 276890, itemName = "Zarla's Journal" },
+			{ questID = 96335, act = "gives", who = "Mason Connery" },
+			{ questID = 96335, act = "takes", who = "Mason Connery" },
+			{ questID = 96337, act = "gives", who = "Mason Connery" },
+			{ questID = 95262, act = "kill" },
+			{ questID = 95454, act = "kill" },
 		},
 	},
 	TempleOfAtalHakkar = {
@@ -280,6 +301,9 @@ ns.AddQuestLinks({
 		["General Angerforge"] = {
 			{ questID = 4282, act = "drop", item = 11464, itemName = "Marshal Windsor's Lost Information" },
 			{ questID = 4132, act = "kill" },
+		},
+		["Magmus"] = {
+			{ questID = 97197, act = "drop", item = 277129, itemName = "Fragment of the Firelands" },
 		},
 		["Princess Moira Bronzebeard"] = {
 			{ questID = 4362, act = "takes" },
@@ -439,7 +463,12 @@ ns.AddQuestLinks({
 			{ questID = 9013, act = "drop", item = 16731, itemName = "Helm of Valor" },
 		},
 	},
-	StratholmeMainGate = {
+	ShapersTerrace = {
+		["Venomridge"] = {
+			{ questID = 95924, act = "kill" },
+		},
+	},
+	Stratholme = {
 		["Hearthsinger Forresten"] = {
 			{ questID = 8953, act = "drop", item = 16682, itemName = "Magister's Boots" },
 			{ questID = 9018, act = "drop", item = 16682, itemName = "Magister's Boots" },
@@ -467,8 +496,6 @@ ns.AddQuestLinks({
 			{ questID = 5262, act = "start", item = 13250, itemName = "Head of Balnazzar" },
 			{ questID = 8954, act = "drop", item = 16725, itemName = "Lightforge Boots" },
 		},
-	},
-	StratholmeServiceGate = {
 		["Black Guard Swordsmith"] = {
 			{ questID = 5307, act = "drop", item = 13350, itemName = "Insignia of the Black Guard" },
 		},

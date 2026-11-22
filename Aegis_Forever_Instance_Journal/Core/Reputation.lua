@@ -64,7 +64,9 @@ end
 
 --[[
 	The player's standing: { reaction, value, max, description }, value and max counted
-	within the current standing. Nil for a faction the client knows nothing about.
+	within the current standing. Nil for a faction the client knows nothing about. Not whether the
+	player has met it: Forever answers a faction never met with Neutral 0 (Core/Discovery.lua's
+	FactionKnown asks the Reputation tab's list). Forever has C_Reputation alone, no GetFactionInfoByID.
 ]]
 function Reputation:Player(factionID)
 	if C_Reputation and C_Reputation.GetFactionDataByID then
@@ -80,20 +82,14 @@ function Reputation:Player(factionID)
 			}
 		end
 	end
-	if type(GetFactionInfoByID) == "function" then
-		local ok, name, description, reaction, low, high, value = pcall(GetFactionInfoByID, factionID)
-		if ok and name and type(reaction) == "number" and reaction > 0 then
-			return { reaction = reaction, value = (value or 0) - (low or 0), max = (high or 0) - (low or 0),
-				description = description ~= "" and description or nil }
-		end
-	end
 	return nil
 end
 
 --[[
 	The faction's name as the client writes it, by its id; nil where the client gives none (an id it
-	does not know). Whether it names a faction the player has not met yet is still to be checked in
-	game; where it does not, the callers fall back to the journal's own name.
+	does not know: Forever answers 749, the Hydraxian Waterlords, with nothing). Forever names a faction
+	the player has not met as well (Thorium Brotherhood, on a new character, 2026-11-05); where it gives
+	none, the callers fall back to the journal's own name.
 ]]
 function Reputation:ClientName(factionID)
 	if type(factionID) ~= "number" then return nil end
@@ -101,10 +97,6 @@ function Reputation:ClientName(factionID)
 	if C_Reputation and C_Reputation.GetFactionDataByID then
 		local ok, data = pcall(C_Reputation.GetFactionDataByID, factionID)
 		name = ok and type(data) == "table" and ns.Readable(data.name) or nil
-	end
-	if (type(name) ~= "string" or name == "") and type(GetFactionInfoByID) == "function" then
-		local ok, infoName = pcall(GetFactionInfoByID, factionID)
-		name = ok and ns.Readable(infoName) or nil
 	end
 	if type(name) ~= "string" or name == "" then return nil end
 	return name
@@ -140,11 +132,15 @@ function Reputation:Crest(faction)
 			return path
 		end
 	end
+	-- Else its best reward's icon; in Adventure Mode only a reward seen at its quartermaster's
+	-- (Core/Discovery.lua), and not kept, as more are seen.
+	local adventure = ns.Style:Adventure()
+	if faction.rewardCrest and not adventure then return faction.rewardCrest end
 	for index = #faction.bosses, 1, -1 do
 		for _, row in ipairs(faction.bosses[index].loot or {}) do
-			local icon = ns.Items:Icon(row.itemID)
+			local icon = (not adventure or ns.Discovery:Knows("reward", faction, row.itemID)) and ns.Items:Icon(row.itemID)
 			if icon then
-				faction.crest = icon
+				if not adventure then faction.rewardCrest = icon end
 				return icon
 			end
 		end

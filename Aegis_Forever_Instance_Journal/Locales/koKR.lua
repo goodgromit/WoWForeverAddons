@@ -26,7 +26,7 @@ L.DOCK_ON = "이제 창이 왼쪽 위, 게임 창 옆에서 열립니다. 끌어
 L.DOCK_OFF = "창이 다시 자유롭게 움직입니다: 마지막으로 끌어다 놓은 곳에서 열립니다."
 L.DOCK_AFTER_COMBAT = "전투가 끝나면 적용됩니다."
 -- Its /aegis style sentence (2026-11-03; drafted, to be checked).
-L.SLASH_HELP = "/aegis (또는 /ij): 도감을 엽니다. /aegis record: 기록을 시작하거나 중지합니다. /aegis reset: 창을 기본 위치로 되돌립니다. /aegis dock: 창을 왼쪽 위, 게임 창 옆에 고정하거나 다시 풀어 줍니다. /aegis perf: 도감의 메모리 사용량과 속도를 측정합니다. /aegis where, /aegis taxi: 현재 위치와 지도에 있는 비행 지점을 알려줍니다. /aegis travel: 세계 지도에 표시할 배, 비행선, 지하철, 차원문을 저장합니다. /aegis items: 도감에 실린 아이템 중 서버가 모르는 것을 찾습니다. /aegis gear: 장비 찾기를 엽니다. /aegis weights: 장비 찾기의 능력치 가중치를 엽니다. /aegis gearscan: 장비 찾기가 내 장비에서 읽은 내용을 저장해 점수 계산을 확인할 수 있게 합니다. /aegis options: 도감 설정을 엽니다. /aegis style: 도감 방식 질문을 다시 보여 줍니다. /aegis lang: 도감을 다른 언어로 미리 봅니다. /aegis run: 던전 공략 창을 표시하거나 숨깁니다 (던전 밖에서는 마지막 공략). /aegis run new: 새 공략을 시작합니다."
+L.SLASH_HELP = "/aegis (또는 /ij): 도감을 엽니다. /aegis record: 기록을 시작하거나 중지합니다. /aegis reset: 창을 기본 위치로 되돌립니다. /aegis dock: 창을 왼쪽 위, 게임 창 옆에 고정하거나 다시 풀어 줍니다. /aegis perf: 도감의 메모리 사용량과 속도를 측정합니다. /aegis where, /aegis taxi: 현재 위치와 지도에 있는 비행 지점을 알려줍니다. /aegis travel: 세계 지도에 표시할 배, 비행선, 지하철, 차원문을 저장합니다. /aegis items: 도감에 실린 아이템 중 서버가 모르는 것을 찾습니다. /aegis gear: 장비 찾기를 엽니다. /aegis weights: 장비 찾기의 능력치 가중치를 엽니다. /aegis gearscan: 장비 찾기가 내 장비에서 읽은 내용을 저장해 점수 계산을 확인할 수 있게 합니다. /aegis options: 도감 설정을 엽니다. /aegis style: 도감 방식 질문을 다시 보여 줍니다. /aegis lang: 도감을 다른 언어로 미리 봅니다. /aegis run: 던전 공략 창을 표시하거나 숨깁니다 (던전 밖에서는 마지막 공략). /aegis run new: 새 공략을 시작합니다. /aegis test: 테스트 모드를 엽니다."
 -- /aegis lang (Core/Init.lua)
 L.LANG_USAGE = "/aegis lang de, fr, ru, cn, tw, es, mx, pt, ko: 다음 /reload부터 도감을 독일어, 프랑스어, 러시아어, 중국어(간체 또는 번체), 스페인어(스페인 또는 중남미), 브라질 포르투갈어, 한국어로 표시해 번역을 확인할 수 있습니다. /aegis lang off: 클라이언트 언어로 돌아갑니다. 현재: %s."
 L.LANG_SET = "다음 /reload부터 도감의 언어: %s. 바뀌는 것은 도감 자체의 문구뿐이며, 게임 속 이름은 클라이언트 언어 그대로입니다. 지금 /reload를 입력하십시오. /aegis lang off로 되돌릴 수 있습니다."
@@ -35,11 +35,66 @@ L.LANG_FONTS = "중국어를 표시하려면 중국어 클라이언트의 글꼴
 L.LANG_FONTS_KO = "한국어를 표시하려면 한국어 클라이언트의 글꼴이 필요합니다. 현재 클라이언트에서는 일부 글자가 보이지 않을 수 있습니다."
 L.LANG_ON = "도감 미리 보기 언어: %s. /aegis lang off로 끝낼 수 있습니다."
 L.LANG_UNAVAILABLE = "이 클라이언트가 저장된 설정보다 도감을 먼저 불러와서 언어 미리 보기를 시작할 수 없었습니다."
+-- A map addon the owner asked us to warn about, while it is loaded: its name twice (2026-11-12; drafted, to be checked).
+L.MAP_ADDON_HIDES = "%s 애드온이 켜져 있습니다. 세계 지도를 덮기 때문에 도감의 일부 지도와 기능이 가려질 수 있습니다. %s 애드온을 끄는 것을 권장합니다."
 L.AREAS_START = "도감에 있는 지역 이름 %d개의 클라이언트 ID를 찾는 중..."
 L.AREAS_DONE = "ID를 찾은 지역 이름: %d개 (전체 %d개). 저장하려면 /reload를 입력하십시오."
 L.AREAS_MISSING = "찾지 못함: %s."
 L.AREAS_SCANNING = "아직 지역 이름을 찾는 중입니다."
 L.AREAS_ENGLISH = "/aegis areas는 영어 클라이언트에서 실행하십시오. 찾는 이름이 영어이기 때문입니다."
+-- Test mode (UI/TestPanel.lua, UI/TestRun.lua, UI/FogTest.lua): the owner's fog test of 2026-11-13, made test
+-- mode on 2026-11-18, for this session only (2026-11-18; drafted, to be checked).
+L.FOGTEST_FOG_OFF = "이 캐릭터는 안개가 꺼져 있어 표시만 바뀝니다. 안개를 보려면 지도 범례에서 전장의 안개를 켜거나 모험 모드를 사용하세요."
+L.FOGTEST_PIN_CLICK = "테스트 모드: 클릭하면 처치한 것으로 표시하거나 다시 되돌립니다."
+L.TEST_TITLE = "테스트 모드"
+L.TEST_PICK = "던전 선택"
+L.TEST_NO_MAP = "아직 지도가 없습니다."
+L.TEST_INSIDE = "안에 있는 것처럼"
+L.TEST_INSIDE_TIP = "공략 창이 이 던전을 입장했을 때처럼 보여 줍니다. 처치 기록이 없고, 시계는 첫 전투를 기다립니다(재생 버튼으로 시작). 표시한 우두머리는 실제 처치처럼 집계됩니다. 아무것도 저장되지 않습니다."
+L.TEST_INSIDE_RAID = "공략 창은 던전용이며 공격대에는 쓰이지 않습니다."
+L.TEST_INSIDE_REAL = "%s 안에 있습니다. 공략 창에는 실제 공략이 표시됩니다."
+L.TEST_TRACKER_COMBAT = "전투가 끝날 때까지 기다리세요. 공략 창이 퀘스트 추적기 안에 있습니다."
+L.TEST_WALK_IN = "입장"
+L.TEST_WALK_IN_TIP = "붉은십자군 수도원의 공략은 구역의 첫 방이나 첫 전투로 구역이 정해질 때까지 입구에서 기다립니다. 입장을 누르면 이 구역으로 정해집니다: %s."
+L.TEST_FOUND = "발견한 것으로 보기 (모험 모드)"
+L.TEST_FOUND_TIP = "선택하면: 도감이 이 던전을 들어가 본 것처럼 발견한 것으로 취급합니다. 우두머리, 전리품, 퀘스트는 여전히 발견하거나 테스트 처치로 공개될 때만 보입니다. 선택 해제: 캐릭터가 발견한 그대로. 테스트 처치도 던전을 발견한 것으로 칩니다."
+L.TEST_FOUND_OFF = "이 캐릭터는 모험 모드가 아니어서 이미 모든 것이 보입니다."
+L.TEST_FOUND_REAL = "이 캐릭터가 이미 발견했습니다."
+L.TEST_BOSSES = "우두머리"
+L.TEST_DEFEATED = "%d/%d 처치"
+L.TEST_TAG_RARE = "희귀"
+L.TEST_TAG_SUMMONED = "소환"
+L.TEST_TAG_NOT_COUNTED = "집계 안 함"
+L.TEST_TAG_MAYBE = "가능성"
+L.TEST_TAG_QUEST = "퀘스트"
+L.TEST_TAG_OUTSIDE = "바깥"
+L.TEST_TAG_FINAL = "마지막"
+L.TEST_TIP_RARE = "희귀: 공략 창에 원도 줄도 없고, 안개를 막지 않습니다."
+L.TEST_TIP_SUMMONED = "소환: 안개를 막지 않습니다."
+L.TEST_TIP_NOT_COUNTED = "집계 안 함: 처치하면 공략 창에 줄이 생기지만 원은 없습니다."
+L.TEST_TIP_MAYBE = "가능성: 일부 공략에서만 만납니다. 처치하면 공략 창에 줄이 생기지만 원은 없습니다."
+L.TEST_TIP_QUEST = "퀘스트: 퀘스트의 대상입니다. 처치하면 공략 창에 줄이 생기지만 원은 없습니다. 테스트 밖에서는 지도 표시를 누르면 퀘스트가 열립니다."
+L.TEST_TIP_OUTSIDE = "바깥: 던전 밖에 있어서 공략 창에 나오지 않습니다."
+L.TEST_TIP_FINAL = "마지막: 처치하면 공략 시계가 멈춥니다."
+L.TEST_END = "테스트 종료"
+L.TEST_ON = "테스트 모드가 켜졌습니다. 이번 접속에서만 유지되며 아무것도 저장되지 않습니다. 테스트 종료나 /reload로 꺼집니다."
+L.TEST_OFF = "테스트 모드가 꺼졌습니다. 모든 것이 원래대로입니다."
+L.TEST_RUN_TITLE = "%s (테스트)"
+L.TEST_RUN_ENDED = "던전에 들어갔으므로 테스트의 가상 공략이 끝났습니다."
+L.TEST_STATE_INSIDE = "안"
+L.TEST_STATE_DOOR = "입구 (어느 구역?)"
+L.TEST_STATE_OUTSIDE = "바깥"
+L.TEST_STATE_DEFEATED = "%d/%d 처치"
+L.TEST_STATE_FOG_ON = "안개 켜짐"
+L.TEST_STATE_FOG_OFF = "안개 꺼짐"
+L.TEST_STATE_NO_FOG = "안개 없음"
+L.TEST_STATE_FOUND = "발견한 것으로 보기"
+L.TEST_STATE_REAL = "캐릭터 그대로"
+L.TEST_STATE_KILL_FOUND = "테스트 처치로 발견"
+L.TEST_STATE_REAL_INSIDE = "실제로 안"
+L.TEST_STATE_NOT_ADVENTURE = "모험 모드 아님"
+L.TEST_STATE_COMBAT = "전투 중"
+L.TEST_USAGE = "/ij test: 테스트 모드를 엽니다. /ij test off: 끝냅니다. /ij test debug: 하고 있는 일을 출력합니다."
 L.ITEMS_START = "도감에 실린 아이템 %d개에 대해 서버에 묻는 중입니다. 약 %d초 후에 결과가 나오니 그동안 자유롭게 플레이하십시오."
 L.ITEMS_SCANNING = "아직 서버에 묻는 중입니다. 곧 결과가 나옵니다."
 L.ITEMS_DONE = "아이템 %d개 중 %d개는 서버가 알지 못합니다. 아직 포에버에 없는 아이템일 가능성이 높습니다. 서버나 기록된 던전 진행으로 확인될 때까지 도감에서 숨깁니다. 전체 목록은 다음 /reload 또는 로그아웃 때 저장 파일에 기록됩니다."
@@ -63,6 +118,10 @@ L.WHERE_BELOW_BELOW = "아래"
 L.WHERE_BELOW_TOP = "위"
 L.WHERE_BELOW_NOTHING = "없음"
 L.WHERE_BELOW_CHANGE = "  %s  %s  지도 %s  지역 \"%s\"  x %s  y %s:  %s -> %s"
+L.WHERE_GAMEPAD = "게임패드 UI: 전투 시작 시 패드 반환: %d (마지막: %s); 너무 늦음: %d; 받은 전투 제한 이벤트: %d; 대기 중인 건너뛰기 표시: %d"
+L.WHERE_FLOOR = "%s: 지도 %d층 (%s), 지역 \"%s\" 기준"
+L.WHERE_FLOOR_KEPT = "%s: 지도 %d층 (%s) 유지: 지역 \"%s\"은(는) 어느 층에도 없음"
+L.WHERE_FLOOR_HELD = "%s: 지도 %d층 (%s), 지역 \"%s\"을(를) 따르지 않음: 직접 고른 층 또는 전체 지도"
 L.TAXI = "지도 %s  자체 비행 지점 표시: %s  지도의 비행 지점: %d개 (%d개 발견)  %s"
 L.TAXI_ATLASES = "이동 아이콘: %s"
 L.YES = YES or "예"
@@ -150,7 +209,7 @@ L.OPTIONS_BOSS_LEVELS = "우두머리 목록에 우두머리 레벨 표시"
 L.OPTIONS_BOSS_LEVELS_TIP = "각 우두머리 초상화에 레벨 배지를 표시합니다. 배지 색은 그 우두머리가 나에게 얼마나 어려운지에 따라 회색, 녹색, 노란색, 주황색, 빨간색으로 표시됩니다."
 L.OPTIONS_ARROWS = "향상 아이템에 녹색 화살표 표시"
 L.OPTIONS_MINIMAP = "미니맵 버튼 표시"
-L.OPTIONS_PAWN_WEIGHTS = "장비 찾기에서 Pawn의 능력치 가중치 사용"
+L.OPTIONS_PAWN_WEIGHTS = "Pawn의 능력치 가중치 사용"
 L.OPTIONS_PAWN_WEIGHTS_TIP = "Pawn이 설치되어 있으면 Pawn의 아이템 툴팁과 향상 화살표가 표시됩니다. 선택하면: 장비 찾기가 내 특성의 Pawn 능력치 비율로 아이템을 평가합니다. 선택하지 않으면: Pawn이 대신 도감의 능력치 비율로 내 특성에 대한 도감의 가중치를 보여주며, 이 옵션을 선택할 때까지 이 캐릭터에서는 Pawn 자체의 능력치 비율이 숨겨집니다."
 -- Asked once, when Pawn is installed too (Core/PawnLink.lua).
 L.PAWN_ASK = "Pawn도 설치되어 있습니다. Pawn의 아이템 툴팁과 향상 화살표가 표시됩니다.\n\nPawn과 장비 찾기가 함께 사용할 능력치 가중치를 고르십시오.\n\n도감 가중치: Pawn이 내 특성에 맞춰 표시하며, 이 캐릭터에서는 Pawn 자체의 능력치 비율을 숨깁니다.\nPawn 가중치: 장비 찾기가 내 Pawn 능력치 비율을 사용합니다."
@@ -164,8 +223,25 @@ L.PAWN_RELOAD_NOW = "다시 불러오기"
 L.PAWN_RELOAD_LATER = "나중에"
 L.WEIGHTS_SOURCE_PAWN_LIVE = "Pawn의 %s 능력치 비율. Pawn에서 바꾸거나, 설정에서 도감 가중치를 선택하십시오."
 L.OPTIONS_MINIMAP_TIP = "미니맵 가장자리에 있는 도감 버튼입니다. 클릭하면 도감을 열고, 오른쪽 클릭하면 이 설정을 열며, 끌어서 옮길 수 있습니다."
+-- The journal's line in the minimap's addon menu, its box beside the minimap button's (UI/Options.lua; 2026-11-20; drafted, to be checked).
+L.OPTIONS_ADDON_MENU = "애드온 메뉴에 표시"
+L.OPTIONS_ADDON_MENU_TIP = "미니맵 애드온 메뉴(숫자가 적힌 작은 버튼)에 있는 도감 항목입니다. 클릭하면 도감을 열고, 오른쪽 클릭하면 이 설정을 엽니다. 해제하면 /reload 후 메뉴에서 사라집니다."
 L.OPTIONS_DOCK = "창을 왼쪽 위에 고정"
 L.OPTIONS_DOCK_TIP = "선택하면: 도감이 화면 왼쪽 위, 게임이 자체 창을 여는 곳에서 열리고, 그곳에 게임 창이 열리면 게임 창끼리 그러하듯 옆으로 비켜납니다. 둘 다 들어갈 자리가 없으면 게임이 먼저 연 창을 닫습니다. 끌어서 아무 곳으로나 옮길 수 있으며, 다음에 열 때 다시 고정됩니다. 선택하지 않으면: 마지막으로 끌어다 놓은 곳에서 열립니다."
+-- Test mode's button, last on the options' page (UI/Options.lua; 2026-11-18; drafted, to be checked).
+L.OPTIONS_TEST = "테스트 모드"
+L.OPTIONS_TEST_BUTTON = "열기"
+L.OPTIONS_TEST_TIP = "던전에 들어가지 않고도 어느 던전이든 지도, 안개, 공략 창을 볼 수 있습니다. 던전을 고르고, 우두머리를 처치한 것으로 표시하고, 안에 있는 것처럼 해 보세요. 이번 접속에서만 유지되며 아무것도 저장되지 않고, /reload하면 끝납니다."
+L.OPTIONS_DUNGEON_FOG = "던전 지도에 전장의 안개 표시"
+L.OPTIONS_DUNGEON_FOG_TIP = "던전 지도는 입구만 드러난 채 안개에 덮여 시작합니다. 파티가 우두머리를 처치할 때마다 그 방과 돌아오는 길의 안개가 걷히고, 마지막 우두머리를 처치하면 지도 전체가 드러납니다. 걷힌 안개는 다시 덮이지 않습니다. 모험 모드에서는 항상 켜집니다. 이 캐릭터에만 적용됩니다."
+-- Adventure Mode's news: the chat line for new finds, the minimap button's line while it glows, and their two
+-- boxes in the options (2026-11-11; translation drafted, to be checked).
+L.ADVENTURE_NEWS = "도감에 새로 추가됨: %s"
+L.MINIMAP_NEWS = "도감에 새로운 내용이 있습니다."
+L.OPTIONS_ADVENTURE_CHAT = "새로 찾은 것을 대화창에 표시"
+L.OPTIONS_ADVENTURE_CHAT_TIP = "모험 모드에서 도감에 새로운 것을 찾으면 대화창에 한 줄로 알려 줍니다. 던전, 우두머리, 전리품, 퀘스트, 진영, 비행 경로가 해당됩니다. 이름을 클릭하면 해당 페이지가 열립니다(비행 경로는 페이지가 없습니다). 모든 캐릭터에 적용됩니다."
+L.OPTIONS_ADVENTURE_GLOW = "새로 찾으면 미니맵 버튼 반짝임"
+L.OPTIONS_ADVENTURE_GLOW_TIP = "모험 모드에서 마지막으로 도감을 연 뒤 새로운 것을 찾으면, 도감을 열 때까지 미니맵 버튼이 반짝입니다. 모든 캐릭터에 적용됩니다."
 -- The minimap button's tooltip.
 L.MINIMAP_LEFT_CLICK = "클릭하면 도감을 열거나 닫습니다."
 L.MINIMAP_RIGHT_CLICK = "오른쪽 클릭하면 설정을 엽니다."
@@ -306,6 +382,7 @@ L.RECORD_NEW = "신규"
 L.RECORD_QUARTERMASTERS = "병참장교"
 L.RECORD_WARES = "%s: 상품 %d개, 신규 %s개"
 L.RECORD_TRAVEL = "이동 지점: %d"
+L.RECORD_MODELS = "모델: %d"
 L.FOREVER_LINE = "월드 오브 워크래프트: 포에버에 새로 추가되었습니다."
 L.LOCATION_LINE = "위치: %s"
 
@@ -328,6 +405,17 @@ L.LOOT_KIND = {
 L.LOOT_KIND_ALL = { EQUIPMENT = "모든 장비", RECIPE = "모든 제조법" }
 L.LOOT_KIND_ONE = { MOUNT = "탈것", PET = "애완동물", TOY = "장난감" }
 L.LOOT_RECIPE = "제조법"
+-- A loot row's type where the client cannot describe the item (2026-11-19; drafted, to be checked).
+L.LOOT_QUEST_ITEM = "퀘스트 아이템"
+L.LOOT_WORDS = {
+	Alchemy = "연금술", Blacksmithing = "대장기술", Cooking = "요리", Enchanting = "마법부여", Engineering = "기계공학",
+	["First Aid"] = "응급치료", Fishing = "낚시", Leatherworking = "가죽세공", Tailoring = "재봉술", Book = "책", Blueprint = "설계도",
+	Bag = "가방", ["Ammo Pouch"] = "탄약 주머니", Quiver = "화살통", Arrow = "화살", Bullet = "탄환", Consumable = "소비용품",
+	["Food & Drink"] = "음식과 음료", Potions = "물약", Junk = "잡동사니", Key = "열쇠", Other = "기타", Parts = "부품",
+	Reagent = "재료", Weapon = "무기", Cloth = "천", Leather = "가죽", Mail = "사슬", Plate = "판금", Shield = "방패", Idol = "우상",
+	Libram = "성서", Totem = "토템", Axe = "도끼", Bow = "활", Crossbow = "석궁", Dagger = "단검", ["Fist Weapon"] = "장착 무기",
+	Gun = "총", Mace = "둔기", Polearm = "장창", Staff = "지팡이", Sword = "도검", Wand = "마법봉",
+}
 L.LOOT_FAVORITES = "즐겨찾기"
 L.LOOT_FAVORITES_ONLY = "즐겨찾기만"
 L.LOOT_FAVORITE = "즐겨찾기에 추가"
@@ -335,9 +423,17 @@ L.LOOT_UNFAVORITE = "즐겨찾기에서 제거"
 L.LOOT_PINNED = "고정됨"
 L.LOOT_ALL = "전리품"
 L.LOOT_TRASH = "던전 일반 몬스터"
+L.LOOT_BOSSES_AND_RARES = "모든 우두머리와 희귀 몬스터"
+L.LOOT_BOSSES_AND_RARES_NOTE = "던전의 우두머리와 희귀 몬스터가 떨어뜨리며, 일반 몬스터는 떨어뜨리지 않습니다."
+-- A Recipes page's row the bosses drop, and a row not seen dropping yet (2026-11-20; drafted, to be checked).
+L.LOOT_ANY_BOSS = "모든 우두머리"
+L.LOOT_ANY_BOSS_NOTE = "던전의 우두머리가 떨어뜨리며, 일반 몬스터는 떨어뜨리지 않습니다."
+L.LOOT_NOT_SEEN_NOTE = "아직 떨어지는 것이 확인되지 않았습니다."
 L.DROPS_FROM_BOSS = "획득처: %s (%s)"
 L.DROPS_FROM_TRASH = "획득처: 일반 몬스터 (%s)"
 L.DROPS_FROM_BOSSES = "획득처: 우두머리 %d명 (%s)"
+L.DROPS_FROM_BOSSES_AND_RARES = "획득처: 우두머리와 희귀 몬스터 (%s)"
+L.DROPS_FROM_ANY_BOSS = "획득처: 우두머리 (%s)"
 L.DROPS_IN = "획득처: %s"
 L.DROPS_ALSO_IN = "다른 획득처: %s"
 -- The world map legend's entries, each a switch (UI/MapLegend.lua).
@@ -347,13 +443,34 @@ L.LEGEND_CLICK_SHOW = "숨겨져 있습니다. 클릭하면 지도에 다시 표
 L.LEGEND_QUEST_TIP = "도감의 ! 표시: 받을 수 있는 퀘스트와 아직 열리지 않은 회색 퀘스트를 지도에 표시합니다."
 L.LEGEND_GAME_FILTER = "지도의 필터 메뉴와 같은, 게임 자체의 지도 필터입니다. 진행 중인 퀘스트와 완료할 수 있는 퀘스트가 필터 하나를 함께 씁니다."
 L.LEGEND_GAME_FILTER_MENU = "지도의 필터 메뉴에서 표시하거나 숨깁니다: %s."
--- Before you go, on a dungeon's overview: its key and the quests to it, a hidden boss to prepare for.
+-- Before you go, at the top of a dungeon's Quests tab: its key and the quests to it, a hidden boss to prepare for.
 L.PREPARE_TITLE = "출발 전에"
 L.PREPARE_PROGRESS = "퀘스트 %d개를 완료했습니다 (전체 %d개)."
 -- The same for a key with one quest (2026-10-30; drafted, to be checked).
 L.PREPARE_PROGRESS_ONE = "퀘스트를 아직 완료하지 않았습니다."
 L.PREPARE_HAVE = "이미 가지고 있습니다."
-L.PREPARE_QUEST_HINT = "클릭하면 퀘스트 탭에서 봅니다."
+-- A chain of quests done, Before you go (2026-11-12; drafted, to be checked).
+L.PREPARE_CHAIN_DONE = "퀘스트를 모두 완료했습니다."
+-- Before you go's line on a dungeon's overview, pointing to the Quests tab (2026-11-13; drafted, to be checked).
+L.PREPARE_POINTER = "출발 전에: 메모 %d개, 퀘스트 탭에 있습니다."
+L.PREPARE_POINTER_ONE = "출발 전에: 메모 1개, 퀘스트 탭에 있습니다."
+-- The Play button beside the lore, which plays Spoken's recorded story; "Spoken" kept as it is (2026-11-13; drafted, to be checked).
+L.SPOKEN_PLAY = "이야기 재생"
+L.SPOKEN_REPLAY = "이야기 다시 재생"
+L.SPOKEN_STOP = "정지"
+L.SPOKEN_BY = "Spoken이 소리 내어 읽습니다."
+L.SPOKEN_REQUIRES = "Spoken 필요"
+L.SPOKEN_ABOUT_PLACE = "이 장소의 이야기를 소리 내어 읽습니다."
+L.SPOKEN_ABOUT_BOSS = "이 우두머리의 이야기를 소리 내어 읽습니다."
+L.SPOKEN_NO_STORY_PLACE = "Spoken에 이 장소의 녹음된 이야기가 없습니다."
+L.SPOKEN_NO_STORY_BOSS = "Spoken에 이 우두머리의 녹음된 이야기가 없습니다."
+-- Spoken's own story API says no, the reason not known (2026-11-14; drafted, to be checked).
+L.SPOKEN_NO_STORY_YET = "Spoken에 아직 여기서 재생할 수 있는 이야기가 없습니다."
+L.SPOKEN_NEEDS_BOSS_VOICES = "Spoken의 우두머리 음성이 필요하지만 설치되어 있지 않습니다."
+L.SPOKEN_NEEDS_PLACE_VOICES = "Spoken의 장소 음성이 필요하지만 설치되어 있지 않습니다."
+L.SPOKEN_OFF = "Spoken 설정에서 꺼져 있습니다."
+L.SPOKEN_LOCKED_PLACE = "이 장소를 발견하면 Spoken이 이 이야기를 들려줍니다."
+L.SPOKEN_LOCKED_BOSS = "이 우두머리를 만나면 Spoken이 이 이야기를 들려줍니다."
 -- The Quests tab's dropdown of the dungeon's own quests (after its key, if it has one).
 L.QUESTS_DUNGEON = "던전 퀘스트"
 -- The same on a raid's Quests tab (2026-10-30; drafted, to be checked).
@@ -363,6 +480,9 @@ L.QUESTS_CLASS = "직업 퀘스트"
 -- The trash's entry in a dungeon's boss list, and its page.
 L.TRASH = "일반 몬스터"
 L.TRASH_DESCRIPTION = "던전의 다른 몬스터들이 떨어뜨리는 아이템 중 알아 둘 만한 것입니다: 희귀 및 영웅 장비, 제조법, 퀘스트 아이템."
+-- The recipes' entry in a dungeon's boss list, and its page (drafted, to be checked).
+L.RECIPES = "제조법"
+L.RECIPES_DESCRIPTION = "던전의 우두머리와 다른 몬스터들이 떨어뜨리는 제조법, 설계도, 도안입니다. 우두머리가 직접 떨어뜨리는 제조법은 그 우두머리의 페이지에도 나옵니다."
 L.LOOT_BOSS_LINE = BOSS_INFO_STRING or "우두머리: %s"
 L.LOOT_FILTER_BAR = "필터: %s"
 L.LOOT_RETRIEVING = RETRIEVING_ITEM_INFO or "아이템 정보를 가져오는 중"
@@ -420,6 +540,8 @@ L.QUESTMAP_OBJECTIVE_TAKE_NAMED = "획득: %s"
 L.QUESTMAP_TITLE_QUOTED = "“%s”"
 L.QUESTMAP_OBJECTIVE_USE = "사용: %s"
 L.QUESTMAP_OBJECTIVE_EXPLORE = "이곳을 탐험하기"
+-- At the Drowned City's tablets of I'lalai, a rubbing with the hide and charcoal (2026-11-12; drafted, to be checked).
+L.QUESTMAP_OBJECTIVE_RUBBING = "가죽과 목탄으로 탁본 뜨기"
 -- A Matrix Punchograph's step, what goes in, then what comes out, in short words ("Yellow > Blue"), and the punch
 -- cards' colors, as the cards' own names in the language have them (2026-11-12, the owner's "Blue > Red"; drafted, to
 -- be checked); where what goes in drops (2026-11-12; drafted, to be checked).
@@ -480,9 +602,32 @@ L.REP_NOT_CAPTURED_TEXT = "아직 아무도 이 진영의 병참장교를 기록
 L.REP_LISTED_TIP = "이 보상은 게임의 아이템 데이터에서 가져온 것으로, 아직 병참장교에게서 확인되지 않았습니다."
 L.REP_LISTED_TEXT = "이 보상들은 병참장교가 아니라 게임의 아이템 데이터에서 가져온 것이라 가격이 없고, 일부는 실제로 판매되지 않을 수도 있습니다. 이 진영의 병참장교를 찾아 상점을 열고 평판 탭에서 상인 기록을 누른 다음, 기록을 디스코드에 올려 주십시오. 도감 기여자 목록에 이름이 실립니다."
 L.REP_COMING_SOON_TEXT = "월드 오브 워크래프트: 포에버에 새로 추가되는 진영으로, 아직 기록되지 않았습니다. 게임에 나오면 병참장교를 찾아 상점을 열고 평판 탭에서 상인 기록을 누른 다음, 기록을 디스코드에 올려 주십시오."
+-- The Reputation tab's Vendors: a page for each currency a vendor takes for wares that need no standing (2026-11-12; drafted, to be checked).
+L.REP_VENDORS = "상인"
+L.CURRENCY_YOU_HAVE = "보유: %s"
+L.CURRENCY_VENDOR = "상인: %s"
+L.CURRENCY_CARD_CLICK = "클릭하면 판매 상품을 봅니다."
+L.REP_CAPTURED_CURRENCY = "%s: 상품 %d개 저장, %s(으)로 구매."
+-- Where Carved Centaur Totems come from, on its Vendors card and page (2026-11-13; drafted, to be checked: %s is the item's name as the client writes it; the quests keep their English names, their names in this language not known).
+L.CURRENCY_NOTE_CENTAUR_TOTEM = "%s: 잊혀진 땅의 모든 부족 켄타우로스가 떨어뜨리며, \"Khan Hratha\" 퀘스트가 10개를 줍니다. \"Carved Centaur Totems\" 퀘스트는 얼라이언스와 호드 모두에게 5개를 요구합니다."
 L.MAP_SHOW = ENCOUNTER_JOURNAL_SHOW_MAP or "지도 보기"
 L.MAP_SHOW_UNEXPLORED = "탐험하지 않은 지역 표시"
 L.OPTIONS_UNEXPLORED_TIP = "세계 지도에서 아직 탐험하지 않은 지역 부분을 어둡게 표시합니다."
+-- The map legend's Fog of War switch, the last of Movement's, and its tooltip (2026-11-11; translation drafted, to be checked).
+L.LEGEND_FOG = "전장의 안개"
+L.LEGEND_FOG_TOOLTIP = "지역에서 아직 탐험하지 않은 부분과 던전 지도에서 파티가 아직 걷어내지 않은 부분을 가립니다."
+L.LEGEND_FOG_ZONE_HIDDEN = "지도에 이 지역에서 탐험한 부분만 표시됩니다."
+L.LEGEND_FOG_ZONE_SHOWN = "이 지역에서 탐험하지 않은 부분도 조금 어둡게 표시됩니다."
+L.LEGEND_FOG_ZONE_SHOW = "클릭하면 탐험하지 않은 부분을 표시합니다."
+L.LEGEND_FOG_ZONE_HIDE = "클릭하면 탐험한 부분만 표시합니다."
+L.LEGEND_FOG_DUNGEON_ON = "아직 걷히지 않은 부분은 안개에 덮여 있습니다. 파티가 우두머리를 처치할 때마다 그 방의 안개가 걷힙니다."
+L.LEGEND_FOG_DUNGEON_OFF = "안개가 꺼져 있어 지도 전체가 보입니다."
+L.LEGEND_FOG_DUNGEON_CLEARED = "안개가 걷혔습니다. 지도 전체가 보입니다."
+L.LEGEND_FOG_DUNGEON_LIFT = "클릭하면 안개를 끕니다."
+L.LEGEND_FOG_DUNGEON_LAY = "클릭하면 안개를 켭니다."
+L.LEGEND_FOG_ADVENTURE = "모험 모드에서는 끌 수 없습니다."
+L.LEGEND_FOG_NONE = "이 지도에는 전장의 안개가 없습니다."
+L.LEGEND_FOG_ZONE_EXPLORED = "이 지역을 모두 탐험했습니다."
 -- The map legend's switches, in the map's filter menu too (UI/ZoneMap.lua).
 L.MAP_FILTER_QUESTS = "받을 수 있는 퀘스트"
 L.MAP_FILTER_DUNGEONS = "던전 입구"
@@ -492,9 +637,17 @@ L.MAP_FILTER_CAVES = "동굴 입구"
 L.MAP_FILTER_TRANSPORT = "배, 비행선, 지하철, 차원문"
 L.MAP_PIN_OPEN = "클릭하면 도감에서 엽니다."
 L.MAP_DEFEATED = DUNGEON_ENCOUNTER_DEFEATED or "처치함"
+L.MAP_FOG_HINT = "처치하면 이곳의 안개가 걷힙니다."
+L.MAP_UNMET_HINT = "아직 만나지 못했습니다."
 L.MAP_LEVEL = "레벨 %d"
 L.MAP_FLOOR = "%d층"
 L.MAP_GO_TO = "이동: %s"
+-- Under a way between floors, where two lead to one floor (the Drowned City's), where it comes out
+-- (2026-11-17; drafted, to be checked).
+L.MAP_WAY_OUT_SOUTHWEST = "남서쪽 끝으로 나옵니다"
+L.MAP_WAY_OUT_NORTHEAST = "북동쪽 끝으로 나옵니다"
+L.MAP_WAY_OUT_DEEP_ARCHIVES = "심층 기록보관소로 나옵니다"
+L.MAP_WAY_OUT_CENTRAL_POOL = "중앙 웅덩이로 나옵니다"
 L.MAP_YOU_ARE_HERE = "현재 위치"
 L.ENTRANCE_DUNGEON = LFG_TYPE_DUNGEON or "던전"
 L.ENTRANCE_RAID = LFG_TYPE_RAID or "공격대"
@@ -541,8 +694,13 @@ L.SEARCH_TYPE_QUEST = "퀘스트"
 L.SEARCH_TYPE_FACTION = FACTION or "진영"
 L.MAP_PIN_CLEAR = "클릭하면 이 핀을 제거합니다."
 L.MAP_PIN_COMBAT = "전투 중에는 지도를 열 수 없습니다."
+L.GAMEPAD_HUD_UP = "먼저 게임패드 UI의 HUD 모드를 끝낸 뒤 다시 시도하세요."
 L.MAP_PIN_IN_ZONE = "%s: %s 지도에 표시했습니다."
 L.MAP_LEVEL_LINK_CLICK = "왼쪽 클릭하면 그 층의 지도를 봅니다"
+-- A place worth knowing on a dungeon's map (UI/DungeonMap.lua's MapSpot): its kind's name, and the Drowned City's
+-- hidden chest's line under it (2026-11-17; drafted, to be checked).
+L.MAP_SPOT_CHEST = "숨겨진 상자"
+L.MAP_SPOT_DROWNED_CHEST = "뱀 민로스를 지나 난파된 배 위에 있습니다. 잠겨 있지 않아 누구나 열 수 있으며, 무작위 아이템과 재료가 들어 있습니다."
 L.DOOR_SPIRE_ONE_INSTANCE = "검은바위 첨탑 하층과 상층은 입구가 하나인 하나의 인스턴스입니다."
 L.DOOR_SPIRE_LOWER = "검은바위 첨탑 하층: 최대 10명이지만, 퀘스트는 5명 이하의 파티로만 완료할 수 있습니다."
 L.DOOR_SPIRE_UPPER = "검은바위 첨탑 상층: 더 안쪽, 승천의 인장이 필요한 봉인된 문 너머에 있습니다. 최대 10명."
@@ -552,6 +710,9 @@ L.AND_MORE = "외 %d개"
 L.BULLET_AREA = "위치: %s."
 L.BULLET_RARE = "희귀 몬스터: 매번 나타나지는 않습니다."
 L.BULLET_SUMMONED = "직접 소환하는 숨겨진 우두머리입니다. 소환 방법은 위의 메모를 참고하십시오."
+-- The same where his note names several bosses, not a hidden boss (2026-11-19; "summon" since 2026-11-20;
+-- drafted, to be checked).
+L.BULLET_CALLED_UP = "직접 소환하는 우두머리입니다. 소환 방법은 위의 메모를 참고하십시오."
 -- A quest's mob, on the map only, on his page (2026-11-11; translation drafted, to be checked).
 L.BULLET_QUEST_TARGET = "던전의 우두머리가 아닌 퀘스트 대상입니다."
 L.BULLET_LEVEL = "레벨 %d 우두머리 전투입니다."
@@ -623,11 +784,33 @@ L.EQUIP_PATTERNS = {
 -- here" and a wing's areas match these (Core/Areas.lua). Unconfirmed ones are listed in
 -- the translation's to-check list.
 L.AREA_NAMES = {
+	-- The Drowned City's areas (Data/Authored/Upcoming.lua's floors: Abyssal Dais, Altar of the Serpent, Deep
+	-- Archives, Eternal Amphitheater, the Flooded Shrine (the central pool) and Sunken Hollow on the city's map,
+	-- Ataal'Byzal and Atal'Byzal on Atal'byzal), as a player's English recording (2026-11-13) and the client's
+	-- English tables (2026-11-17) name them: drafted, to be checked (GetSubZoneText there)
+	["Abyssal Dais"] = "심연의 단상",
 	["Aku'mai's Lair"] = "아쿠마이의 둥지",
+	-- Alcaz Prison's two names for its rooms (Data/Authored/Upcoming.lua's floors: Alcaz Prison on the first,
+	-- Maximum Security on the second), as the client's English tables name them (2026-11-17): drafted, to be checked
+	-- (GetSubZoneText there); Alcaz Prison as the dungeon's name in this language
+	["Alcaz Prison"] = "알카즈 감옥",
+	-- (the Drowned City's, drafted: see Abyssal Dais)
+	["Altar of the Serpent"] = "뱀의 제단",
 	["Anvilmar's Rest"] = "앤빌마의 휴식처",
+	-- (the Drowned City's shrine: its rooms' area and the building's own name, drafted: see Abyssal Dais)
+	["Ataal'Byzal"] = "아타알비잘",
+	["Atal'Byzal"] = "아탈비잘",
 	["Athenaeum"] = "도서관",
+	-- Blackmaw Hold's areas (Data/Authored/Upcoming.lua's floors: Blackmaw Grove, Blackmaw Stillwater, Bonesnout's
+	-- Thicket, the Festering Grotto and the depths' four levels), by the labels on Santiago Reyes's maps, not read in
+	-- game yet: drafted, to be checked (GetSubZoneText there). The client's tables keep the hold's own names in
+	-- encrypted rows
+	["Blackmaw Grove"] = "검은아귀 숲",
+	["Blackmaw Stillwater"] = "검은아귀 잔잔한 물",
 	["Blackrock Stadium"] = "검은바위 투기장",
 	["Blackrock Stronghold"] = "검은바위 요새",
+	-- (Blackmaw Hold's, drafted: see Blackmaw Grove)
+	["Bonesnout's Thicket"] = "뼈주둥이의 덤불",
 	-- City of Dalaran's rooms (Data/Authored/CityOfDalaran.lua's floors: Cantrips & Crows, City of
 	-- Dalaran, Dalaran, Magus Commerce Exchange, Path of Renewal, Presage Plaza, Runeweaver Square, Sewer,
 	-- The Eventide, The Purple Parlor, The Underbelly, The Violet Citadel, The Violet Hold): the city's
@@ -652,8 +835,15 @@ L.AREA_NAMES = {
 	["Crusaders' Square"] = "십자군 광장",
 	["Dalaran"] = "달라란",
 	["Dark Iron Ingress"] = "검은무쇠 침투지",
+	-- (the Drowned City's, drafted: see Abyssal Dais)
+	["Deep Archives"] = "심층 기록보관소",
 	["Deeprun Tram"] = "깊은굴 지하철",
 	["Defias Hideout"] = "데피아즈단 은신처",
+	-- (Blackmaw Hold's, drafted: see Blackmaw Grove)
+	["Depths of Forbidden Magic"] = "금지된 마법의 심연",
+	["Depths of the Burrow"] = "굴의 심연",
+	["Depths of the Elders"] = "장로의 심연",
+	["Depths of the Fallen Grove"] = "쓰러진 숲의 심연",
 	["Dig One"] = "제1 발굴지",
 	["Dragonspire Hall"] = "용첨탑 전당",
 	["Dreamer's Rock"] = "꿈꾸는 자의 바위",
@@ -661,9 +851,19 @@ L.AREA_NAMES = {
 	["Eldre' Thalas"] = "엘드레탈라스",
 	["Eldreth Row"] = "엘드레스 거리",
 	["Engineering Labs"] = "기계공학 연구소",
+	-- (the Drowned City's, drafted: see Abyssal Dais)
+	["Eternal Amphitheater"] = "영원의 원형극장",
 	["Excavation Center"] = "발굴 본부",
+	-- (Blackmaw Hold's, drafted: see Blackmaw Grove)
+	["Festering Grotto"] = "곪은 동굴",
 	["Festival Lane"] = "축제의 거리",
+	-- (the Drowned City's, drafted: see Abyssal Dais)
+	["Flooded Shrine"] = "물에 잠긴 성소",
 	["Footman's Armory"] = "보병 무기고",
+	-- City of Dalaran's city rooms a player's recording read (Data/Authored/CityOfDalaran.lua, 2026-11-13: Forge of
+	-- Fate, Talismanic Textiles, Tempered Tomes, The Atrium of Fortune, The Silver Enclave, Violet Plates and
+	-- Framing), with no area id. Drafted, to be checked in game (GetSubZoneText there)
+	["Forge of Fate"] = "운명의 대장간",
 	["Forgewright's Tomb"] = "대장장이의 무덤",
 	["Forlorn Cloister"] = "쓸쓸한 회랑",
 	["Gallery of Treasures"] = "보물 전시실",
@@ -692,6 +892,8 @@ L.AREA_NAMES = {
 	["Magus Commerce Exchange"] = "마법사 교역소",
 	["Market Row"] = "상가",
 	["Market Street"] = "시장 거리",
+	-- (Alcaz Prison's lower floor, drafted: see Alcaz Prison)
+	["Maximum Security"] = "최고 보안 구역",
 	["Mast Room"] = "목재 작업장",
 	["Mok'Doom"] = "모크둠",
 	["Moonshrine Ruins"] = "달의 제단 폐허",
@@ -712,9 +914,25 @@ L.AREA_NAMES = {
 	["Skitterweb Tunnels"] = "그물걸이 통로",
 	["Slaughter Square"] = "학살의 광장",
 	["South Common Hall"] = "남쪽 공용 전당",
+	-- Razorfen Downs' rooms (Data/Instances/RazorfenDowns.lua: Spiral of Thorns, The Bone Pile, The Caller's Chamber
+	-- and The Murder Pens), as a player's recording read them in English (2026-11-13): the dungeon building's own
+	-- names, with no area id. Drafted, to be checked in game (GetSubZoneText there)
+	["Spiral of Thorns"] = "가시덩굴 나선",
 	["Stalker's Thicket"] = "추적자의 숲",
+	-- (the Drowned City's, drafted: see Abyssal Dais)
+	["Sunken Hollow"] = "가라앉은 분지",
+	-- (City of Dalaran's, drafted: see Forge of Fate)
+	["Talismanic Textiles"] = "부적 직물점",
 	["Tazz'Alaor"] = "타즈알라올",
 	["Tazz'Alor"] = "타즈알로",
+	-- (City of Dalaran's, drafted: see Forge of Fate)
+	["Tempered Tomes"] = "단련된 고서점",
+	-- (City of Dalaran's, drafted: see Forge of Fate)
+	["The Atrium of Fortune"] = "행운의 전당",
+	-- (Razorfen Downs', drafted: see Spiral of Thorns)
+	["The Bone Pile"] = "뼈 무더기",
+	-- (Razorfen Downs', drafted: see Spiral of Thorns)
+	["The Caller's Chamber"] = "소환사의 방",
 	-- Gnomeregan's Clean Zone, a room the map follows since 0.39.21 (2026-11-12; drafted, to be checked)
 	["The Clean Zone"] = "청정 지역",
 	["The Clockwerk Run"] = "태엽장치 통로",
@@ -732,12 +950,16 @@ L.AREA_NAMES = {
 	["The Hoard"] = "보병 무기고",
 	["The Masonary"] = "석공장",
 	["The Molten Span"] = "녹아내린 다리",
+	-- (Razorfen Downs', drafted: see Spiral of Thorns)
+	["The Murder Pens"] = "살육의 우리",
 	["The Pool of Ask'ar"] = "아스카르 연못",
 	["The Purple Parlor"] = "화려한 응접실",
 	["The Rookery"] = "부화장",
 	["The Scarlet Bastion"] = "붉은십자군 성채",
 	["The Sealed Hall"] = "봉인된 전당",
 	["The Shrine of Eldretharr"] = "엘드레사르 제단",
+	-- (City of Dalaran's, drafted: see Forge of Fate)
+	["The Silver Enclave"] = "은빛 지구",
 	["The Slaughter House"] = "도살장",
 	["The Storehouse"] = "창고",
 	["The Underbelly"] = "마법의 뒤안길",
@@ -748,9 +970,16 @@ L.AREA_NAMES = {
 	-- Gnomeregan's way in, as the Loading Room above
 	["Train Depot"] = "병참 보급창",
 	["Training Grounds"] = "훈련장",
+	-- (City of Dalaran's, drafted: see Forge of Fate)
+	["Violet Plates and Framing"] = "보랏빛 판금과 틀",
 	["Warpwood Quarter"] = "굽이나무 지구",
+	-- Wailing Caverns' Winding Chasm (Data/Authored/WailingCaverns.lua, 2026-11-13): the game's name for it in this language, to be checked in game
+	["Winding Chasm"] = "굽이치는 바위굴",
 	-- Gnomeregan's way in, as the Loading Room above
 	["Workshop Entrance"] = "작업장 입구",
+	-- (Blackmaw Hold's, drafted: see Blackmaw Grove; Zedrik's Rest a best guess from the label on a newer version
+	-- of Santiago Reyes's whole hold, 2026-11-18)
+	["Zedrik's Rest"] = "제드릭의 휴식처",
 	-- The Temple of Atal'Hakkar's way in (Data/Authored/SubMaps.lua, 2026-10-30): its nine rooms have no area id,
 	-- so they are found by these names alone. Pool of Tears, Sorrowmurk and the temple's own name have ids (74,
 	-- 1778, 1477): a scan (/aegis areas, Dev/bake_area_ids.py) can replace those three. LibBabble-SubZone's names,
@@ -780,10 +1009,66 @@ L.STYLE_MODERN = "모던"
 L.STYLE_MODERN_DESC = "지금처럼 도감의 모든 기능: 장비 찾기, 들어가는 길 지도, 세계 지도의 표시."
 L.STYLE_CUSTOM = "사용자 설정"
 L.STYLE_CUSTOM_DESC = "직접 고릅니다. 이것을 고르면 도감 설정이 열리고, 기능마다 체크 상자가 있습니다."
+-- Adventure Mode, in the options' list of styles, and what it does (2026-11-05; drafted, to be checked).
+L.STYLE_ADVENTURE = "모험 모드"
+L.STYLE_ADVENTURE_DESC = "도감이 빈 채로 시작해 플레이하는 동안 채워지며, 던전, 우두머리, 전리품, 퀘스트는 찾는 대로 나타납니다."
+-- Adventure Mode's name on its box in the question at login, one word like Classic and Modern (2026-11-07).
+L.STYLE_ADVENTURE_BOX = "모험"
+-- Adventure Mode's pages: an unmet boss's line, the closed tabs' tooltips, the loot list with nothing seen
+-- yet, and an item seen with its boss unknown (2026-11-05; drafted, to be checked).
+L.ADVENTURE_BOSS_UNMET = "아직 만나지 못한 상대입니다."
+L.ADVENTURE_ABILITIES_CLOSED = "이 우두머리와 싸우면 능력을 알 수 있습니다."
+L.ADVENTURE_MODEL_CLOSED = "이 우두머리를 만나면 여기서 볼 수 있습니다."
+L.ADVENTURE_LOOT_NONE = "아직 이곳에서 떨어진 전리품을 보지 못했습니다."
+L.ADVENTURE_LOOT_IN_DUNGEON = "획득 장소: %s"
+-- Adventure Mode's Quests tab, a step not offered yet and no quests found yet; the Reputation tab, no
+-- faction met yet, and a faction's rewards not seen yet (2026-11-05; drafted, to be checked).
+L.ADVENTURE_QUEST_UNKNOWN = "아직 제안받지 않은 퀘스트입니다."
+L.ADVENTURE_QUESTS_NONE = "이 던전의 퀘스트를 아직 찾지 못했습니다."
+L.ADVENTURE_REP_NONE = "아직 만난 진영이 없습니다."
+L.ADVENTURE_REP_TITLE = "찾을 보상"
+L.ADVENTURE_REP_SEEN = "병참장교에게서 보상을 보면 여기에 나타납니다."
+L.ADVENTURE_REP_SEEN_AT = "병참장교(%s)에게서 보상을 보면 여기에 나타납니다."
+L.ADVENTURE_REP_NONE_SEEN = "아직 본 보상이 없습니다."
+L.ADVENTURE_DOOR_TITLE = "소문"
+L.ADVENTURE_DOOR_LINE = "“%s”"
+L.ADVENTURE_DOOR_UNKNOWN = "이곳에 대해서는 아직 알려진 것이 거의 없습니다."
+L.ADVENTURE_DOOR_DUNGEON = "소문 속의 던전"
+L.ADVENTURE_DOOR_RAID = "소문 속의 공격대"
+L.ADVENTURE_DOOR_NTH = "%s %d"
+L.ADVENTURE_DOOR_CHOICE = "%s (%s)"
+L.ADVENTURE_DOOR_VIA = "차원문은 아래쪽에 있습니다. 동굴 입구에서 내려가십시오."
+L.ADVENTURE_DOOR_VIA_BUILDING = "포털은 안에 있습니다. 입구로 들어가세요."
+L.ADVENTURE_DOOR_WAYPOINT_SET = "소문이 가리키는 곳에 지도 핀을 설정했습니다."
+L.ADVENTURE_CAVE_LEADS_TO = "소문 속의 장소로 가는 길"
+L.ADVENTURE_CAVE_LEFT_CLICK = "왼쪽 클릭하면 들어가는 길의 지도를 봅니다"
+-- Adventure Mode's quest marks on the world map (UI/QuestMap.lua): a quest not offered yet is a faint "!", a
+-- rumor, under "A rumor" (ADVENTURE_DOOR_TITLE) and in ADVENTURE_DOOR_LINE's quotation marks: there may be work
+-- there, from someone or something (inside a dungeon, a tablet or a crest). It names no quest, dungeon or
+-- place (2026-11-11; translation drafted, to be checked).
+L.ADVENTURE_QUEST_RUMOR = "이곳에 당신을 위한 일이 있을지도 모릅니다."
+-- Adventure Mode's Gear Finder: an upgrade not seen to drop yet, a rumour's place (zone, level range), the
+-- tooltip's line for one not seen, the click lines, and Show on map for a rumour's door (2026-11-10; translation
+-- drafted, to be checked).
+L.GEAR_ADVENTURE_BETTER = "더 좋은 무언가"
+L.GEAR_ADVENTURE_PLACE = "%s · %s"
+L.GEAR_ADVENTURE_UNSEEN = "아직 떨어지는 것을 보지 못했습니다."
+L.GEAR_ADVENTURE_CELL_CLICK = "클릭하면 상위 향상 아이템을 봅니다. 오른쪽 클릭하면 던전을 봅니다."
+L.GEAR_ADVENTURE_PICK_CLICK = "클릭하면 여기에 표시합니다. 오른쪽 클릭하면 던전을 봅니다."
+L.GEAR_ADVENTURE_ROW_CLICK = "클릭하면 던전을 봅니다."
+L.GEAR_ADVENTURE_MAP_CLICK = "클릭하면 세계 지도에서 가는 길을 봅니다."
+L.GEAR_ADVENTURE_NO_DOOR = "입구가 어디에 있는지 아직 알려지지 않았습니다."
+L.GEAR_ADVENTURE_SHOW_MAP = "지도에서 보기"
+-- The Gear Finder's rumour slot with upgrades to pick: its picture leads to the door, its words to the picks;
+-- and the picks' right-click where the slot has no link (2026-11-10; translation drafted, to be checked).
+L.GEAR_ADVENTURE_MAP_PICK_CLICK = "아이콘을 클릭하면 세계 지도에서 가는 길을 봅니다. 글자를 클릭하면 고를 수 있는 향상 아이템을 봅니다."
+L.GEAR_ADVENTURE_RUMOUR_PICKS = "오른쪽 클릭하면 고를 수 있는 향상 아이템을 봅니다."
 L.STYLE_STARTING = "시작 설정:"
 L.STYLE_LINE_ON = "%s: 켬"
 L.STYLE_LINE_OFF = "%s: 끔"
-L.STYLE_LINE_CHOOSE = "%s: 직접 선택"
+L.STYLE_LINE_ADVENTURE_HIDDEN = "던전, 우두머리, 전리품은 처음엔 숨겨짐"
+L.STYLE_LINE_ADVENTURE_FOG = "우두머리 처치 전까지 던전 지도에 안개"
+L.STYLE_LINE_ADVENTURE_ON = "장비 찾기, 들어가는 길 지도, 표시: 켬"
 L.STYLE_GEAR = "장비 찾기와 능력치 가중치"
 L.STYLE_GEAR_TIP = "장비 찾기 탭, 캐릭터 창의 탭, 아이템 툴팁의 능력치 가중치 줄, 녹색 향상 화살표, Pawn에 넣은 도감의 가중치. 모두 같은 가중치를 쓰므로 함께 켜고 끕니다. 이 캐릭터에만 적용됩니다."
 L.STYLE_WAY_IN = "들어가는 길 지도와 동굴"
@@ -796,7 +1081,7 @@ L.STYLE_CLOSE_NOTE = "닫으면 %s 방식이 유지됩니다."
 L.STYLE_CHOSEN = "도감 방식: %s. 언제든 도감 설정에서 바꿀 수 있습니다 (/aegis options)."
 L.STYLE_OPTIONS_AFTER_COMBAT = "전투가 끝나면 도감 설정이 열립니다."
 L.STYLE_OPTION = "도감 방식"
-L.STYLE_OPTION_TIP = "클래식, 모던 또는 사용자 설정. 이 캐릭터에만 적용됩니다. 아래 기능을 켜거나 끄면 사용자 설정이 됩니다."
+L.STYLE_OPTION_TIP = "클래식, 모던, 모험 모드 또는 사용자 설정. 이 캐릭터에만 적용됩니다. 아래 기능을 켜거나 끄면 사용자 설정이 됩니다 (모험 모드는 계속 켜져 있습니다)."
 -- The Reset button under the style's dropdown, and its question (2026-11-03; drafted, to be checked).
 L.STYLE_RESET = "던전 도감 초기화"
 L.STYLE_RESET_BUTTON = "초기화"
@@ -833,23 +1118,44 @@ L.RUN_NOT_INSIDE = "새 공략을 시작하려면 던전에 들어가세요."
 L.RUN_HIDDEN = "이번 공략 동안 공략 창을 숨깁니다. 다시 보려면 /ij run을 입력하세요."
 L.RUN_NONE = "아직 던전 공략 기록이 없습니다."
 L.RUN_IS_OFF = "던전 공략 추적이 꺼져 있습니다. 도감 설정에서 켜세요 (/aegis options)."
-L.RUN_FREE_ON = "공략 창의 제목을 끌어 옮기세요. /ij run lock을 입력하면 퀘스트 추적기 옆으로 돌아갑니다."
 L.RUN_FREE_OFF = "공략 창이 퀘스트 추적기 옆으로 돌아갔습니다."
-L.RUN_USAGE = "/ij run: 공략 창을 표시하거나 숨깁니다 (던전 밖에서는 마지막 공략). /ij run new: 새 공략을 시작합니다. /ij run unlock: 창을 옮길 수 있습니다. /ij run lock, /ij run reset: 퀘스트 추적기 옆으로 돌려놓습니다. /ij run debug: 집계한 내용을 보여 줍니다."
+-- The run block's header lock and its chat lines, /ij run lock and unlock now the lock's, and /ij run's usage reworded for them (2026-11-17; drafted, to be checked).
+L.RUN_USAGE = "/ij run: 공략 창을 표시하거나 숨깁니다 (던전 밖에서는 마지막 공략). /ij run new: 새 공략을 시작합니다. /ij run lock, /ij run unlock: 제목의 자물쇠처럼 창을 제자리에 잠그거나 다시 옮길 수 있게 합니다. /ij run reset: 퀘스트 추적기 옆으로 돌려놓습니다. /ij run debug: 집계한 내용을 보여 줍니다."
+L.RUN_LOCKED = "잠김"
+L.RUN_LOCKED_TIP = "클릭하여 잠금을 푼 다음, 창의 제목을 끌어 옮기세요."
+L.RUN_UNLOCKED = "잠금 해제됨"
+L.RUN_UNLOCKED_TIP = "창의 제목을 끌어 옮기세요. 클릭하면 제자리에 잠급니다."
+L.RUN_LOCK_ON = "공략 창이 제자리에 잠겼습니다."
+L.RUN_LOCK_OFF = "공략 창의 잠금이 풀렸습니다. 제목을 끌어 옮기세요."
+L.RUN_LOCK_NOT_FREE = "자유롭게 배치할 때만 옮길 수 있습니다 (설정의 \"%s\")."
+-- The clock's buttons on the run block, between the time and the count (2026-11-14; drafted, to be checked).
+L.RUN_CLOCK_START = "지금 타이머 시작"
+L.RUN_CLOCK_WAITING = "그러지 않으면 첫 전투에서 저절로 시작됩니다."
+L.RUN_CLOCK_PAUSE = "타이머 일시정지"
+L.RUN_CLOCK_RESUME = "타이머 재개"
+L.RUN_CLOCK_DONE = "공략이 끝나 타이머가 멈췄습니다."
+L.RUN_RESTART = "새 공략"
+L.RUN_RESTART_CONFIRM = "새 공략을 시작할까요? 처치 기록이 지워지고 타이머가 다시 시작됩니다."
+-- The run block's one line inside a Scarlet Monastery wing before the wing is known (2026-11-17; drafted, to be checked).
+L.RUN_WHICH_WING = "어느 구역?"
+-- /ij run new or New run before the wing is known: the new run starts once it is (2026-11-17; drafted, to be checked).
+L.RUN_NEW_WING = "구역이 확인되면 새 공략을 시작합니다."
 L.OPTIONS_RUN = "던전 공략 추적"
 L.OPTIONS_RUN_TIP = "던전 안에서 퀘스트 추적기 옆의 창에 공략에 걸린 시간, 우두머리, 획득한 것을 보여 줍니다. 끄면 아무것도 집계하지 않습니다."
 L.OPTIONS_RUN_NUMBERS = "경험치와 돈 표시"
 L.OPTIONS_RUN_NUMBERS_TIP = "경험치와 돈(획득한 돈과 받은 아이템의 상점 판매가)을 각각 시간당 수치와 함께, 그리고 얻은 아이템 수를 보여 줍니다."
 L.OPTIONS_RUN_FREE = "자유롭게 배치"
-L.OPTIONS_RUN_FREE_TIP = "창의 제목을 끌어 화면 어디에나 둡니다. 끄면 퀘스트 추적기 옆에 붙어 함께 움직입니다."
+-- "Place it freely" on by default since 0.39.23: its tip says so, and what unticking it does (2026-11-17; drafted, to be checked).
+L.OPTIONS_RUN_FREE_TIP = "창의 제목을 끌어 화면 어디에나 둡니다. 기본으로 켜져 있습니다. 옮기기 전까지는 퀘스트 추적기 옆에서 기다립니다. 끄면 퀘스트 추적기 옆에 붙어 함께 움직입니다. \"퀘스트 추적기 안에 넣기\"가 이 설정보다 우선합니다."
 -- The run block's dark mode: its gold art darkened, else the tracker's tint (UI/RunTracker.lua Paint), 2026-11-12; drafted, to be checked.
 L.OPTIONS_RUN_DARK_MODE = "어두운 모드"
 L.OPTIONS_RUN_DARK_MODE_TIP = "공략 창의 머리글과 테두리의 금색을 어둡게 합니다. 끄면 퀘스트 추적기 머리글의 모습을 따르므로, 인터페이스가 머리글을 어둡게 하면 창도 어두워집니다."
 L.OPTIONS_RUN_SUMMARY = "채팅에 요약 표시"
 L.OPTIONS_RUN_SUMMARY_TIP = "공략 시간이 멈추고 1분 뒤(그 전에 떠나면 바로) 채팅에 한 줄로 보여 줍니다. 끝내지 않고 떠난 공략은 공략이 끝났을 때, 즉 던전이 초기화되거나 밖에서 30분이 지나면 보여 줍니다."
--- The run block inside the quest tracker: an experiment, off by default (UI/RunTrackerInside.lua), 2026-11-12; drafted, to be checked.
+-- The run block inside the quest tracker: off by default (the owner's call of 2026-11-13; on in 0.39.22's tests), its tip warning of blocked actions in combat until a /reload once the block has been inside the tracker (the owner's words, 2026-11-13), its name marked as a test (UI/RunTrackerInside.lua), 2026-11-12; drafted, to be checked.
 L.OPTIONS_RUN_INSIDE = "퀘스트 추적기 안에 넣기 (실험)"
-L.OPTIONS_RUN_INSIDE_TIP = "창이 퀘스트 추적기 안, \"" .. (TRACKER_ALL_OBJECTIVES or "모든 목표") .. "\" 바로 아래로 들어가고, 추적기의 다른 항목(" .. (TRACKER_HEADER_QUESTS or "퀘스트") .. " 등)은 그 아래로 내려갑니다. 편집 모드에서 옮긴 추적기는 거기서 정한 높이만큼만 큽니다. 그 높이가 창을 담기에 너무 짧으면 꺼져 있을 때처럼 추적기 옆에 붙고, 아래 버튼으로 추적기를 더 높게 할 수 있습니다. 시험 기능입니다: 게임이 차단된 동작을 알리면 저절로 꺼집니다. 한 번 사용한 뒤에는 /reload를 해야 완전히 꺼집니다."
+-- Its tip: beside the tracker with this off only while "Place it freely" is unticked too, since that is on by default (2026-11-17; drafted, to be checked).
+L.OPTIONS_RUN_INSIDE_TIP = "창이 퀘스트 추적기 안, \"" .. (TRACKER_ALL_OBJECTIVES or "모든 목표") .. "\" 바로 아래로 들어가고, 추적기의 다른 항목(" .. (TRACKER_HEADER_QUESTS or "퀘스트") .. " 등)은 그 아래로 내려갑니다. 기본으로 꺼져 있습니다. 편집 모드에서 옮긴 추적기는 거기서 정한 높이만큼만 큽니다. 그 높이가 창을 담기에 너무 짧으면 도감이 편집 모드 레이아웃의 높이를 한 번 올리고 대화창에 알립니다(/reload 후에 보이며, 아래 버튼으로 다시 할 수 있습니다). 그때까지는 이 설정이 꺼져 있고 \"자유롭게 배치\"도 해제되어 있을 때처럼 추적기 옆에 붙습니다. 창이 한 번 추적기 안에 들어간 뒤에는 /reload 전까지 전투 중 동작이 차단될 수 있습니다. 시험 기능입니다: 게임이 차단된 동작을 알리면 저절로 꺼집니다. 한 번 사용한 뒤에는 /reload를 해야 완전히 꺼집니다."
 L.RUN_INSIDE_BLOCKED = "게임이 도감의 동작을 차단했습니다(%s). 그래서 \"퀘스트 추적기 안에 넣기\"가 꺼졌고 공략 창은 추적기 옆으로 돌아갑니다. 이 줄을 알려 주세요. /reload를 입력하면 추적기에서 완전히 빠집니다."
 L.RUN_INSIDE_RELOAD = "\"퀘스트 추적기 안에 넣기\"가 꺼졌고 공략 창은 추적기 옆으로 돌아갑니다. /reload를 입력하면 추적기에서 완전히 빠집니다."
 -- The tracker too short for the block inside: the Height it needs, and the options' Make taller button (UI/RunTrackerInside.lua), 2026-11-12; drafted, to be checked.
@@ -866,6 +1172,11 @@ L.RUN_TALLER_ENOUGH = "퀘스트 추적기가 이미 공략 창에 충분히 높
 L.RUN_TALLER_FAILED = "여기서는 편집 모드 레이아웃을 바꿀 수 없었습니다. 직접 정하세요: %s, \"%s\" 선택, %s %d 이상."
 L.RUN_TALLER_DONE = "%s – %s: 이제 %d (편집 모드 레이아웃 \"%s\"). 보려면 지금 /reload를 입력하세요."
 L.RUN_TALLER_MOST = "편집 모드가 허용하는 최대치라서, 창이 여전히 들어가지 않을 수 있습니다."
+-- The tracker's Height raised once by the journal itself when too short, 0.39.22 (UI/RunTrackerInside.lua AutoTaller), 2026-11-12; drafted, to be checked.
+L.RUN_INSIDE_AUTO = "퀘스트 추적기가 공략 창을 담기에 너무 짧아서, 도감이 %s를 %d에서 %d(으)로 바꿨습니다(편집 모드 레이아웃 \"%s\"). 보려면 /reload를 입력하세요. %s에서 되돌릴 수 있습니다."
+L.RUN_INSIDE_SAVED_TIP = "편집 모드 레이아웃에서 퀘스트 추적기의 %s가 이제 %d입니다. 보려면 /reload를 입력하세요."
+-- Edit Mode opened before the /reload after the journal saved a Height: its old copy (UI/RunTrackerInside.lua EditModeEntered), 2026-11-12; drafted, to be checked.
+L.RUN_INSIDE_EDIT_MODE_OLD = "/reload 전까지 %s에는 퀘스트 추적기의 이전 %s가 표시됩니다. 지금 거기서 무엇이든 저장하면 이전 값으로 돌아갑니다."
 
 -- Matched against the client's own text: the client's language's only, previewed or not.
 if client then client.EQUIP_PATTERNS, client.AREA_NAMES = L.EQUIP_PATTERNS, L.AREA_NAMES end

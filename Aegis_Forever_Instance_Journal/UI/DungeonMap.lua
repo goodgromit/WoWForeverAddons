@@ -20,6 +20,12 @@ local L = ns.L
 	Boss pins: the creature's portrait in the journal's round frame, dimmed and crossed out
 	once killed on this run; a click opens the boss in the journal. A boss one of the player's
 	quests needs wears the game's quest badge at his portrait's foot (UI/QuestMap.lua's StyleBadge).
+
+	A dungeon with fog data is drawn under fog of war in Adventure Mode, or with the fog's box ticked
+	(UI/DungeonFog.lua): a frame of its own in the overlay, drawn after the picture, and a hint in
+	place of the pin of each boss the character has not killed (a pin built as these are, in the
+	boss list's gold band: the game's unknown-boss picture until the boss is met, its portrait once met).
+	In Adventure Mode a dungeon with no fog shows such a hint for each boss not met yet, its pin once met.
 ]]
 
 local DungeonMap = {}
@@ -32,10 +38,9 @@ local PIN_NORMAL = { 0.84960938, 0.97070313, 0.42871094, 0.48828125 }
 local PIN_PUSHED = { 0.77734375, 0.89843750, 0.26953125, 0.32910156 }
 local PIN_HIGHLIGHT = { 0.68945313, 0.81054688, 0.33300781, 0.39257813 }
 local PIN_WIDTH, PIN_HEIGHT, PORTRAIT_SIZE = 50, 49, 36
--- The pins' size, for the quest marks kept clear of them (UI/QuestMap.lua's ClearOfPins) and the tests.
-DungeonMap.PIN_WIDTH, DungeonMap.PIN_HEIGHT = PIN_WIDTH, PIN_HEIGHT
+-- The pins' and their portraits' size, for the fog's hints (UI/DungeonFog.lua) and the tests.
+DungeonMap.PIN_WIDTH, DungeonMap.PIN_HEIGHT, DungeonMap.PORTRAIT_SIZE = PIN_WIDTH, PIN_HEIGHT, PORTRAIT_SIZE
 local NO_PORTRAIT_SKULL = "Interface\\TargetingFrame\\UI-TargetingFrame-Skull"
-local CIRCLE_MASK = "Interface\\CharacterFrame\\TempPortraitAlphaMask"
 local DEFEATED_ATLAS = "Map-MarkedDefeated"
 local TRANSITION_HIGHLIGHT = "Interface\\Minimap\\UI-Minimap-ZoomButton-Highlight"
 
@@ -63,6 +68,19 @@ local LINK_SIZE = 24
 -- Retail's cave entrance, the first of these the client has: on the zones' maps, the way down to an area below
 -- the zone (its pins, below); on a dungeon's map, the way down into a cave floor (a transition's icon = "cave").
 local CAVE_ATLASES = { "CaveUnderground-Up", "CaveUnderground-Down" }
+-- Retail's delve entrance, else the cave's where the client lacks it: a building's way in on a zone's map (icon =
+-- "building": the Scarlet Monastery's hall, below), and on a dungeon's map the way into a built floor (a
+-- transition's icon = "building": the Drowned City's way down into Atal'byzal, its sunken shrine).
+local BUILDING_ATLASES = { "delves-regular", "CaveUnderground-Up", "CaveUnderground-Down" }
+--[[
+	The kinds of place a dungeon's map can mark (its data's mapSpots: MapSpot, below), each with the game's own small
+	icon, the first of its pictures the client has, and its name (a key of the strings: the tooltip's title). A chest:
+	retail's treasure mark on the map (the atlas VignetteLoot, 24 x 24 on the minimap's object icons, in Forever's atlas
+	table, read 2026-11-17), else the world map's older treasure chest (a file Forever's client has too).
+]]
+DungeonMap.SPOT_KINDS = {
+	chest = { atlas = "VignetteLoot", file = "Interface\\WorldMap\\TreasureChest_64", title = "MAP_SPOT_CHEST" },
+}
 -- How often the player's position is followed while they are on one of an area's levels (Blackrock
 -- Mountain's), on one picture placed twice (Maraudon's caves) or by a way down under the name of the
 -- rooms above (Old Ironforge's, in The High Seat), map open or closed: what shows can change with no
@@ -92,11 +110,9 @@ local function Floors(instance)
 	return instance and instance.map and instance.map.floors or nil
 end
 
--- The instance the player is inside, if the journal has it.
+-- The instance the player is inside, if the journal has it (Core/Registry.lua).
 local function CurrentInstance()
-	local ok, _, _, _, _, _, _, _, instanceID = pcall(GetInstanceInfo)
-	instanceID = ok and ns.Readable(instanceID) or nil
-	return instanceID and ns.GetInstanceByInstanceID(instanceID) or nil
+	return (ns.CurrentInstance())
 end
 
 local floorsByMapID
@@ -131,12 +147,14 @@ end
 	follows only while a level floor is the one picked (this opening, or the last one): then the next room of
 	another level floor turns it, and a floor picked shows until the player walks into another room
 	(follow.seen, the room it was picked in: follow.Picked); with the whole map picked, it stays on it.
+	A map marked unnamedFloor (the Drowned City's: Data/Authored/Upcoming.lua) is on that floor where the client
+	names no area (GetSubZoneText gives "") and the minimap's name is no floor's either: its client files name
+	every room of its other floor.
 ]]
-function follow.Floor(instance)
-	if instance ~= CurrentInstance() then return nil end
-	local fromLevel = instance.map and instance.map.followFromLevel
-	if follow.picked and not fromLevel then return nil end
-	local name
+-- The floor the area's name gives (follow.Floor, without turning anything; /aegis where reads it too), the name
+-- read, and true when it went by unnamedFloor.
+function follow.Read(instance)
+	local name, unnamed
 	for step, fn in ipairs({ GetSubZoneText, GetMinimapZoneText }) do
 		if step == 2 and instance.map and instance.map.roomsOnly then break end
 		local ok, text = pcall(fn)
@@ -144,7 +162,24 @@ function follow.Floor(instance)
 		-- A few of the client's names end in a space ("Engineering Labs ").
 		name = type(text) == "string" and text:match("^(.-)%s*$") or nil
 		if name and name ~= "" then break end
+		if step == 1 then unnamed = name == "" end
 	end
+	local floors = Floors(instance) or {}
+	if name and name ~= "" then
+		for index, floor in ipairs(floors) do
+			if ns.AreaIn(floor.areas, name) then return index, name end
+		end
+	end
+	local unnamedFloor = instance.map and instance.map.unnamedFloor
+	if unnamed and floors[unnamedFloor] then return unnamedFloor, name, true end
+	return nil, name
+end
+
+function follow.Floor(instance)
+	if instance ~= CurrentInstance() then return nil end
+	local fromLevel = instance.map and instance.map.followFromLevel
+	if follow.picked and not fromLevel then return nil end
+	local index, name = follow.Read(instance)
 	if fromLevel then
 		local floors, picked = Floors(instance) or {}, chosenFloor[instance.key]
 		if not (floors[picked] and not floors[picked].whole) then return nil end
@@ -154,14 +189,7 @@ function follow.Floor(instance)
 		end
 		follow.seen = name or ""
 	end
-	if name and name ~= "" then
-		for index, floor in ipairs(Floors(instance) or {}) do
-			if ns.AreaIn(floor.areas, name) then
-				follow.key, follow.index = instance.key, index
-				break
-			end
-		end
-	end
+	if index then follow.key, follow.index = instance.key, index end
 	return follow.key == instance.key and follow.index or nil
 end
 
@@ -246,27 +274,6 @@ local function Defeated()
 	return db.defeated
 end
 
-local function BossNamed(instance, name)
-	if not (instance and name) then return nil end
-	for _, boss in ipairs(instance.bosses) do
-		if ns.NamedAs(boss, name) then return boss end
-		for _, alias in ipairs(boss.aliases or {}) do
-			if alias == name then return boss end
-		end
-	end
-	return nil
-end
-
--- The bosses an encounter ended for: each boss with the encounter's id where the journal knows it
--- (two where they share one fight: Sneed's Shredder and Sneed, ns.BossesForEncounter), else the one
--- the fight is named for. The client's name for a fight is not always the boss's (Magmatus's is
--- "Infurnus"), nor each boss's where two share it.
-local function BossesForEncounter(instance, encounterID, name)
-	local bosses = ns.BossesForEncounter(instance, encounterID)
-	if #bosses == 0 then bosses[1] = BossNamed(instance, name) end
-	return bosses
-end
-
 -- Half an hour: about how long the game keeps an empty instance. Coming back in sooner is taken as the same run
 -- (the owner, 2026-11-10: stepping out to repair or to wait for the group cleared the marks); the game gives
 -- addons no way to tell that instance from a fresh one, but for the message of a reset (below the events).
@@ -284,10 +291,24 @@ function DungeonMap:IsDefeated(instance, boss)
 	return boss.questTarget == true and ns.QuestMap ~= nil and ns.QuestMap:TargetDone(instance, boss)
 end
 
+-- How a boss's pin and its tooltip show it: as IsDefeated says, but while the fog test is on (UI/FogTest.lua)
+-- as the test counts it (a pretend kill, else the character's real one), from anywhere. IsDefeated stays the run's alone, for whatever counts the run's kills.
+function DungeonMap:ShowsDefeated(instance, boss)
+	local test = ns.FogTest and ns.FogTest:Defeated(instance, boss)
+	if test ~= nil then return test end
+	return self:IsDefeated(instance, boss)
+end
+
 function DungeonMap:MarkDefeated(instance, boss)
 	local defeated = Defeated()
 	defeated[instance.key] = defeated[instance.key] or {}
 	defeated[instance.key][boss.name] = true
+	-- A kill the map counts is the character's too (Core/Discovery.lua's record, which Adventure Mode's names and the fog
+	-- go by), as Fallen below has it. The record hears fights by itself; a kill the map counted that it never heard (its
+	-- place in the dungeon lost a moment: one way the owner's Drowned City run of 2026-11-18 may have come to read
+	-- "1/1 ??? defeated" on all six lines, a best guess) was crossed out on the run block with no name. Only real kills
+	-- come here (test mode's pretend ones never do: UI/FogTest.lua), and Discovery:Boss keeps a kill once.
+	if ns.Discovery then ns.Discovery:Boss(instance, boss, "killed") end
 	-- The run block's clock and lines go by these same kills (Core/Run.lua).
 	if ns.Run then ns.Run:Killed(instance, boss) end
 	self:Refresh()
@@ -300,7 +321,7 @@ function DungeonMap:Kills(instance)
 end
 
 -- A new run: the kills of every part of that copy of the dungeon go, the parts walked between without a loading
--- screen (Stratholme's halves, Blackrock Spire's, Dire Maul's: Core/Run.lua's SameCopy); a Scarlet Monastery wing's
+-- screen (Blackrock Spire's, Dire Maul's: Core/Run.lua's SameCopy); a Scarlet Monastery wing's
 -- alone, as each is its own copy.
 function DungeonMap:ClearRun(instance)
 	if not instance then return end
@@ -337,8 +358,12 @@ end
 	not catch. So the boss is marked when the player sees him lying dead: as their target, focus or
 	mouseover (as its health or flags change, as the target or mouseover changes, and once combat
 	ends, should the client have kept it back during the fight), or as his corpse is looted. Known
-	by his creature id where the journal knows it, else by his name. Watched only inside a dungeon
-	that has such a boss.
+	by his creature id where the journal knows it, else by his name or one of his other names
+	(aliases: Shadowfang Keep's Shadow Charger, the Ring of Law's challengers). Watched only inside a
+	dungeon that has such a boss, or one whose fight the game starts but never ends (watchCorpse:
+	Blackfathom Deeps' Lorgus Jett, Data/Authored/RunTracker.lua), whose kill no fight's end would
+	ever mark, or whose fight's id came late (watchCorpse: Ragefire Chasm's, Razorfen Downs' and
+	Scarlet Monastery's bosses, which counted by their corpses before).
 ]]
 local deaths = CreateFrame("Frame")
 local DEATH_EVENTS = { "UNIT_HEALTH", "UNIT_FLAGS", "PLAYER_TARGET_CHANGED", "UPDATE_MOUSEOVER_UNIT",
@@ -346,21 +371,17 @@ local DEATH_EVENTS = { "UNIT_HEALTH", "UNIT_FLAGS", "PLAYER_TARGET_CHANGED", "UP
 local LOOKED_AT = { "target", "focus", "mouseover" }
 local watched, watchedInstance
 
-local function CreatureID(guid)
-	local kind, _, _, _, _, id = strsplit("-", guid or "")
-	if kind == "Creature" or kind == "Vehicle" then return tonumber(id) end
-	return nil
-end
-
 local function WatchDeaths(instance)
 	watched, watchedInstance = nil, instance
 	for _, boss in ipairs(instance and instance.bosses or {}) do
-		if not boss.encounterID and not boss.trash then
+		if (not boss.encounterID or boss.watchCorpse) and not ns.IsLootSection(boss) then
 			watched = watched or {}
 			if boss.npcID then watched[boss.npcID] = boss end
 			watched[boss.name] = boss
 			if boss.enName then watched[boss.enName] = boss end
 			if boss.clientName then watched[boss.clientName] = boss end
+			-- Another boss's own name wins over an other name.
+			for _, alias in ipairs(boss.aliases or {}) do watched[alias] = watched[alias] or boss end
 			for _, member in ipairs(boss.members or {}) do
 				if member.npcID then watched[member.npcID] = boss end
 				watched[member.name] = boss
@@ -378,11 +399,15 @@ end
 -- key: the creature id or name it was known by, for an entry of several (DungeonMap:MemberDown). Kept as this run's
 -- kill unless it already is: by the run's own kills (Kills), not IsDefeated, which counts a quest target done by his
 -- quest too (his item in the bags), and would leave his corpse unkept, so that he stood again once his quest was
--- handed in on the same run (the review of 3cc3416).
+-- handed in on the same run (the review of 3cc3416). The kill counts for the character's finds too (Core/Discovery.lua:
+-- MarkDefeated tells it, and this again for a corpse the run had already), so the fog of war clears for a boss whose
+-- fight never ends, or who has none: inside a dungeon only the player's own group is there, so his corpse is their
+-- kill, as the run block already takes it. Discovery:Boss keeps a kill once.
 local function Fallen(boss, key)
 	if boss and boss.members and not DungeonMap:MemberDown(watchedInstance, boss, key) then return end
 	local killed = boss and DungeonMap:Kills(watchedInstance)
 	if boss and not (killed and killed[boss.name] == true) then DungeonMap:MarkDefeated(watchedInstance, boss) end
+	if boss and ns.Discovery then ns.Discovery:Boss(watchedInstance, boss, "killed") end
 end
 
 -- A unit the player has at hand, if it is a watched boss lying dead. What the client keeps back
@@ -390,18 +415,18 @@ end
 local function LooksDead(unit)
 	local ok, dead = pcall(UnitIsDead, unit)
 	if not ok or ns.Readable(dead) ~= true then return end
-	local id, name = CreatureID(ns.Readable(UnitGUID(unit))), ns.Readable(UnitName(unit))
+	local id, name = ns.NpcIDFromGUID(UnitGUID(unit)), ns.Readable(UnitName(unit))
 	if id and watched[id] then Fallen(watched[id], id) else Fallen(watched[name or ""], name) end
 end
 
 deaths:SetScript("OnEvent", function(_, event, unit)
 	if not (watched and watchedInstance) then return end
 	if event == "LOOT_OPENED" then
-		-- Each slot names the corpses it comes from: guid, count, guid, count, ...
+		-- Each slot names the corpses it comes from (Core/Recorder.lua's ns.LootSlotSources).
 		for slot = 1, GetNumLootItems() do
 			local sources = { pcall(GetLootSourceInfo, slot) }
 			for index = 2, sources[1] and #sources or 0, 2 do
-				local id = CreatureID(ns.Readable(sources[index]))
+				local id = ns.NpcIDFromGUID(sources[index])
 				Fallen(watched[id or 0], id)
 			end
 		end
@@ -420,15 +445,8 @@ end)
 -- Boss pins
 ------------------------------------------------------------------------------------------
 
-local function Masked(owner, texture)
-	if owner.CreateMaskTexture and texture.AddMaskTexture then
-		local mask = owner:CreateMaskTexture()
-		mask:SetTexture(CIRCLE_MASK, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
-		mask:SetAllPoints(texture)
-		texture:AddMaskTexture(mask)
-	end
-	return texture
-end
+-- A texture cut to the game's round portrait mask (UI/Art.lua).
+local Masked = ns.CircleMasked
 
 local function SetSheetTexture(texture, coords)
 	texture:SetTexture(SHEET)
@@ -439,20 +457,23 @@ end
 	A boss's round face, as its pin shows it: the creature's portrait masked round, the target skull on a dark disc
 	for one the client has no portrait of, and, once killed, a shade and the map's defeated mark. Built on any frame
 	at any size (the pin's portrait is PORTRAIT_SIZE): the run block's circles are the same faces (UI/RunTracker.lua).
+	bare: the portrait and the skull alone, no shade or mark, for a face never killed (the fog's hints).
 ]]
-function DungeonMap.BuildFace(owner, size)
+function DungeonMap.BuildFace(owner, size, bare)
 	owner.Portrait = Masked(owner, owner:CreateTexture(nil, "BACKGROUND"))
 	owner.Portrait:SetPoint("CENTER")
 	owner.Skull = owner:CreateTexture(nil, "ARTWORK")
 	owner.Skull:SetTexture(NO_PORTRAIT_SKULL)
 	owner.Skull:SetPoint("CENTER")
 	owner.Skull:Hide()
-	owner.Shade = Masked(owner, owner:CreateTexture(nil, "OVERLAY"))
-	owner.Shade:SetPoint("TOPLEFT", owner.Portrait, "TOPLEFT", -1, 1)
-	owner.Shade:SetPoint("BOTTOMRIGHT", owner.Portrait, "BOTTOMRIGHT", 1, -1)
-	owner.Shade:SetColorTexture(0, 0, 0, 0.4)
-	owner.Cross = owner:CreateTexture(nil, "OVERLAY", nil, 2)
-	owner.Cross:SetAtlas(DEFEATED_ATLAS, true)
+	if not bare then
+		owner.Shade = Masked(owner, owner:CreateTexture(nil, "OVERLAY"))
+		owner.Shade:SetPoint("TOPLEFT", owner.Portrait, "TOPLEFT", -1, 1)
+		owner.Shade:SetPoint("BOTTOMRIGHT", owner.Portrait, "BOTTOMRIGHT", 1, -1)
+		owner.Shade:SetColorTexture(0, 0, 0, 0.4)
+		owner.Cross = owner:CreateTexture(nil, "OVERLAY", nil, 2)
+		owner.Cross:SetAtlas(DEFEATED_ATLAS, true)
+	end
 	DungeonMap.SizeFace(owner, size)
 end
 
@@ -462,6 +483,8 @@ function DungeonMap.SizeFace(owner, size)
 	local scale = size / PORTRAIT_SIZE
 	owner.Portrait:SetSize(size, size)
 	owner.Skull:SetSize(20 * scale, 20 * scale)
+	-- (rawget: the field is the journal's own, as other frame fields here)
+	if not rawget(owner, "Cross") then return end
 	owner.Cross:SetSize(32 * scale, 32 * scale)
 	owner.Cross:ClearAllPoints()
 	owner.Cross:SetPoint("BOTTOMRIGHT", owner.Portrait, "BOTTOMRIGHT", 11 * scale, -10.5 * scale)
@@ -469,36 +492,54 @@ end
 
 -- The face of a boss, alive or dead.
 function DungeonMap.ShowFace(owner, boss, dead)
-	local hasPortrait = false
-	if boss.displayID and type(SetPortraitTextureFromCreatureDisplayID) == "function" then
-		hasPortrait = pcall(SetPortraitTextureFromCreatureDisplayID, owner.Portrait, boss.displayID)
-	end
-	if not hasPortrait then owner.Portrait:SetColorTexture(0.1, 0.07, 0.04, 1) end
-	owner.Skull:SetShown(not hasPortrait)
+	DungeonMap.SetPinPortrait(owner, boss)
 	owner.Shade:SetShown(dead)
 	owner.Cross:SetShown(dead)
 	owner.Portrait:SetDesaturated(dead)
 	owner.Skull:SetDesaturated(dead)
 end
 
--- Retail's EncounterJournalPinTemplate, built on any button.
-local function BuildBossPin(pin)
+--[[
+	Retail's EncounterJournalPinTemplate, built on any button. bare: without the sheet's ring, its pushed look, the
+	shade and the cross, for the fog's hints (UI/DungeonFog.lua), which ring the portrait in the boss list's gold band
+	and are never killed; the sheet's lit look is kept.
+]]
+local function BuildBossPin(pin, bare)
 	pin:SetSize(PIN_WIDTH, PIN_HEIGHT)
-	DungeonMap.BuildFace(pin, PORTRAIT_SIZE)
-	-- The quest badge at the portrait's foot (UI/QuestMap.lua's BuildBadge, StyleBadge): hidden until SetBossPin shows it.
+	DungeonMap.BuildFace(pin, PORTRAIT_SIZE, bare)
+	-- The quest badge at the portrait's foot (UI/QuestMap.lua's BuildBadge, StyleBadge): hidden until SetBossPin shows
+	-- it; the fog's hints never do.
 	if ns.QuestMap then pin.QuestBadge = ns.QuestMap:BuildBadge(pin, "pin", pin.Portrait) end
-
-	pin:SetNormalTexture(SHEET)
-	SetSheetTexture(pin:GetNormalTexture(), PIN_NORMAL)
-	pin:SetPushedTexture(SHEET)
-	SetSheetTexture(pin:GetPushedTexture(), PIN_PUSHED)
+	if not bare then
+		pin:SetNormalTexture(SHEET)
+		SetSheetTexture(pin:GetNormalTexture(), PIN_NORMAL)
+		pin:SetPushedTexture(SHEET)
+		SetSheetTexture(pin:GetPushedTexture(), PIN_PUSHED)
+	end
 	pin:SetHighlightTexture(SHEET, "ADD")
 	SetSheetTexture(pin:GetHighlightTexture(), PIN_HIGHLIGHT)
 end
 
+-- The fog's hints are boss pins too (UI/DungeonFog.lua): kept as fields, as this file is near Lua's limit
+-- of 200 locals.
+DungeonMap.BuildBossPin = BuildBossPin
+
+-- A pin's face: the boss's portrait, or for a boss the client has no portrait of the target skull on a dark disc
+-- (ShowFace's, and the fog's hints': UI/DungeonFog.lua).
+function DungeonMap.SetPinPortrait(pin, boss)
+	local hasPortrait = false
+	if boss.displayID and type(SetPortraitTextureFromCreatureDisplayID) == "function" then
+		hasPortrait = pcall(SetPortraitTextureFromCreatureDisplayID, pin.Portrait, boss.displayID)
+	end
+	if not hasPortrait then pin.Portrait:SetColorTexture(0.1, 0.07, 0.04, 1) end
+	pin.Skull:SetShown(not hasPortrait)
+	return hasPortrait
+end
+
+-- A pin killed as the fog test counts it while it is on (UI/FogTest.lua: ShowsDefeated), else as the run's.
 local function SetBossPin(pin, instance, boss)
 	pin.instance, pin.boss = instance, boss
-	DungeonMap.ShowFace(pin, boss, DungeonMap:IsDefeated(instance, boss))
+	DungeonMap.ShowFace(pin, boss, DungeonMap:ShowsDefeated(instance, boss))
 	if pin.QuestBadge then ns.QuestMap:StyleBadge(pin.QuestBadge, instance, boss) end
 end
 
@@ -519,6 +560,8 @@ DungeonMap.BossSpots = BossSpots
 	fades the other bosses' maybes further; the bosses with one spot stay as they are.
 ]]
 local MAYBE_SCALE, MAYBE_ALPHA, MAYBE_DIMMED_ALPHA = 0.65, 0.6, 0.3
+-- For the fog's hints (UI/DungeonFog.lua), sized and faded as the pins they stand for.
+DungeonMap.MAYBE_SCALE, DungeonMap.MAYBE_ALPHA = MAYBE_SCALE, MAYBE_ALPHA
 
 -- A boss's spots on one floor. A boss on a dungeon's whole map and on its own floor's (Blackfathom
 -- Deeps', Maraudon's) has a spot on each, and is sure on both: only several on one floor are maybes.
@@ -552,19 +595,23 @@ local function ShowBossTooltip(pin)
 	if boss.questTarget then GameTooltip:AddLine(L.QUEST_TARGET, 0.8, 0.8, 0.8) end
 	local spots = SpotsOn(boss, pin.floor)
 	if spots > 1 and not boss.together then GameTooltip:AddLine(string.format(L.MAP_ONE_OF, spots), 0.8, 0.8, 0.8, true) end
-	if DungeonMap:IsDefeated(pin.instance, boss) then GameTooltip:AddLine(L.MAP_DEFEATED, 1, 0.13, 0.13) end
+	if DungeonMap:ShowsDefeated(pin.instance, boss) then GameTooltip:AddLine(L.MAP_DEFEATED, 1, 0.13, 0.13) end
+	-- His short description (where he waits, what he drops), never his lore: that is for his page alone
 	if boss.description and boss.description ~= "" then GameTooltip:AddLine(boss.description, 1, 1, 1, true) end
 	-- A quest target's notes on the fight, here as well as on his page, which no boss list leads to (his pin opens his
 	-- quest: OpenPin)
 	for _, note in ipairs(boss.questTarget and boss.notes or {}) do GameTooltip:AddLine(note, 1, 1, 1, true) end
 	-- His quests, where his badge shows (UI/QuestMap.lua's AddBadgeLines).
 	if pin.QuestBadge and pin.QuestBadge:IsShown() then ns.QuestMap:AddBadgeLines(pin.instance, boss) end
-	GameTooltip:AddLine(L.MAP_PIN_OPEN, 0.5, 0.8, 1)
+	GameTooltip:AddLine((ns.FogTest and ns.FogTest:On()) and L.FOGTEST_PIN_CLICK or L.MAP_PIN_OPEN, 0.5, 0.8, 1)
 	GameTooltip:Show()
 end
 
--- Opens the boss in the journal, putting the world map away first (out of combat only).
+-- Opens the boss in the journal, putting the world map away first (out of combat only). Every click on a boss's
+-- pin or the fog's hint comes here; while the fog test is on (UI/FogTest.lua) it marks the boss defeated, or
+-- standing again, instead.
 function DungeonMap:OpenBoss(instance, boss)
+	if ns.FogTest and ns.FogTest:Clicked(instance, boss) then return end
 	ns.PlaySoundKit("IG_SPELLBOOK_OPEN")
 	if WorldMapFrame and WorldMapFrame:IsShown() and not InCombatLockdown() and type(HideUIPanel) == "function" then
 		pcall(HideUIPanel, WorldMapFrame)
@@ -575,8 +622,10 @@ end
 
 -- What a click on a boss's pin opens: a quest target's quest (a quest's mob on the map only, off the boss list: the
 -- owner's call of 2026-11-12; UI/QuestMap.lua's TargetQuest), else the boss's page (his own, for a quest target with no
--- quest of the player's).
+-- quest of the player's). While the fog test is on, the test takes every pin's click first, a quest target's too
+-- (UI/FogTest.lua: defeated, or standing again), as his tooltip says.
 function DungeonMap:OpenPin(instance, boss)
+	if ns.FogTest and ns.FogTest:Clicked(instance, boss) then return end
 	local quest = ns.QuestMap and ns.QuestMap:TargetQuest(instance, boss)
 	if quest then
 		ns.QuestMap:Open(instance, quest)
@@ -645,6 +694,8 @@ local function Dismiss()
 	dismissed, forced = true, nil
 	DungeonMap:Refresh()
 end
+-- The fog's hints put the overlay away on a right click as the boss pins do (UI/DungeonFog.lua).
+DungeonMap.Dismiss = Dismiss
 
 -- A level's name, in the journal's language (its English name is the key: retail's for the ring
 -- and the way down, the client's for the middle level's corridor).
@@ -677,8 +728,9 @@ end
 local function FillFloorMenu(_, root)
 	local subMap = overlay.subMap
 	if subMap and subMap.levels then
+		-- (by number while the place leads to rumours alone, Adventure Mode: Core/Discovery.lua's WayStep)
 		for index, name in ipairs(subMap.levels) do
-			root:CreateRadio(LevelName(name),
+			root:CreateRadio(ns.Discovery:WayStep(subMap, index, LevelName(name)),
 				function() return overlay.subMap and overlay.subMap.level == index end,
 				function() DungeonMap:ShowLevel(subMap, index) end)
 		end
@@ -686,7 +738,7 @@ local function FillFloorMenu(_, root)
 	end
 	if subMap and subMap.views then
 		for index in ipairs(subMap.views) do
-			root:CreateRadio(ViewName(subMap.views, index),
+			root:CreateRadio(ns.Discovery:WayStep(subMap, index, ViewName(subMap.views, index)),
 				function()
 					local shown = overlay.subMap
 					return shown ~= nil and shown.views == subMap.views and ViewIndex(shown) == index
@@ -774,10 +826,15 @@ local function RoomLeft(bar, steps)
 	return bar:GetWidth() - used - (steps[#steps].xoffset or 0) - CRUMB_TIP
 end
 
--- The zone's step as the bar leaves its last: the current one, not a link.
+--[[
+	The zone's step as the bar leaves its last: the current one, not a link. Not while the Gamepad UI's
+	arrow is on it (Core/Compat.lua's ns.Gamepad:IsCurrent): the pad code hears the selected button's
+	Disable from inside the journal's code, and the map's pad hints set the pad's buttons up again there.
+	The bar sets the step right itself at its next layout (NavigationBar.lua:232-244).
+]]
 local function RestoreZoneStep()
 	local _, last = LocationBar()
-	if crumbZone and crumbZone == last then
+	if crumbZone and crumbZone == last and not ns.Gamepad:IsCurrent(crumbZone) then
 		crumbZone:Disable()
 		if crumbZone.selected then crumbZone.selected:Show() end
 	end
@@ -806,6 +863,9 @@ local function PlaceCrumb()
 	if not (menuText and last) then return false end
 	local overflow = rawget(bar, "overflowButton")
 	if overflow and overflow:IsShown() then return false end
+	-- With the Gamepad UI on, not made in combat, where its arrows can't be given their marks (UI/Art.lua's
+	-- Menus:StepArrow) while the pad may move through the map: the menu beside the pin button till then.
+	if not crumb and InCombatLockdown() and ns.Gamepad:UIOn() then return false end
 	crumb = crumb or MakeCrumb(bar)
 	if not crumb then return false end
 	crumb:SetText(menuText)
@@ -825,8 +885,11 @@ local function PlaceCrumb()
 	ns.Menus:Generate(crumb.JournalArrow)
 	crumb:Show()
 	if crumbZone and crumbZone ~= last then RestoreZoneStep() end
-	last:Enable()
-	if last.selected then last.selected:Hide() end
+	-- A link again, unless the Gamepad UI's arrow is on it (RestoreZoneStep, above).
+	if not ns.Gamepad:IsCurrent(last) then
+		last:Enable()
+		if last.selected then last.selected:Hide() end
+	end
 	if not hookedSteps[last] then
 		hookedSteps[last] = true
 		last:HookScript("PreClick", ZoneStepClicked)
@@ -1018,6 +1081,7 @@ local function CreateOverlay()
 	overlay.Here = here
 
 	overlay.Pins, overlay.Transitions, overlay.Doors, overlay.QuestSpots, overlay.Links = {}, {}, {}, {}, {}
+	overlay.Spots = {}
 
 	-- The player's own arrow, for the areas below a zone where the client gives a position.
 	local player = CreateFrame("Frame", nil, overlay)
@@ -1070,7 +1134,11 @@ end
 --[[
 	A spot where the dungeon carries on to another floor (the art prints the arrow). The way down into a cave floor
 	(icon = "cave": Shaper's Terrace's Prismatic Talus, whose map draws only a mark of its own there) shows retail's
-	cave entrance on it, as the zones' caves do; where the client has none of its pictures, the spot is as the others.
+	cave entrance on it, as the zones' caves do; the way into a built floor (icon = "building": the Drowned City's
+	sunken shrine, Atal'byzal, which the city's map does not mark) retail's delve entrance, as the zones' buildings
+	do. Where the client has none of its pictures, the spot is as the others. Where two ways lead to one floor (the
+	Drowned City's, from the Deep Archives and from the central pool), each names where it comes out, under the
+	floor's name: note, the key of its words (L). The click turns the map to that floor, as any way's.
 ]]
 local function TransitionPin(index, icon)
 	local spot = overlay.Transitions[index]
@@ -1085,6 +1153,7 @@ local function TransitionPin(index, icon)
 		spot:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 			GameTooltip:SetText(string.format(L.MAP_GO_TO, FloorName(self.instance, self.to)), 1, 1, 1)
+			if self.note and L[self.note] then GameTooltip:AddLine(L[self.note], 1, 0.82, 0, true) end
 			GameTooltip:Show()
 		end)
 		spot:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1097,7 +1166,7 @@ local function TransitionPin(index, icon)
 		overlay.Transitions[index] = spot
 	end
 	local atlas
-	for _, name in ipairs(icon == "cave" and CAVE_ATLASES or {}) do
+	for _, name in ipairs(icon == "cave" and CAVE_ATLASES or icon == "building" and BUILDING_ATLASES or {}) do
 		if not atlas and ns.AtlasExists(name) then atlas = name end
 	end
 	spot.Icon:SetShown(atlas ~= nil)
@@ -1116,7 +1185,8 @@ end
 
 -- Where a quest starts (or is handed in) inside the dungeon, as on the world map, and what is looted, used
 -- or explored for one (UI/QuestMap.lua, which builds and draws the art: BuildInsideSpot, StyleInsideSpot):
--- a click opens it in the journal, a right click puts the map away.
+-- a click opens it in the journal, a right click puts the map away. A rumor (Adventure Mode, a quest not
+-- offered yet: its faint mark) names nothing and opens nothing: the Quests tab shows it once offered.
 local function QuestSpot(index)
 	local spot = overlay.QuestSpots[index]
 	if not spot then
@@ -1128,11 +1198,68 @@ local function QuestSpot(index)
 		spot:SetScript("OnEnter", function(self) ns.QuestMap:InsideEnter(self) end)
 		spot:SetScript("OnLeave", function(self) ns.QuestMap:InsideLeave(self) end)
 		spot:SetScript("OnClick", function(self, button)
-			if button == "RightButton" then Dismiss() else ns.QuestMap:Open(self.instance, self.quest) end
+			if button == "RightButton" then
+				Dismiss()
+			elseif not self.mark.rumour then
+				ns.QuestMap:Open(self.instance, self.quest)
+			end
 		end)
 		overlay.QuestSpots[index] = spot
 	end
 	return spot
+end
+
+--[[
+	A place worth knowing on a dungeon's floor (its data's mapSpots, each { kind, floor, x, y, text }: the Drowned City's
+	hidden chest), shown only where the fog of war has cleared (DrawPins: UI/DungeonFog.lua's Covers, in every style
+	the fog is drawn in), drawn as the level links are: its kind's picture (SPOT_KINDS) at its own size, no larger than
+	LINK_SIZE, lit while pointed at, with the floors' ways under the boss pins and quest marks; the mouse on the icon
+	itself (PIN_HIT_SIZE). Its tooltip as the game's map tooltips have it: its kind's name, then its own line (text, a key
+	of the strings) in gold. Nothing to open: a right click puts the map away, as on the other pins. False where the
+	client has none of its kind's pictures: then it does not show.
+]]
+local function MapSpot(index, kind)
+	local spot = overlay.Spots[index]
+	if not spot then
+		spot = CreateFrame("Button", nil, overlay)
+		spot:SetFrameLevel(overlay:GetFrameLevel() + 8)
+		spot.Texture = spot:CreateTexture(nil, "ARTWORK")
+		spot.Texture:SetPoint("CENTER")
+		spot.Highlight = spot:CreateTexture(nil, "HIGHLIGHT")
+		spot.Highlight:SetBlendMode("ADD")
+		spot.Highlight:SetAlpha(0.4)
+		spot.Highlight:SetAllPoints(spot.Texture)
+		spot:RegisterForClicks("RightButtonUp")
+		spot:SetScript("OnEnter", function(self)
+			GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+			GameTooltip:SetText(L[self.kind.title] or "", 1, 1, 1)
+			if self.text and L[self.text] then GameTooltip:AddLine(L[self.text], 1, 0.82, 0, true) end
+			GameTooltip:Show()
+		end)
+		spot:SetScript("OnLeave", function() GameTooltip:Hide() end)
+		spot:SetScript("OnClick", function(_, button)
+			if button == "RightButton" then Dismiss() end
+		end)
+		overlay.Spots[index] = spot
+	end
+	local width, height
+	if kind.atlas and ns.AtlasExists(kind.atlas) then
+		spot.Texture:SetAtlas(kind.atlas, true)
+		spot.Highlight:SetAtlas(kind.atlas, true)
+		width, height = spot.Texture:GetSize()
+	elseif kind.file and ns.FileExists(kind.file) then
+		spot.Texture:SetTexture(kind.file)
+		spot.Texture:SetTexCoord(0, 1, 0, 1)
+		spot.Highlight:SetTexture(kind.file)
+		spot.Highlight:SetTexCoord(0, 1, 0, 1)
+	else
+		return spot, false
+	end
+	if not width or width <= 0 or not height or height <= 0 then width, height = LINK_SIZE, LINK_SIZE end
+	local fit = math.min(1, LINK_SIZE / math.max(width, height))
+	spot.Texture:SetSize(width * fit, height * fit)
+	spot:SetSize(math.min(width * fit, PIN_HIT_SIZE), math.min(height * fit, PIN_HIT_SIZE))
+	return spot, true
 end
 
 -- Lays the floor's picture into the canvas, as large as fits.
@@ -1155,6 +1282,7 @@ local function NativeTiles(floor)
 	local ok, textures = pcall(C_Map.GetMapArtLayerTextures, floor.uiMapID, 1)
 	return ok and type(textures) == "table" and #textures > 0 and textures or nil
 end
+DungeonMap.NativeTiles = NativeTiles
 
 -- Draws the floor's picture; skipped when the same floor is already drawn at the same size.
 local function DrawArt(floor)
@@ -1208,9 +1336,11 @@ local function Place(frame, x, y, scale, shift)
 	frame:ClearAllPoints()
 	frame:SetPoint("CENTER", overlay.Art, "TOPLEFT", x * overlay.artWidth / scale + (shift or 0), -y * overlay.artHeight / scale)
 end
+DungeonMap.Place = Place
 
 -- Pins of bosses sharing a spot (the Graveyard's rares, one of which may stand there) sit side by side.
 local SHARED_SPOT_SPACING = 30
+DungeonMap.SHARED_SPOT_SPACING = SHARED_SPOT_SPACING
 
 -- A boss pin's size, fading and place, from its spot and the boss whose spots are lit.
 local function StyleBossPin(pin)
@@ -1230,14 +1360,31 @@ end
 local function DrawPins(instance, index)
 	local scale = PinScale()
 	local spots, together, litHere = {}, {}, false
+	-- A boss the fog hides, or on a map with no fog one not met in Adventure Mode (UI/DungeonFog.lua's
+	-- HintsBoss), has no pin: a hint at its spot instead, one for every such boss at that spot, beside the
+	-- pins of the others there.
+	local hints, hintAt = {}, {}
 	for _, boss in ipairs(instance.bosses) do
-		if not boss.trash and not ns.Items:HidesBoss(boss) then
+		if not ns.IsLootSection(boss) and not ns.Items:HidesBoss(boss) then
+			-- (ns.DungeonFog nil: a /reload after an update that added the file, which only a restart loads.)
+			local fogged = ns.DungeonFog ~= nil and ns.DungeonFog:HintsBoss(instance, boss)
 			for _, point in ipairs(BossSpots(boss)) do
 				if (point.floor or 1) == index then
 					local key = string.format("%.3f:%.3f", point.x, point.y)
-					together[key] = (together[key] or 0) + 1
-					spots[#spots + 1] = { boss = boss, point = point, key = key, place = together[key] }
-					litHere = litHere or boss == overlay.litBoss
+					local hint = fogged and hintAt[key]
+					if hint then
+						hint.bosses[#hint.bosses + 1] = boss
+					else
+						together[key] = (together[key] or 0) + 1
+						if fogged then
+							hint = { bosses = { boss }, point = point, key = key, place = together[key], maybe = IsMaybe(boss, index) }
+							hintAt[key] = hint
+							hints[#hints + 1] = hint
+						else
+							spots[#spots + 1] = { boss = boss, point = point, key = key, place = together[key] }
+							litHere = litHere or boss == overlay.litBoss
+						end
+					end
 				end
 			end
 		end
@@ -1255,13 +1402,18 @@ local function DrawPins(instance, index)
 	end
 	local count = #spots
 	for extra = count + 1, #overlay.Pins do overlay.Pins[extra]:Hide() end
+	if ns.DungeonFog then ns.DungeonFog:ShowHints(overlay, instance, hints, together, scale) end
 
+	-- The ways to the dungeon's other maps: shown over the fog of war in every state (+8, above the parchment), as the
+	-- map's name is, since they are how its maps are reached and their tooltips name only another map of the dungeon
+	-- (every fogged dungeon's ways: the Deadmines', Shadowfang Keep's, Gnomeregan's, Dire Maul's; the Drowned City's
+	-- four since 0.39.23)
 	local spots = 0
 	for _, transition in ipairs(instance.map.transitions or {}) do
 		if transition.floor == index and Floors(instance)[transition.to] then
 			spots = spots + 1
 			local spot = TransitionPin(spots, transition.icon)
-			spot.instance, spot.to = instance, transition.to
+			spot.instance, spot.to, spot.note = instance, transition.to, transition.note
 			Place(spot, transition.x, transition.y, scale)
 			spot:Show()
 		end
@@ -1269,10 +1421,13 @@ local function DrawPins(instance, index)
 	for extra = spots + 1, #overlay.Transitions do overlay.Transitions[extra]:Hide() end
 
 	local marks = ns.QuestMap and ns.QuestMap:InsideMarks(instance, index) or {}
-	-- (beside the boss pins shown, not over them: QuestMap:ClearOfPins)
+	-- (beside the boss pins and the fog's hints shown, not over them: QuestMap:ClearOfPins; the hints read raw, as
+	-- UI/DungeonFog.lua reads them)
 	local shown = {}
-	for _, pin in ipairs(overlay.Pins) do
-		if pin:IsShown() and pin.point then shown[#shown + 1] = pin end
+	for _, list in ipairs({ overlay.Pins, rawget(overlay, "FogHints") or {} }) do
+		for _, pin in ipairs(list) do
+			if pin:IsShown() and pin.point then shown[#shown + 1] = pin end
+		end
 	end
 	if ns.QuestMap then ns.QuestMap:ClearOfPins(marks, shown, overlay.artWidth, overlay.artHeight, scale) end
 	for count, entry in ipairs(marks) do
@@ -1284,6 +1439,28 @@ local function DrawPins(instance, index)
 		spot:Show()
 	end
 	for extra = #marks + 1, #overlay.QuestSpots do overlay.QuestSpots[extra]:Hide() end
+
+	-- The places worth knowing on this floor (MapSpot), none where the fog still lies (its picture over the parchment
+	-- would give away what lies under it), as Adventure Mode's quest marks: Covers is false wherever no fog is drawn
+	-- (the fog off in this style, no fog data, a floor or the whole fog cleared, a rect kept clear). (ns.DungeonFog nil:
+	-- a /reload after an update that added the file.)
+	local places = 0
+	if instance.mapSpots then
+		for _, entry in ipairs(instance.mapSpots) do
+			local kind = DungeonMap.SPOT_KINDS[entry.kind]
+			if kind and (entry.floor or 1) == index
+				and not (ns.DungeonFog ~= nil and ns.DungeonFog:Covers(instance, index, entry.x, entry.y)) then
+				local spot, drawn = MapSpot(places + 1, kind)
+				if drawn then
+					places = places + 1
+					spot.kind, spot.text = kind, entry.text
+					Place(spot, entry.x, entry.y, scale)
+					spot:Show()
+				end
+			end
+		end
+	end
+	for extra = places + 1, #overlay.Spots do overlay.Spots[extra]:Hide() end
 end
 
 -- The area the player stands in, where the journal knows where that area is on the map.
@@ -1460,6 +1637,36 @@ function DungeonMap:BelowLines()
 	return lines
 end
 
+-- Whether the map is not following the area where the player stands, by follow.Floor's own gates (nothing turned): a
+-- floor picked this opening, or on a map that follows from a level floor, the whole map (picked, or as it opens) or a
+-- floor picked in the room the player is still in.
+function follow.Held(instance, name)
+	if not (instance.map and instance.map.followFromLevel) then return follow.picked end
+	local floors, picked = Floors(instance) or {}, chosenFloor[instance.key]
+	if not (floors[picked] and not floors[picked].whole) then return true end
+	return follow.seen ~= nil and follow.seen == (name or "") and follow.key ~= instance.key
+end
+
+-- /aegis where, inside a dungeon of more than one floor: the floor its map turns to where the player stands
+-- (follow.Read) and the name it went by ("" where the client names no area: unnamedFloor); where the map is not
+-- following (follow.Held), the floor it shows or opens on, as held; else the floor the map keeps, the one it shows
+-- or opens on.
+function DungeonMap:FloorLine()
+	local instance = CurrentInstance()
+	local floors = Floors(instance)
+	if not (floors and #floors > 1) then return nil end
+	local index, name, unnamed = follow.Read(instance)
+	local held = follow.Held(instance, name)
+	if index and not held then
+		return string.format(L.WHERE_FLOOR, instance.name, index, FloorName(instance, index), unnamed and "" or name)
+	end
+	local kept = overlay and overlay:IsShown() and overlay.instance == instance and overlay.floor
+		or chosenFloor[instance.key] or 1
+	if not floors[kept] then kept = 1 end
+	return string.format(held and L.WHERE_FLOOR_HELD or L.WHERE_FLOOR_KEPT, instance.name, kept, FloorName(instance, kept),
+		name or "")
+end
+
 -- playerMap and x: the player's map and whether it gives their position; area: the client's name for the
 -- spot; px, py: the spot on the picture, nil off it. Whether the picture shows.
 function ways.Walked(subMap, playerMap, x, area, px, py)
@@ -1568,6 +1775,8 @@ local function PlayerSubMap(mapID)
 		end
 	end
 	playerBelow = below
+	-- A way in walked, for the character's journal (Core/Discovery.lua): whatever the style.
+	if below then ns.Discovery:WalkedSubMap(below) end
 	ways.near = near
 	if below and (below.parentMapID == mapID or not below.parentMapID) then return below end
 	-- The client turned to the other map with the world map open on this one (a step onto Razorfen Downs'
@@ -1588,22 +1797,44 @@ end
 local function Building(name)
 	return name:match("^(.-)%s*\239\188\154") or name:match("^(.-)%s*:")
 end
+-- (test mode's wait at a wing's door, UI/TestRun.lua: the building's name for its header)
+DungeonMap.Building = Building
 
+-- In Adventure Mode a door none of whose dungeons has been entered is "A rumor", and one named after a
+-- dungeon is named after one entered (Core/Discovery.lua's DoorUnknown).
 local function SharedDoorName(instances)
+	local Discovery = ns.Discovery
+	if Discovery:DoorUnknown(instances) then return L.ADVENTURE_DOOR_TITLE end
 	local building, location = Building(instances[1].name), instances[1].location
 	for _, instance in ipairs(instances) do
 		if Building(instance.name) ~= building then building = nil end
 		if instance.location ~= location then location = nil end
 	end
-	return building or location or instances[1].name
+	if building or location then return building or location end
+	for _, instance in ipairs(instances) do
+		if not Discovery:DoorRumoured(instance) then return instance.name end
+	end
+	return instances[1].name
 end
 DungeonMap.SharedDoorName = SharedDoorName
 
--- Each dungeon behind a shared door on its own line, with its level range.
+-- Each dungeon behind a shared door on its own line, with its level range. In Adventure Mode one not
+-- entered is no name but "Rumored dungeon", its line of rumour beneath (Core/Discovery.lua).
 local function AddDoorLines(instances)
+	local Discovery = ns.Discovery
 	for _, instance in ipairs(instances) do
 		local range = instance.levelMin and string.format(L.LEVEL_RANGE, instance.levelMin, instance.levelMax or instance.levelMin) or ""
-		GameTooltip:AddDoubleLine(instance.name, range, 1, 1, 1, 1, 0.82, 0)
+		GameTooltip:AddDoubleLine(Discovery:DoorName(instance, instances), range, 1, 1, 1, 1, 0.82, 0)
+		if Discovery:DoorRumoured(instance) then GameTooltip:AddLine(Discovery:DoorRumour(instance), 1, 1, 1, true) end
+	end
+end
+
+-- A rumour's lines under its title (Adventure Mode): its line of rumour (door: one of its several doors, whose own
+-- line it is: Stratholme's), wrapped, and its level range.
+function DungeonMap:AddRumourLines(instance, door)
+	GameTooltip:AddLine(ns.Discovery:DoorRumour(instance, door), 1, 1, 1, true)
+	if instance.levelMin then
+		GameTooltip:AddLine(string.format(L.LEVEL_RANGE, instance.levelMin, instance.levelMax or instance.levelMin), 1, 0.82, 0)
 	end
 end
 
@@ -1613,7 +1844,13 @@ local function ChooseDoor(owner, instances)
 	ns.Menus:OpenContext(owner, function(_, root)
 		root:CreateTitle(SharedDoorName(instances))
 		for _, instance in ipairs(instances) do
-			root:CreateButton(instance.name, function() DungeonMap:OpenInstance(instance) end)
+			-- (a rumour by its rumoured name and its level range, Adventure Mode)
+			local text = ns.Discovery:DoorName(instance, instances)
+			if text ~= instance.name and instance.levelMin then
+				text = string.format(L.ADVENTURE_DOOR_CHOICE, text,
+					string.format(L.LEVEL_RANGE, instance.levelMin, instance.levelMax or instance.levelMin))
+			end
+			root:CreateButton(text, function() DungeonMap:OpenInstance(instance) end)
 		end
 	end)
 	return true
@@ -1621,14 +1858,29 @@ end
 
 -- What a door's dungeons hold that the player should know before going in (doorNotes: the keys of
 -- the journal's strings; the Spire's: one instance for both its dungeons, their group sizes), each
--- once, in the dungeons' order.
-function DungeonMap:DoorNotes(instances)
+-- once, in the dungeons' order. In Adventure Mode each names nothing not found yet (Discovery:MaskAll), as
+-- Before you go does: the Seal of Ascension's quest not offered is "???". `forPage` (a dungeon's own journal
+-- page, UI/EncounterPage.lua) takes the page's rule (Discovery:Rumour): a raid not open yet, whose door is a
+-- rumour, keeps its notes on its page.
+function DungeonMap:DoorNotes(instances, forPage)
 	local notes, seen = {}, {}
+	local Discovery = ns.Discovery
+	-- In Adventure Mode a note a rumour behind the door has is not said: its notes name it. One the entered
+	-- dungeons alone have is (the Spire's Lower, entered while Upper is a rumour: Lower's own note).
+	for _, instance in ipairs(instances) do
+		local rumour
+		if Discovery then
+			if forPage then rumour = Discovery:Rumour(instance) else rumour = Discovery:DoorRumoured(instance) end
+		end
+		if rumour then
+			for _, key in ipairs(instance.doorNotes or {}) do seen[key] = true end
+		end
+	end
 	for _, instance in ipairs(instances) do
 		for _, key in ipairs(instance.doorNotes or {}) do
 			if L[key] and not seen[key] then
 				seen[key] = true
-				notes[#notes + 1] = L[key]
+				notes[#notes + 1] = Discovery and Discovery:MaskAll(instance, L[key], Discovery:Untold(instance)) or L[key]
 			end
 		end
 	end
@@ -1648,12 +1900,16 @@ local function SubMapDoor(index)
 		door:SetHighlightTexture("Interface\\Minimap\\UI-Minimap-ZoomButton-Highlight", "ADD")
 		door:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 		-- One door to several dungeons (Lower and Upper Blackrock Spire): each by name, a left
-		-- click to choose from them, as on the zone maps. What the door holds, beneath.
+		-- click to choose from them, as on the zone maps. What the door holds, beneath. In Adventure Mode a dungeon not
+		-- entered is a rumour.
 		door:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 			if #self.instances > 1 then
 				GameTooltip:SetText(SharedDoorName(self.instances), 1, 1, 1)
 				AddDoorLines(self.instances)
+			elseif ns.Discovery:DoorRumoured(self.instance) then
+				GameTooltip:SetText(L.ADVENTURE_DOOR_TITLE, 1, 1, 1)
+				DungeonMap:AddRumourLines(self.instance)
 			else
 				GameTooltip:SetText(self.instance.name, 1, 1, 1)
 				GameTooltip:AddLine(EntranceDescription(self.instance), 1, 0.82, 0)
@@ -1709,7 +1965,8 @@ local function LevelLink(index)
 		link:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 		link:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-			GameTooltip:SetText(string.format(L.MAP_GO_TO, LevelName(self.subMap.levels[self.to])), 1, 1, 1)
+			GameTooltip:SetText(string.format(L.MAP_GO_TO, ns.Discovery:WayStep(self.subMap, self.to,
+				LevelName(self.subMap.levels[self.to]))), 1, 1, 1)
 			GameTooltip:AddLine(L.MAP_LEVEL_LINK_CLICK, 0.1, 1, 0.1)
 			GameTooltip:Show()
 		end)
@@ -1786,7 +2043,7 @@ function DungeonMap:DrawWayInPins(subMap, scale)
 		local instance = ns.GetInstance(key)
 		for _, boss in ipairs(instance and instance.bosses or {}) do
 			local point = boss.wayInPin
-			if point and point.subMap == subMap.key and not boss.trash and not ns.Items:HidesBoss(boss) then
+			if point and point.subMap == subMap.key and not ns.IsLootSection(boss) and not ns.Items:HidesBoss(boss) then
 				local pin = OverlayPin(#pins + 1)
 				SetBossPin(pin, instance, boss)
 				pin.maybe, pin.point, pin.floor, pin.shift = false, point, nil, 0
@@ -1814,17 +2071,22 @@ local function DrawSubMap(subMap)
 	overlay.instance, overlay.subMap = nil, subMap
 	if not LayoutArt(subMap) then return false end
 	DrawArt(subMap)
+	-- No fog on a way-in picture, nor its hints.
+	if ns.DungeonFog then ns.DungeonFog:Hide(overlay) end
 	for _, pin in ipairs(overlay.Pins) do pin:Hide() end
 	for _, spot in ipairs(overlay.Transitions) do spot:Hide() end
 	for _, spot in ipairs(overlay.QuestSpots) do spot:Hide() end
+	for _, spot in ipairs(overlay.Spots) do spot:Hide() end
 	overlay.Here:Hide()
 	-- Levels (Blackrock Mountain's) or views (Maraudon's caves): a menu of them, as a dungeon's
 	-- floors have. One held over a zone it is not in (a level picked there) names its place on the
 	-- step too, as a dungeon's floors do (UpdateOverlay).
 	local shownMapID = WorldMapFrame and WorldMapFrame.GetMapID and WorldMapFrame:GetMapID()
 	local elsewhere = forced and forced.subMap == subMap and subMap.parentMapID ~= shownMapID
-	ShowFloorMenu(StepName(subMap.name, subMap.levels and LevelName(subMap.levels[subMap.level])
-		or subMap.views and ViewName(subMap.views, ViewIndex(subMap)) or nil, elsewhere))
+	-- In Adventure Mode a place that leads to rumours alone is unnamed, its levels numbered (Core/Discovery.lua).
+	local step = subMap.levels and ns.Discovery:WayStep(subMap, subMap.level, LevelName(subMap.levels[subMap.level]))
+		or subMap.views and ns.Discovery:WayStep(subMap, ViewIndex(subMap), ViewName(subMap.views, ViewIndex(subMap))) or nil
+	ShowFloorMenu(StepName(ns.Discovery:WayName(subMap, nil), step, elsewhere))
 	-- Dungeons that share a door on the picture are one door, their names in order; a dungeon with
 	-- several doors on it (a list of points: Dire Maul's west and east wings) has an icon on each.
 	local spots = {}
@@ -1899,7 +2161,16 @@ local function OverlayTarget(mapID)
 	return nil, below
 end
 
+--[[
+	The overlay drawn for the map shown, or put away; then the map legend's Fog of War switch follows what shows
+	(UI/MapLegend.lua).
+]]
 local function UpdateOverlay()
+	ways.DrawOverlay()
+	ns.MapLegend:FogChanged()
+end
+
+function ways.DrawOverlay()
 	local mapID = WorldMapFrame and WorldMapFrame.GetMapID and WorldMapFrame:GetMapID()
 	local instance, subMap = OverlayTarget(mapID)
 	if not (instance or subMap) then
@@ -1928,6 +2199,8 @@ local function UpdateOverlay()
 	overlay.instance, overlay.floor = instance, index
 	if not LayoutArt(floor) then return end
 	DrawArt(floor)
+	-- The fog over it, for a dungeon that has fog with the fog on (UI/DungeonFog.lua), else put away.
+	if ns.DungeonFog then ns.DungeonFog:Draw(overlay, instance, index, floor) end
 	DrawPins(instance, index)
 	DrawHere(instance, index)
 	overlay:Show()
@@ -1941,8 +2214,13 @@ local function UpdateOverlay()
 	local elsewhere = forced and forced.instance == instance
 	if elsewhere then
 		local inside, shown = CurrentInstance(), FloorByMapID(mapID)
+		-- (a dungeon with several doors outside, Stratholme's two: on this zone if any of them is)
+		local onZone = DungeonMap:DoorOnZone(DungeonMap:Entrance(instance), mapID)
+		for _, door in ipairs(instance.doors or {}) do
+			onZone = onZone or DungeonMap:DoorOnZone(DungeonMap:Entrance(instance, door), mapID)
+		end
 		elsewhere = not (inside and inside.instanceID == instance.instanceID or shown and shown.instance == instance
-			or DungeonMap:DoorOnZone(DungeonMap:Entrance(instance), mapID))
+			or onZone)
 	end
 	ShowFloorMenu(#floors > 1 and StepName(instance.name, FloorName(instance, index), elsewhere) or nil)
 end
@@ -1987,7 +2265,7 @@ function ProviderMethods:RefreshAllData()
 	local found = FloorByMapID(map:GetMapID())
 	if found and DungeonMap:IsNative(Floors(found.instance)[found.index]) then
 		for _, boss in ipairs(found.instance.bosses) do
-			if not boss.trash then
+			if not ns.IsLootSection(boss) then
 				for _, point in ipairs(BossSpots(boss)) do
 					if (point.floor or 1) == found.index then
 						local pin = ns.CanvasPins:Acquire(map, BOSS_PIN_TEMPLATE, found.instance, boss, found.index)
@@ -2023,9 +2301,11 @@ end
 	the instance in the journal, a right click sets a waypoint to the door.
 
 	The entrance is the one the Record tab captured on the way in, if there is one, else the
-	data's. It shows on its own zone's map and on the maps above it (the continent), placed
-	there through the client's world coordinates. Blizzard's "Dungeon Entrances" map
-	tracking option (the showDungeonEntrancesOnMap setting) turns them off and on.
+	data's. A dungeon with several doors outside (Stratholme's Main Gate and Service Gate) has a pin at
+	each of its data's, the recorded one set aside: the client keeps one door per instance id. It
+	shows on its own zone's map and on the maps above it (the continent), placed there through the
+	client's world coordinates. Blizzard's "Dungeon Entrances" map tracking option (the
+	showDungeonEntrancesOnMap setting) turns them off and on.
 ]]
 local ENTRANCE_PIN_TEMPLATE = "AegisJournalEntrancePinTemplate"
 local ENTRANCE_CVAR = "showDungeonEntrancesOnMap"
@@ -2033,9 +2313,8 @@ local MAP_TYPE_CONTINENT, MAP_TYPE_ZONE = 2, 3
 -- Retail's cave entrance (its map legend's "Cave"), for the way down to an area below a zone
 -- (CAVE_ATLASES, at the top of the file: a dungeon's way down into a cave floor has it too);
 -- a building's way in (icon = "building": the Scarlet Monastery's hall) shows retail's delve
--- entrance, or the cave where the client lacks it.
+-- entrance, or the cave where the client lacks it (BUILDING_ATLASES, at the top of the file).
 local CAVE_PIN_TEMPLATE = "AegisJournalCavePinTemplate"
-local BUILDING_ATLASES = { "delves-regular", "CaveUnderground-Up", "CaveUnderground-Down" }
 
 -- A building's way in, not a cave's way down.
 local function IsBuilding(subMap)
@@ -2047,10 +2326,15 @@ local function WayKind(subMap)
 	return IsBuilding(subMap) and "building" or "cave"
 end
 
--- A dungeon reached through an area below the zone, or a building, says where the way in is.
+-- A dungeon reached through an area below the zone, or a building, says where the way in is. A rumour's
+-- (Adventure Mode) does not name it: many are named after the dungeon.
 local function AddViaLine(instance)
 	local via = instance.via and ns.GetSubMap(instance.via)
 	if not via then return end
+	if ns.Discovery:DoorRumoured(instance) then
+		GameTooltip:AddLine(IsBuilding(via) and L.ADVENTURE_DOOR_VIA_BUILDING or L.ADVENTURE_DOOR_VIA, 1, 1, 1, true)
+		return
+	end
 	GameTooltip:AddLine(string.format(IsBuilding(via) and L.ENTRANCE_VIA_BUILDING or L.ENTRANCE_VIA, via.name), 1, 1, 1, true)
 end
 local LEGEND_GLOW_ATLAS = "UI-QuestPoi-OuterGlow"
@@ -2078,10 +2362,12 @@ local function OnZoneMap(entrance)
 	return nil
 end
 
--- Where the instance's door stands outside: { mapID, x, y }.
-function DungeonMap:Entrance(instance)
-	-- Wings that share one instance id share one recording too, which could be either's door.
-	if instance.sharesInstanceID then return OnZoneMap(instance.zoneEntrance) end
+-- Where the instance's door stands outside: { mapID, x, y }. `door`: one of its doors, where it has several (doors:
+-- Stratholme's Main Gate and Service Gate), else its first.
+function DungeonMap:Entrance(instance, door)
+	-- Wings that share one instance id share one recording too, which could be either's door; so do the doors of a
+	-- dungeon with several, as the client keeps one door for an instance id.
+	if door or instance.sharesInstanceID or instance.doors then return OnZoneMap(door or instance.zoneEntrance) end
 	local recorded = ns.Recorder and ns.Recorder:GetState()
 	recorded = recorded and recorded.entrances and instance.instanceID and recorded.entrances[instance.instanceID]
 	if recorded and recorded.mapID and recorded.x then return recorded end
@@ -2228,14 +2514,24 @@ local function ShowSharedDoorTooltip(pin)
 	GameTooltip:Show()
 end
 
+-- In Adventure Mode a dungeon not entered is a rumour: "A rumor", what is heard of it and its levels,
+-- never its name (Core/Discovery.lua).
 local function ShowEntranceTooltip(pin)
 	if #pin.instances > 1 then return ShowSharedDoorTooltip(pin) end
 	local instance = pin.instance
 	local description = EntranceDescription(instance)
-	SetAreaLabel(pin, instance.name, description)
+	local rumour = ns.Discovery:DoorRumoured(instance)
+	local title = rumour and L.ADVENTURE_DOOR_TITLE or instance.name
+	SetAreaLabel(pin, title, description)
 	GameTooltip:SetOwner(pin, "ANCHOR_RIGHT")
-	GameTooltip:SetText(instance.name, 1, 1, 1)
-	GameTooltip:AddLine(description, 1, 0.82, 0)
+	GameTooltip:SetText(title, 1, 1, 1)
+	if rumour then
+		DungeonMap:AddRumourLines(instance, pin.door)
+	else
+		GameTooltip:AddLine(description, 1, 0.82, 0)
+		-- One of several doors (Stratholme's): which one.
+		if pin.door and pin.door.name then GameTooltip:AddLine(pin.door.name, 1, 1, 1) end
+	end
 	AddViaLine(instance)
 	GameTooltip:AddLine(L.ENTRANCE_LEFT_CLICK, 0.1, 1, 0.1)
 	GameTooltip:AddLine(L.ENTRANCE_RIGHT_CLICK, 0.1, 1, 0.1)
@@ -2367,29 +2663,59 @@ function DungeonMap:ClearAreaLabel(pin) ClearAreaLabel(pin) end
 
 -- A waypoint to the instance's door; for one reached through an area below the zone, to the
 -- way down (its first, where it has several), since the door itself cannot be walked to from the
--- streets. `title` names a door several share (the Scarlet Monastery's).
-function DungeonMap:SetWaypoint(instance, title)
+-- streets. `title` names a door several share (the Scarlet Monastery's); `door` is one of a dungeon's several (its door
+-- pin's: Stratholme's Service Gate), else its first, the Main Gate, where the journal sets one itself (the owner's call
+-- of 2026-11-12). In Adventure Mode a door with no title of a dungeon not entered is set by no name, its way in
+-- unnamed too (Core/Discovery.lua).
+function DungeonMap:SetWaypoint(instance, title, door)
+	local rumour = not title and ns.Discovery:DoorRumoured(instance)
+	local name = ns.Discovery:DoorName(instance)
 	local via = instance.via and ns.GetSubMap(instance.via)
 	if via then
 		local wayMapID, x, y = WayPoint(via)
 		if not x then return false end
 		local said
-		if IsBuilding(via) then
+		if rumour then
+			SetWaypointAt(wayMapID, x, y, name, L.ADVENTURE_DOOR_WAYPOINT_SET)
+			return true
+		elseif IsBuilding(via) then
 			said = string.format(L.ENTRANCE_WAYPOINT_SET, title or via.name)
 		elseif via.name == instance.name then
 			-- A way in named for the dungeon itself (Maraudon's caves): the name once.
 			said = string.format(L.CAVE_WAYPOINT_SET, via.name)
 		else
-			said = string.format(L.ENTRANCE_WAYPOINT_VIA, via.name, instance.name)
+			said = string.format(L.ENTRANCE_WAYPOINT_VIA, via.name, name)
 		end
 		SetWaypointAt(wayMapID, x, y, via.name, said)
 		return true
 	end
-	local entrance = self:Entrance(instance)
+	local entrance = self:Entrance(instance, door)
 	if not entrance then return false end
-	SetWaypointAt(entrance.mapID, entrance.x, entrance.y, title or instance.name,
-		string.format(L.ENTRANCE_WAYPOINT_SET, title or instance.name))
+	SetWaypointAt(entrance.mapID, entrance.x, entrance.y, title or name,
+		rumour and L.ADVENTURE_DOOR_WAYPOINT_SET or string.format(L.ENTRANCE_WAYPOINT_SET, title or name))
 	return true
+end
+
+--[[
+	Where SetWaypoint would lead for the instance, as a point { mapID, x, y } for a map pin link (the Gear
+	Finder's rumours, UI/GearPanel.lua, written with WaypointLinkText as the quest page's Show Start is): its
+	way in's (the first), else its door's; nil where neither is placed. place is the name of that point's
+	zone, the client's own (a continent's or the world's is no place: the dungeon's location then).
+]]
+function DungeonMap:DoorPoint(instance)
+	local via = instance.via and ns.GetSubMap(instance.via)
+	local mapID, x, y
+	if via then
+		mapID, x, y = WayPoint(via)
+	else
+		local entrance = self:Entrance(instance)
+		if entrance then mapID, x, y = entrance.mapID, entrance.x, entrance.y end
+	end
+	if not (mapID and x and y) then return nil end
+	local info = MapInfo(mapID)
+	local place = info and info.name
+	if not place or place == "" or (info.mapType and info.mapType < MAP_TYPE_ZONE) then place = instance.location end
+	return { mapID = mapID, x = x, y = y, place = place }
 end
 
 -- Shows an area below a zone over the world map, as retail's cave links do.
@@ -2489,9 +2815,10 @@ function EntrancePinMethods:LegendKind()
 	return self.isRaid and "raid" or "dungeon"
 end
 
--- `together`: every instance behind this door, when several share it (in the journal's order).
-function EntrancePinMethods:OnAcquired(instance, x, y, together)
-	self.instance, self.instances = instance, together or { instance }
+-- `together`: every instance behind this door, when several share it (in the journal's order). `door`: which of the
+-- instance's doors this is, where it has several (doors: Stratholme's).
+function EntrancePinMethods:OnAcquired(instance, x, y, together, door)
+	self.instance, self.instances, self.door = instance, together or { instance }, door
 	self.isRaid = instance.kind == "raid"
 	self:HideMapLegendGlow()
 	local atlas = self.isRaid and RAID_ATLAS or DUNGEON_ATLAS
@@ -2518,7 +2845,15 @@ end
 function EntrancePinMethods:OnMouseClickAction(button)
 	local instances = self.instances
 	if button == "RightButton" then
-		DungeonMap:SetWaypoint(self.instance, #instances > 1 and SharedDoorName(instances) or nil)
+		-- (a door of rumours alone: set by no name, Adventure Mode) One of a dungeon's several doors is named too,
+		-- "Stratholme (Service Gate)", so the chat line says which, unless its dungeon is still a rumour.
+		local title
+		if #instances > 1 then
+			title = not ns.Discovery:DoorUnknown(instances) and SharedDoorName(instances) or nil
+		elseif self.door and self.door.name and not ns.Discovery:DoorRumoured(self.instance) then
+			title = string.format("%s (%s)", self.instance.name, self.door.name)
+		end
+		DungeonMap:SetWaypoint(self.instance, title, self.door)
 	elseif not (#instances > 1 and ChooseDoor(self, instances)) then
 		DungeonMap:OpenInstance(self.instance)
 	end
@@ -2553,25 +2888,32 @@ end
 
 CavePinMethods.ShouldMouseButtonBePassthrough = EntrancePinMethods.ShouldMouseButtonBePassthrough
 
+-- In Adventure Mode a way in that leads to rumours alone is "A rumor", never its name: many are named
+-- after the dungeon (Core/Discovery.lua's WayUnknown).
 function CavePinMethods:OnMouseEnter()
 	local subMap = self.subMap
-	SetAreaLabel(self, subMap.name, IsBuilding(subMap) and L.BUILDING_LABEL or L.CAVE_LABEL)
+	local name = ns.Discovery:WayName(subMap, L.ADVENTURE_DOOR_TITLE)
+	SetAreaLabel(self, name, IsBuilding(subMap) and L.BUILDING_LABEL or L.CAVE_LABEL)
 	GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-	GameTooltip:SetText(subMap.name, 1, 1, 1)
+	GameTooltip:SetText(name, 1, 1, 1)
 	-- Each dungeon it leads to, by name (the Scarlet Monastery's hall leads to four), with those
-	-- further in, on another of its pictures (alsoLeadsTo: Blackrock Depths, below the ring).
-	local leadsTo = {}
-	for key in pairs(subMap.instances) do
-		local instance = ns.GetInstance(key)
-		if instance then leadsTo[#leadsTo + 1] = instance.name end
+	-- further in, on another of its pictures (alsoLeadsTo: Blackrock Depths, below the ring). In
+	-- Adventure Mode those not entered are rumours, unnamed: one line for them all.
+	local leadsTo, rumoured = {}, false
+	local function Lead(instance)
+		if not instance then return end
+		if ns.Discovery:DoorRumoured(instance) then
+			rumoured = true
+		else
+			leadsTo[#leadsTo + 1] = instance.name
+		end
 	end
-	for _, key in ipairs(subMap.alsoLeadsTo or {}) do
-		local instance = ns.GetInstance(key)
-		if instance then leadsTo[#leadsTo + 1] = instance.name end
-	end
+	for key in pairs(subMap.instances) do Lead(ns.GetInstance(key)) end
+	for _, key in ipairs(subMap.alsoLeadsTo or {}) do Lead(ns.GetInstance(key)) end
 	table.sort(leadsTo)
 	for _, name in ipairs(leadsTo) do GameTooltip:AddLine(string.format(L.CAVE_LEADS_TO, name), 1, 0.82, 0) end
-	GameTooltip:AddLine(string.format(L.CAVE_LEFT_CLICK, subMap.name), 0.1, 1, 0.1)
+	if rumoured then GameTooltip:AddLine(L.ADVENTURE_CAVE_LEADS_TO, 1, 0.82, 0) end
+	GameTooltip:AddLine(name == subMap.name and string.format(L.CAVE_LEFT_CLICK, name) or L.ADVENTURE_CAVE_LEFT_CLICK, 0.1, 1, 0.1)
 	GameTooltip:AddLine(L.ENTRANCE_RIGHT_CLICK, 0.1, 1, 0.1)
 	GameTooltip:Show()
 	ns.MapLegend:PinEnter(self:LegendKind())
@@ -2582,6 +2924,12 @@ CavePinMethods.OnMouseLeave = EntrancePinMethods.OnMouseLeave
 function CavePinMethods:OnMouseClickAction(button)
 	local subMap = self.subMap
 	if button == "RightButton" then
+		-- (one that leads to rumours alone: set by no name, Adventure Mode)
+		if ns.Discovery:WayUnknown(subMap) then
+			SetWaypointAt(self:GetMap():GetMapID(), self.wayX, self.wayY, IsBuilding(subMap) and L.BUILDING_LABEL or L.CAVE_LABEL,
+				L.ADVENTURE_DOOR_WAYPOINT_SET)
+			return
+		end
 		SetWaypointAt(self:GetMap():GetMapID(), self.wayX, self.wayY, subMap.name,
 			string.format(IsBuilding(subMap) and L.ENTRANCE_WAYPOINT_SET or L.CAVE_WAYPOINT_SET, subMap.name))
 	else
@@ -2615,26 +2963,30 @@ function EntranceProviderMethods:RefreshAllData()
 		local doors = {}
 		-- Hidden from the map legend: none of this kind.
 		for _, instance in ipairs(ns.MapLegend.Shows(kind) and ns.GetInstances(kind) or {}) do
-			local entrance = DungeonMap:Entrance(instance)
-			local x, y
-			if entrance then x, y = EntranceOn(entrance, mapID) end
-			if x then
-				local shared
-				for _, door in ipairs(doors) do
-					if math.abs(door.x - x) < SHARED_DOOR and math.abs(door.y - y) < SHARED_DOOR then
-						shared = door
-						break
+			-- A pin at each of its doors, where it has several (Stratholme's Main Gate and Service Gate), each
+			-- pin knowing its own; else one at its door.
+			for _, own in ipairs(instance.doors or { false }) do
+				local entrance = DungeonMap:Entrance(instance, own or nil)
+				local x, y
+				if entrance then x, y = EntranceOn(entrance, mapID) end
+				if x then
+					local shared
+					for _, door in ipairs(doors) do
+						if math.abs(door.x - x) < SHARED_DOOR and math.abs(door.y - y) < SHARED_DOOR then
+							shared = door
+							break
+						end
 					end
-				end
-				if shared then
-					shared.instances[#shared.instances + 1] = instance
-				else
-					doors[#doors + 1] = { x = x, y = y, instances = { instance } }
+					if shared then
+						shared.instances[#shared.instances + 1] = instance
+					else
+						doors[#doors + 1] = { x = x, y = y, instances = { instance }, own = own or nil }
+					end
 				end
 			end
 		end
 		for _, door in ipairs(doors) do
-			ns.CanvasPins:Acquire(map, ENTRANCE_PIN_TEMPLATE, door.instances[1], door.x, door.y, door.instances)
+			ns.CanvasPins:Acquire(map, ENTRANCE_PIN_TEMPLATE, door.instances[1], door.x, door.y, door.instances, door.own)
 		end
 	end
 	-- Caves and buildings' entrances show on their own zone's map only, as on retail; each kind
@@ -2704,12 +3056,17 @@ end
 	Those calls of the client's (C_Map.OpenWorldMap, SetCVar on its map filters, C_Map.SetUserWaypoint, and
 	the map's own pin calls: UI/CanvasPins.lua) are for the player's own clicks and the client's own code,
 	never the journal's (Tools/wow_mock.lua notes each as a map taint, and the smoke test wants none).
+	Nor ShowUIPanel while the Gamepad UI's HUD mode is up: its listener would run inside the journal's code
+	(Core/Compat.lua's ns.Gamepad:ShowPanel); the chat says why the map stays shut.
 ]]
 local function OpenWorld()
 	if not WorldMapFrame then return false end
 	if WorldMapFrame:IsShown() then return true end
 	if InCombatLockdown() or type(ShowUIPanel) ~= "function" then return false end
-	pcall(ShowUIPanel, WorldMapFrame)
+	if not ns.Gamepad:ShowPanel(WorldMapFrame) then
+		ns.Gamepad:SayHudUp()
+		return false
+	end
 	return WorldMapFrame:IsShown() == true
 end
 
@@ -2819,6 +3176,9 @@ ways.watch:SetScript("OnEvent", function(_, event)
 end)
 
 --[[
+	Followed with the way-in maps off too: what the player walks into is the character's to discover
+	(Core/Discovery.lua) in every style. Off, nothing is drawn of it (OverlayTarget).
+
 	Out of a dungeon whose key a way down keeps (the Hall of Thanes), the first readings after the loading
 	screen may give another map or none, and the zone change into the city may already be past: the
 	streets' events stay heard while the key is kept, and the reading is tried again a little later
@@ -2828,8 +3188,7 @@ end)
 ways.RETRY_SECONDS, ways.RETRIES = 1, 3
 local function WatchBelow(retry)
 	if not retry then ways.retries = 0 end
-	local on = WayInsOn()
-	local mapID = on and ns.PlayerMapPosition()
+	local mapID = ns.PlayerMapPosition()
 	local watched = false
 	for _, subMap in ipairs(ns.GetSubMaps()) do
 		if mapID and subMap.parentMapID == mapID then
@@ -2842,11 +3201,17 @@ local function WatchBelow(retry)
 	if not watched then
 		ns.UnregisterEvents(ways.watch, unpack(BELOW_EVENTS))
 		playerBelow, ways.near = nil, nil
-		-- Off any picture's map: inside one of a way down's dungeons, or gone (ways.Walked). With the way-in
-		-- maps off nothing follows the player, and what they were there is forgotten.
-		for _, subMap in ipairs(ns.GetSubMaps()) do
-			if subMap.wayDown then
-				if on then ways.Walked(subMap, mapID or nil) else ways.Remember(subMap, nil) end
+		-- Where the client gives no map at all (the Deeprun Tram), the zone's name tells the way in: asked
+		-- here, as the world map may never be opened there, and is drawn on only with the way-in maps on.
+		-- PlayerSubMap tells a way down's state too (inside one of its dungeons). Off any picture's map
+		-- otherwise: gone (ways.Walked), but for a dungeon's key, which holds. Followed in every style, as
+		-- the player's walk is for the character's journal (above), so what they were there is kept up with
+		-- the way-in maps off too.
+		if not mapID then
+			PlayerSubMap()
+		else
+			for _, subMap in ipairs(ns.GetSubMaps()) do
+				if subMap.wayDown then ways.Walked(subMap, mapID) end
 			end
 		end
 	end
@@ -2856,7 +3221,7 @@ local function WatchBelow(retry)
 		local state = subMap.wayDown and subMap.instances and ways.Where(subMap)
 		if state and subMap.instances[state] then kept = true end
 	end
-	if on and kept and not CurrentInstance() then
+	if kept and not CurrentInstance() then
 		ns.RegisterEvents(ways.watch, unpack(BELOW_EVENTS))
 		if not ways.retrying and (ways.retries or 0) < ways.RETRIES and C_Timer and C_Timer.After then
 			ways.retries = (ways.retries or 0) + 1
@@ -2883,8 +3248,120 @@ function DungeonMap:StyleChanged()
 	self:RefreshEntrances()
 end
 
+--[[
+	The run, decided as the player comes into the world: a new run on coming in from outside; a corpse run back in
+	keeps its kills, and so do a /reload, a login inside (the server puts a player whose run is gone at the way in,
+	outside) and coming back within SAME_RUN_SECONDS of stepping out (when each dungeon was left is kept with the
+	character). entry: how the player came in (ghost; stayed: a /reload or a login; login, reload; at: when; wasInside:
+	the dungeon or wing the player was in before, false from outside).
+]]
+-- (one table, the entering's state and steps: the file's main chunk is at Lua's limit of locals)
+local entering = { wasInside = false, watch = CreateFrame("Frame"),
+	EVENTS = { "ZONE_CHANGED", "ZONE_CHANGED_INDOORS", "ZONE_CHANGED_NEW_AREA", "ENCOUNTER_START" } }
+
+function entering.Decide(instance, entry)
+	local now, db = entry.at, ns.charDB
+	local leftAt = db and db.defeatedLeftAt or {}
+	if db then db.defeatedLeftAt = leftAt end
+	if entry.wasInside and entry.wasInside ~= (instance and instance.key) then leftAt[entry.wasInside] = now end
+	-- Left by any part of the same copy (Blackrock Spire's other half): the latest of them.
+	local copy = instance and ns.Run and ns.Run.SameCopy(instance) or { instance }
+	local left
+	for _, part in ipairs(copy) do
+		if leftAt[part.key] and not (left and left > leftAt[part.key]) then left = leftAt[part.key] end
+	end
+	local sameRun = left and now >= left and now - left <= DungeonMap.SAME_RUN_SECONDS
+	-- A ghost's way back in leads to its corpse, in the wing it died in: a ghost in another wing than the run's
+	-- (Scarlet Monastery's, each its own copy) comes in as anyone else does.
+	local ghost = entry.ghost
+	local run = ghost and instance and ns.WingsAreCopies(instance.instanceID) and ns.Run and ns.Run:Current()
+	if run and run.instanceID == instance.instanceID and run.key ~= instance.key then ghost = false end
+	-- A new run clears every part of that copy (DungeonMap:ClearRun), and starts the run block's clock.
+	-- (entry.fresh: a new run asked for while the wing was not known, PlaceWing)
+	local newRun = instance and (entry.fresh or not entry.wasInside and not ghost and not entry.stayed and not sameRun)
+	if newRun then DungeonMap:ClearRun(instance) end
+	for _, part in ipairs(copy) do leftAt[part.key] = nil end
+	entering.wasInside = instance and instance.key or false
+	WatchDeaths(instance)
+	if ns.Run then ns.Run:Entered(instance, newRun and true or false, entry.login, entry.reload) end
+	DungeonMap:Refresh()
+end
+
+--[[
+	Scarlet Monastery's wings share one instance id, and each is its own copy behind its own door: the run waits for
+	the wing (the run block's "Which wing?", Core/Run.lua's WaitForWing) until something names it, since at the door
+	the client still names the ground outside that the player left ("Terrace of Repose", "Whispering Gardens": areas
+	of Tirisfal, by the client's own area tables), and the wings' entrance halls have no name at all. Named by the
+	first of: an area of the wing's (wingAreas, at a change of area: ZONE_CHANGED and the like, heard only while
+	waiting), the start of one of its fights (ENCOUNTER_START, heard only while waiting) or the end of one
+	(ENCOUNTER_END, below; won or not), by the fight's id in any language (ns.WingOfFight). Then the run is decided as it
+	would have been at the door (Decide, with the entry kept): a new run for a wing other than the run's, the same run
+	for a corpse run or a way back in within the half hour. A /reload or a login inside goes on in the run's own wing
+	where the player logged out inside it (KeepRunWing). Nothing else waits: a dungeon of one part, and the wings walked
+	between inside (Dire Maul's, Blackrock Spire's), are decided at the door as before.
+]]
+
+-- The wing of a /reload or a login inside: the run's, where the player logged out inside it (its lastInsideAt is the
+-- logout's: Core/Run.lua's PLAYER_LOGOUT) within the half hour; not while the run waited for its wing (then the run
+-- kept is another wing's, left at its door). True where it is.
+function entering.KeepRunWing(instanceID)
+	local run = ns.Run and ns.Run:Current()
+	local wing = run and ns.GetInstance(run.key)
+	if not (wing and instanceID and wing.instanceID == instanceID) then return false end
+	local outAt, insideAt = run.loggedOutAt, run.lastInsideAt
+	if outAt and insideAt and insideAt >= outAt and time() - (run.lastSeen or 0) <= DungeonMap.SAME_RUN_SECONDS then
+		ns.SetVisitWing(instanceID, wing)
+		return true
+	end
+	return false
+end
+
+-- The wing is known: the run decided now, as at the door. False where nothing waits or no wing was found.
+function entering.PlaceWing(wing)
+	local entry = entering.wait
+	if not (entry and wing and wing.instanceID == entry.instanceID) then return false end
+	entering.wait = nil
+	ns.UnregisterEvents(entering.watch, unpack(entering.EVENTS))
+	ns.SetVisitWing(entry.instanceID, wing)
+	-- A new run asked for meanwhile (/ij run new, Core/Run.lua's NewRun): a new run of this wing, whatever else.
+	if ns.Run and ns.Run:NewRunAsked() then entry.fresh = true end
+	entering.Decide(wing, entry)
+	return true
+end
+
+function entering.WaitForWing(instanceID, entry)
+	local db = ns.charDB
+	local leftAt = db and db.defeatedLeftAt or {}
+	if db then db.defeatedLeftAt = leftAt end
+	if entering.wasInside then leftAt[entering.wasInside] = entry.at end
+	entering.wasInside = false
+	entry.instanceID = instanceID
+	entering.wait = entry
+	WatchDeaths(nil)
+	ns.RegisterEvents(entering.watch, unpack(entering.EVENTS))
+	if ns.Run then ns.Run:WaitForWing(instanceID, entry.login, entry.reload) end
+	DungeonMap:Refresh()
+end
+
+entering.watch:SetScript("OnEvent", function(_, event, ...)
+	if not entering.wait then return end
+	if event == "ENCOUNTER_START" then
+		local encounterID, name = ...
+		entering.PlaceWing(ns.WingOfFight(entering.wait.instanceID, ns.Readable(encounterID), ns.Readable(name)))
+		return
+	end
+	local instance, placed, instanceID = ns.CurrentInstance()
+	if instance and placed and instanceID == entering.wait.instanceID then entering.PlaceWing(instance) end
+end)
+
+-- Core/Run.lua's fight start, the wing not known yet: the wing placed first, so a fight against a boss this run already
+-- killed (a new copy nobody heard reset) is told as at a named room, whichever of the two frames hears it first.
+function DungeonMap:PlaceWingOfFight(encounterID, name)
+	if not entering.wait then return false end
+	return entering.PlaceWing(ns.WingOfFight(entering.wait.instanceID, encounterID, name))
+end
+
 local events = CreateFrame("Frame")
-local wasInside = false
 ns.RegisterEvents(events, "PLAYER_LOGIN", "PLAYER_ENTERING_WORLD", "ZONE_CHANGED_NEW_AREA", "ENCOUNTER_END")
 events:SetScript("OnEvent", function(_, event, ...)
 	ways.cause, ways.causeAt = event, GetTime()
@@ -2896,36 +3373,37 @@ events:SetScript("OnEvent", function(_, event, ...)
 		local login, reload = ...
 		SetUp()
 		WatchBelow()
-		-- A new run starts on coming in from outside; a corpse run back in keeps its kills, and so do a /reload,
-		-- a login inside (the server puts a player whose run is gone at the way in, outside) and coming back
-		-- within SAME_RUN_SECONDS of stepping out (when each dungeon was left is kept with the character).
-		local instance = CurrentInstance()
-		local ghost = UnitIsDeadOrGhost and UnitIsDeadOrGhost("player")
 		local stayed = ns.Readable(login) == true or ns.Readable(reload) == true
-		local now, db = time(), ns.charDB
-		local leftAt = db and db.defeatedLeftAt or {}
-		if db then db.defeatedLeftAt = leftAt end
-		if wasInside and wasInside ~= (instance and instance.key) then leftAt[wasInside] = now end
-		-- Left by any part of the same copy (Stratholme's other gate): the latest of them.
-		local copy = instance and ns.Run and ns.Run.SameCopy(instance) or { instance }
-		local left
-		for _, part in ipairs(copy) do
-			if leftAt[part.key] and not (left and left > leftAt[part.key]) then left = leftAt[part.key] end
+		local entry = { ghost = UnitIsDeadOrGhost and UnitIsDeadOrGhost("player"), stayed = stayed, login = login,
+			reload = reload, at = time(), wasInside = entering.wasInside }
+		-- A loading screen: a new visit, its wing told again (Core/Registry.lua's visit wing), the wait before it over.
+		ns.ForgetVisitWings()
+		entering.wait = nil
+		ns.UnregisterEvents(entering.watch, unpack(entering.EVENTS))
+		local ok, _, _, _, _, _, _, _, id = pcall(GetInstanceInfo)
+		id = ok and ns.Readable(id) or nil
+		if stayed then entering.KeepRunWing(id) end
+		local instance, placed, instanceID = ns.CurrentInstance()
+		if instance and not placed and ns.WingsAreCopies(instanceID) then
+			-- A /reload or a login that waits keeps no run of this visit (KeepRunWing would have named its wing): one
+			-- while the wing was waited for, at the door. So the wing, once known, is decided as a way in, by when it was
+			-- left (a corpse run's still goes on), not as a stay.
+			entry.stayed = false
+			entering.WaitForWing(instanceID, entry)
+		else
+			entering.Decide(instance, entry)
 		end
-		local sameRun = left and now >= left and now - left <= DungeonMap.SAME_RUN_SECONDS
-		-- A new run clears every part of that copy (DungeonMap:ClearRun), and starts the run block's clock.
-		local newRun = instance and not wasInside and not ghost and not stayed and not sameRun
-		if newRun then DungeonMap:ClearRun(instance) end
-		for _, part in ipairs(copy) do leftAt[part.key] = nil end
-		wasInside = instance and instance.key or false
-		WatchDeaths(instance)
-		if ns.Run then ns.Run:Entered(instance, newRun and true or false, login, reload) end
-		DungeonMap:Refresh()
 	elseif event == "ENCOUNTER_END" then
 		local encounterID, name, _, _, success = ...
-		if ns.Readable(success) == 1 then
+		-- A fight of one wing's, the wing not known yet: it names the wing (above), won or not.
+		if entering.wait then
+			entering.PlaceWing(ns.WingOfFight(entering.wait.instanceID, ns.Readable(encounterID), ns.Readable(name)))
+		end
+		if ns.EncounterWon(success) then
 			local instance = CurrentInstance()
-			for _, boss in ipairs(BossesForEncounter(instance, ns.Readable(encounterID), ns.Readable(name))) do
+			-- Each boss the fight is for: by its id, else by its name, several where the game names one fight for
+			-- several of ours (ns.BossesForFight).
+			for _, boss in ipairs(ns.BossesForFight(instance, ns.Readable(encounterID), ns.Readable(name))) do
 				DungeonMap:MarkDefeated(instance, boss)
 			end
 		end

@@ -49,6 +49,8 @@ Raid({
 	zoneEntrance = { mapID = 1445, world = { 1, -4698.1, -3720.6 } },
 	description = "The broodmother of the black dragonflight waits in her lair beneath the Wyrmbog. "
 		.. "Forever's version is not known yet.",
+	-- Its practical words, kept in the overview's facts where Spoken's story shows (UI/EncounterPage.lua).
+	overviewNote = "Forever's version is not known yet.",
 	-- Before you go (her attunement) and her quests: Data/Authored/OnyxiasLair.lua.
 	bosses = {
 		{ name = "Onyxia", npcID = 10184, displayID = 8570, level = 63, order = 1 },

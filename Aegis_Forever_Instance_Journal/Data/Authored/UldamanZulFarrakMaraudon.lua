@@ -65,7 +65,7 @@ local _, ns = ...
 
 ns.AmendInstance("Uldaman", {
 	--[[
-		Before you go (the overview): the quests to take before the door, and the ones finished in the
+		Before you go (the Quests tab): the quests to take before the door, and the ones finished in the
 		dig-site caves outside the instance, for each side; and the Keystone, for both (2026-11-05).
 	]]
 	prepare = {
@@ -127,6 +127,13 @@ ns.AmendInstance("Uldaman", {
 	questPatches = {
 		[2198] = { startItem = { itemID = 7666, name = "Shattered Necklace" } },
 		[2398] = { note = "Optional: it leads to The Hidden Chamber." },
+		-- Restoring the Necklace is taken inside, at Talvash's Scrying Bowl, once Find the Gems is handed in there with the
+		-- phial; Archaedas drops its Shattered Necklace Power Source, a quest item, so only for a player who has the quest
+		-- (a player's report of 2026-11-12 says the same). 2026-11-18.
+		[2204] = {
+			note = "Hand in Find the Gems with the phial and take this before you fight Archaedas: he drops the power source "
+				.. "only while it is in your log.",
+		},
 		-- What follows outside (QuestieDB's nextQuestInChain; the owner's calls of 2026-11-03, see the header)
 		[709] = {
 			followUp = "Then Theldurin the Lost gives To Ironforge for Yagyin's Digest (Alliance) or To the Undercity for "
@@ -146,7 +153,7 @@ ns.AmendInstance("Uldaman", {
 
 ns.AmendInstance("ZulFarrak", {
 	--[[
-		Before you go (the overview): the Executioner's Key, which drops inside, and Gahz'rilla, the
+		Before you go (the Quests tab): the Executioner's Key, which drops inside, and Gahz'rilla, the
 		boss the gong called in the original game (also on his own page).
 	]]
 	prepare = {
@@ -182,7 +189,7 @@ ns.AmendInstance("ZulFarrak", {
 })
 
 ns.AmendInstance("Maraudon", {
-	-- Before you go (the overview): the Scepter of Celebras, and the shortcut it opened.
+	-- Before you go (the Quests tab): the Scepter of Celebras, and the shortcut it opened.
 	prepare = {
 		{
 			title = "The Scepter of Celebras",
@@ -199,3 +206,8 @@ ns.AmendInstance("Maraudon", {
 		},
 	},
 })
+
+-- The fog of war (UI/DungeonFog.lua's Counts; the owner's answers of 2026-11-13): Gahz'rilla is called up with the
+-- Mallet of Zul'Farrak at the gong, so the hydra holds back no fog at all (the owner's rule of 2026-11-14 for summoned
+-- bosses: its pool clears with the rooms round it, its kill changes nothing). The fog's data says the same (its counts).
+ns.AmendInstance("ZulFarrak", { bosses = { ["Gahz'rilla"] = { summoned = true } } })

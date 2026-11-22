@@ -2,9 +2,10 @@ local _, ns = ...
 
 --[[
 	The journal's style, for each character on its own: Modern (everything on, as the journal has
-	been), Classic (a more original-style journal, with fewer extras) or Custom (each feature ticked
-	or not in the journal's options). Each character is asked once, at its first login with the
-	journal (UI/StylePopup.lua), and can change it any time in the journal's options (UI/Options.lua).
+	been), Classic (a more original-style journal, with fewer extras), Custom (each feature ticked
+	or not in the journal's options) or Adventure Mode (the journal fills in as the character plays:
+	Core/Discovery.lua). Each character is asked once, at its first login with the journal
+	(UI/StylePopup.lua), and can change it any time in the journal's options (UI/Options.lua).
 	A choice on one character changes no other's.
 
 	What each style turns on is here, in one place: FEATURES lists the features, in the order the
@@ -22,15 +23,21 @@ local _, ns = ...
 	               boats, zeppelins, trams and portals, its quest marks, zone levels and unexplored
 	               areas.
 
-	The style also says whether the journal's window docks among the game's own (UI/Journal.lua) while
-	the player has never chosen that themselves: Modern free, Classic docked, Custom docked as before.
-	A choice of the player's (the options' box, /aegis dock) is the account's and stands for every
-	style; it is no feature and never makes the style Custom.
+	Adventure Mode is a switch of its own, adventure, beside the style its features follow: chosen, the
+	features are its preset's (Modern's); a feature box ticked in the options makes them Custom, as for
+	any style, and Adventure Mode stays on. Choosing any other style turns it off. What the character
+	has found is kept either way (Core/Discovery.lua), whatever the style.
 
-	Saved in the character's AegisJournalCharDB (ns.charDB): style ("modern", "classic", "custom";
-	none is Modern), styleFeatures (Custom's own ticks) and styleAsked (the VERSION the character was
-	last asked at). Nothing reads them before ADDON_LOADED sets ns.charDB; until then, and on a
-	character that has not chosen, the style is Modern.
+	The style also says whether the journal's window docks among the game's own (UI/Journal.lua) while
+	the player has never chosen that themselves: Modern free, Classic docked, Custom docked as before,
+	Adventure Mode docked as Classic (the owner's pick, 2026-11-07), with a feature box ticked in it too
+	(Choice is "adventure" then). A choice of the player's (the options' box, /aegis dock) is the account's
+	and stands for every style; it is no feature and never makes the style Custom.
+
+	Saved in the character's AegisJournalCharDB (ns.charDB): style ("modern", "classic", "custom",
+	"adventure"; none is Modern), adventure (true while in Adventure Mode), styleFeatures (Custom's own
+	ticks) and styleAsked (the VERSION the character was last asked at). Nothing reads them before
+	ADDON_LOADED sets ns.charDB; until then, and on a character that has not chosen, the style is Modern.
 ]]
 
 local Style = {}
@@ -48,13 +55,16 @@ Style.FEATURES = {
 Style.PRESETS = {
 	modern = { gearFinder = true, wayInMaps = true, mapMarkers = true },
 	classic = { gearFinder = false, wayInMaps = false, mapMarkers = false },
+	-- Modern's features; what they show follows what the character has found (Core/Discovery.lua).
+	adventure = { gearFinder = true, wayInMaps = true, mapMarkers = true },
 }
 
 -- Whether each style docks the window while the player has not chosen; a style not named docks.
-Style.DOCKS = { modern = false, classic = true }
+Style.DOCKS = { modern = false, classic = true, adventure = true }
 
--- The popup's boxes, left to right, and the options' list.
-Style.CHOICES = { "classic", "modern", "custom" }
+-- The popup's row of boxes, left to right, and the long bar beneath them.
+Style.CHOICES = { "classic", "modern", "adventure" }
+Style.BAR_CHOICE = "custom"
 Style.DEFAULT = "modern"
 
 -- A choice's name and what it does, in the journal's language: STYLE_CLASSIC, STYLE_CLASSIC_DESC and so on.
@@ -80,10 +90,22 @@ local function Changed(from)
 	end
 end
 
-function Style:Choice()
+-- Whether this character is in Adventure Mode: its own switch, which a feature box leaves on.
+function Style:Adventure()
+	local db = ns.charDB
+	return db ~= nil and (db.adventure == true or db.style == "adventure")
+end
+
+-- The style the features follow: a preset (Adventure Mode's among them) or Custom.
+local function Base()
 	local choice = ns.charDB and ns.charDB.style
 	if choice == "custom" or Style.PRESETS[choice] then return choice end
 	return Style.DEFAULT
+end
+
+function Style:Choice()
+	if self:Adventure() then return "adventure" end
+	return Base()
 end
 
 -- Whether the window docks for this character's style, while the player has not chosen (ns.db.docked nil).
@@ -93,7 +115,7 @@ end
 
 -- Whether a feature is on now.
 function Style:On(feature)
-	local preset = Style.PRESETS[self:Choice()]
+	local preset = Style.PRESETS[Base()]
 	if preset then return preset[feature] ~= false end
 	local picks = ns.charDB and ns.charDB.styleFeatures
 	return not (type(picks) == "table" and picks[feature] == false)
@@ -108,21 +130,26 @@ end
 
 function Style:Choose(choice, from)
 	if not (ns.charDB and (choice == "custom" or Style.PRESETS[choice])) then return false end
-	if choice == "custom" and self:Choice() ~= "custom" then ns.charDB.styleFeatures = Current() end
+	if choice == "custom" and Base() ~= "custom" then ns.charDB.styleFeatures = Current() end
 	ns.charDB.style = choice
+	-- Adventure Mode on with it, off with any other; what the character found stays.
+	ns.charDB.adventure = choice == "adventure" or nil
 	Changed(from)
 	return true
 end
 
 -- A feature ticked or unticked by itself: the style becomes Custom, starting from what was on. Set to
 -- what the preset already gives (as the Settings panel's Defaults button does), it stays the preset.
+-- Adventure Mode stays on: its features become the character's own, as Custom's.
 function Style:SetFeature(feature, on, from)
 	if not ns.charDB then return end
 	on = on and true or false
-	if self:Choice() ~= "custom" then
+	if Base() ~= "custom" then
 		if self:On(feature) == on then return end
+		local adventure = self:Adventure()
 		ns.charDB.styleFeatures = Current()
 		ns.charDB.style = "custom"
+		if adventure then ns.charDB.adventure = true end
 	end
 	-- Custom with no ticks saved (saved data edited by hand): from what is on now.
 	if type(ns.charDB.styleFeatures) ~= "table" then ns.charDB.styleFeatures = Current() end

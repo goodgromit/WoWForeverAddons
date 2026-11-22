@@ -41,8 +41,7 @@ L.INSTANCE_NAMES = {
 	["Scholomance"] = "Scholomance",
 	["ShadowfangKeep"] = "Castillo de Colmillo Oscuro",
 	["ShapersTerrace"] = "Terraza del Creador",
-	["StratholmeMainGate"] = "Stratholme: Entrada Principal",
-	["StratholmeServiceGate"] = "Stratholme: Entrada de Servicio",
+	["Stratholme"] = "Stratholme",
 	["TempleOfAtalHakkar"] = "El Templo de Atal'Hakkar",
 	["TheDeadmines"] = "Las Minas de la Muerte",
 	["TheDrownedCity"] = "La Ciudad Sumergida",
@@ -162,6 +161,16 @@ L.SUBMAP_LEVELS = {
 	-- Prismatic Talus (drafted, to be checked: the client's tables have the cave only as its building's name, in English)
 	["Shaper's Terrace"] = "Terraza del Creador",
 	["Prismatic Talus"] = "Talud prismático",
+	-- Blackmaw Hold's map (Data/Authored/Upcoming.lua's floor names): the dungeon's name, its cave, the Festering
+	-- Grotto, and the four levels of its depths, as Santiago Reyes's maps label them (drafted, to be checked: the
+	-- client's tables keep the hold's own names in encrypted rows)
+	-- (as Santiago Reyes's Spanish maps name them, but the hold, the dungeon's name)
+	["Blackmaw Hold"] = "Bastión Faucenegra",
+	["Festering Grotto"] = "Gruta Pestilente",
+	["Depths of the Fallen Grove"] = "Profundidades de la Arboleda Caída",
+	["Depths of the Elders"] = "Profundidades de los Ancianos",
+	["Depths of the Burrow"] = "Profundidades de la Madriguera",
+	["Depths of Forbidden Magic"] = "Profundidades de la Magia Prohibida",
 }
 
 L.BOSS_NAMES = {
@@ -458,6 +467,32 @@ L.BOSS_NAMES = {
 	["Irradiated Horror"] = "Horror irradiado",
 	["Leprous Machinesmith"] = "Maquinista leproso",
 	["Mechano-Flamewalker"] = "Mecano-caminante de llamas",
+	-- Razorfen Kraul's, from the owner's run of 2026-11-12 (drafted, to be checked)
+	["Death's Head Acolyte"] = "Acólito Caramuerte",
+	["Death's Head Adept"] = "Adepto Caramuerte",
+	["Death's Head Sage"] = "Sabio Caramuerte",
+	["Quilguard Champion"] = "Campeón Guardapúas",
+	["Razorfen Beast Trainer"] = "Instructor de bestias de Rajacieno",
+	["Razorfen Groundshaker"] = "Sacudetierra de Rajacieno",
+	["Razorfen Totemic"] = "Totémico de Rajacieno",
+	-- Krol'dok Stronghold's, from a player's recorded run (2026-11-13; drafted, to be checked); the Brute and the
+	-- Shaman, Bossman Toof's, from a player's combat log (2026-11-12, the owner's call of 2026-11-14; drafted, to
+	-- be checked)
+	["Krol'dok Brute"] = "Bruto de Krol'dok",
+	["Krol'dok Centurion"] = "Centurión de Krol'dok",
+	["Krol'dok Shaman"] = "Chamán de Krol'dok",
+	["Shadowhide Curseweaver"] = "Tejemaldiciones Pellejo Sombrío",
+	["Snarlfang"] = "Colmigruñido",
+	["Terrorhowl"] = "Aullaterror",
+	["Twilight Warlock"] = "Brujo Crepuscular",
+	-- The Drowned City's, from the owner's recorded run (2026-11-16) and a player's combat log (2026-11-11; drafted, to be checked)
+	["Brinescale Priestess"] = "Sacerdotisa Brinescale",
+	["Deathless Guardian"] = "Guardián Inmortal",
+	["Deathless Sorcerer"] = "Hechicero Inmortal",
+	["Deathless Watcher"] = "Vigía Inmortal",
+	["Saltseer Murderer"] = "Asesino Saltseer",
+	-- The Shaper's Terrace's Izha'Rel, an add on the Ravasaur Hunters' page (2026-11-18): as the game names her
+	["Izha'Rel"] = "Izha'Rel",
 }
 
 L.ABILITY_NAMES = {
@@ -594,9 +629,54 @@ L.ABILITY_NAMES = {
 	["War Stomp"] = "Pisotón de guerra",
 	["Whirling Barrage"] = "Tromba giratoria",
 	["Whirlwind"] = "Torbellino",
+	-- Scarlet Monastery's spells from the owner's recording (2026-11-16; drafted, to be checked: the game's own names in this language not read)
+	["Arcane Bubble"] = "Burbuja Arcana",
+	["Crusader Strike"] = "Golpe de cruzado",
+	["Deep Sleep"] = "Sueño profundo",
+	["Dispel Magic"] = "Disipar magia",
+	["Lay on Hands"] = "Imposición de manos",
 }
 
 L.STRINGS = {
+	-- Blackmaw Hold's new notes (facts from players' guides the owner OK'd on 2026-11-18; drafted, to be checked):
+	-- Bonesnout's Ritualists, the Blackmaw Behemoth's Clawbert, the Unbound Spirit's Elder Bramblesnap and totems, the
+	-- way down to Varrox Bleakhoof, and the two rares listed as best guesses. The creatures' own names stay as the game
+	-- names them in English (their names in this language are not known); the Ritualists and the totems by what they are.
+	["An undead boar guarded by four Legashi Ritualists. Each one still alive makes Bonesnout take a quarter less damage, so while all four stand it can't be hurt: kill them first."] = "Un jabalí no muerto custodiado por cuatro ritualistas legashi. Cada uno que sigue vivo hace que Bonesnout reciba un cuarto menos de daño, así que mientras los cuatro sigan en pie no se le puede lastimar: mátalos primero.",
+	["To reach him, drop through the hole behind the Blackmaw Behemoth: you land in the pool in front of him. An updraft there takes you back up."] = "Para llegar a él, déjate caer por el hoyo detrás del Blackmaw Behemoth: caerás en el estanque frente a él. Una corriente de aire ascendente ahí te regresa arriba.",
+	["A huge dire furbolg. Clawbert, a furbolg shaman, fights beside it and keeps healing it: kill him first."] = "Un enorme fúrbolg atroz. Clawbert, un chamán fúrbolg, pelea a su lado y no deja de curarlo: mata primero a Clawbert.",
+	["When Clawbert dies, the Behemoth heals and enrages."] = "Cuando Clawbert muere, el Behemoth se cura y se enfurece.",
+	["An elemental, fought before Varrox Bleakhoof. Elder Bramblesnap, a friendly furbolg, starts it."] = "Un elemental, al que se enfrenta antes que a Varrox Bleakhoof. Elder Bramblesnap, un fúrbolg amistoso, inicia la pelea.",
+	["The Spirit and its three Profane Totems start out immune. Bramblesnap makes the totems breakable one at a time: break each as he does."] = "El Espíritu y sus tres tótems profanos empiezan siendo inmunes. Bramblesnap hace que los tótems se puedan romper uno por uno: rompe cada uno cuando lo haga.",
+	["A rare, listed here as a best guess. It may spawn near the ramp down to the Blackmaw Behemoth."] = "Un enemigo raro, incluido aquí como suposición. Puede aparecer cerca de la rampa que baja al Blackmaw Behemoth.",
+	["A rare spider, listed here as a best guess. Where it spawns is not known yet."] = "Una araña rara, incluida aquí como suposición. Todavía no se sabe dónde aparece.",
+	["A rare, listed here as a best guess. Where it spawns is not known yet."] = "Un enemigo raro, incluido aquí como suposición. Todavía no se sabe dónde aparece.",
+	-- Varrox Bleakhoof's drops, the Mark of Xavius's quest known since 2026-11-19 (drafted, to be checked): the
+	-- items and quests by the names the game gives them in English (their names in this language are not known).
+	["Drops the Head of Varrox Bleakhoof, for Blackmaw Reclamation, and, rarely, the Mark of Xavius, for In Demand - Titan Relics."] = "Suelta Head of Varrox Bleakhoof, para Blackmaw Reclamation, y, en raras ocasiones, Mark of Xavius, para In Demand - Titan Relics.",
+	-- The Drowned City's "Pyromancer" Braxton, a rare (the owner's call of 2026-11-18; drafted, to be checked): his
+	-- three notes and his Head Smash's words. His name and Captain Dreadrise's stay as the game names them in English, as
+	-- the city's other bosses keep theirs; Head Smash is told only as a blow to the head: the game's name for it in this
+	-- language is not known.
+	["A rare in the pirates' part of the city, not far from Captain Dreadrise. As a rare, he may not be there every run."] = "Un enemigo raro en la zona de los piratas de la ciudad, no lejos de Captain Dreadrise. Como es raro, puede que no esté en cada partida.",
+	["Despite his name, no fire spell is known for him yet: he hits with Head Smash, which stuns for 2 seconds."] = "A pesar de su nombre, todavía no se le conoce ningún hechizo de fuego: da un golpe en la cabeza que aturde por 2 segundos.",
+	["The kills recorded so far dropped one of his two items about every time."] = "En las muertes registradas hasta ahora soltó uno de sus dos objetos más o menos cada vez.",
+	["Hits his target a little harder than a normal blow and stuns it for 2 seconds."] = "Golpea a su objetivo un poco más fuerte que un golpe normal y lo aturde por 2 segundos.",
+	-- Krol'dok Stronghold's Bossman Toof, in the owner's words, with a player's combat log (2026-11-12, the owner's
+	-- call of 2026-11-14; drafted, to be checked): his notes, and his shamans' and brutes' written abilities. His name
+	-- stays as the game names it.
+	["A series of add waves comes at you as you make your way to him. Bossman Toof himself is a warrior, with Mortal Strike, Thunderclap and Demoralizing Shout."] = "De camino a él te atacan varias oleadas de enemigos. El propio Bossman Toof es un guerrero, con Golpe mortal, Atronar y Grito desmoralizador.",
+	["Two Krol'dok Shamans and two Krol'dok Brutes fight beside him. The shamans cast Lightning Bolt and put Bloodlust on him: purge it if you can."] = "Dos chamanes de Krol'dok y dos brutos de Krol'dok pelean a su lado. Los chamanes lanzan Descarga de relámpagos y le aplican Ansia de sangre: púrgala si puedes.",
+	["Lightning Bolt"] = "Descarga de relámpagos",
+	["The Krol'dok Shamans cast it at players, one every 4 to 12 seconds between the two of them."] = "Los chamanes de Krol'dok la lanzan a los jugadores, entre los dos una cada 4 a 12 segundos.",
+	["Cleave"] = "Rajar",
+	["The Krol'dok Brutes' Cleave hits their target and the players next to it."] = "El Rajar de los brutos de Krol'dok golpea a su objetivo y a los jugadores que tiene al lado.",
+	-- Overseer Mugg's weapon changes and Mugg's Fury, on his Abilities tab (a player's combat log of 2026-11-12, the
+	-- owner's call of 2026-11-14; drafted, to be checked). His Crushing Slam is named only as a slam: the game's name
+	-- for it in this language is not known.
+	["He takes up two one-handed maces, and his melee hits harder. It came 52 seconds into one fight and 30 seconds into a faster kill, so it likely comes at a set point of his health (a best guess). With the maces his Crushing Slam can hit three players at once."] = "Toma dos mazas de una mano y sus golpes cuerpo a cuerpo pegan más fuerte. Llegó a los 52 segundos en un combate y a los 30 en una muerte más rápida, así que seguramente llega con cierto nivel de salud (una suposición). Con las mazas, su golpe aplastante puede alcanzar a tres jugadores a la vez.",
+	["He takes up two two-handed mauls, and his melee hits harder again. It came 72 seconds into one fight and 47 seconds into a faster kill, so it likely comes at a set point of his health too (a best guess)."] = "Toma dos martillos de dos manos y sus golpes cuerpo a cuerpo pegan aún más fuerte. Llegó a los 72 segundos en un combate y a los 47 en una muerte más rápida, así que seguramente también llega con cierto nivel de salud (una suposición).",
+	["Each of his melee hits makes him attack faster. It starts over each time he changes weapons."] = "Cada uno de sus golpes cuerpo a cuerpo lo hace atacar más rápido. Vuelve a empezar cada vez que cambia de armas.",
 	["120 Merchant's Favor"] = "120 de Favor del Mercader",
 	["1200 Merchant's Favor"] = "1200 de Favor del Mercader",
 	["1500 Merchant's Favor"] = "1500 de Favor del Mercader",
@@ -666,7 +746,7 @@ L.STRINGS = {
 	["A rare spawn: not every run meets him. At 15% health he runs for help."] = "Una criatura rara: no aparece en todas las partidas. Al 15% de salud, huye a pedir ayuda.",
 	["A rare. A Stone Rumbler fights with him; interrupt his Lightning Bolt, and finish him before he runs for help at 15% health."] = "Un enemigo raro. Un Estruendor de piedra lucha con él; interrumpe su Descarga de relámpagos y acaba con él antes de que huya en busca de ayuda al 15% de salud.",
 	["A rare. He calls two Burning Servants; interrupt his Fireball, and a priest or a shaman can remove his fire shield."] = "Un enemigo raro. Llama a dos Sirvientes ardientes; interrumpe su Bola de Fuego. Un sacerdote o un chamán puede quitarle su escudo de fuego.",
-	["A rare. He cuts the tank's armour by three quarters, and at 15% health runs for help: finish him first."] = "Criatura rara. Reduce la armadura del tanque en tres cuartas partes y, al 15% de salud, huye a pedir ayuda: acaba con él antes.",
+	["A rare. He cuts the tank's armor by three quarters, and at 15% health runs for help: finish him first."] = "Criatura rara. Reduce la armadura del tanque en tres cuartas partes y, al 15% de salud, huye a pedir ayuda: acaba con él antes.",
 	["A Reliquary of Purity"] = "Un relicario de Pureza",
 	["A satyr on the walkway above Jergosh's chamber."] = "Un sátiro en la pasarela sobre la cámara de Jergosh.",
 	["A Searing Blade warlock; clear the cultists around him first."] = "Un brujo de la Hoja Abrasadora; elimina primero a los cultores que lo rodean.",
@@ -682,6 +762,7 @@ L.STRINGS = {
 	["A threshadon in the underwater cave; optional. He only melees."] = "Un trillanodonte en la cueva submarina; opcional. Solo ataca cuerpo a cuerpo.",
 	["A thunder lizard in the water; killing him is optional."] = "Un truenagarto en el agua; matarlo es opcional.",
 	["A Titan dig site above Whelgar's Excavation, caught out of time, where the Titans' constructs answer to no one now. Inside: the Lost Marsh, Stalker's Thicket, the Site of the Guardian and the Lost Dig Site."] = "Una excavación de los titanes sobre la Excavación de Whelgar, atrapada fuera del tiempo, donde los constructos de los titanes ya no obedecen a nadie. Dentro: el Marjal Perdido, el Matorral del Acechador, el Sitio del Guardián y la Excavación Perdida.",
+	["Inside: the Lost Marsh, Stalker's Thicket, the Site of the Guardian and the Lost Dig Site."] = "Dentro: el Marjal Perdido, el Matorral del Acechador, el Sitio del Guardián y la Excavación Perdida.",
 	["A titan site hidden in Un'Goro Crater, guarding secrets of the makers among the crater's dinosaurs."] = "Un enclave titánico oculto en el Cráter de Un'Goro que guarda secretos de los Creadores entre los dinosaurios del cráter.",
 	["A Titan vault buried under the Badlands, where Dark Iron dwarves and troggs dig for the secrets of the earthen, and the stone keeper Archaedas guards the deepest hall."] = "Una cámara de los titanes enterrada bajo las Tierras Inhóspitas, donde los enanos Hierro Negro y los troggs excavan en busca de los secretos de los terráneos, y el guardián de piedra Archaedas custodia la sala más profunda.",
 	["A treant twisted by fel magic, among the Suffused Treants in the streets."] = "Un antárbol corrompido por la magia vil, entre los Antárboles infundidos de las calles.",
@@ -734,7 +815,7 @@ L.STRINGS = {
 	["An Ancient Grudge"] = "Un antiguo rencor",
 	["An arcane golem by the Magus Commerce Exchange, guarded by Angry Tomes. Its Malfunction hits everyone within 25 yards."] = "Un gólem arcano junto al Mercado de Magos, custodiado por Tomos furiosos. Su Avería golpea a todos los que estén a menos de 25 m.",
 	["An escort: Grark is held at the Blackrock fortress in the Burning Steppes."] = "Misión de escolta: Grark está retenido en la fortaleza Roca Negra, en Las Estepas Ardientes.",
-	["An ogre foreman with heavy armour who hits hard; the first boss inside."] = "Un capataz ogro con armadura pesada que pega fuerte; el primer jefe del interior.",
+	["An ogre foreman with heavy armor who hits hard; the first boss inside."] = "Un capataz ogro con armadura pesada que pega fuerte; el primer jefe del interior.",
 	["An ogre stronghold packed with warriors, where the Twilight's Hammer has found willing allies."] = "Una fortaleza ogra repleta de guerreros, donde el Martillo Crepuscular encontró aliados dispuestos.",
 	["An ogre who throws lightning that jumps between players."] = "Un ogro que lanza relámpagos que saltan entre los jugadores.",
 	["An ooze soaked in radiation, in the Hall of Gears."] = "Un moco empapado de radiación, en la Sala de Máquinas.",
@@ -838,7 +919,6 @@ L.STRINGS = {
 	["Beneath Ironforge, Dun Morogh"] = "Bajo Forjaz, Dun Morogh",
 	["Beneath Ironforge, someone has broken into the tomb of the dwarven kings."] = "Bajo Forjaz, alguien irrumpió en la tumba de los reyes enanos.",
 	["Beneath Moonbrook lie the gold mines Stormwind abandoned during the First War. Edwin VanCleef's Defias Brotherhood has made them its stronghold, and deep inside, in a hidden sea cave, his crew is finishing a warship meant for Stormwind."] = "Bajo Arroyo de la Luna yacen las minas de oro que Ventormenta abandonó durante la Primera Guerra. La Hermandad Defias de Edwin VanCleef las convirtió en su bastión y, en lo más profundo, en una cueva marina oculta, su tripulación está terminando un buque de guerra destinado a Ventormenta.",
-	["Beneath Orgrimmar's Cleft of Shadow runs a chasm of lava and stone where troggs, fire elementals and the Searing Blade, a cult of demon-worshippers, have taken root under the Horde's capital."] = "Bajo el Circo de las Sombras de Orgrimmar se extiende una sima de lava y roca donde troggs, elementales de fuego y la Hoja Abrasadora, un culto de adoradores de demonios, se asentaron bajo la capital de la Horda.",
 	["Betina Bigglezink"] = "Betina Bigglezink",
 	["Betina Bigglezink, Eastern Plaguelands"] = "Betina Bigglezink, Tierras de la Peste del Este",
 	["Bijou's Belongings"] = "Las pertenencias de Bijou",
@@ -1049,6 +1129,7 @@ L.STRINGS = {
 	["Dalaran"] = "Dalaran",
 	["Dalaran Patrols"] = "Las patrullas de Dalaran",
 	["Dalaran, the city of the Kirin Tor, stands rebuilt in the Alterac Mountains, its magic barrier gone and its streets overrun. Go in through the sewers, to a portal at the end of a long pipe, then fight up through the streets to the Shade of the Archmage.\n\nImmunities: much of the city takes no Arcane damage. Constructs and elementals ignore bleeds and poisons, and the treants take no Nature damage, though they bleed.\n\nTrash: interrupt the Mana Phantoms' Mana Burn, and stand in the pool a Saturated Remnant leaves behind to regain mana. Every kill gives Kirin Tor reputation."] = "Dalaran, la ciudad del Kirin Tor, se alza reconstruida en las Montañas de Alterac, sin su barrera mágica y con las calles invadidas. Entra por las cloacas hasta un portal al final de una larga tubería y luego ábrete paso combatiendo por las calles hasta la Sombra del archimago.\n\nInmunidades: buena parte de la ciudad no recibe daño Arcano. Los constructos y los elementales ignoran los sangrados y los venenos, y los antárboles no reciben daño de Naturaleza, aunque sí sangran.\n\nBichos: interrumpe la Quemadura de maná de los Fantasmas de maná y colócate en el charco que deja un Remanente saturado para recuperar maná. Cada muerte otorga reputación con el Kirin Tor.",
+	["Go in through the sewers, to a portal at the end of a long pipe, then fight up through the streets to the Shade of the Archmage.\n\nImmunities: much of the city takes no Arcane damage. Constructs and elementals ignore bleeds and poisons, and the treants take no Nature damage, though they bleed.\n\nTrash: interrupt the Mana Phantoms' Mana Burn, and stand in the pool a Saturated Remnant leaves behind to regain mana. Every kill gives Kirin Tor reputation."] = "Entra por las cloacas hasta un portal al final de una larga tubería y luego ábrete paso combatiendo por las calles hasta la Sombra del archimago.\n\nInmunidades: buena parte de la ciudad no recibe daño Arcano. Los constructos y los elementales ignoran los sangrados y los venenos, y los antárboles no reciben daño de Naturaleza, aunque sí sangran.\n\nBichos: interrumpe la Quemadura de maná de los Fantasmas de maná y colócate en el charco que deja un Remanente saturado para recuperar maná. Cada muerte otorga reputación con el Kirin Tor.",
 	["Damp Note"] = "Nota mojada",
 	["Dark Iron Legacy"] = "El legado de los Hierro Negro",
 	["Darkreaver's Fallen Charger, inside the dungeon"] = "Destrero caído de Atracoscuro, dentro del calabozo",
@@ -1513,7 +1594,9 @@ L.STRINGS = {
 	["It fears a player and slows another's casting."] = "Aterroriza a un jugador y ralentiza el lanzamiento de hechizos de otro.",
 	["It keeps calling small Arcane Manalings. Kill them with area damage."] = "No deja de llamar pequeños Manalitos arcanos. Mátenlos con daño de área.",
 	["It roots everyone near it, slows and stuns, and calls Dupe Bugs that its Patch turns into healing."] = "Enraíza a todos los que estén cerca, ralentiza y aturde, e invoca chinches engañosas que su Parche convierte en sanación.",
-	["It whirls at everyone close, and its thorns hurt whoever strikes it or an ally nearby, Ramtusk included."] = "Ataca en torbellino a todos los que estén cerca, y sus espinas hieren a quien lo golpee a él o a un aliado cercano, incluido Colmicarnero.",
+	-- Overlord Ramtusk's second note, Razorfen Spearhide's own before it became his guards (2026-11-13; drafted, to be
+	-- checked)
+	["His two guards whirl at everyone close, and their thorns hurt whoever strikes them or an ally nearby, Ramtusk included."] = "Sus dos guardias atacan en torbellino a todos los que estén cerca, y sus espinas hieren a quien los golpee a ellos o a un aliado cercano, incluido Colmicarnero.",
 	["Its attack on the tank between the beams, a 1.5-second cast."] = "Su ataque contra el tanque entre rayo y rayo, con un lanzamiento de 1.5 s.",
 	["Its Fathom Stone also calls up Baron Aquanis, an optional fight."] = "Su Piedra de las profundidades también invoca al Barón Aquanis, un combate opcional.",
 	["Jail Break!"] = "La fuga de la prisión",
@@ -1682,9 +1765,31 @@ L.STRINGS = {
 	["Master Apothecary Faranell, the Apothecarium, Undercity"] = "Maestro boticario Faranell, El Apothecarium, Entrañas",
 	["Master Apothecary Faranell, Undercity"] = "Maestro boticario Faranell, Entrañas",
 	["Master Gadrin, Durotar"] = "Maestro Gadrin, Durotar",
+	-- Alcaz Prison's Before you go (the owner's report, 2026-11-12; drafted, to be checked)
+	["Master Mathias Shaw, at SI:7 in Stormwind's Old Town, gives Our Man in Theramore. At the inn in Theramore, the dwarf Sully McCleary sends you to meet him behind the graveyard, then up Jaina Proudmoore's tower in disguise to listen in. After that, he gives The Secret Prison and A Bit of Wet Work."] = "El maestro Mathias Shaw, del IV:7 en el Casco Antiguo de Ventormenta, da Our Man in Theramore. En la posada de Theramore, el enano Sully McCleary te cita detrás del cementerio y luego te manda disfrazado a la torre de Jaina Valiente para escuchar. Después, te da The Secret Prison y A Bit of Wet Work.",
+	-- Alcaz Prison's Before you go, the Horde's (the owner's report, 2026-11-12; drafted, to be checked)
+	["Sergeant Ulka waits outside the prison on Alcaz Island. She sends you in after Commander Folkar and asks for A Little Payback; inside, Folkar sends you looking for King Varian Wrynn."] = "Sergeant Ulka espera fuera de la prisión de la Isla de Alcaz. Te manda entrar tras Commander Folkar y te da A Little Payback; adentro, Folkar te manda a buscar al rey Varian Wrynn.",
 	["Master Mechanic Castpipe — Tinker Town, Ironforge"] = "Maestro mecánico Funditubo — Ciudad Manitas, Forjaz",
 	["Master Mechanic Castpipe, Ironforge"] = "Maestro mecánico Funditubo, Forjaz",
 	["Material Assistance"] = "Asistencia material",
+	-- Alcaz Prison's Before you go (the owner's report, 2026-11-12; drafted, to be checked)
+	["Mathias Shaw's errand"] = "El encargo de Mathias Shaw",
+	-- Alcaz Prison: the Alcaz Operative Insignia's chain (the owner's steps, 2026-11-13; drafted, to be checked). The
+	-- quest and new NPC names stay English, as the game shows them; the items' names as their pages in the language
+	-- give them (a best guess that they are the game's own, not checked in game); Renzik's name as Forever's quest data
+	-- has it in the language
+	["Toy: Alcaz Operative Insignia"] = "Juguete: Insignia de operativo de Alcaz",
+	["If you want this toy, skip The Questioner on your way in. At the end, the prisoner Mason Connery sends you back for The Questioner's key, then to the inn at Moonbrook in Westfall for a Document Box: don't sell it. Bring it to Renzik \"The Shiv\" at SI:7 in Stormwind for State Secrets. Six {item:279450:Fractured Insignia:2} make the {item:279471:Alcaz Operative Insignia:3}, and they can be traded."] = "Si quieres este juguete, sáltate a The Questioner al entrar. Al final, el prisionero Mason Connery te manda por la llave de The Questioner y luego a la posada de Arroyo de la Luna, en los Páramos de Poniente, por una Caja de documentos: no la vendas. Llévasela a Renzik \"Chafarote\", del IV:7 en Ventormenta, para State Secrets. Seis {item:279450:Insignia fracturada:2} forman {item:279471:Insignia de operativo de Alcaz:3}, y se pueden comerciar.",
+	["If you want this toy, skip The Questioner on your way in. At the end, the prisoner Mason Connery sends you back for The Questioner's key, then to the inn at Moonbrook in Westfall for a Document Box: don't sell it. Bring it to Nazgrel, in Grommash Hold in Orgrimmar, for State Secrets. Six {item:279450:Fractured Insignia:2} make the {item:279471:Alcaz Operative Insignia:3}, and they can be traded."] = "Si quieres este juguete, sáltate a The Questioner al entrar. Al final, el prisionero Mason Connery te manda por la llave de The Questioner y luego a la posada de Arroyo de la Luna, en los Páramos de Poniente, por una Caja de documentos: no la vendas. Llévasela a Nazgrel, en el Fuerte Grommash de Orgrimmar, para State Secrets. Seis {item:279450:Insignia fracturada:2} forman {item:279471:Insignia de operativo de Alcaz:3}, y se pueden comerciar.",
+	["If you want the Alcaz Operative Insignia toy, or the Alliance's Somber News and Shaw Needs To Know, skip him on your way in: his key is for Mason Connery's quest at the end, The Man in the Iron Chains, which they all need."] = "Si quieres el juguete Insignia de operativo de Alcaz, o las misiones de la Alianza Somber News y Shaw Needs To Know, sáltatelo al entrar: su llave es para la misión de Mason Connery del final, The Man in the Iron Chains, que todas necesitan.",
+	["Mason Connery is a prisoner chained at the end of the prison. The Questioner must still be alive: skip him on your way in, then go back for him once you have this quest. He drops the Ornate Shackle Key. Everyone in the group should hand it in at the same time: once one player frees him, he walks off, and the others can't hand it in. This quest can't be shared."] = "Mason Connery es un prisionero encadenado al final de la prisión. The Questioner tiene que seguir vivo: sáltatelo al entrar y vuelve por él cuando tengas esta misión. Suelta la Llave de grilletes ornamental. Todo el grupo debe entregarla al mismo tiempo: en cuanto un jugador lo libera, se va y los demás ya no pueden entregarla. Esta misión no se puede compartir.",
+	["Mason Connery's treasure, upstairs in the inn at Moonbrook, Westfall"] = "El tesoro de Mason Connery, en el piso de arriba de la posada de Arroyo de la Luna, Páramos de Poniente",
+	["Mason's note reads \"WF, 43.4, 67.8\": the inn at Moonbrook in Westfall. Upstairs, click the loose floorboard, then hand the quest in at Connery's Trunk beside it. Don't sell the Document Box it gives you (a vendor pays 25 gold): State Secrets needs it. This quest can't be shared."] = "La nota de Mason dice «WF, 43.4, 67.8»: la posada de Arroyo de la Luna, en los Páramos de Poniente. Arriba, haz clic en la tabla suelta del piso y luego entrega la misión en Connery's Trunk, a su lado. No vendas la Caja de documentos que te da (un vendedor paga 25 de oro): la necesitas para State Secrets. Esta misión no se puede compartir.",
+	["Renzik \"The Shiv\", SI:7, Old Town, Stormwind City"] = "Renzik \"Chafarote\", IV:7, Casco Antiguo, Ventormenta",
+	["Renzik \"The Shiv\""] = "Renzik \"Chafarote\"",
+	["Nazgrel, Grommash Hold, Orgrimmar"] = "Nazgrel, Fuerte Grommash, Orgrimmar",
+	["It needs the Document Box from More Valuable Than Gold. Its reward, the {item:279450:Fractured Insignia:2}, can be traded: six of them combine into the {item:279471:Alcaz Operative Insignia:3}, a toy. One run is enough: trade or buy the other five. This quest can't be shared. The Horde has its own State Secrets."] = "Necesita la Caja de documentos de More Valuable Than Gold. Su recompensa, {item:279450:Insignia fracturada:2}, se puede comerciar: seis forman el juguete {item:279471:Insignia de operativo de Alcaz:3}. Basta con hacerla una vez: comercia o compra las otras cinco. Esta misión no se puede compartir. La Horda tiene su propia State Secrets.",
+	["It needs the Document Box from More Valuable Than Gold. Its reward, the {item:279450:Fractured Insignia:2}, can be traded: six of them combine into the {item:279471:Alcaz Operative Insignia:3}, a toy. One run is enough: trade or buy the other five. This quest can't be shared. The Alliance has its own State Secrets."] = "Necesita la Caja de documentos de More Valuable Than Gold. Su recompensa, {item:279450:Insignia fracturada:2}, se puede comerciar: seis forman el juguete {item:279471:Insignia de operativo de Alcaz:3}. Basta con hacerla una vez: comercia o compra las otras cinco. Esta misión no se puede compartir. La Alianza tiene su propia State Secrets.",
 	["Mathiel, Darnassus"] = "Mathiel, Darnassus",
 	["Mathrengyl Bearwalker, Darnassus"] = "Mathrengyl Garroso, Darnassus",
 	["Maur Grimtotem's corpse, Ragefire Chasm"] = "Cadáver de Maur Tótem Siniestro, Sima Ígnea",
@@ -1761,7 +1866,7 @@ L.STRINGS = {
 	["Neeru Fireblade"] = "Neeru Hojafuego",
 	["Neeru Fireblade, Cleft of Shadow, Orgrimmar"] = "Neeru Hojafuego, Circo de las Sombras, Orgrimmar",
 	["Nekrum's Medallion"] = "Medallón de Nekrum",
-	["New in Forever: Arcanist Doan has the book."] = "Nuevo en Forever: el arcanista Doan tiene el libro.",
+	["New in Forever. The book is picked up in the monastery, most likely in the Library, not dropped by Arcanist Doan."] = "Nuevo en Forever. El libro se recoge en el monasterio, probablemente en la Biblioteca; el arcanista Doan no lo suelta.",
 	["New in Forever: part 2, given in the Undercity once the Abominable Head is with Master Apothecary Faranell."] = "Nuevo en Forever: parte 2, se obtiene en Entrañas una vez entregada la Cabeza abominable al maestro boticario Faranell.",
 	["New in Forever: part 3, in the Undercity."] = "Nuevo en Forever: parte 3, en Entrañas.",
 	["New in Forever: part 4, in the Undercity."] = "Nuevo en Forever: parte 4, en Entrañas.",
@@ -1905,6 +2010,49 @@ L.STRINGS = {
 	["Rethiel the Greenwarden — Wetlands"] = "Rethiel el Guardaverde — Los Humedales",
 	["Rethiel the Greenwarden, Wetlands"] = "Rethiel el Guardaverde, Los Humedales",
 	["Retrieve a Fel Infused Blossom from Dalaran's central garden."] = "Consigue una Flor imbuida de vil del jardín central de Dalaran.",
+	-- Alcaz Prison's way in from Stormwind (the owner's report, 2026-11-12; drafted, to be checked)
+	["Sully McCleary, behind Theramore's graveyard, Dustwallow Marsh"] = "Sully McCleary, detrás del cementerio de Theramore, Marjal Revolcafango",
+	["Sully leaves the inn first. Wait until he is gone, then meet him behind the graveyard outside town."] = "Sully sale primero de la posada. Espera a que se vaya y reúnete con él detrás del cementerio, en las afueras del pueblo.",
+	["Sully's SI:7 Disguise Kit makes you look like a Kul Tiras marine. Don't go near Jaina: she sees through it. If you lose the disguise, Sully gives you another kit."] = "El kit de disfraz del IV:7 de Sully te da el aspecto de un marine de Kul Tiras. No te acerques a Jaina: ve a través del disfraz. Si lo pierdes, Sully te da otro kit.",
+	-- Krol'dok Stronghold's ways in (the owner's notes of 2026-11-18; drafted, to be checked): the steps' givers and
+	-- takers, the key's smiths and the follow-ups' taker too, and the steps' notes. The new people, places and items
+	-- keep the English names the game gives them; the quests' own names and objectives stay English
+	["Krom'rosh, Rog'mar, Riverglades"] = "Krom'rosh, Rog'mar, Claros del Río",
+	["Tran'gul, Rog'mar, Riverglades"] = "Tran'gul, Rog'mar, Claros del Río",
+	["Kreza Darkthorn, Rog'mar, Riverglades"] = "Kreza Darkthorn, Rog'mar, Claros del Río",
+	["Clubtoe, under a ruined house in Sunnyglade, Riverglades"] = "Clubtoe, bajo una casa en ruinas de Sunnyglade, Claros del Río",
+	["A dead Twilight Brute, in the caves under Sunnyglade, Riverglades"] = "Un Twilight Brute muerto, en las cuevas debajo de Sunnyglade, Claros del Río",
+	["Clugfist, Bolder'ok, Riverglades"] = "Clugfist, Bolder'ok, Claros del Río",
+	["Da'grosh, outside Krol'dok Stronghold, Riverglades"] = "Da'grosh, afuera del Bastión de Krol'dok, Claros del Río",
+	["Crag'rog, in a cave near Da'grosh, Riverglades"] = "Crag'rog, en una cueva cerca de Da'grosh, Claros del Río",
+	["Demar Brant, Farholde Keep, Riverglades"] = "Demar Brant, Farholde Keep, Claros del Río",
+	["Ashe Amberhall, Farholde Keep, Riverglades"] = "Ashe Amberhall, Farholde Keep, Claros del Río",
+	["Alphonse Dumas, Farholde Keep, Riverglades"] = "Alphonse Dumas, Farholde Keep, Claros del Río",
+	["Melanie Sable, Farholde Keep, Riverglades"] = "Melanie Sable, Farholde Keep, Claros del Río",
+	["Sergeant Riftan, the Twilight's Shroud, Riverglades"] = "Sergeant Riftan, Twilight's Shroud, Claros del Río",
+	["It can't be shared."] = "Esta misión no se puede compartir.",
+	["An elite quest: bring friends. Overlord Kilgar is in the big hut in the Twilight's Shroud, at 26.6, 44.8."] = "Misión de élite: ve con amigos. Overlord Kilgar está en la cabaña grande de Twilight's Shroud, en 26.6, 44.8.",
+	["Da'grosh gives you the missive, Blood and Battle. It can't be shared."] = "Da'grosh te da la misiva, Blood and Battle. Esta misión no se puede compartir.",
+	["Few priests show at first: they take the scouts' places as those come back, so kill scouts until enough priests appear."] = "Al principio aparecen pocos sacerdotes: toman el lugar de los exploradores cuando estos reaparecen, así que mata exploradores hasta que aparezcan suficientes sacerdotes.",
+	["Clubtoe is down the stairs into a cellar under a ruined house in Sunnyglade, at 50, 46. Beat him until he gives in (it flags you for PvP)."] = "Clubtoe está al final de la escalera, en un sótano debajo de una casa en ruinas de Sunnyglade, en 50, 46. Golpéalo hasta que se rinda (te activa el JcJ).",
+	["The circles can't be used while shapeshifted."] = "Los círculos no se pueden usar mientras estás transformado.",
+	["An elite quest: bring friends. Chogg'Zac is at the far end of the caves under Sunnyglade."] = "Misión de élite: ve con amigos. Chogg'Zac está al fondo de las cuevas debajo de Sunnyglade.",
+	["Klunk has Skullbasher, the club this asks for. He is in the cave whose way in is at 76, 26, in a small pocket on its left."] = "Klunk tiene Skullbasher, la maza que pide la misión. Está en la cueva cuya entrada queda en 76, 26, en un pequeño hueco a la izquierda.",
+	["The Twilight Champions drop the Twilight Keys. The other side's scouts have cages of their own: if a cage won't open, try another."] = "Los Twilight Champions sueltan las Twilight Keys. Los exploradores del otro bando tienen sus propias jaulas: si una jaula no se abre, prueba con otra.",
+	["The pages are small white maps on crates in Sunnyglade's ruined houses."] = "Las páginas son pequeños mapas blancos sobre cajas en las casas en ruinas de Sunnyglade.",
+	-- Krol'dok Stronghold's ways in before you go (the owner's notes of 2026-11-18; drafted, to be checked): each side's
+	-- chain's title and text; the quests' names and the new people and places keep the English the game gives them
+	["The road from Rog'mar"] = "El camino desde Rog'mar",
+	["Krom'rosh, in Rog'mar in the Riverglades, gives A Message in Blood and Food for the Taking, then Show Them How It's Done. Tran'gul, in the building just north of him, gives Twilight Missives, then Digging for Answers, which sends you to the ogre Clubtoe, under a ruined house in Sunnyglade. After Clubtoe's quests, take Chogg's head to Tran'gul and on to Clugfist in Bolder'ok, to the north. After his two quests, Clugfist's Decree takes you back to Krom'rosh for The Wayward Warrior. Da'grosh, west of Rog'mar, wants three quests and then his elite Bring Me His Head: bring friends. That opens his A Token of Vengeance, and his It Is Time, Brother... takes you back to Krom'rosh for Eye of Mugg; Tran'gul then gives Tome of Twilight."] = "Krom'rosh, en Rog'mar, en Claros del Río, da A Message in Blood y Food for the Taking, y luego Show Them How It's Done. Tran'gul, en el edificio justo al norte de él, da Twilight Missives y luego Digging for Answers, que te manda con el ogro Clubtoe, bajo una casa en ruinas de Sunnyglade. Después de las misiones de Clubtoe, lleva la cabeza de Chogg a Tran'gul y luego a Clugfist, en Bolder'ok, al norte. Después de sus dos misiones, Clugfist's Decree te regresa con Krom'rosh para The Wayward Warrior. Da'grosh, al oeste de Rog'mar, pide tres misiones y luego su misión de élite Bring Me His Head: ve con amigos. Esa abre su A Token of Vengeance, y su It Is Time, Brother... te regresa con Krom'rosh para Eye of Mugg; luego Tran'gul da Tome of Twilight.",
+	["The road from Farholde Keep"] = "El camino desde Farholde Keep",
+	["In Farholde Keep, in the Riverglades, do Ashe Amberhall's Scraps of Knowledge and Demar Brant's Saving Sunnyglade (one of them may be enough) for Brant's The Western Front, which sends you to Sergeant Riftan in the Twilight's Shroud. Do his No Soldier Left Behind and Carving a Path, then his elite Bring Me His Head: bring friends. Then Riftan gives Twilight Mementos, and Brant Eye of Mugg. Ashe's own Tome of Twilight comes after her Curious Trinkets and A Small Favor."] = "En Farholde Keep, en Claros del Río, haz Scraps of Knowledge de Ashe Amberhall y Saving Sunnyglade de Demar Brant (tal vez baste con una) para The Western Front de Brant, que te manda con Sergeant Riftan en Twilight's Shroud. Haz sus misiones No Soldier Left Behind y Carving a Path, y luego su misión de élite Bring Me His Head: ve con amigos. Después Riftan da Twilight Mementos, y Brant Eye of Mugg. La Tome of Twilight de Ashe viene después de sus Curious Trinkets y A Small Favor.",
+	-- Alcaz Prison's way in from Orgrimmar (the owner's answer, 2026-11-12; drafted, to be checked)
+	["Orgrimmar's errand"] = "El encargo de Orgrimmar",
+	["Eitrigg, in Grommash Hold in Orgrimmar, gives The Missing Kor'kron, which sends you to Nazeer Bloodpike in Brackenwall Village. He gives The Elite of the Elite, an elite quest: bring friends to find the missing Kor'kron on Alcaz Island. There, the wounded Sergeant Ulka gives Right Place, Wrong Time."] = "Eitrigg, en el Fuerte Grommash de Orgrimmar, da The Missing Kor'kron, que te manda con Nazeer Picasangre al Poblado Murohelecho. Él da The Elite of the Elite, una misión de élite: ve con amigos a buscar a los Kor'kron desaparecidos en la Isla de Alcaz. Ahí, Sergeant Ulka, herida, da Right Place, Wrong Time.",
+	["Eitrigg, Grommash Hold, Orgrimmar"] = "Eitrigg, Fuerte Grommash, Orgrimmar",
+	["Nazeer Bloodpike, Brackenwall Village, Dustwallow Marsh"] = "Nazeer Picasangre, Poblado Murohelecho, Marjal Revolcafango",
+	["Nazeer Bloodpike"] = "Nazeer Picasangre",
+	["An elite quest: bring friends. Nazeer thinks the Kor'kron went to Alcaz Island."] = "Misión de élite: ve con amigos. Nazeer cree que los Kor'kron se fueron a la Isla de Alcaz.",
 	-- A Green Sample's note (the owner, 2026-11-11; drafted, to be checked)
 	["The Fel Infused Blossom grows on the ground near the Fel Ancient, in the central garden: pick it up there."] = "La Flor imbuida de vil crece en el suelo cerca del Anciano vil, en el jardín central: recógela ahí.",
 	["Retrieve Mythology of the Titans from the Monastery and bring it to Librarian Mae Paledust in Ironforge."] = "Recupera Mitología de los titanes del Monasterio y llévasela a la bibliotecaria Mae Palipolvo en Forjaz.",
@@ -2167,6 +2315,7 @@ L.STRINGS = {
 	["The Book of Ur"] = "El libro de Ur",
 	["The braziers of the sanctum open the way to Aku'mai; each one lit calls a wave of enemies, so rest between them."] = "Los blandones del sagrario abren el camino hacia Aku'mai; cada uno que enciendes atrae una oleada de enemigos, así que descansa entre una y otra.",
 	["The broodmother of the black dragonflight waits in her lair beneath the Wyrmbog. Forever's version is not known yet."] = "La madre de linaje del Vuelo Negro aguarda en su guarida bajo la Ciénaga de Fuego. Aún no se conoce la versión de Forever.",
+	["Forever's version is not known yet."] = "Aún no se conoce la versión de Forever.",
 	["The chain starts with the Dark Iron Map, which Dark Iron Spies and Captain Beld in Dun Morogh drop."] = "La cadena empieza con el Mapa Hierro Negro, que sueltan los espías Hierro Negro y el capitán Beld de Dun Morogh.",
 	["The Challenge"] = "El reto",
 	["The Champion of the Horde"] = "El Campeón de la Horda",
@@ -2182,7 +2331,6 @@ L.STRINGS = {
 	["The Darkreaver Menace"] = "La amenaza de Atracoscuro",
 	["The Darkstone Tablet"] = "La tablilla de Rocanegra",
 	["The Day After"] = "Al día siguiente",
-	["The dead side of Stratholme: Baron Rivendare's ziggurats and slaughterhouse, where the Scourge readies its armies."] = "El lado muerto de Stratholme: los zigurats y el Degolladero del Barón Osahendido, donde la Plaga prepara sus ejércitos.",
 	["The Debt"] = "La deuda",
 	["The Defias Brotherhood"] = "La hermandad de los Defias",
 	["The Demon Forge"] = "La forja demoníaca",
@@ -2252,7 +2400,6 @@ L.STRINGS = {
 	["The Lich, Ras Frostwhisper"] = "El exánime, Ras Murmuhielo",
 	["The Light and How To Swing It"] = "La Luz y cómo alterarla",
 	["The Light and How to Swing It"] = "La Luz y cómo alterarla",
-	["The living side of plagued Stratholme, where the Scarlet Crusade holds out against the Scourge under Grand Crusader Dathrohan, the dreadlord Balnazzar in disguise."] = "El lado vivo de la Stratholme apestada, donde la Cruzada Escarlata resiste a la Plaga bajo el mando del Gran cruzado Dathrohan, que en realidad es el señor del terror Balnazzar disfrazado.",
 	["The locked vaults"] = "Las bóvedas cerradas",
 	["The longer the fight, the more worgs join him: a Bleak Worg after 30 to 45 seconds, then a Slavering Worg, then a Lupine Horror."] = "Cuanto más dura el combate, más huargos se le unen: un Huargo lóbrego a los 30-45 s, luego un Huargo babeante y después un Horror lupino.",
 	["The longer the fight, the more worgs join him: kill him quickly."] = "Cuanto más dura el combate, más huargos se le unen: mátalo rápido.",
@@ -2299,6 +2446,7 @@ L.STRINGS = {
 	["The Scarlet Crusade's armory and training halls, where Herod, the Scarlet Champion, drills the Crusade's soldiers."] = "El arsenal y las salas de entrenamiento de la Cruzada Escarlata, donde Herod, el Campeón Escarlata, adiestra a los soldados de la Cruzada.",
 	["The Scarlet Crusaders of every wing carry the hearts, and so do their leaders."] = "Los cruzados Escarlata de todas las alas llevan los corazones, y también sus líderes.",
 	["The Scarlet Monastery was a seat of Lordaeron's priesthood until the Scarlet Crusade made it their stronghold after the Third War. In its graveyard wing the Crusade's interrogators work, and the dead buried there no longer rest."] = "El Monasterio Escarlata fue una sede del sacerdocio de Lordaeron hasta que la Cruzada Escarlata lo convirtió en su bastión tras la Tercera Guerra. En el ala del cementerio trabajan los interrogadores de la Cruzada, y los muertos allí enterrados ya no descansan.",
+	["In its graveyard wing the Crusade's interrogators work, and the dead buried there no longer rest."] = "En el ala del cementerio trabajan los interrogadores de la Cruzada, y los muertos allí enterrados ya no descansan.",
 	["The Scepter of Celebras"] = "El cetro de Celebras",
 	["The Scourge still holds the ruins of the old capital, where a necromancer is building his strength."] = "La Plaga aún domina las ruinas de la antigua capital, donde un nigromante está acumulando poder.",
 	["The Shattered Necklace"] = "El collar hecho añicos",
@@ -2524,7 +2672,6 @@ L.STRINGS = {
 	["When pulled, he calls the creatures within 30 yards to join him. Clear around him first."] = "Al atraerlo, llama a las criaturas que estén a menos de 30 m para que se le unan. Limpia primero sus alrededores.",
 	["When the tank reaches him: Nature damage and a 5-second stun around him."] = "Cuando el tanque lo alcanza: daño de Naturaleza y un aturdimiento de 5 s a su alrededor.",
 	["Where the demigod Agamaggan fell, his blood grew into a sprawl of giant thorns, and the quilboar made it their sacred home. Undead envoys have lately been seen among them, and Charlga Razorflank rules the Kraul from its heart."] = "Donde cayó el semidiós Agamaggan, su sangre se convirtió en una maraña de espinas gigantes, y los jabaespines la hicieron su hogar sagrado. Últimamente se han visto emisarios no-muertos entre ellos, y Charlga Filonavaja gobierna el Horado desde su corazón.",
-	["Whoever strikes him or an ally near him, Overlord Ramtusk included, takes Nature damage."] = "Quien lo golpee a él o a un aliado cercano, incluido el Señor supremo Colmicarnero, sufre daño de Naturaleza.",
 	["Wilder Thistlenettle"] = "Wilder Cardortiga",
 	["Wilder Thistlenettle, Stormwind"] = "Wilder Cardortiga, Ventormenta",
 	["Wilder Thistlenettle, the Dwarven District, Stormwind"] = "Wilder Cardortiga, Distrito de los Enanos, Ventormenta",
@@ -2701,6 +2848,8 @@ L.STRINGS = {
 	["Rizzle's Schematics"] = "Los esquemas de Rizzle",
 	["Shattered Necklace"] = "Collar destrozado",
 	["Optional: it leads to The Hidden Chamber."] = "Opcional: lleva a La cámara oculta.",
+	-- Uldaman's Restoring the Necklace: take it before Archaedas (2026-11-18; drafted, to be checked)
+	["Hand in Find the Gems with the phial and take this before you fight Archaedas: he drops the power source only while it is in your log."] = "Entrega Encuentra las gemas con la redoma y toma esta misión antes de pelear contra Archaedas: solo suelta la fuente de energía mientras tengas esta misión en tu registro de misiones.",
 	["The Executioner's Key"] = "La Llave del verdugo",
 	["The Sandfury Executioner drops the {item:8444:Executioner's Key:1}. In the original game, it opened the prisoners' cages on the pyramid, and freeing them started the fight on the stairs. This is not yet checked on Forever. Sergeant Bly drops the rod Chief Engineer Bilgewhizzle asks for."] = "El Verdugo Furiarena suelta la {item:8444:Executioner's Key:1}. En el juego original, abría las jaulas de los prisioneros en la pirámide, y liberarlos iniciaba la pelea en las escaleras. Todavía no se ha comprobado en Forever. El Sargento Bly suelta la vara que pide el ingeniero jefe Pasaquillas.",
 	["Gahz'rilla, a hidden boss"] = "Gahz'rilla, un jefe oculto",
@@ -2720,7 +2869,8 @@ L.STRINGS = {
 	["Offered once one of the four More Components of Importance quests is done. Three Kings of Flame also needs your side's Bodley's Unfortunate Fate, after your class's Anthion's Parting Words."] = "Disponible tras completar una de las cuatro misiones de «Más componentes importantes». «Tres reyes de Fuego» también requiere «El triste destino de Bodley» de tu facción, después de «La despedida de Anthion» de tu clase.",
 	["Duke Nicholas Zverenhoff then sends you to Lord Maxwell Tyrosus at Light's Hope Chapel, who gives The Argent Hold: open it for a choice of Argent Avenger, Argent Defender or Argent Crusader."] = "Después, el duque Nicholas Zverenhoff te envía con Lord Maxwell Neófitus a la Capilla de la Esperanza de la Luz, quien da Bastión Argenta: ábrelo y elige entre Vengador Argenta, Defensor Argenta o Cruzado Argenta.",
 	["Stratholme's Key to the City"] = "La Llave de la ciudad de Stratholme",
-	["Magistrate Barthilas always drops the {item:12382:Key to the City:2}. It is not the key from the City of Dalaran's quest of the same name. In the original game, it opened the Service Entrance's gate from outside, so a group could go straight to the Baron's side. This is not yet checked on Forever."] = "El Magistrado Barthilas siempre suelta la {item:12382:Key to the City:2}. No es la llave de la misión del mismo nombre de la Ciudad de Dalaran. En el juego original, abría desde afuera la puerta de la Entrada de Servicio, para que un grupo pudiera ir directo al lado del Barón. Todavía no se ha comprobado en Forever.",
+	-- (0.39.22: the Service Gate, as the page names that door; reworded, drafted, to be checked)
+	["Magistrate Barthilas always drops the {item:12382:Key to the City:2}. It is not the key from the City of Dalaran's quest of the same name. In the original game, it opened the Service Gate from outside, so a group could go straight to the Baron's side. This is not yet checked on Forever."] = "El Magistrado Barthilas siempre suelta la {item:12382:Key to the City:2}. No es la llave de la misión del mismo nombre de la Ciudad de Dalaran. En el juego original, abría desde afuera la Entrada de Servicio, para que un grupo pudiera ir directo al lado del Barón. Todavía no se ha comprobado en Forever.",
 	-- Forever's own dungeons: Before you go's notes (the Dark Iron Map, the Titan Relic), the Treaty of Understanding and two quest notes (Unending Torment, part 2; Changing Tastes) (2026-10-30; drafted, to be checked)
 	["Treaty of Understanding"] = "Tratado de Entendimiento",
 	["The Dark Iron Map"] = "El Mapa Hierro Negro",
@@ -2758,7 +2908,6 @@ L.STRINGS = {
 	["A Crumpled Up Note, dropped by foes inside Blackrock Depths"] = "Una nota arrugada, botín de enemigos dentro de las Profundidades de Roca Negra",
 	-- Another dungeon's quest giver on a chain's step, named as several wings share it or by the one wing keeping it (2026-10-30; drafted, to be checked)
 	["Ysida Harmon, inside Stratholme"] = "Ysida Harmon, dentro de Stratholme",
-	["Ysida Harmon, inside Stratholme: Service Gate"] = "Ysida Harmon, dentro de Stratholme: Entrada de Servicio",
 	["Shen'dralar Ancient, inside Dire Maul: Capital Gardens"] = "Ancestro Shen'dralar, dentro de La Masacre: Jardines de la Capital",
 	["Ancient Equine Spirit, inside Dire Maul: Capital Gardens"] = "Antiguo espíritu equino, dentro de La Masacre: Jardines de la Capital",
 	-- Quests that start from an item: where the item is, without "Item start:" or "Use" (the Quests tab shows it on its own line) (2026-10-30; drafted, to be checked)
@@ -2943,8 +3092,8 @@ L.STRINGS = {
 	["The Brassbolts Brothers"] = "Los hermanos Pernolatón",
 	["The Corruption Abroad"] = "Lejana corrupción",
 	["Speak with Shoni"] = "Habla con Shoni",
-	["Talk to Furen Longbeard in Stormwind to get your armour."] = "Habla con Furen Barbalarga en Ventormenta para recibir tu armadura.",
-	["Talk to Thun'grim Firegaze in the Barrens to get your armour."] = "Habla con Thun'grim Vistafuego en Los Baldíos para recibir tu armadura.",
+	["Talk to Furen Longbeard in Stormwind to get your armor."] = "Habla con Furen Barbalarga en Ventormenta para recibir tu armadura.",
+	["Talk to Thun'grim Firegaze in the Barrens to get your armor."] = "Habla con Thun'grim Vistafuego en Los Baldíos para recibir tu armadura.",
 	["Kill 12 Mana Surges in the allowed time limit."] = "Acaba con 12 oleadas de maná en el tiempo permitido.",
 	["Talk to Tabetha in Dustwallow Marsh for your reward."] = "Habla con Tabetha en el Marjal Revolcafango para recibir tu recompensa.",
 	["Bring a Kor Gem to Thundris Windweaver in Darkshore."] = "Lleva una gema kor a Thundris Tejevientos en Costa Oscura.",
@@ -3001,7 +3150,6 @@ L.STRINGS = {
 	["Then Falrin Treeshaper gives The Challenge, done at the Ring of Law in Blackrock Depths."] = "Después, Falrin Tallarbol da El reto, que se hace en el Círculo de la Ley de las Profundidades de Roca Negra.",
 	["Then Lord Grayson Shadowbreaker gives The Divination Scryer. The chain ends with Judgment and Redemption in Scholomance."] = "Después, Lord Grisillo Quiebrasombras da El cristal de adivinación. La cadena termina con Juzgar y redimir, en Scholomance.",
 	["Then Anthion Harmon gives Anthion's Strange Request. The chain goes on to Anthion's Old Friend in Dire Maul."] = "Después, Anthion Harmon da La extraña petición de Anthion. La cadena sigue con Un viejo amigo de Anthion, en La Masacre.",
-	["Then Duke Nicholas Zverenhoff gives Above and Beyond, done at the Service Gate."] = "Después, el duque Nicholas Zverenhoff da Por encima y más allá, que se hace en la Entrada de Servicio.",
 	["Optional: it leads to Blackfathom Villainy."] = "Opcional: lleva a La vileza de Brazanegra.",
 	-- City of Dalaran: the Horde's Heart of Disruption names who starts the chain, as the Image of Archmage Modera gives the quest itself (2026-11-03; drafted, to be checked)
 	["Magus Wordeen Voidglare in Tarren Mill starts the chain with Prison Break In and Key to the City. At the Lordamere Internment Camp, kill four traitors for their artifacts (they take 5 to 10 minutes to come back) and take the Grimy Key from the Warden's Footlocker, upstairs in the two-storey building. Blood in the Streets then leads through the north sewers to the Image of Archmage Modera. It gives the Dalaran Sewer Key, and Shrewd Negotiations follows, to Archmage Celindra. The mote drops from the Shade of the Archmage, the last boss."] = "El Magus Wordeen Vacuamirada, en Molino Tarren, inicia la cadena con Colarse en la cárcel y Llave de la ciudad. En el Campo de Reclusión de Lordamere, mata a cuatro traidores para obtener sus artefactos (tardan de 5 a 10 min en reaparecer) y toma la Llave mugrienta del Baúl del Celador, en el piso de arriba del edificio de dos plantas. Después, Sangre en las calles te lleva por las cloacas del norte hasta la Imagen de la archimaga Modera. Esta otorga la Llave de las Cloacas de Dalaran, y le sigue Negociaciones astutas, para la Archimaga Celindra. La mota la suelta la Sombra del archimago, el último jefe.",
@@ -3074,6 +3222,16 @@ L.STRINGS = {
 	["Answer Parqual Fintallas' question successfully and then speak to him again. He will remain in the Undercity until you are ready."] = "Responde bien a la pregunta de Parqual Fintallas y luego vuelve a hablar con él. Te esperará en Entrañas hasta que estés listo.",
 	["Travel to the Dwarven District in Stormwind and find an engineer who can help."] = "Viaja al Distrito de los Enanos de Ventormenta y encuentra a un ingeniero que pueda ayudar.",
 	["Return to Alba Fairmoon in Westfall."] = "Vuelve con Alba Lunaclara en los Páramos de Poniente.",
+	-- The quest check of 2026-11-05 (the owner's calls of that day): Elemental Aid's second giver, and Before you go's Viewing Room Key, Postmaster Malown, Stratholme's Scarlet Key and Uldaman's Keystone (2026-11-05; drafted, to be checked)
+	["Rau Cliffrunner (or Prate Cloudseer), Thousand Needles"] = "Rau Abiscorredor (o Prate Vidente de las Nubes), Las Mil Agujas",
+	["The Viewing Room Key"] = "La llave de la Sala de la Visión",
+	["Rattlegore drops the {item:13873:Viewing Room Key:1}. In the original game, it opened the Viewing Room door, the way on to Vectus and Marduk Blackpool, and one key did for the whole group. This is not yet checked on Forever."] = "Traquesangre suelta la {item:13873:Viewing Room Key:1}. En el juego original, abría la puerta de la Sala de la Visión, el camino hacia Vectus y Marduk Pozonegro, y bastaba una llave para todo el grupo. Todavía no se ha comprobado en Forever.",
+	["Postmaster Malown, a hidden boss"] = "Jefe de correos Gassol, un jefe oculto",
+	["The Stratholme Courier drops the city's postbox keys. In the original game, each locked postbox you opened brought out guards, and Postmaster Malown came with the third. This is not yet checked on Forever."] = "El Mensajero de Stratholme suelta las llaves de los buzones de la ciudad. En el juego original, cada buzón cerrado que abrías hacía salir guardias, y el Jefe de correos Gassol llegaba con el tercero. Todavía no se ha comprobado en Forever.",
+	["{item:7146:The Scarlet Key:2} is in Doan's Strongbox, in the Scarlet Monastery's Library. In the original game, it also opened the Bastion Door and the door of the Hall of High Command here, and a rogue could pick both locks. This is not yet checked on Forever."] = "{item:7146:The Scarlet Key:2} está en la Caja fuerte de Doan, en la Biblioteca del Monasterio Escarlata. En el juego original, también abría aquí la puerta del Bastión y la puerta de la Sala del Alto Mando, y un pícaro podía forzar ambas cerraduras. Todavía no se ha comprobado en Forever.",
+	["The Keystone"] = "La Piedra angular",
+	-- Uldaman's Keystone for both sides, reworded: the owner's report, 2026-11-05 (drafted, to be checked)
+	["Revelosh drops {item:7741:The Shaft of Tsol:1}. Put together with the {item:7740:Gni'kiv Medallion} from Baelog's Chest, behind the Lost Dwarves, it makes the {item:7733:Staff of Prehistoria}, which works the Keystone in the Map Chamber, past Revelosh, and opens Ironaya's door. This is not yet checked on Forever."] = "Revelosh suelta {item:7741:The Shaft of Tsol:1}. Junto con el {item:7740:Gni'kiv Medallion} del Cofre de Baelog, detrás de los enanos desaparecidos, forma el {item:7733:Staff of Prehistoria}, que activa la Piedra angular de la Cámara del Mapa, pasado Revelosh, y abre la puerta de Hierraya. Todavía no se ha comprobado en Forever.",
 	-- The steps the Quests tab now lists one by one in a chain, numbered as parts of a name (The Tome of Valor, The True Masters, Down the Scarlet Path, Prospect of Faith, Passing Word of a Threat, The Smoldering Ruins of Thaurissan, Detonation at a Distance): their objectives and givers (2026-11-06; drafted, to be checked)
 	["Talk to someone in Stormwind Intelligence about acquiring a remote detonator."] = "Habla con alguien de Inteligencia de Ventormenta para conseguir un detonador remoto.",
 	["Bring the Remote Detonator Kit to Sprite Jumpsprocket in the Dwarven District of Stormwind."] = "Lleva el kit de detonador remoto a Duendy Ruedadentada en el Distrito de los Enanos de Ventormenta.",
@@ -3104,6 +3262,45 @@ L.STRINGS = {
 	["Royal Historian Archesonus, Ironforge"] = "Historiador real Archesonus, Forjaz",
 	["Duthorian Rall, Stormwind City"] = "Duthorian Rall, Ciudad de Ventormenta",
 	["Daphne Stilwell, Westfall"] = "Daphne Fontana, Páramos de Poniente",
+	-- Adventure Mode: the door rumours (Data/Authored/Rumours.lua), the owner's 38 lines of 2026-11-07
+	["Someone in Ironforge pays good coin for heirlooms brought up from the kings' resting place."] = "Alguien en Forjaz paga buen dinero por las reliquias que se saquen del lugar de descanso de los reyes.",
+	["Brill folk swear the plague's dead still walk the courtyards where the human kings once ruled."] = "La gente de Rémol jura que los muertos de la peste todavía recorren los patios donde alguna vez reinaron los reyes humanos.",
+	["At the end of a hidden dig in the Wetlands hills, a Titan figure of stone waits to be woken."] = "Al final de un yacimiento escondido en las colinas de Los Humedales, una figura de piedra de los titanes espera a que alguien la despierte.",
+	["Fishers on Lordamere Lake say wild magic has taken the mages' city, and even its books attack."] = "Los pescadores del Lago Lordamere dicen que una magia salvaje se apoderó de la ciudad de los magos, y que hasta sus libros atacan.",
+	["Guards in Orgrimmar say chanting rises from the caves deep below the city."] = "Los guardias de Orgrimmar dicen que se escuchan cánticos que suben desde las cuevas muy por debajo de la ciudad.",
+	["Barrens herders say the caves have twisted every creature inside, druids included."] = "Los pastores de Los Baldíos dicen que las grutas deformaron a todas las criaturas que hay dentro, incluso a los druidas.",
+	["Westfall farmers see the Defias vanish into the Moonbrook mine and hear hammering below."] = "Los granjeros de los Páramos de Poniente ven a los Defias desaparecer en la mina de Arroyo de la Luna y escuchan martillazos allá abajo.",
+	["Travelers warn Pyrewood is not safe at night, and strange sounds can be heard from the keep!"] = "Los viajeros advierten que Piroleña no es segura de noche, ¡y que se escuchan ruidos extraños en la fortaleza!",
+	["Zoram fishers see lights far under the waves, where cultists guard a shrine the sea took."] = "Los pescadores de la Ensenada de Zoram ven luces muy por debajo de las olas, donde unos cultistas custodian un santuario que se tragó el mar.",
+	["From Lakeshire to Darkshire, bounties are posted on outlaws who run free in Stormwind's prison."] = "Desde Villa del Lago hasta Villa Oscura hay recompensas por los forajidos que andan sueltos en la prisión de Ventormenta.",
+	["Gnome refugees mourn their lost home, still glowing from what they unleashed on the troggs."] = "Los gnomos refugiados lloran su hogar perdido, que aún resplandece por lo que desataron contra los troggs.",
+	["Word on the Barrens road is that a goblin trader is held captive deep in quilboar country."] = "En el camino de Los Baldíos se rumora que tienen prisionero a un comerciante goblin en lo profundo del territorio jabaespín.",
+	["Anyone the Crusade suspects of carrying the plague is dragged to its crypts, and few come back."] = "A todo aquel que la Cruzada considera sospechoso de portar la peste lo arrastran a sus criptas, y pocos vuelven.",
+	["Scholars in Ironforge and the Undercity alike want books the zealots guard with hounds."] = "Los eruditos de Forjaz y de Entrañas por igual quieren libros que los fanáticos vigilan con sabuesos.",
+	["Steel clashes from dawn to dusk where red-clad recruits train beside racks of fine weapons."] = "El acero choca del amanecer al anochecer donde reclutas vestidos de rojo entrenan junto a estantes llenos de armas finas.",
+	["Old knights whisper that the truth of the Ashbringer's death waits beside the Crusade's high altar."] = "Antiguos caballeros murmuran que la verdad sobre la muerte del Crematoria espera junto al altar mayor de la Cruzada.",
+	["By the road to Thousand Needles, quilboar bow to the walking dead among their burial mounds."] = "Cerca del camino a Las Mil Agujas, los jabaespines se inclinan ante los muertos vivientes entre sus túmulos.",
+	["Badlands prospectors say troggs pour from a vault older than the dwarves, where Dark Irons now dig."] = "Los prospectores de las Tierras Inhóspitas dicen que salen troggs de una bóveda más antigua que los enanos, donde ahora excavan los Hierro Negro.",
+	["Gadgetzan traders buy scarab shells and troll potions from anyone who dares enter the desert city."] = "Los comerciantes de Gadgetzan compran caparazones de escarabajo y pociones trol a quien se atreva a entrar a la ciudad del desierto.",
+	["The centaurs of Desolace guard the grave of a god's son, where even the rocks attack intruders."] = "Los centauros de Desolace custodian la tumba del hijo de un dios, donde hasta las rocas atacan a los intrusos.",
+	["Swamp of Sorrows hunters hear troll drums from a flooded pit, beating for a god of blood."] = "Los cazadores del Pantano de las Penas escuchan tambores trol que retumban desde un foso inundado en honor a un dios de la sangre.",
+	["Searing Gorge miners swear the Dark Irons built a whole city of fire inside the mountain."] = "Los mineros de La Garganta de Fuego juran que los Hierro Negro construyeron una ciudad entera de fuego dentro de la montaña.",
+	["An orc who calls himself warchief is gathering an army halfway up the mountain, scouts report."] = "Los exploradores reportan que un orco que se hace llamar jefe de guerra reúne un ejército a mitad de la montaña.",
+	["Black dragons are bred for war at the mountain's peak, they say, and the way up is sealed."] = "Dicen que en lo más alto de la montaña crían dragones negros para la guerra, y que el camino hacia arriba está sellado.",
+	["Feralas tales say the satyrs of the old city were elves once, until demons twisted them."] = "En Feralas cuentan que los sátiros de la antigua ciudad alguna vez fueron elfos, hasta que los demonios los corrompieron.",
+	["A gnome chained up among the ogres begs passers-by for cloth and leather to sew a disguise."] = "Un gnomo encadenado entre los ogros les ruega a quienes pasan que le den tela y cuero para coser un disfraz.",
+	["Anyone who brings lost books home to the elves of the western halls earns a fine reward."] = "Quien les devuelva los libros perdidos a los elfos de los salones del oeste recibe una buena recompensa.",
+	["Boatmen won't row to the island in Darrowmere Lake, where the living learn to raise the dead."] = "Los barqueros no reman hasta la isla del Lago Darrowmere, donde los vivos aprenden a levantar a los muertos.",
+	["The Argent Dawn warns that the Crusade's leader in the burned city is not what he seems."] = "El Alba Argenta advierte que el líder de la Cruzada en la ciudad incendiada no es lo que aparenta.",
+	["A ghost outside the walls begs the living to save the woman he loves before time runs out."] = "Un fantasma afuera de las murallas les ruega a los vivos que salven a la mujer que ama antes de que se acabe el tiempo.",
+	["Dustwallow trappers know of a black dragon in the Wyrmbog caves, guarded by swarms of whelps."] = "Los tramperos del Marjal Revolcafango saben de un dragón negro en las cuevas de la Ciénaga de Fuego, custodiado por montones de crías.",
+	["Night elves will not speak of the vaults beneath their forests, or of who was locked inside."] = "Los elfos de la noche no hablan de las bóvedas bajo sus bosques, ni de quién fue encerrado ahí.",
+	["Druids on the mountain call for fighters to guard the great tree against an old enemy."] = "Los druidas de la montaña convocan a combatientes para proteger el gran árbol contra un antiguo enemigo.",
+	["Booty Bay sailors say the sea gave back an old troll city, and pirates got there first."] = "Los marineros de Bahía del Botín dicen que el mar devolvió una antigua ciudad trol, y que los piratas llegaron primero.",
+	["The ogres of the Riverglades have new friends in Twilight robes."] = "Los ogros de Claros del Río tienen nuevos amigos con túnicas crepusculares.",
+	["Naga swarm the island jail off the Dustwallow coast, and its Defias inmates never got out."] = "Los nagas invaden la cárcel de la isla frente a la costa del Marjal Revolcafango, y sus reclusos Defias nunca lograron salir.",
+	["Travelers say the furbolg of northern Azshara have gone mad, sickened by something below."] = "Los viajeros dicen que los fúrbolgs del norte de Azshara enloquecieron, enfermos por algo que hay debajo.",
+	["Past the dinosaurs lie stone halls that no one has mapped yet, or so the explorers whisper."] = "Más allá de los dinosaurios hay salones de piedra que nadie ha trazado en un mapa todavía, o eso murmuran los exploradores.",
 	-- Ruins of Lordaeron: Unending Torment's objectives (parts 2, 4 and 5), and where Remember That I Love You
 	-- goes next (2026-11-10; drafted, to be checked)
 	["Bring the Head of the Baron to Othmar's body, the Unfinished Abomination, in the Undercity."] = "Lleva la Cabeza del Barón al cuerpo de Othmar, la Abominación inacabada, en Entrañas.",
@@ -3120,6 +3317,86 @@ L.STRINGS = {
 	["The Keystone"] = "La Piedra angular",
 	-- Uldaman's Keystone for both sides, reworded: the owner's report, 2026-11-05 (drafted, to be checked)
 	["Revelosh drops {item:7741:The Shaft of Tsol:1}. Put together with the {item:7740:Gni'kiv Medallion} from Baelog's Chest, behind the Lost Dwarves, it makes the {item:7733:Staff of Prehistoria}, which works the Keystone in the Map Chamber, past Revelosh, and opens Ironaya's door. This is not yet checked on Forever."] = "Revelosh suelta {item:7741:The Shaft of Tsol:1}. Junto con el {item:7740:Gni'kiv Medallion} del Cofre de Baelog, detrás de los enanos desaparecidos, forma el {item:7733:Staff of Prehistoria}, que activa la Piedra angular de la Cámara del Mapa, pasado Revelosh, y abre la puerta de Hierraya. Todavía no se ha comprobado en Forever.",
+	-- Stratholme as one dungeon (0.39.22, the owner's calls of 2026-11-12): its description, its two doors' names (the zone
+	-- map's door pins, the boss list's side rows) and what follows The Truth Comes Crashing Down (drafted, to be checked)
+	["Plagued Stratholme is split in two: the Scarlet Crusade holds the Main Gate's side under Grand Crusader Dathrohan, the dreadlord Balnazzar in disguise, and Baron Rivendare's Scourge holds the ziggurats and slaughterhouse past the Service Gate."] = "La Stratholme apestada está dividida en dos: la Cruzada Escarlata domina el lado de la Entrada Principal bajo el mando del Gran cruzado Dathrohan, que en realidad es el señor del terror Balnazzar disfrazado, y la Plaga del Barón Osahendido domina los zigurats y el Degolladero detrás de la Entrada de Servicio.",
+	["Then Duke Nicholas Zverenhoff gives Above and Beyond."] = "Después, el duque Nicholas Zverenhoff da Por encima y más allá.",
+	["Main Gate"] = "Entrada Principal",
+	["Service Gate"] = "Entrada de Servicio",
+	-- The Library: Rituals of Power's whole chain for mages, Items of Power, Mage's Wand, the road to it before you go
+	-- and Journey to the Marsh's other trainers (the owner's chain, 2026-11-13; drafted, to be checked)
+	["Items of Power"] = "Objetos de poder",
+	["Bring 1 Jade and the Bolt Charged Bramble to Tabetha in Dustwallow Marsh."] = "Lleva 1 jade y la Zarza cargada de rayos a Tabetha en el Marjal Revolcafango.",
+	["Jade comes from tin, iron and gold veins, chests, lockboxes and gem sacks. Witherbark trolls in Arathi Highlands drop Witherbark Totem Sticks: use 10 of them at the Stone of Outer Binding there (52, 51) to make the Bolt Charged Bramble."] = "El jade sale de vetas de estaño, hierro y oro, cofres, cajas de seguridad y sacos de gemas. Los trols Secacorteza de las Tierras Altas de Arathi sueltan Palos de tótem Secacorteza: usa 10 en la Piedra de Vinculación Exterior de allí (52, 51) para obtener la Zarza cargada de rayos.",
+	["Mage's Wand"] = "La varita del mago",
+	["Speak with Tabetha after her ritual."] = "Habla con Tabetha después de su ritual.",
+	["The road to Rituals of Power"] = "El camino hacia Rituales de Poder",
+	["A mage trainer in Stormwind, Ironforge, Orgrimmar, Thunder Bluff or the Undercity gives Journey to the Marsh, to Tabetha in Dustwallow Marsh. Her Hidden Secrets sends you to Magus Tirth in the Shimmering Flats, in Thousand Needles. After his Get the Scoop, take Rituals of Power from him before you go in: the book is in the Library."] = "Un instructor de magos de Ventormenta, Forjaz, Orgrimmar, Cima del Trueno o Entrañas da Viaje al pantano, hasta Tabetha en el Marjal Revolcafango. Su misión Secretos escondidos te manda con Magus Tirth en El Desierto de Sal, en Las Mil Agujas. Después de su Santo y seña, acepta Rituales de Poder de él antes de entrar: el libro está en la Biblioteca.",
+	["Jennea Cannon, Stormwind City"] = "Jennea Cañón, Ventormenta",
+	["Anastasia Hartwell, Undercity"] = "Anastasia Hartwell, Entrañas",
+	["Deino, Orgrimmar"] = "Deino, Orgrimmar",
+	["Bink, Ironforge"] = "Bink, Forjaz",
+	["Also given by Jennea Cannon (Stormwind City)."] = "También la ofrece Jennea Cañón (Ventormenta).",
+	["Magus Tirth, Thousand Needles"] = "Magus Tirth, Las Mil Agujas",
+	-- Scarlet Monastery's abilities from the owner's recording (2026-11-16; drafted, to be checked)
+	["At half health he becomes immune to all attacks and spells for 8 seconds, while he casts Detonation."] = "A la mitad de su salud se vuelve inmune a todos los ataques y hechizos durante 8 s mientras lanza Detonación.",
+	["Removes a helpful magic effect from a player, or a harmful one from himself or an ally."] = "Quita un efecto mágico benéfico a un jugador, o uno dañino a sí mismo o a un aliado.",
+	["Hits his target, which then takes more Holy damage; it stacks up to 5 times."] = "Golpea a su objetivo, que luego recibe más daño Sagrado; se acumula hasta 5 veces.",
+	["Once Whitemane raises him, he heals her fully."] = "En cuanto Melenablanca lo resucita, él la sana por completo.",
+	["Puts everyone near her to sleep for up to 10 seconds, just before she raises Mograine. Damage wakes a sleeper."] = "Duerme a todos los que estén cerca de ella durante un máximo de 10 s, justo antes de resucitar a Mograine. El daño despierta al dormido.",
+	-- The Crest of Lordaeron's five places, each mark's line on the Ruins of Lordaeron map (2026-11-17; drafted, to be
+	-- checked)
+	["Mausoleum in the far north-west corner, on the wall"] = "Mausoleo en el extremo noroeste, en la pared",
+	["West tower, top floor, on the wall left of the doors"] = "Torre oeste, piso superior, en la pared a la izquierda de las puertas",
+	["North-west tower, at the bottom, in front of the split staircase"] = "Torre noroeste, en la planta baja, frente a la escalera doble",
+	["Behind the closed crypt doors, on the pitch-black wall"] = "Detrás de las puertas cerradas de la cripta, en la pared completamente oscura",
+	["East tower, top floor, on the wall left of the doors"] = "Torre este, piso superior, en la pared a la izquierda de las puertas",
+	-- The Shaper's Terrace filled in (2026-11-18; drafted, to be checked): where it is, the overview's note, Before
+	-- you go's note on how the four console bosses and Nanaya come (one since 2026-11-19), and its six quests'
+	-- givers and notes. The bosses' names, the quests' names and objectives, and the places and things new
+	-- in Forever (the Pillar of Assimilation, the Achromatic Crystal, the cartographer's kit) stay as the game names
+	-- them in English; the Power Crystals are item links, named by the client.
+	["The northern rim of Un'Goro Crater, up the stairs from Marshal's Refuge"] = "El borde norte del Cráter de Un'Goro, subiendo las escaleras desde el Refugio de Marshal",
+	["Four of the bosses are summoned with Power Crystals, 15 of one color at each one's console: see Before you go. Nanaya, the last boss, comes once those four are dead; the other five bosses are optional. To leave, jump off the edge of the terrace."] = "Cuatro de los jefes se invocan con cristales de poder, 15 de un mismo color en la consola de cada uno: consulta Antes de ir. Nanaya, el último jefe, aparece cuando esos cuatro han muerto; los otros cinco jefes son opcionales. Para salir, salta desde el borde de la terraza.",
+	-- Before you go's one note on summoning the Shaper's Terrace's bosses, in place of its six (the owner's call of
+	-- 2026-11-19), in the owner's short form of 2026-11-20 (drafted, to be checked)
+	["Summoning the bosses"] = "Cómo invocar a los jefes",
+	["Four bosses must be summoned and killed before you can summon Nanaya, the last boss. Summon each at its console:\n• Cinder: 15 × {item:11186:Red Power Crystal:1}, on the hill with the red crystals (southwest)\n• Snowtalon: 15 × {item:11184:Blue Power Crystal:1}, in the cave behind the left waterfall (northwest)\n• Bolt: 15 × {item:11188:Yellow Power Crystal:1}, by the yellow crystals south of the tar pits\n• Vitrix: 15 × {item:11185:Green Power Crystal:1}, in a cavern on the north side\nThen summon Nanaya at the console on the Pillar of Assimilation's island."] = "Hay que invocar y matar a cuatro jefes antes de poder invocar a Nanaya, el último jefe. Invoca a cada uno en su consola:\n• Cinder: 15 × {item:11186:Red Power Crystal:1}, en la colina de los cristales rojos (suroeste)\n• Snowtalon: 15 × {item:11184:Blue Power Crystal:1}, en la cueva detrás de la cascada de la izquierda (noroeste)\n• Bolt: 15 × {item:11188:Yellow Power Crystal:1}, junto a los cristales amarillos, al sur de los pozos de alquitrán\n• Vitrix: 15 × {item:11185:Green Power Crystal:1}, en una caverna del lado norte\nLuego, invoca a Nanaya en la consola de la isla del Pillar of Assimilation.",
+	["Curator Thorius, Hall of Explorers, Ironforge"] = "Curator Thorius, Sala de los Expedicionarios, Forjaz",
+	["Curator Thorius — Hall of Explorers"] = "Curator Thorius — Sala de los Expedicionarios",
+	["Chemist Fuely, the Apothecarium, Undercity"] = "Chemist Fuely, El Apothecarium, Entrañas",
+	["Chemist Fuely — the Apothecarium"] = "Chemist Fuely — El Apothecarium",
+	["Venomridge, a great diemetradon, is one of the optional bosses, on the plain south of the tar pits."] = "Venomridge, un gran diemetradon, es uno de los jefes opcionales, en la llanura al sur de los pozos de alquitrán.",
+	["Use the Explorers' League Cartographer's Kit you are given at the Pillar of Assimilation, the Achromatic Crystal, the Western Gates, the Regrowth Vestibule and the Unearthed Stone Watcher. It can't be shared."] = "Usa el Explorers' League Cartographer's Kit que te dan en el Pillar of Assimilation, el Achromatic Crystal, las Western Gates, el Regrowth Vestibule y el Unearthed Stone Watcher. Esta misión no se puede compartir.",
+	["Who gives it is not listed yet. The pages drop from the ravasaurs inside. It can't be shared."] = "Aún no se sabe quién la da. Las páginas caen de los raptores del interior. Esta misión no se puede compartir.",
+	["Each most likely comes from a crystal fragment of its kind in the terrace. They are not the Power Crystals the consoles take."] = "Lo más probable es que cada uno salga de un fragmento de cristal de su tipo en la terraza. No son los cristales de poder que usan las consolas.",
+	["The essence drops from the small slimes in the pools by the Achromatic Crystal."] = "La esencia cae de los pequeños limos de las pozas junto al Achromatic Crystal.",
+	["The fragment lies on the ground near the Achromatic Crystal, a colorless crystal in the terrace."] = "El fragmento está en el suelo cerca del Achromatic Crystal, un cristal incoloro de la terraza.",
+}
+
+-- Adventure Mode's masking: what its rules can't tell of this language's names (Core/Discovery.lua;
+-- Locales/enUS.lua says what each list is for). Drafted, to be checked.
+L.MASK_GROUP_WORDS = { "Crepuscular", "Verdugo", "Furiarena", "Hierro", "Negro", "Intendente", "Mensajero", "Magistrado",
+	"Príncipe", "Maestro", "Heraldo", "Armero" }
+L.MASK_PLACES = { "Tragón Lúgubre", "Culto de los Malditos", "Magni Barbabronce" }
+L.MASK_NAMES = {}
+L.MASK_BOSS_FORMS = {
+	-- (a quest's giver, Doan Karhan, has his name: his strongbox is named whole)
+	["Arcanist Doan"] = { "Caja fuerte de Doan" },
+}
+-- The notes name this quest otherwise than its own name.
+L.MASK_QUEST_FORMS = {
+	-- (the Spire's door note names the seal's quest mid-sentence, in small letters)
+	[4742] = { "sello de ascensión" },
+	[4743] = { "sello de ascensión" },
+	-- (Before you go's Molten Core attunement is titled with this quest's name)
+	[7848] = { "armonización con el Núcleo de Magma" },
+	[2842] = { "ingeniero jefe Scooty" },
+	-- (the notes write these quests' names mid-sentence, outside quotes, in small letters)
+	[964] = { "fragmentos esqueléticos" },
+	[5537] = { "fragmentos esqueléticos" },
+	[5803] = { "escarabajo de Araj" },
+	[5804] = { "escarabajo de Araj" },
 }
 
 -- The client's own names for the bosses, factions and places, which what it says of them (and the

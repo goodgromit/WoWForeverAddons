@@ -406,7 +406,7 @@ ns.AddInstance({
 				{
 					itemID = 273105,
 					name = "Blueprint: Toxin Study",
-					slot = "Blueprint",
+					slot = "Recipe, First Aid",
 					quality = 2,
 				},
 				{
@@ -442,7 +442,7 @@ ns.AddInstance({
 				{
 					itemID = 273645,
 					name = "Blindwatcher's Sight",
-					slot = "Head",
+					slot = "Head, Cloth",
 					quality = 3,
 				},
 			},

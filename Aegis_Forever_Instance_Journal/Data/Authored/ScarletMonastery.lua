@@ -7,6 +7,21 @@ local _, ns = ...
 
 	To the client every wing is the same instance (189), so each wing lists the areas inside it
 	(wingAreas): the journal tells which wing the player is in by the area's name.
+
+	Each wing's areas, as two players' recordings name them (2026-11-13, and the owner's of 2026-11-16: one run of each
+	wing in turn, the same order in both): the Graveyard's Chamber of Atonement, Forlorn Cloister and Honor's Tomb; the
+	Library's Huntsman's Cloister, Gallery of Treasures and Athenaeum (below); the Armory's Training Grounds, Footman's
+	Armory, Crusader's Armory and Hall of Champions, and the Cathedral's Chapel Gardens and Crusader's Chapel (in their
+	own files, Data/Instances). No name is in two wings, in either recording. The client's own tables agree: each
+	name is a room of that wing's building; the Armory's building also names two halls "The Grand Vestibule", which
+	neither recording saw (so it is not one of the Armory's areas here).
+	Not a wing's, though both recordings list them first, before the Graveyard's and the Library's rooms: "Terrace of
+	Repose" and "Whispering Gardens". They are Tirisfal's (the client's area table: 161 and 160, on the Eastern
+	Kingdoms, under Tirisfal Glades; the monastery's own ground inside is all 796, "Scarlet Monastery"), the ground
+	outside the doors, still named for a moment as the player comes in (the Record tab notes the area then). Every wing
+	is entered from that ground, so either name would put a player coming into the Armory or the Cathedral in the
+	Graveyard or the Library. Until a room of the wing's own is named, or one of its fights starts or ends, its wing is
+	not known (UI/DungeonMap.lua's WaitForWing; the run block's "Which wing?").
 ]]
 
 --[[
@@ -27,6 +42,9 @@ ns.AmendInstance("ScarletMonasteryGraveyard", {
 	description = "The Scarlet Monastery was a seat of Lordaeron's priesthood until the Scarlet Crusade made it "
 		.. "their stronghold after the Third War. In its graveyard wing the Crusade's interrogators work, and "
 		.. "the dead buried there no longer rest.",
+	-- Its words for this wing stay in the overview's facts where Spoken's story, the monastery's one story, shows
+	-- (UI/EncounterPage.lua's FillInstanceOverview).
+	overviewNote = "In its graveyard wing the Crusade's interrogators work, and the dead buried there no longer rest.",
 
 	wingAreas = { ["Chamber of Atonement"] = true, ["Forlorn Cloister"] = true, ["Honor's Tomb"] = true },
 	areas = { "Chamber of Atonement", "Forlorn Cloister", "Honor's Tomb" },
@@ -43,6 +61,9 @@ ns.AmendInstance("ScarletMonasteryGraveyard", {
 ns.AmendInstance("ScarletMonasteryLibrary", {
 	description = "The monastery's library wing, where the Crusade's huntsmen keep their hounds and Arcanist Doan "
 		.. "guards the Athenaeum and the key to the rest of the monastery.",
+	-- Its whole description stays in the overview's facts where Spoken's story, its dungeon's one story, shows: it
+	-- tells this wing from the others (UI/EncounterPage.lua's FillInstanceOverview).
+	overviewNote = true,
 
 	wingAreas = { ["Huntsman's Cloister"] = true, ["Gallery of Treasures"] = true, ["Athenaeum"] = true },
 	areas = { "Huntsman's Cloister", "Gallery of Treasures", "Athenaeum" },
@@ -58,6 +79,16 @@ ns.AmendInstance("ScarletMonasteryLibrary", {
 		},
 	},
 })
+
+-- Where the Armory's and the Cathedral's fights were fought, as the client named the area as each started (two
+-- players' recordings, 2026-11-13 and 2026-11-16: their ENCOUNTER lines). Mograine's is Whitemane's fight, 450, which
+-- starts as he is pulled (the owner's recording of 2026-11-16: his spells from its first seconds): the chapel too.
+ns.AmendInstance("ScarletMonasteryArmory", { bosses = { ["Herod"] = { area = "Hall of Champions" } } })
+ns.AmendInstance("ScarletMonasteryCathedral", { bosses = {
+	["High Inquisitor Fairbanks"] = { area = "Crusader's Chapel" },
+	["Scarlet Commander Mograine"] = { area = "Crusader's Chapel" },
+	["High Inquisitor Whitemane"] = { area = "Crusader's Chapel" },
+} })
 
 -- The Cathedral's two quests send you through the Armory too, for Herod: the Armory lists them as well
 -- (foreverchanges.pro's page for it does). The world map still marks each once.

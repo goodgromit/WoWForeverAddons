@@ -3,6 +3,9 @@
 -- only; its maps (Media/Maps/Classic), floor names and boss spots are the classic dungeon maps
 -- that Advanced Dungeon Guide keeps. The bosses' abilities are added by
 -- Data/Generated/Abilities.lua (Dev/build_data.py).
+-- From a player's recording (2026-11-13): the bosses' creature ids (three seen in it, the rest the same
+-- creatures' ids in Forever's quest data), the areas inside and where four of the fights were won, and
+-- Glutton's Abomination Chain (through the loot history under his fight; checked in the client's item data).
 
 local _, ns = ...
 
@@ -25,6 +28,8 @@ ns.AddInstance({
 		mapID = 1413,
 		world = { 1, -4716.7, -2450 },
 	},
+	-- The areas the client named inside (the recording's AREA lines). Where The Bone Pile lies is not known.
+	areas = { "Spiral of Thorns", "The Caller's Chamber", "The Murder Pens", "The Bone Pile" },
 	map = {
 		entrance = {
 			x = 0.235,
@@ -34,8 +39,8 @@ ns.AddInstance({
 		floors = {
 			{
 				art = "Interface\\AddOns\\Aegis_Forever_Instance_Journal\\Media\\Maps\\Classic\\RazorfenDowns",
-				artRight = 0.9785,
-				artBottom = 0.6523,
+				artRight = 1000 / 1024,
+				artBottom = 667 / 1024,
 				uiMapID = 300,
 			},
 		},
@@ -43,6 +48,8 @@ ns.AddInstance({
 	bosses = {
 		{
 			name = "Tuten'kash",
+			npcID = 7355,
+			area = "The Caller's Chamber",
 			displayID = 7845,
 			level = 40,
 			order = 1,
@@ -74,6 +81,8 @@ ns.AddInstance({
 		},
 		{
 			name = "Glutton",
+			npcID = 8567,
+			area = "Spiral of Thorns",
 			displayID = 7864,
 			level = 40,
 			order = 2,
@@ -90,6 +99,12 @@ ns.AddInstance({
 					slot = "One-Hand, Axe",
 					quality = 3,
 				},
+				{
+					itemID = 274385,
+					name = "Abomination Chain",
+					slot = "Neck",
+					quality = 3,
+				},
 			},
 			mapPin = {
 				x = 0.347,
@@ -99,6 +114,8 @@ ns.AddInstance({
 		},
 		{
 			name = "Amnennar the Coldbringer",
+			npcID = 7358,
+			area = "Spiral of Thorns",
 			displayID = 7971,
 			level = 41,
 			order = 3,
@@ -133,6 +150,12 @@ ns.AddInstance({
 					slot = "Hands, Leather",
 					quality = 3,
 				},
+				{
+					itemID = 274381,
+					name = "Coldbringer Spine",
+					slot = "Two-Hand, Staff",
+					quality = 3,
+				},
 			},
 			mapPin = {
 				x = 0.444,
@@ -142,6 +165,8 @@ ns.AddInstance({
 		},
 		{
 			name = "Mordresh Fire Eye",
+			npcID = 7357,
+			area = "The Murder Pens",
 			displayID = 8055,
 			level = 39,
 			order = 4,
@@ -173,6 +198,7 @@ ns.AddInstance({
 		},
 		{
 			name = "Ragglesnout",
+			npcID = 7354,
 			displayID = 11382,
 			level = 40,
 			rare = true,
@@ -205,6 +231,7 @@ ns.AddInstance({
 		},
 		{
 			name = "Plaguemaw the Rotting",
+			npcID = 7356,
 			displayID = 6124,
 			level = 40,
 			order = 6,
@@ -219,6 +246,12 @@ ns.AddInstance({
 					itemID = 10760,
 					name = "Swine Fists",
 					slot = "Hands, Leather",
+					quality = 3,
+				},
+				{
+					itemID = 274380,
+					name = "Decaying Flesh Bands",
+					slot = "Wrist, Cloth",
 					quality = 3,
 				},
 			},
@@ -297,6 +330,152 @@ ns.AddInstance({
 					name = "Boneslasher",
 					slot = "Two-Hand, Sword",
 					quality = 3,
+				},
+			},
+		},
+		{
+			name = "Recipes",
+			recipes = true,
+			loot = {
+				{
+					itemID = 251398,
+					name = "Plans: Officer's Boots",
+					slot = "Recipe, Blacksmithing",
+					quality = 3,
+					offBosses = "bosses",
+				},
+				{
+					itemID = 251399,
+					name = "Plans: Sentinel's Boots",
+					slot = "Recipe, Blacksmithing",
+					quality = 3,
+					offBosses = "bosses",
+				},
+				{
+					itemID = 251400,
+					name = "Plans: Warder's Boots",
+					slot = "Recipe, Blacksmithing",
+					quality = 3,
+					offBosses = "bosses",
+				},
+				{
+					itemID = 251401,
+					name = "Plans: Prefect's Boots",
+					slot = "Recipe, Blacksmithing",
+					quality = 3,
+					offBosses = "bosses",
+				},
+				{
+					itemID = 251402,
+					name = "Plans: Justicar's Boots",
+					slot = "Recipe, Blacksmithing",
+					quality = 3,
+					offBosses = "bosses",
+				},
+				{
+					itemID = 252843,
+					name = "Pattern: Prowler's Leather Shoes",
+					slot = "Recipe, Leatherworking",
+					quality = 3,
+					offBosses = "bosses",
+				},
+				{
+					itemID = 252844,
+					name = "Pattern: Skulker's Leather Shoes",
+					slot = "Recipe, Leatherworking",
+					quality = 3,
+					offBosses = "bosses",
+				},
+				{
+					itemID = 252845,
+					name = "Pattern: Warden's Leather Shoes",
+					slot = "Recipe, Leatherworking",
+					quality = 3,
+					offBosses = "bosses",
+				},
+				{
+					itemID = 252846,
+					name = "Pattern: Skycaller's Leather Shoes",
+					slot = "Recipe, Leatherworking",
+					quality = 3,
+					offBosses = "bosses",
+				},
+				{
+					itemID = 252847,
+					name = "Pattern: Mender's Leather Shoes",
+					slot = "Recipe, Leatherworking",
+					quality = 3,
+					offBosses = "bosses",
+				},
+				{
+					itemID = 252896,
+					name = "Pattern: Stalker's Mail Boots",
+					slot = "Recipe, Leatherworking",
+					quality = 3,
+					offBosses = "bosses",
+				},
+				{
+					itemID = 252897,
+					name = "Pattern: Skycaller's Mail Boots",
+					slot = "Recipe, Leatherworking",
+					quality = 3,
+					offBosses = "bosses",
+				},
+				{
+					itemID = 252898,
+					name = "Pattern: Skirmisher's Mail Boots",
+					slot = "Recipe, Leatherworking",
+					quality = 3,
+					offBosses = "bosses",
+				},
+				{
+					itemID = 252899,
+					name = "Pattern: Mender's Mail Boots",
+					slot = "Recipe, Leatherworking",
+					quality = 3,
+					offBosses = "bosses",
+				},
+				{
+					itemID = 254038,
+					name = "Pattern: Gilded Cord",
+					slot = "Recipe, Tailoring",
+					quality = 3,
+					offBosses = "bosses",
+				},
+				{
+					itemID = 254040,
+					name = "Pattern: Frothing Cord",
+					slot = "Recipe, Tailoring",
+					quality = 3,
+					offBosses = "bosses",
+				},
+				{
+					itemID = 254042,
+					name = "Pattern: Fiery Cord",
+					slot = "Recipe, Tailoring",
+					quality = 3,
+					offBosses = "bosses",
+				},
+				{
+					itemID = 254044,
+					name = "Pattern: Black Cord",
+					slot = "Recipe, Tailoring",
+					quality = 3,
+					offBosses = "bosses",
+				},
+				{
+					itemID = 254046,
+					name = "Pattern: Golden Cord",
+					slot = "Recipe, Tailoring",
+					quality = 3,
+					offBosses = "bosses",
+				},
+				{
+					itemID = 254048,
+					name = "Pattern: Radiant Cord",
+					slot = "Recipe, Tailoring",
+					quality = 3,
+					offBosses = "bosses",
 				},
 			},
 		},
@@ -416,7 +595,7 @@ ns.AddInstance({
 			objective = "Take the Small Scroll to Varimathras in the Undercity.",
 			turnin = "Varimathras, Undercity",
 			rewards = {
-				xp = 2800,
+				xp = 5900,
 				money = 4000,
 			},
 		},

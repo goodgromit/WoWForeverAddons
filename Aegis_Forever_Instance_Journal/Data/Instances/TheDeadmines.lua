@@ -199,7 +199,7 @@ ns.AddInstance({
 				{
 					itemID = 273092,
 					name = "Blueprint: Repair Bot",
-					slot = "Engineering",
+					slot = "Recipe, Engineering",
 					quality = 2,
 				},
 				{
@@ -291,7 +291,7 @@ ns.AddInstance({
 				{
 					itemID = 273086,
 					name = "Blueprint: Anvil",
-					slot = "Blueprint",
+					slot = "Recipe, Blacksmithing",
 					quality = 2,
 				},
 				{
@@ -548,7 +548,7 @@ ns.AddInstance({
 				{
 					itemID = 273102,
 					name = "Blueprint: Cookie's Feast",
-					slot = "Blueprint",
+					slot = "Recipe, Cooking",
 					quality = 2,
 				},
 				{
@@ -617,13 +617,6 @@ ns.AddInstance({
 				},
 				{
 					itemID = 8492,
-				},
-				{
-					itemID = 6994,
-					name = "Whitestone Oak Lumber",
-					slot = "Quest",
-					quality = 1,
-					droppedBy = "Goblin Woodcarver",
 				},
 			},
 		},

@@ -15,7 +15,8 @@ local L = ns.L
 	Names and icons of spells come from the client, descriptions from the ability's text where
 	written, else the client. Role alerts come from the ability's flags, then boss.spellFlags where written by hand,
 	and otherwise from the spell itself. boss.fightNote, above the tree,
-	says how the fight begins where that is unusual.
+	says how the fight begins where that is unusual; it is the only text there (the boss's lore and
+	description are on his Overview).
 ]]
 
 local AbilitiesPanel = {}
@@ -326,7 +327,7 @@ local function CreateHeader(parent, onToggle)
 	pcall(header.SetScript, header, "OnHyperlinkClick", function(_, link)
 		local itemID = tonumber(tostring(link):match("^item:(%d+)"))
 		local itemLink = itemID and ns.Items:Link(itemID)
-		if itemLink and type(HandleModifiedItemClick) == "function" then HandleModifiedItemClick(itemLink) end
+		ns.Gamepad:ItemClick(itemLink)
 	end)
 	return header
 end
@@ -391,12 +392,14 @@ local function SetHeader(header, section, depth, expanded)
 	if hasText then
 		header.Description:SetWidth(header:GetWidth() - 20)
 		header.Description:SetText(section.description)
+		-- (a note with a common item's white link takes the game's text shadow: ns.Items:ShadowLinks)
+		ns.Items:ShadowLinks(header.Description, section.description)
 	end
 	return hasText and (HEADER_HEIGHT + 9 + header.Description:GetStringHeight() + 20) or HEADER_HEIGHT
 end
 
--- The same headers for other pages' notes (Before you go, on a dungeon's overview). A section
--- there may carry a quest's status for its icon (status) and a word on its right (note).
+-- The same headers for other pages' notes (Before you go and the Quests tab's dropdowns, a hidden boss's note
+-- on his page). A section there may carry a quest's status for its icon (status) and a word on its right (note).
 ns.PaperHeader = { Create = CreateHeader, Set = SetHeader }
 
 ------------------------------------------------------------------------------------------
@@ -474,11 +477,27 @@ function AbilitiesPanel:Refresh(scroll)
 		scroll.sections = self:BuildSections(boss)
 	end
 
+	-- In Adventure Mode (Core/Discovery.lua) the words say nothing not found yet: no unmet boss's name,
+	-- no item not seen (Discovery:Mask), as the boss's overview.
+	local Discovery = ns.Discovery
+	local unseen = Discovery:Unseen(page.instance, boss)
+	if unseen then
+		local function Mask(sections)
+			for _, section in ipairs(sections or {}) do
+				section.title = Discovery:MaskPage(page.instance, section.title, unseen)
+				section.description = Discovery:MaskPage(page.instance, section.description, unseen)
+				Mask(section.children)
+			end
+		end
+		Mask(scroll.sections)
+	end
+
 	local child = scroll.Child
-	-- The boss's description, then how the fight begins, where it is unusual (boss.fightNote).
+	-- How the fight begins, where it is unusual (boss.fightNote), and nothing else: the boss's lore and his
+	-- description stay on his Overview, so long lore never pushes the abilities down (the owner's call of
+	-- 2026-11-13; retail repeats its boss text here).
 	local intro = {}
-	if boss.description and boss.description ~= "" then intro[#intro + 1] = boss.description end
-	if boss.fightNote then intro[#intro + 1] = boss.fightNote end
+	if boss.fightNote and boss.fightNote ~= "" then intro[#intro + 1] = Discovery:MaskPage(page.instance, boss.fightNote, unseen) end
 	child.Description:SetText(table.concat(intro, "\n\n"))
 	local y = 8 + (#intro > 0 and child.Description:GetStringHeight() + 12 or 0)
 

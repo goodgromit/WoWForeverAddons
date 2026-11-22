@@ -18,11 +18,16 @@ local GRID_LEFT, GRID_TOP = 17, 62
 -- Loading screens are wide; this keeps the middle at the button's shape.
 local DEFAULT_ART_COORDS = { 0.16, 0.84, 0.15, 0.85 }
 local FALLBACK_ART = "Interface\\EncounterJournal\\UI-EJ-LOREBG-Default"
+-- A rumour's picture (Adventure Mode: a dungeon the character has not entered), darkened.
+local RUMOUR_SHADE = 0.35
+-- Its place, where the untested note goes: room for the level range beside it, a long place on two lines.
+local LOCATION_WIDTH = 112
 
 local panels = {}
 
--- An instance's picture, as its button shows it (also the Gear Finder's suggested dungeon).
-function ns.SetInstanceArt(texture, instance)
+-- An instance's picture, as its button shows it (also the Gear Finder's suggested dungeon); shade darkens it
+-- on top of its tint (a rumour's).
+function ns.SetInstanceArt(texture, instance, shade)
 	if instance.buttonImage then
 		-- Blizzard's own button picture, cut as EncounterInstanceButtonTemplate cuts it.
 		texture:SetTexture(instance.buttonImage)
@@ -32,7 +37,7 @@ function ns.SetInstanceArt(texture, instance)
 		texture:SetTexture(instance.buttonArt or FALLBACK_ART)
 		texture:SetTexCoord(coords[1], coords[2], coords[3], coords[4])
 	end
-	ns.TintInstanceArt(texture, instance)
+	ns.TintInstanceArt(texture, instance, shade)
 end
 
 local function SelectedBracket()
@@ -69,6 +74,14 @@ local function CreateInstanceButton(parent)
 	button.Untested:SetText(L.UNTESTED)
 	button.Untested:SetTextColor(0.75, 0.75, 0.75)
 
+	-- In Adventure Mode, where a dungeon not entered yet lies, in the untested note's place and look.
+	button.Location = button:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+	button.Location:SetJustifyH("RIGHT")
+	button.Location:SetTextColor(0.75, 0.75, 0.75)
+	-- Two lines at most, clear of the dungeon's name above.
+	if button.Location.SetMaxLines then button.Location:SetMaxLines(2) end
+	button.Location:Hide()
+
 	-- What is new in WoW: Forever: its emblem in the corner.
 	button.Forever = ns.CreateForeverMark(button)
 	button.Forever:SetPoint("BOTTOMRIGHT", -5, 5)
@@ -80,16 +93,25 @@ local function CreateInstanceButton(parent)
 	return button
 end
 
-local function SetButtonInstance(button, instance)
+-- rumour: in Adventure Mode, a dungeon the character has not entered (the list's own buttons only).
+local function SetButtonInstance(button, instance, rumour)
+	rumour = rumour == true
 	button.instance = instance
 	button.Name:SetText(instance.name)
-	button.Untested:SetShown(instance.untested == true)
+	button.Untested:SetShown(instance.untested == true and not rumour)
 	button.Forever:SetShown(instance.forever == true)
 	-- Both: the note goes beside the emblem.
 	button.Untested:ClearAllPoints()
 	button.Untested:SetPoint("BOTTOMRIGHT", instance.forever and -31 or -7, 7)
+	button.Location:SetShown(rumour)
+	if rumour then
+		button.Location:ClearAllPoints()
+		button.Location:SetPoint("BOTTOMRIGHT", instance.forever and -31 or -7, 7)
+		button.Location:SetWidth(LOCATION_WIDTH - (instance.forever and 24 or 0))
+		button.Location:SetText(instance.location or "")
+	end
 
-	ns.SetInstanceArt(button.Art, instance)
+	ns.SetInstanceArt(button.Art, instance, rumour and RUMOUR_SHADE or nil)
 
 	if instance.levelMin and instance.levelMax and instance.levelMin ~= instance.levelMax then
 		button.Range:SetText(instance.levelMin .. "-" .. instance.levelMax)
@@ -153,7 +175,8 @@ function InstanceSelect:Build(panel, kind)
 	self:Refresh(panel)
 end
 
-function InstanceSelect:Refresh(panel)
+-- keepScroll: drawn again where the reader is (Adventure Mode's finds), not from the top.
+function InstanceSelect:Refresh(panel, keepScroll)
 	local bracket = SelectedBracket()
 	local list = ns.GetInstances(panel.kind, bracket)
 	local child = panel.Scroll.Child
@@ -168,7 +191,7 @@ function InstanceSelect:Refresh(panel)
 		local row = math.floor((index - 1) / COLUMNS)
 		button:ClearAllPoints()
 		button:SetPoint("TOPLEFT", column * (BUTTON_WIDTH + SPACING_X), -row * (BUTTON_HEIGHT + SPACING_Y))
-		SetButtonInstance(button, instance)
+		SetButtonInstance(button, instance, ns.Discovery:Rumour(instance))
 		button:Show()
 	end
 	for index = #list + 1, #panel.Buttons do
@@ -177,7 +200,7 @@ function InstanceSelect:Refresh(panel)
 
 	local rows = math.ceil(#list / COLUMNS)
 	child:SetHeight(math.max(1, rows * (BUTTON_HEIGHT + SPACING_Y) - SPACING_Y))
-	panel.Scroll:SetVerticalScroll(0)
+	if not keepScroll then panel.Scroll:SetVerticalScroll(0) end
 
 	if #list == 0 then
 		local anything = #ns.GetInstances(panel.kind, nil) > 0
@@ -190,6 +213,6 @@ function InstanceSelect:Refresh(panel)
 	panel.Dropdown:GenerateMenu()
 end
 
-function InstanceSelect:RefreshAll()
-	for _, panel in ipairs(panels) do self:Refresh(panel) end
+function InstanceSelect:RefreshAll(keepScroll)
+	for _, panel in ipairs(panels) do self:Refresh(panel, keepScroll) end
 end

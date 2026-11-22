@@ -317,6 +317,26 @@ local ITEMS = {
 	-- Dalaran's trash, on the site's list since November: names, slots and quality from the client's item data
 	[286988] = { "Violet Sorcerer's Leggings", "Legs, Cloth", 3 },
 	[286989] = { "Violet Sorcerer's Wraps", "Hands, Cloth", 3 },
+	-- The Excavation Site's trash, and its two blueprints for its Recipes page: names, slots and quality from the
+	-- client's item data
+	[286982] = { "Unearthed Barrier", "Off Hand, Shield", 3 },
+	[286983] = { "Ancient Cleaver", "Two-Hand, Axe", 3 },
+	[286984] = { "Mark of the Marsh", "Neck", 3 },
+	[286985] = { "Thicket Bindings", "Wrist, Leather", 3 },
+	[286986] = { "Abandoned Leggings", "Legs, Cloth", 3 },
+	[287068] = { "Excavated Dagger", "Thrown", 3 },
+	[273097] = { "Blueprint: Rock Garden", "Recipe, Book", 2 },
+	[273106] = { "Blueprint: Greenhouse", "Recipe, Book", 2 },
+	-- Dalaran's other trash, and the Spinning Wheel for its Recipes page: names, slots and quality from the client's
+	-- item data
+	[286990] = { "Arcane Remnant Leggings", "Legs, Leather", 3 },
+	[286991] = { "Roused Nature Footwraps", "Feet, Leather", 3 },
+	[286992] = { "Construct's Grips", "Hands, Mail", 3 },
+	[286993] = { "Suffused Bindings", "Waist, Mail", 3 },
+	[286994] = { "Tattered Kirin Tor Cloak", "Back, Cloth", 3 },
+	[286995] = { "Guardian's Emblem", "Neck", 3 },
+	[286996] = { "City Guard's Tarnished Blade", "One-Hand, Sword", 3 },
+	[273099] = { "Blueprint: Spinning Wheel", "Recipe, Tailoring", 2 },
 	-- Forever's recipes seen dropping in the owner's recorded runs (2026-11-08 to 11-10): names and quality
 	-- from the client's item data
 	[251340] = { "Plans: Veteran's Chain Shirt", "Recipe, Blacksmithing", 3 },
@@ -324,6 +344,89 @@ local ITEMS = {
 	[252775] = { "Pattern: Stormrider's Leather Armor", "Recipe, Leatherworking", 3 },
 	[252794] = { "Pattern: Defender's Leather Pants", "Recipe, Leatherworking", 3 },
 	[253984] = { "Pattern: Filigreed Pearly Circlet", "Recipe, Tailoring", 3 },
+	-- Seen dropping in two players' recorded runs (2026-11-13 and 2026-11-14): names, slots and quality from the
+	-- client's item data
+	[251350] = { "Plans: Veteran's Chain Helm", "Recipe, Blacksmithing", 3 },
+	[251399] = { "Plans: Sentinel's Boots", "Recipe, Blacksmithing", 3 },
+	[252814] = { "Pattern: Brawler's Leather Helm", "Recipe, Leatherworking", 3 },
+	[252844] = { "Pattern: Skulker's Leather Shoes", "Recipe, Leatherworking", 3 },
+	[253910] = { "Pattern: Filigreed Pearly Gown", "Recipe, Tailoring", 3 },
+	[254044] = { "Pattern: Black Cord", "Recipe, Tailoring", 3 },
+	[274295] = { "Band of Crimson Light", "Finger", 3 },
+	-- Seen dropping in the owner's recorded run (2026-11-16): name, kind and quality from the client's item data
+	[251351] = { "Plans: Guard's Chain Helm", "Recipe, Blacksmithing", 3 },
+	-- Blackfathom Deeps' Recipes page (0.40.1): Forever's shared recipes its bosses drop and Gelihast's blueprint;
+	-- names, kinds and quality from the client's item data
+	[251345] = { "Plans: Veteran's Chain Leggings", "Recipe, Blacksmithing", 3 },
+	[251346] = { "Plans: Guard's Chain Leggings", "Recipe, Blacksmithing", 3 },
+	[251347] = { "Plans: Protector's Chain Leggings", "Recipe, Blacksmithing", 3 },
+	[251348] = { "Plans: Acolyte's Chain Leggings", "Recipe, Blacksmithing", 3 },
+	[251349] = { "Plans: Crusader's Chain Leggings", "Recipe, Blacksmithing", 3 },
+	[251353] = { "Plans: Acolyte's Chain Helm", "Recipe, Blacksmithing", 3 },
+	[251354] = { "Plans: Crusader's Chain Helm", "Recipe, Blacksmithing", 3 },
+	[252792] = { "Pattern: Brawler's Leather Pants", "Recipe, Leatherworking", 3 },
+	[252793] = { "Pattern: Trapper's Leather Pants", "Recipe, Leatherworking", 3 },
+	[252795] = { "Pattern: Totemic Leather Pants", "Recipe, Leatherworking", 3 },
+	[252796] = { "Pattern: Stormrider's Leather Pants", "Recipe, Leatherworking", 3 },
+	[252797] = { "Pattern: Wisdom's Leather Pants", "Recipe, Leatherworking", 3 },
+	[252815] = { "Pattern: Trapper's Leather Helm", "Recipe, Leatherworking", 3 },
+	[252816] = { "Pattern: Defender's Leather Helm", "Recipe, Leatherworking", 3 },
+	[252817] = { "Pattern: Totemic Leather Helm", "Recipe, Leatherworking", 3 },
+	[252818] = { "Pattern: Stormrider's Leather Helm", "Recipe, Leatherworking", 3 },
+	[252819] = { "Pattern: Wisdom's Leather Helm", "Recipe, Leatherworking", 3 },
+	[253946] = { "Pattern: Filigreed Pearly Leggings", "Recipe, Tailoring", 3 },
+	[253978] = { "Pattern: Filigreed Silky Circlet", "Recipe, Tailoring", 3 },
+	[253980] = { "Pattern: Filigreed Flame Circlet", "Recipe, Tailoring", 3 },
+	[253982] = { "Pattern: Filigreed Shadow Circlet", "Recipe, Tailoring", 3 },
+	[253986] = { "Pattern: Filigreed Shining Circlet", "Recipe, Tailoring", 3 },
+	[273141] = { "Blueprint: Fishing Rack", "Recipe, Fishing", 2 },
+	-- The Scarlet Monastery Library's Recipes page (0.40.1): the level-40 recipes Arcanist Doan drops that no line above
+	-- names, and Houndmaster Loksey's blueprint; names, kinds and quality from the client's item data
+	[251398] = { "Plans: Officer's Boots", "Recipe, Blacksmithing", 3 },
+	[251400] = { "Plans: Warder's Boots", "Recipe, Blacksmithing", 3 },
+	[251401] = { "Plans: Prefect's Boots", "Recipe, Blacksmithing", 3 },
+	[251402] = { "Plans: Justicar's Boots", "Recipe, Blacksmithing", 3 },
+	[252843] = { "Pattern: Prowler's Leather Shoes", "Recipe, Leatherworking", 3 },
+	[252845] = { "Pattern: Warden's Leather Shoes", "Recipe, Leatherworking", 3 },
+	[252846] = { "Pattern: Skycaller's Leather Shoes", "Recipe, Leatherworking", 3 },
+	[252847] = { "Pattern: Mender's Leather Shoes", "Recipe, Leatherworking", 3 },
+	[252896] = { "Pattern: Stalker's Mail Boots", "Recipe, Leatherworking", 3 },
+	[252897] = { "Pattern: Skycaller's Mail Boots", "Recipe, Leatherworking", 3 },
+	[252898] = { "Pattern: Skirmisher's Mail Boots", "Recipe, Leatherworking", 3 },
+	[252899] = { "Pattern: Mender's Mail Boots", "Recipe, Leatherworking", 3 },
+	[254038] = { "Pattern: Gilded Cord", "Recipe, Tailoring", 3 },
+	[254040] = { "Pattern: Frothing Cord", "Recipe, Tailoring", 3 },
+	[254042] = { "Pattern: Fiery Cord", "Recipe, Tailoring", 3 },
+	[254046] = { "Pattern: Golden Cord", "Recipe, Tailoring", 3 },
+	[254048] = { "Pattern: Radiant Cord", "Recipe, Tailoring", 3 },
+	[273109] = { "Blueprint: Trapper's Workbench", "Recipe, Book", 2 },
+	-- The Scarlet Monastery Armory's Recipes page (0.40.1): the first-aid manual the Scarlet Trainee drops; its name,
+	-- kind and quality from the client's item data
+	[255730] = { "Manual: Surgical Tourniquet", "Recipe, First Aid", 2 },
+	-- Gnomeregan (0.40.1): Mekgineer Thermaplugg's two schematics no line above names; names, kinds and quality from
+	-- the client's item data
+	[6672] = { "Schematic: Flash Bomb", "Recipe, Engineering", 2 },
+	[7192] = { "Schematic: Goblin Rocket Boots", "Recipe, Engineering", 2 },
+	-- Wailing Caverns' Recipes page (0.40.1): the chest and leggings groups' recipes no line above names; names, kinds
+	-- and quality from the client's item data
+	[251341] = { "Plans: Guard's Chain Shirt", "Recipe, Blacksmithing", 3 },
+	[251342] = { "Plans: Protector's Chain Shirt", "Recipe, Blacksmithing", 3 },
+	[251343] = { "Plans: Acolyte's Chain Shirt", "Recipe, Blacksmithing", 3 },
+	[251344] = { "Plans: Crusader's Chain Shirt", "Recipe, Blacksmithing", 3 },
+	[252771] = { "Pattern: Brawler's Leather Armor", "Recipe, Leatherworking", 3 },
+	[252772] = { "Pattern: Trapper's Leather Armor", "Recipe, Leatherworking", 3 },
+	[252773] = { "Pattern: Defender's Leather Armor", "Recipe, Leatherworking", 3 },
+	[252774] = { "Pattern: Totemic Leather Armor", "Recipe, Leatherworking", 3 },
+	[252776] = { "Pattern: Wisdom's Leather Armor", "Recipe, Leatherworking", 3 },
+	[253902] = { "Pattern: Filigreed Pristine Gown", "Recipe, Tailoring", 3 },
+	-- The Deadmines' Recipes page (0.40.1): the three bosses' blueprints; names, kinds and quality from the client's item data
+	[273086] = { "Blueprint: Anvil", "Recipe, Blacksmithing", 2 },
+	[273092] = { "Blueprint: Repair Bot", "Recipe, Engineering", 2 },
+	[273102] = { "Blueprint: Cookie's Feast", "Recipe, Cooking", 2 },
+	-- Shadowfang Keep's Recipes page (0.40.1): Commander Springvale's blueprint; name, kind and quality from the client's item data
+	[273105] = { "Blueprint: Toxin Study", "Recipe, First Aid", 2 },
+	-- Ruins of Lordaeron's Recipes page (0.40.1): Rath'mael's blueprint; name, kind and quality from the client's item data
+	[273085] = { "Blueprint: Fermenter", "Recipe, Alchemy", 2 },
 }
 
 local function Fill(row)

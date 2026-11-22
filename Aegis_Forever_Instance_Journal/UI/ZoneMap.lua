@@ -9,7 +9,8 @@ local L = ns.L
 	when C_Map.GetMapLevels knows it, which Forever's data mostly doesn't. Ours adds the range
 	from Data/Authored/ZoneLevels.lua, coloured for the player's level as the client colours it.
 
-	Unexplored areas: a choice in the map's filter menu. The client draws only the pieces of a
+	Unexplored areas: a box in the journal's options, and the map legend's Fog of War switch (UI/MapLegend.lua),
+	both the same setting. The client draws only the pieces of a
 	zone the character has explored (MapExplorationDataProvider.lua); this draws the others from
 	Data/Generated/MapOverlays.lua, a little darker, so what is still to explore stands out.
 ]]
@@ -227,17 +228,26 @@ end
 
 function ProviderMethods:RefreshAllData()
 	self:RemoveAllData()
-	if not (ZoneMap:ShowsUnexplored() and MarkersOn()) then return end
-	local mapID = self:GetMap():GetMapID()
-	local pieces = mapID and ZoneMap:UnexploredPieces(mapID)
-	if pieces and #pieces > 0 then ns.CanvasPins:Acquire(self:GetMap(), FOG_PIN_TEMPLATE, mapID, pieces) end
+	if ZoneMap:ShowsUnexplored() and MarkersOn() then
+		local mapID = self:GetMap():GetMapID()
+		local pieces = mapID and ZoneMap:UnexploredPieces(mapID)
+		if pieces and #pieces > 0 then ns.CanvasPins:Acquire(self:GetMap(), FOG_PIN_TEMPLATE, mapID, pieces) end
+	end
+	-- The map legend's Fog of War switch follows the map shown and the setting (UI/MapLegend.lua).
+	ns.MapLegend:FogChanged()
+end
+
+-- Whether the setting draws anything on this map: a zone whose pieces the client lists (a continent, a city
+-- the client draws whole, the world and the dungeons have none).
+function ZoneMap:HasPieces(mapID)
+	return mapID ~= nil and ns.MAP_OVERLAYS[mapID] ~= nil
 end
 
 --[[
 	The world map's own filter menu has nothing of the journal's since 2026-11-08: the journal's code in a menu of
 	the game's (Blizzard_Menu) tainted the game's unit menus after it (the owner's taint log). The map legend shows and
 	hides each kind of marker (UI/MapLegend.lua), and the unexplored areas are a box in the journal's options
-	(UI/Options.lua).
+	(UI/Options.lua) and the legend's Fog of War switch (UI/MapLegend.lua).
 ]]
 
 -- Drawn again (the journal's style changed).

@@ -340,10 +340,11 @@ UseMaps("Gnomeregan", {
 UseMaps("RazorfenKraul", {
 	floors = { { 301, "razorfen-kraul" } },
 	spots = {
-		{ "Aggem Thorncurse", 1, 0.808, 0.545 }, { "Death Speaker Jargba", 1, 0.879, 0.414 }, { "Roogug", 1, 0.648, 0.421 },
-		{ "Overlord Ramtusk", 1, 0.569, 0.298 }, { "Razorfen Spearhide", 1, 0.534, 0.355 },
+		{ "Aggem Thorncurse", 1, 0.808, 0.545 }, { "Death Speaker Jargba", 1, 0.879, 0.414 }, { "Roogug", 1, 0.599, 0.442 },
+		-- No Razorfen Spearhide: Ramtusk's two guards stand with him (Data/Authored/RazorfenKraul.lua).
+		{ "Overlord Ramtusk", 1, 0.569, 0.298 },
 		{ "Agathelos the Raging", 1, 0.112, 0.724 }, { "Blind Hunter", 1, 0.110, 0.303 },
-		{ "Charlga Razorflank", 1, 0.264, 0.324 }, { "Earthcaller Halmgar", 1, 0.494, 0.471 },
+		{ "Charlga Razorflank", 1, 0.233, 0.296 }, { "Earthcaller Halmgar", 1, 0.436, 0.567 },
 	},
 })
 

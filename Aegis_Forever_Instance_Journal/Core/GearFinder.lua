@@ -18,6 +18,16 @@ local L = ns.L
 	TOP_PICKS. Picks are kept for each character, and the suggested dungeon follows them. A pick
 	that stops being an upgrade (another spec, better gear) gives the slot back its biggest, and
 	comes back if it is one again; one the player has put on is forgotten.
+
+	In Adventure Mode (Core/Discovery.lua) each upgrade is in one of three states, the owner's calls
+	of 2026-11-07 (UI/GearPanel.lua shows them): seen (seen to drop in its dungeon: shown in full, as
+	in every other style); unseen (its dungeon entered, the item not seen there yet: "something
+	better" in that dungeon, nothing of the item); and a rumour (its dungeon not entered: pointed to by
+	its door's place, its level range and its line of rumour, never by name, the item only by its slot
+	and its rarity). An item that drops in several of the dungeons is kept where the character knows
+	the most of it. A rumour is never picked, nor counted among a slot's top picks; a pick that has
+	become one (the style changed) is set aside while it is, as one that stopped being an upgrade is.
+	Outside Adventure Mode every upgrade is seen, and nothing here changes.
 ]]
 
 local GearFinder = {}
@@ -113,6 +123,42 @@ function GearFinder:Dungeons()
 	return out
 end
 
+--[[
+	What the character knows of an upgrade in a dungeon (above): "seen", "unseen" or "rumour". Always
+	"seen" outside Adventure Mode (Discovery's answers are all yes there).
+]]
+local STATE_RANK = { seen = 3, unseen = 2, rumour = 1 }
+function GearFinder.State(instance, itemID)
+	local Discovery = ns.Discovery
+	if Discovery:Rumour(instance) then return "rumour" end
+	if not Discovery:Knows("item", itemID, instance) then return "unseen" end
+	return "seen"
+end
+
+--[[
+	In Adventure Mode, where each item that drops in more than one of `dungeons` is kept: the first
+	place of the state the character knows most of it in (seen, then unseen, then a rumour), so an
+	item seen in one dungeon is not shown as a rumour of another. { [itemID] = { instance, boss, rank } };
+	nil outside Adventure Mode, where the first place is kept, as it always was.
+]]
+local function BestPlaces(dungeons)
+	if not ns.Style:Adventure() then return nil end
+	local best = {}
+	for _, instance in ipairs(dungeons) do
+		for _, boss in ipairs(instance.bosses or {}) do
+			for _, row in ipairs(not boss.recipes and boss.loot or {}) do
+				local itemID = row.itemID
+				if type(itemID) == "number" and not ns.Items:IsHidden(itemID) and not ns.Items:Unremarkable(boss, row) then
+					local rank = STATE_RANK[GearFinder.State(instance, itemID)]
+					local was = best[itemID]
+					if not was or rank > was.rank then best[itemID] = { instance = instance, boss = boss, rank = rank } end
+				end
+			end
+		end
+	end
+	return best
+end
+
 -- Upgrades in order: the biggest gain first.
 local function ByGain(a, b)
 	if a.compare.delta ~= b.compare.delta then return a.compare.delta > b.compare.delta end
@@ -120,9 +166,11 @@ local function ByGain(a, b)
 end
 
 --[[
-	Weighs every drop of those dungeons. Each upgrade: { itemID, link, info, instance, boss,
-	compare }. Grouped by slot, best first. An item that drops in more than one place is kept
-	where it is met first: the lowest dungeon.
+	Weighs every drop of those dungeons. Each upgrade: { itemID, link, info, instance, boss, row,
+	compare, state, rumour } (row: its loot row): state is what the character knows of it (GearFinder.State), rumour
+	whether that is "rumour". Grouped by slot, best first. An item that drops in more than one place
+	is kept where it is met first: the lowest dungeon (in Adventure Mode, BestPlaces). A dungeon's
+	recipes (recipes = true: Core/Registry.lua's ns.IsLootSection) are no gear, and are not looked at.
 ]]
 function GearFinder:Find()
 	local IS = ns.ItemScore
@@ -134,12 +182,15 @@ function GearFinder:Find()
 	missing = 0
 	local dungeons = self:Dungeons()
 	looked = #dungeons
+	local best = BestPlaces(dungeons)
 	for _, instance in ipairs(dungeons) do
 		for _, boss in ipairs(instance.bosses or {}) do
-			for _, row in ipairs(boss.loot or {}) do
+			for _, row in ipairs(not boss.recipes and boss.loot or {}) do
 				local itemID = row.itemID
+				local place = best and best[itemID]
 				if type(itemID) == "number" and not seen[itemID] and not ns.Items:IsHidden(itemID)
-					and not ns.Items:Unremarkable(boss, row) then
+					and not ns.Items:Unremarkable(boss, row)
+					and (not place or (place.instance == instance and place.boss == boss)) then
 					seen[itemID] = true
 					local info = Info(itemID, row)
 					if not info then
@@ -153,9 +204,11 @@ function GearFinder:Find()
 							and compare.delta > 0.0001 then
 							local group = GROUP_OF[compare.slot]
 							if group then
+								local state = best and GearFinder.State(instance, itemID) or "seen"
 								bySlot[group] = bySlot[group] or {}
 								table.insert(bySlot[group], { itemID = itemID, link = info.link, info = info,
-									instance = instance, boss = boss, compare = compare })
+									instance = instance, boss = boss, row = row, compare = compare, state = state,
+									rumour = state == "rumour" })
 							end
 						end
 					end
@@ -254,7 +307,7 @@ local function SecondOf(list, first)
 			again.pct = compare.otherWorn > 0 and again.delta / compare.otherWorn * 100 or nil
 			again.share = compare.total > 0 and again.delta / compare.total * 100 or nil
 			out[#out + 1] = { itemID = entry.itemID, link = entry.link, info = entry.info, instance = entry.instance,
-				boss = entry.boss, compare = again }
+				boss = entry.boss, row = entry.row, compare = again, state = entry.state, rumour = entry.rumour }
 		end
 	end
 	table.sort(out, ByGain)
@@ -268,6 +321,20 @@ local function Listed(list, itemID)
 		if entry.itemID == itemID then return entry end
 	end
 	return nil
+end
+
+-- A pick among `list`'s upgrades: the one picked, unless it is a rumour now (Adventure Mode), which is never
+-- picked: it is set aside while it is one, as a pick that is no upgrade is.
+local function PickIn(list, itemID)
+	local entry = Listed(list, itemID)
+	if entry and entry.rumour then return nil end
+	return entry
+end
+
+-- Whether `shown` is the pick `itemID`: never a rumour, set aside as a pick (PickIn) even where it is shown as
+-- the slot's biggest.
+local function Shows(shown, itemID)
+	return shown ~= nil and not shown.rumour and shown.itemID == itemID
 end
 
 -- The first of `list` that is not `itemID`.
@@ -299,20 +366,20 @@ function GearFinder:Cells()
 			local mainPick, otherPick = picks[main.def.key], other and picks[other.def.key]
 			-- The other cell's pick is left to it only while it can show it, beating the other worn
 			-- one; else it would be in neither cell.
-			local held = Listed(list, otherPick)
+			local held = PickIn(list, otherPick)
 			local leftToOther = held and held.compare.otherSlot and held.compare.score - held.compare.otherWorn > 0.0001
 				and held.itemID or nil
-			main.shown = Listed(list, mainPick) or FirstBut(list, leftToOther)
-			main.picked = main.shown ~= nil and main.shown.itemID == mainPick
+			main.shown = PickIn(list, mainPick) or FirstBut(list, leftToOther)
+			main.picked = Shows(main.shown, mainPick)
 			if other then
 				other.entries = SecondOf(list, main.shown)
-				other.shown = Listed(other.entries, otherPick) or other.entries[1]
-				other.picked = other.shown ~= nil and other.shown.itemID == otherPick
+				other.shown = PickIn(other.entries, otherPick) or other.entries[1]
+				other.picked = Shows(other.shown, otherPick)
 				main.entries = Without(list, other.shown and other.shown.itemID)
 			end
 		else
-			cell.shown = Listed(list, picks[def.key]) or list[1]
-			cell.picked = cell.shown ~= nil and cell.shown.itemID == picks[def.key]
+			cell.shown = PickIn(list, picks[def.key]) or list[1]
+			cell.picked = Shows(cell.shown, picks[def.key])
 			firstOf[def.group] = cell
 		end
 		out[#out + 1] = cell
@@ -320,12 +387,27 @@ function GearFinder:Cells()
 	return out
 end
 
--- What a cell offers to pick from: its top TOP_PICKS, and the one it shows if that is further down.
+--[[
+	What a cell offers to pick from: its top TOP_PICKS, and the one it shows if that is further down.
+	Never a rumour (Adventure Mode): its place is shown on the map, not picked.
+]]
 function GearFinder:Choices(cell)
 	local out = {}
-	for index = 1, math.min(#cell.entries, self.TOP_PICKS) do out[#out + 1] = cell.entries[index] end
-	if cell.shown and not Listed(out, cell.shown.itemID) then out[#out + 1] = cell.shown end
+	for _, entry in ipairs(cell.entries) do
+		if #out >= self.TOP_PICKS then break end
+		if not entry.rumour then out[#out + 1] = entry end
+	end
+	if cell.shown and not cell.shown.rumour and not Listed(out, cell.shown.itemID) then out[#out + 1] = cell.shown end
 	return out
+end
+
+-- How many of a cell's upgrades can be picked: all but the rumours.
+function GearFinder:Pickable(cell)
+	local count = 0
+	for _, entry in ipairs(cell.entries) do
+		if not entry.rumour then count = count + 1 end
+	end
+	return count
 end
 
 --[[
@@ -337,7 +419,12 @@ function GearFinder:SetPick(key, itemID)
 	picks[key] = nil
 	if itemID == nil then return end
 	for _, cell in ipairs(self:Cells()) do
-		if cell.def.key == key and cell.shown and cell.shown.itemID == itemID then return end
+		if cell.def.key == key then
+			if cell.shown and cell.shown.itemID == itemID then return end
+			-- A rumour is not picked (Choices).
+			local entry = Listed(cell.entries, itemID)
+			if entry and entry.rumour then return end
+		end
 	end
 	picks[key] = itemID
 end
@@ -345,7 +432,7 @@ end
 --[[
 	The dungeons the cells' upgrades drop in, best first: by how many cells, then by what those
 	upgrades add up to. Each: { instance, count, total, slots (the cells' keys), entries (the
-	upgrades, in the same order) }.
+	upgrades, in the same order), rumour (Adventure Mode: the dungeon not entered yet) }.
 ]]
 function GearFinder:Suggest(cells)
 	local tally, order = {}, {}
@@ -355,7 +442,8 @@ function GearFinder:Suggest(cells)
 			local key = entry.instance.key
 			local dungeon = tally[key]
 			if not dungeon then
-				dungeon = { instance = entry.instance, count = 0, total = 0, slots = {}, entries = {} }
+				dungeon = { instance = entry.instance, count = 0, total = 0, slots = {}, entries = {},
+					rumour = entry.rumour == true }
 				tally[key] = dungeon
 				order[#order + 1] = dungeon
 			end
@@ -416,6 +504,12 @@ end
 GearFinder.IsShowing = function() return false end
 
 ns.ItemScore:OnChange(function()
+	if GearFinder.IsShowing() then GearFinder:Queue() end
+end)
+
+-- What the character finds in Adventure Mode (a dungeon entered, an item seen, Adventure Mode turned on or
+-- off) changes what it knows of the upgrades: searched again shortly, once for a burst, while anyone looks.
+ns.Discovery:OnChange(function()
 	if GearFinder.IsShowing() then GearFinder:Queue() end
 end)
 
@@ -525,7 +619,7 @@ function GearFinder:Scan()
 	for _, instance in ipairs(self:Dungeons()) do
 		if (instance.levelMax or 0) >= level - 5 then
 			for _, boss in ipairs(instance.bosses or {}) do
-				for _, row in ipairs(boss.loot or {}) do
+				for _, row in ipairs(not boss.recipes and boss.loot or {}) do
 					if type(row.itemID) == "number" and #scan.drops < SCAN_ITEMS then
 						local info = Info(row.itemID, row)
 						if not info or info.pending then

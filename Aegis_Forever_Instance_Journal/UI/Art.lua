@@ -102,16 +102,57 @@ function ns.SetButtonArt(button, normal, pushed, highlight, disabled)
 	end
 end
 
+local CIRCLE_MASK = "Interface\\CharacterFrame\\TempPortraitAlphaMask"
+-- The boss list's band round a portrait: gold, dark at the foot and light at the top, then a thin dark edge.
+local BAND_DARK, BAND_LIGHT, BAND_EDGE = { 0.50, 0.34, 0.10 }, { 1, 0.88, 0.52 }, { 0.1, 0.07, 0.03 }
+
+-- Rounds a texture with a separate mask object, as Blizzard's creature buttons do. The older
+-- texture:SetMask would forbid the crop (SetTexCoord) the dungeon icon needs. shape, when given,
+-- is the region the circle fills, for a texture larger than its circle.
+function ns.CircleMasked(owner, texture, shape)
+	if owner.CreateMaskTexture and texture.AddMaskTexture then
+		local mask = owner:CreateMaskTexture()
+		mask:SetTexture(CIRCLE_MASK, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+		mask:SetAllPoints(shape or texture)
+		texture:AddMaskTexture(mask)
+		texture.CircleMask = mask
+	end
+	return texture
+end
+
+--[[
+	The boss list's ring round a portrait of the given radius (UI/EncounterPage.lua; the fog's bosses on the
+	dungeon maps wear it too, UI/DungeonFog.lua): a gold band of the given width, then a thin dark edge, two
+	circles of owner's in layer, the band at subLevel and the edge at subLevel + 1, both centred at the point
+	given (SetPoint's arguments). Draw the portrait above them.
+]]
+function ns.PortraitBand(owner, layer, subLevel, radius, band, point, relativeTo, relativePoint, x, y)
+	local function Circle(level, circleRadius)
+		local texture = ns.CircleMasked(owner, owner:CreateTexture(nil, layer, nil, level))
+		texture:SetSize(circleRadius * 2, circleRadius * 2)
+		texture:SetPoint(point, relativeTo, relativePoint, x, y)
+		return texture
+	end
+	local rim = Circle(subLevel, radius + band + 1)
+	ns.Gradient(rim, "VERTICAL", BAND_DARK, 1, 1, BAND_LIGHT)
+	local edge = Circle(subLevel + 1, radius + 1)
+	edge:SetColorTexture(BAND_EDGE[1], BAND_EDGE[2], BAND_EDGE[3], 1)
+	return rim, edge
+end
+
 -- A dungeon's picture in the tint its data asks for (artTint: first in grey, then its colour), else as drawn:
 -- the Scarlet Monastery's Graveyard grey beside the Library, Dire Maul's wings each a colour of their own, where
 -- they share a picture (the owner's call, 2026-11-09). Every texture that shows a dungeon's picture goes through
--- it, so one used next for another dungeon, or anything else, shows that as drawn (instance nil).
-function ns.TintInstanceArt(texture, instance)
+-- it, so one used next for another dungeon, or anything else, shows that as drawn (instance nil). shade, when
+-- given, darkens it on top of its tint (Adventure Mode's rumours: a dungeon the character has not entered).
+function ns.TintInstanceArt(texture, instance, shade)
 	local tint = instance and instance.artTint
 	if texture.SetDesaturated then texture:SetDesaturated(tint and tint.desaturate and true or false) end
 	local color = tint and tint.color
+	shade = shade or 1
 	if texture.SetVertexColor then
-		texture:SetVertexColor(color and color[1] or 1, color and color[2] or 1, color and color[3] or 1)
+		texture:SetVertexColor((color and color[1] or 1) * shade, (color and color[2] or 1) * shade,
+			(color and color[3] or 1) * shade)
 	end
 end
 
@@ -528,6 +569,12 @@ end
 -- A step's menu arrow, MenuArrowButton drawn the same: the arrow, the square button's frame on the mouse, the
 -- arrow nudged while pressed. Made once per step; a step the bar hands to another crumb gets that one's menu
 -- (generator), or none (the arrow hidden by its caller).
+--
+-- The Gamepad UI's window navigation passes over both arrows, as over the game's own (NavigationBar.xml:151-154).
+-- The mark is the game's to write (Core/Compat.lua's ns.Gamepad:Skip): the navigation reads that key on every
+-- frame of a window it moves through, on every press (Blizzard_GamepadSmartNavigation/Utility.lua:59-79), and the
+-- key the journal wrote itself here made each press run from the journal's taint, until /reload. The template's
+-- arrow has the key from its template already; it is written again the game's way too, which changes nothing.
 function Menus:StepArrow(step, generator)
 	local arrow = rawget(step, "JournalArrow")
 	if arrow then
@@ -539,11 +586,12 @@ function Menus:StepArrow(step, generator)
 	if game then
 		game:Hide()
 		if game.EnableMouse then game:EnableMouse(false) end
+		ns.Gamepad:Skip(game)
 	end
 	arrow = CreateFrame("Button", nil, step)
 	arrow:SetSize(27, 31)
 	arrow:SetPoint("RIGHT", step, "TOPRIGHT", -2, -15)
-	arrow.smartNavigationIgnored = true
+	ns.Gamepad:Skip(arrow)
 	arrow:SetNormalTexture("Interface\\Buttons\\UI-SquareButton-Up")
 	arrow:SetPushedTexture("Interface\\Buttons\\UI-SquareButton-Down")
 	arrow:SetHighlightTexture("Interface\\Buttons\\UI-Common-MouseHilight", "ADD")
@@ -569,6 +617,8 @@ end
 -- The bar's overflow button: the game's kept from the mouse and out of sight, the journal's own in its place,
 -- drawn the same (NavBarTemplate's overflow), shown as the bar shows the game's. Its menu: the steps the bar
 -- folded into it, from the first, each opened by its click as the game's menu does (NavBar_OverflowItemOnClick).
+-- The Gamepad UI's navigation, which sees neither alpha nor the mouse, passes over the game's (ns.Gamepad:Skip):
+-- its A would open the game's menu on the journal's steps.
 local OVERFLOW_ART = "Interface\\HelpFrame\\CS_HelpTextures"
 local OVERFLOW_UP = { 0.54296875, 0.62890625, 0.7578125, 0.9921875 }
 local OVERFLOW_DOWN = { 0.453125, 0.5390625, 0.7578125, 0.9921875 }
@@ -580,6 +630,7 @@ function Menus:CoverOverflow(bar)
 	if cover then return cover end
 	if game.EnableMouse then game:EnableMouse(false) end
 	game:SetAlpha(0)
+	ns.Gamepad:Skip(game)
 	cover = CreateFrame("Button", nil, bar)
 	cover:SetAllPoints(game)
 	cover:SetFrameLevel(game:GetFrameLevel() + 2)

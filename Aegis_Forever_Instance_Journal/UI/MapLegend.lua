@@ -11,6 +11,7 @@ local L = ns.L
 	Entrance, Transport and Entrance entries join Movement for the journal's own icons (Entrance:
 	the delve icon of a way into a building, a mountain's halls or a level below a zone). A quest in
 	the log pointed at on the map lights its In Progress or Turn In entry only (see KeepDarkForLog).
+	Last under Movement, the journal's Fog of War switch (see AddFog).
 
 	Blizzard's frames are only shown, anchored and hooked after their own code; nothing of
 	theirs is replaced or written into.
@@ -204,7 +205,7 @@ local function HasStyle(style) return function(pin) return pin:GetStyle() == sty
 	Adds the journal's own entries under Movement, laid out on the category's grid as Blizzard
 	does. The client's own lighting of an entry's pins looks only among the map's own pins, never the
 	journal's (UI/CanvasPins.lua), so each is hooked as the client's entries are: a way in by its
-	style, cave or building.
+	style, cave or building. The Fog of War's entry comes last (see AddFog).
 ]]
 local function AddEntries(category, legend)
 	local list = Entries(category)
@@ -220,6 +221,8 @@ local function AddEntries(category, legend)
 			end
 		end
 	end
+	local fogEntry = MapLegend:AddFog(category, #list + 1)
+	if fogEntry then list[#list + 1] = fogEntry end
 	if AnchorUtil and AnchorUtil.GridLayout and GridLayoutMixin and CreateAnchor then
 		local layout = AnchorUtil.CreateGridLayout(GridLayoutMixin.Direction.TopLeftToBottomRight, 2, 0, 5)
 		AnchorUtil.GridLayout(list, CreateAnchor("TOPLEFT", category, "TOPLEFT", 0, -3), layout)
@@ -363,12 +366,200 @@ function MapLegend:MakeSwitches()
 	PaintSwitches()
 end
 
--- The journal's style changed: every one of its markers and maps drawn again for it.
+--[[
+	Fog of War (the owner's call of 2026-11-11, in place of a button of the journal's own on the map): a switch for
+	the fog on the map shown, the last of the journal's entries under Movement, added as they are (AddEntries: the
+	client's entry template on the category's grid, the legend laid out once, at login). It has the game's binoculars
+	(its minimap tracking button's atlas) and no marks of its own to light up. Switched as the journal's other entries
+	are: a click turns it over, and it is dimmed while the fog is off.
+
+	- On a zone's map it switches the unexplored areas (UI/ZoneMap.lua): the parts of the zone the character has not
+	  explored, which the client leaves blank, drawn a little darker. The same setting as the box in the journal's
+	  options (ns.db.showUnexplored, the account's). Their fog is off while they show.
+	- On a dungeon's map with fog (UI/DungeonFog.lua) it switches that fog, the same setting as the options' fog box,
+	  this character's (ns.charDB.dungeonFog), in every style, as the box is. In Adventure Mode the fog is always
+	  on, and the box is ticked and greyed: the entry shows the fog on, a click does nothing, and its tooltip says why.
+	- Anywhere else (a continent, a city the client draws whole, a way in's picture, a dungeon with no fog, a zone
+	  explored whole, where a click would change nothing) it is dimmed, a click does nothing, and it says so.
+	- With the journal's map markers off in its style (Classic, or Custom so) the unexplored areas are not drawn at
+	  all (UI/ZoneMap.lua) and their box is greyed: on a zone's map the entry stays in the legend, dimmed, and says
+	  it is turned off in the options, as the journal's other entries do there (MakeSwitches).
+
+	A changed setting tells the options' page (Settings.NotifyUpdate). Painted again when the journal's own providers
+	draw (UI/ZoneMap.lua's RefreshAllData, UI/DungeonMap.lua's overlay), when it is clicked and when the style
+	changes: no OnUpdate, no ticker, no menu of the game's.
+]]
+local FOG_ATLAS = "ui-hud-minimap-tracking-up-2x"
+-- Where a client lacks the atlas: the classic minimap tracking's magnifying glass (file 136460).
+local FOG_FALLBACK = "Interface\\Minimap\\Tracking\\None"
+-- The binoculars are 30 x 28 in the atlas: drawn the size of the legend's flight point (24), as they fill their art.
+local FOG_ICON_WIDTH, FOG_ICON_HEIGHT = 24, 22
+-- The game's tooltip colors: the legend's grey for what is so, green for a click, red for a click that can't.
+local GREY, GREEN, RED = { 0.6, 0.6, 0.6 }, { 0.1, 1, 0.1 }, { 1, 0.125, 0.125 }
+local fog = {}
+
+-- The unexplored areas go with the journal's map markers.
+local function ZoneFogInStyle()
+	return ns.Style:On("mapMarkers")
+end
+
+--[[
+	What the switch turns over on the map shown: "dungeon" (the fog of the dungeon whose map the journal shows over
+	the world map), "zone" (the unexplored areas of a zone with pieces the character has not explored), or nil: then
+	nil, true on a zone explored whole, where showing its unexplored areas would draw nothing.
+]]
+function MapLegend:FogTarget()
+	local overlay = ns.DungeonMap:Overlay()
+	if overlay and overlay:IsShown() then
+		local instance = overlay.instance
+		if instance and ns.DungeonFog and ns.DungeonFog:Has(instance) then return "dungeon", instance end
+		return nil
+	end
+	local mapID = WorldMapFrame and WorldMapFrame.GetMapID and WorldMapFrame:GetMapID()
+	if not ns.ZoneMap:HasPieces(mapID) then return nil end
+	if #ns.ZoneMap:UnexploredPieces(mapID) > 0 then return "zone" end
+	return nil, true
+end
+
+-- What the switch turns over, whether the fog is on there (the entry lit), and whether a click can change it.
+function MapLegend:FogState()
+	local kind = self:FogTarget()
+	if kind == "zone" then
+		if not ZoneFogInStyle() then return kind, false, false end
+		return kind, not ns.ZoneMap:ShowsUnexplored(), true
+	end
+	if kind == "dungeon" then return kind, ns.DungeonFog:On(), not ns.Style:Adventure() end
+	return nil, false, false
+end
+
+local function AddLine(tooltip, text, color)
+	tooltip:AddLine(text, color[1], color[2], color[3], true)
+end
+
+-- After the client's title and description: what is so on the map shown, then what a click does (or why it can't).
+local function AddFogLines(tooltip)
+	local kind, instance = MapLegend:FogTarget()
+	if kind == "zone" and not ZoneFogInStyle() then
+		AddLine(tooltip, L.LEGEND_STYLE_OFF, GREY)
+	elseif kind == "zone" then
+		local shown = ns.ZoneMap:ShowsUnexplored()
+		AddLine(tooltip, shown and L.LEGEND_FOG_ZONE_SHOWN or L.LEGEND_FOG_ZONE_HIDDEN, GREY)
+		AddLine(tooltip, shown and L.LEGEND_FOG_ZONE_HIDE or L.LEGEND_FOG_ZONE_SHOW, GREEN)
+	elseif kind == "dungeon" then
+		local on = ns.DungeonFog:On()
+		AddLine(tooltip, not on and L.LEGEND_FOG_DUNGEON_OFF
+			or ns.DungeonFog:FloorCleared(instance, ns.DungeonMap:Overlay().floor) and L.LEGEND_FOG_DUNGEON_CLEARED
+			or L.LEGEND_FOG_DUNGEON_ON, GREY)
+		if ns.Style:Adventure() then
+			AddLine(tooltip, L.LEGEND_FOG_ADVENTURE, RED)
+		else
+			AddLine(tooltip, on and L.LEGEND_FOG_DUNGEON_LIFT or L.LEGEND_FOG_DUNGEON_LAY, GREEN)
+		end
+	else
+		-- (instance: true on a zone explored whole)
+		AddLine(tooltip, instance == true and L.LEGEND_FOG_ZONE_EXPLORED or L.LEGEND_FOG_NONE, RED)
+	end
+end
+
+-- The tooltip open on the entry says what is so now: drawn again as the client draws it (MapLegendButtonMixin's
+-- OnEnter: the name as the title, the description in the game's gold), then the lines above.
+local function RefreshFogTooltip()
+	local entry, tooltip = fog.entry, GameTooltip
+	if not (entry and tooltip and tooltip:IsShown() and tooltip:GetOwner() == entry) then return end
+	tooltip:SetOwner(entry, "ANCHOR_BOTTOMRIGHT")
+	tooltip:SetText(entry.nameText, 1, 1, 1, 1, true)
+	tooltip:AddLine(entry.tooltipText, 1, 0.82, 0, true)
+	AddFogLines(tooltip)
+	tooltip:Show()
+end
+
+-- Lit while the fog is on there, dimmed while it is off or where there is none, as the legend's other switches are.
+local function PaintFog()
+	local entry = fog.entry
+	if not entry then return end
+	local kind, on = MapLegend:FogState()
+	local lit = kind ~= nil and on
+	entry:SetAlpha(lit and 1 or DIMMED_ALPHA)
+	local icon = entry.Icon
+	if type(icon) == "table" and icon.SetDesaturated then icon:SetDesaturated(not lit) end
+end
+
+-- The click: the setting of the map shown turned over, the options' box told. Nothing where it can change nothing.
+function MapLegend:ToggleFog()
+	if not fog.entry then return false end
+	local kind, on, usable = self:FogState()
+	if not usable then return false end
+	if kind == "zone" then
+		ns.ZoneMap:SetShowUnexplored(on)
+		ns.Options:Notify(ns.Options.UNEXPLORED_VARIABLE)
+	else
+		ns.DungeonFog:SetChosen(not on)
+		ns.Options:Notify(ns.Options.FOG_VARIABLE)
+	end
+	ns.PlaySoundKit(on and "IG_MAINMENU_OPTION_CHECKBOX_OFF" or "IG_MAINMENU_OPTION_CHECKBOX_ON")
+	PaintFog()
+	RefreshFogTooltip()
+	return true
+end
+
+-- The map shown, or a setting, changed (UI/ZoneMap.lua, UI/DungeonMap.lua): the entry follows.
+function MapLegend:FogChanged()
+	PaintFog()
+	RefreshFogTooltip()
+end
+
+-- The entry, the index-th of the category's: the client's template, with the binoculars, or the minimap's magnifying
+-- glass where a client lacks them.
+function MapLegend:NewFogEntry(category, index)
+	local info = {
+		Atlas = FOG_ATLAS, fixedWidth = FOG_ICON_WIDTH, fixedHeight = FOG_ICON_HEIGHT,
+		Name = L.LEGEND_FOG, Tooltip = L.LEGEND_FOG_TOOLTIP,
+		-- No marks of its own to light up (the client's hover looks among these).
+		TemplateNames = {},
+	}
+	local made, entry = pcall(CreateFrame, "Button", nil, category, "MapLegendButtonTemplate")
+	if not (made and entry) then return nil end
+	if not entry.InitializeButton or not pcall(entry.InitializeButton, entry, info, index) then
+		entry:Hide()
+		return nil
+	end
+	if not ns.AtlasExists(FOG_ATLAS) and type(entry.Icon) == "table" then
+		entry.Icon:SetTexture(FOG_FALLBACK)
+		entry.Icon:SetSize(FOG_ICON_WIDTH, FOG_ICON_WIDTH)
+	end
+	return entry
+end
+
+-- Movement's last entry, laid on its grid with the journal's others (AddEntries), hooked as they are.
+function MapLegend:AddFog(category, index)
+	if fog.entry then return nil end
+	local entry = self:NewFogEntry(category, index)
+	if not entry then return nil end
+	fog.entry = entry
+	entry:HookScript("OnClick", function() MapLegend:ToggleFog() end)
+	entry:HookScript("OnEnter", function()
+		local tooltip = GameTooltip
+		if not (tooltip and tooltip:IsShown()) then return end
+		AddFogLines(tooltip)
+		tooltip:Show()
+	end)
+	PaintFog()
+	return entry
+end
+
+-- The legend's Fog of War entry, for the smoke test.
+function MapLegend:FogEntry()
+	return fog.entry
+end
+
+-- The journal's style changed: every one of its markers and maps drawn again for it, and the fog's switch with them
+-- (dimmed on a zone's map with the markers off; locked in Adventure Mode).
 function MapLegend:StyleChanged()
 	PaintSwitches()
 	RedrawJournalMarkers()
 	ns.ZoneMap:Refresh()
 	ns.DungeonMap:StyleChanged()
+	PaintFog()
 end
 ns.Style:OnChange(function() MapLegend:StyleChanged() end)
 

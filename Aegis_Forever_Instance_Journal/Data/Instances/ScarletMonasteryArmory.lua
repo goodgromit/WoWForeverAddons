@@ -15,6 +15,9 @@ ns.AddInstance({
 	levelMax = 44,
 	location = "Tirisfal Glades",
 	description = "The Scarlet Crusade's armory and training halls, where Herod, the Scarlet Champion, drills the Crusade's soldiers.",
+	-- Its whole description stays in the overview's facts where Spoken's story, its dungeon's one story, shows: it
+	-- tells this wing from the others (UI/EncounterPage.lua's FillInstanceOverview).
+	overviewNote = true,
 	buttonArt = { "Interface\\Glues\\LoadingScreens\\LoadScreenScarletMonastery" },
 	buttonImage = { "Interface\\EncounterJournal\\UI-EJ-DUNGEONBUTTON-ScarletMonastery" },
 	loreImage = { "Interface\\EncounterJournal\\UI-EJ-LOREBG-ScarletMonastery" },

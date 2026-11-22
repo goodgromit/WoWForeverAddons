@@ -591,7 +591,7 @@ ns.AddQuestSteps({
 		faction = "Alliance",
 		objective = "Read Henrig Lonebrow's Journal.",
 		pickup = "Henrig Lonebrow's Journal, Thousand Needles",
-		startMap = { mapID = 1441, x = 0.307, y = 0.244, label = "Henrig Lonebrow's Journal" },
+		startMap = { mapID = 1441, x = 0.3133, y = 0.2809, label = "Henrig Lonebrow's Journal" },
 		startItem = { itemID = 5791, name = "Henrig Lonebrow's Journal" },
 		turnin = "Falfindel Waywarder, Feralas",
 		endMap = { mapID = 1444, x = 0.896, y = 0.466, label = "Falfindel Waywarder" },

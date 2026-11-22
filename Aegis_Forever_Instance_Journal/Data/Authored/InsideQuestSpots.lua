@@ -4,15 +4,16 @@ local _, ns = ...
 	Quest spots inside the dungeons, on the journal's own floor pictures (2026-11-11, the owner's go of that
 	day): who gives or takes a quest there (startInside, endInside: its "!" or "?", UI/QuestMap.lua), and
 	what is looted, used or explored for one (objectivesInside: the game's In Progress mark, UI/QuestMap.lua's
-	ObjectiveMark). Loaded after the dungeons' own data and quest files, so each quest is the one its dungeon's
-	page lists.
+	ObjectiveMark). Loaded after the dungeons' own data and quest files (Data/Authored/Rumours.lua stays last),
+	so each quest is the one its dungeon's page lists.
 
 	Each spot: x and y, a share of the floor picture's width and height; floor, the journal's floor index as
 	the floor menu lists it (Data/Authored/ClassicMaps.lua puts a whole-dungeon picture first); name, who or
 	what stands there, as the mark's tooltip names it. An objective also has act ("loot", "use" or "explore")
 	and, to loot, the item (item, its id; itemName, its English name for the tooltip until the client has its
 	own), with article = false where that name takes no "the" ("The Book of Ur", "Jordan's Smithing Hammer"), and
-	quoted = true for a title, in the language's quotation marks ("Take “Of Love and Family”", a painting).
+	quoted = true for a title, in the language's quotation marks ("Take “Of Love and Family”", a painting); line, a key of the
+	strings, for its own words on what to do there (the Drowned City's tablets: "Make a rubbing with the hide and charcoal").
 	One table for each person or thing: the quests it gives or takes share it, and are one mark there, the
 	game's way over a person with several quests (UI/QuestMap.lua's InsideMarks).
 
@@ -54,7 +55,8 @@ local _, ns = ...
 	boss's own pin (Zaetar's Spirit, Captain Kromcrush, Stomper Kreeg, Princess Moira, Ysida Harmon, Pip Quickwit): the
 	boss's pin carries the quest badge instead (Data/Generated/QuestLinks.lua); quests a dungeon's own file
 	marks already (the Hall of Thanes', Ruins of Lordaeron's); and quests our data does not have on that page (Nostro's Compendium, 7507,
-	Lorekeeper Lydros's in Dire Maul; The Archivist, 5251, which only the Main Gate's page lists).
+	Lorekeeper Lydros's in Dire Maul). Stratholme's two gates were one page each until 0.39.22: their spots are one block
+	now, the Main Gate's, which had them all (The Archivist, 5251, only the Main Gate's page listed).
 ]]
 
 do
@@ -322,35 +324,9 @@ do
 	local SCOURGE_DATA_2 = { x = 0.7725, y = 0.4653, floor = 3, act = "loot", name = "Scourge Data", item = 13176, itemName = "Scourge Data", whole = { x = 0.9269, y = 0.3894 } }
 	-- Scourge Data (loot): to check in game: the facts set it beside Nerub'enkan's portrait; a best guess; on the whole map, carried by its floor's fit
 	local SCOURGE_DATA_3 = { x = 0.5499, y = 0.4898, floor = 3, act = "loot", name = "Scourge Data", item = 13176, itemName = "Scourge Data", whole = { x = 0.7374, y = 0.4102 } }
-	ns.AmendInstance("StratholmeMainGate", { questPatches = {
+	ns.AmendInstance("Stratholme", { questPatches = {
 		[5122] = { startInside = AURIUS, endInside = AURIUS, objectivesInside = { MALORS_STRONGBOX } },
 		[5251] = { objectivesInside = { SCARLET_ARCHIVE } },
-		[5848] = { objectivesInside = { UNFINISHED_PAINTING } },
-		[5125] = { startInside = AURIUS, endInside = AURIUS },
-		[5463] = { endInside = MENETHILS_GIFT },
-		[5213] = { objectivesInside = { SCOURGE_DATA, SCOURGE_DATA_2, SCOURGE_DATA_3 } },
-	} })
-end
-
-do
-	-- Malor's Strongbox (loot): from the facts, carried onto this picture; not seen in game yet; on the whole map, carried by its floor's fit
-	local MALORS_STRONGBOX = { x = 0.3094, y = 0.4074, floor = 2, act = "loot", name = "Malor's Strongbox", item = 12845, itemName = "Medallion of Faith", whole = { x = 0.4132, y = 0.6921 } }
-	-- Unfinished Painting (loot): to check in game: the facts set it beside Archivist Galford's portrait; a best guess; on the whole map, carried by its floor's fit
-	local UNFINISHED_PAINTING = { x = 0.2889, y = 0.7829, floor = 2, act = "loot", name = "Unfinished Painting", item = 14679, itemName = "Of Love and Family", quoted = true, whole = { x = 0.4011, y = 0.9142 } }
-	-- Aurius: from the facts, carried onto this picture; not seen in game yet; on the whole map, carried by its floor's fit
-	local AURIUS = { x = 0.6766, y = 0.7279, floor = 3, name = "Aurius", whole = { x = 0.8453, y = 0.6127 } }
-	-- Menethil's Gift: to check in game: the facts set it beside Baron Rivendare's portrait; a best guess; on the whole map, carried by its floor's fit,
-	-- then set 3 px west, just west of his pin's center (the review of 2026-11-12), so that kept clear of the pins it goes west, onto the walkway round his
-	-- platform, not east between his pin and Ramstein's, too close together for it
-	local MENETHILS_GIFT = { x = 0.3922, y = 0.2282, floor = 3, name = "Menethil's Gift", whole = { x = 0.6, y = 0.1878 } }
-	-- Scourge Data (loot): to check in game: the facts set it beside Maleki the Pallid's portrait; a best guess; on the whole map, carried by its floor's fit
-	local SCOURGE_DATA = { x = 0.6831, y = 0.1862, floor = 3, act = "loot", name = "Scourge Data", item = 13176, itemName = "Scourge Data", whole = { x = 0.8508, y = 0.152 } }
-	-- Scourge Data (loot): to check in game: the facts set it beside Baroness Anastari's portrait; a best guess; on the whole map, carried by its floor's fit
-	local SCOURGE_DATA_2 = { x = 0.7725, y = 0.4653, floor = 3, act = "loot", name = "Scourge Data", item = 13176, itemName = "Scourge Data", whole = { x = 0.9269, y = 0.3894 } }
-	-- Scourge Data (loot): to check in game: the facts set it beside Nerub'enkan's portrait; a best guess; on the whole map, carried by its floor's fit
-	local SCOURGE_DATA_3 = { x = 0.5499, y = 0.4898, floor = 3, act = "loot", name = "Scourge Data", item = 13176, itemName = "Scourge Data", whole = { x = 0.7374, y = 0.4102 } }
-	ns.AmendInstance("StratholmeServiceGate", { questPatches = {
-		[5122] = { startInside = AURIUS, endInside = AURIUS, objectivesInside = { MALORS_STRONGBOX } },
 		[5848] = { objectivesInside = { UNFINISHED_PAINTING } },
 		[5125] = { startInside = AURIUS, endInside = AURIUS },
 		[5463] = { endInside = MENETHILS_GIFT },
@@ -369,6 +345,47 @@ do
 		[3446] = { endInside = ALTAR_OF_HAKKAR },
 		[3447] = { endInside = IDOL_OF_HAKKAR },
 		[3373] = { endInside = ESSENCE_FONT },
+	} })
+end
+
+--[[
+	The Drowned City's tablets of I'lalai (2026-11-12): the Horde's The Drowned City (95775) and the Alliance's Take Two With
+	Water (95787), rubbings of the tablets with the hide and charcoal. The quest counts four rubbings, each its own
+	objective (Forever's quest data: items 270308 to 270311, The First to The Fourth Tablet of I'lalai), so each tablet's
+	mark is named for its rubbing and goes once that rubbing is made: the quest log counts it, or the rubbing is in the bags
+	(item, doneWith: UI/QuestMap.lua's ObjectiveDone). The others stay, the game's In Progress marks, until the quest is ready
+	to hand in (ObjectiveMark).
+
+	The owner's order (their words of 2026-11-12): "1st tablet down the stairs to the left as you see the pool; 2nd tablet to
+	the left of Var'Taka; 3rd tablet near Captain Dreadrise in the mouth of a skull; 4th tablet behind Min'loth the Serpent,
+	last boss". That their 1st is the game's First Tablet, and so on, is a best guess (the run's order).
+	- 2nd, 3rd and 4th: the owner's yellow circles on our sheet of Santiago Reyes's floor 1, from their run's combat log
+	  (2026-11-11), measured by color on their crop laid on the sheet (about 1 art pixel): the Deep Archives' west building,
+	  1033.2, 1108.9 on the sheet, just north-west of Var'Taka; the north channel below Captain Dreadrise, 1121.8, 712.5, at
+	  the west end of the bone drawn there; the Abyssal Dais, 385.1, 865.0, west of Min'loth (art = sheet / 2, less 180
+	  down; x and y, shares of the 1024 x 683 art).
+	- 1st, a best guess (2026-11-12): coming in from Sunken Hollow through the city's east gate (where Zul'Alai stands), the
+	  central pool lies ahead (west). South-east of the pool's own east gate, a stair drawn on the inner wall of the east
+	  ruins goes down west into the yard by the stream from the pool. The mark stands at its foot (1814, 1246 on Santiago's
+	  3000 x 2000 original). The other reading: the stair on the west wall of Zul'Alai's yard, just past the city's east
+	  gate, going down west by the small pool on its south side (about 1915-1936, 1176-1208; 0.64, 0.60 of the art), the
+	  first pool on the way in. The owner is to pick in game.
+	Their names are the rubbings' (the tablets themselves are not in the client's files).
+]]
+do
+	local function Tablet(x, y, item, name)
+		return { x = x, y = y, floor = 1, act = "use", name = name, item = item, itemName = name, doneWith = { item },
+			line = "QUESTMAP_OBJECTIVE_RUBBING" }
+	end
+	local TABLETS = {
+		Tablet(0.605, 0.623, 270308, "The First Tablet of I'lalai"),  -- the stair south-east of the central pool's east gate
+		Tablet(0.505, 0.680, 270309, "The Second Tablet of I'lalai"), -- the Deep Archives' west building, by Var'Taka
+		Tablet(0.548, 0.390, 270310, "The Third Tablet of I'lalai"),  -- the north channel below Captain Dreadrise
+		Tablet(0.188, 0.502, 270311, "The Fourth Tablet of I'lalai"), -- the Abyssal Dais, behind Min'loth the Serpent
+	}
+	ns.AmendInstance("TheDrownedCity", { questPatches = {
+		[95775] = { objectivesInside = TABLETS },
+		[95787] = { objectivesInside = TABLETS },
 	} })
 end
 

@@ -30,9 +30,17 @@ ns.AmendInstance("CityOfDalaran", {
 		.. "poisons, and the treants take no Nature damage, though they bleed.\n\n"
 		.. "Trash: interrupt the Mana Phantoms' Mana Burn, and stand in the pool a Saturated Remnant leaves behind "
 		.. "to regain mana. Every kill gives Kirin Tor reputation.",
+	-- Its practical words, which stay in the overview's facts where Spoken's story takes the description's place
+	-- (UI/EncounterPage.lua's FillInstanceOverview; the owner's lore rule of 2026-11-13).
+	overviewNote = "Go in through the sewers, to a portal at the end of a long pipe, then fight up through the streets "
+		.. "to the Shade of the Archmage.\n\n"
+		.. "Immunities: much of the city takes no Arcane damage. Constructs and elementals ignore bleeds and "
+		.. "poisons, and the treants take no Nature damage, though they bleed.\n\n"
+		.. "Trash: interrupt the Mana Phantoms' Mana Burn, and stand in the pool a Saturated Remnant leaves behind "
+		.. "to regain mana. Every kill gives Kirin Tor reputation.",
 
 	--[[
-		Before you go (the overview, for the player's own side): the Dalaran Sewer Key, from Heart of
+		Before you go (the Quests tab, for the player's own side): the Dalaran Sewer Key, from Heart of
 		Disruption, which the Image of Archmage Modera gives by Lordamere Lake; and Lyn the Ignored,
 		the hidden boss, who needs the Tome of Dalaran. The Horde's chain and the tome checked against
 		news posts of October 2026 and foreverchanges.pro's quest pages and City of Dalaran page, read
@@ -286,6 +294,10 @@ if city and city.map then
 				["Magus Commerce Exchange"] = true, ["Path of Renewal"] = true, ["The Violet Citadel"] = true,
 				["The Purple Parlor"] = true, ["City of Dalaran"] = true, ["The Eventide"] = true,
 				["Presage Plaza"] = true,
+				-- Six more city rooms a player's recorded run read (2026-11-13), between the Magus Commerce Exchange and
+				-- The Violet Citadel, after climbing out of the sewers
+				["Violet Plates and Framing"] = true, ["Forge of Fate"] = true, ["Talismanic Textiles"] = true,
+				["The Silver Enclave"] = true, ["The Atrium of Fortune"] = true, ["Tempered Tomes"] = true,
 			},
 		},
 	}

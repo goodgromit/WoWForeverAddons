@@ -15,6 +15,9 @@ ns.AddInstance({
 	levelMax = 46,
 	location = "Tirisfal Glades",
 	description = "The monastery's cathedral and the heart of the Scarlet Crusade, held by Scarlet Commander Mograine and High Inquisitor Whitemane.",
+	-- Its whole description stays in the overview's facts where Spoken's story, its dungeon's one story, shows: it
+	-- tells this wing from the others (UI/EncounterPage.lua's FillInstanceOverview).
+	overviewNote = true,
 	buttonArt = { "Interface\\Glues\\LoadingScreens\\LoadScreenScarletMonastery" },
 	buttonImage = { "Interface\\EncounterJournal\\UI-EJ-DUNGEONBUTTON-ScarletMonastery" },
 	loreImage = { "Interface\\EncounterJournal\\UI-EJ-LOREBG-ScarletMonastery" },

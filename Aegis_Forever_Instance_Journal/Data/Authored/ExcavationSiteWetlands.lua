@@ -16,14 +16,18 @@ ns.AmendInstance("ExcavationSiteWetlands", {
 	levelMax = 31,
 
 	-- The Highland Horror is a quest's mob more than a boss (the owner, 2026-11-11): questTarget, counted nowhere the
-	-- dungeon's bosses are (Core/Run.lua's Bosses), and done by his quest as well as by his corpse (UI/QuestMap.lua's
-	-- TargetDone). Since the owner's call of 2026-11-12, on the map only: off the boss list, his pin wearing the quest
-	-- badge always, a click on it opening Horrors in the Highland; his page, notes, abilities and loot kept
-	-- (UI/EncounterPage.lua's BossesOf).
+	-- dungeon's bosses are (Core/Run.lua's Bosses, UI/DungeonFog.lua's Counts), and done by his quest as well as by his
+	-- corpse (UI/QuestMap.lua's TargetDone). Since the owner's call of 2026-11-12, on the map only: off the boss list,
+	-- his pin wearing the quest badge always, a click on it opening Horrors in the Highland; his page, notes, abilities
+	-- and loot kept (UI/EncounterPage.lua's BossesOf).
+	-- His creature id (0.40.1): the drop data's (2026-11-19: 260808, a level-28 boss of the dungeon and the Wetlands
+	-- beside it, 1,233 kills), and a list of Forever's creatures gives the same id with this model. With it the map knows
+	-- him by his id in every language, his corpse's loot too.
 	addBosses = {
 		{
 			name = "Highland Horror",
 			questTarget = true,
+			npcID = 260808,
 			displayID = 9010,
 			level = 28,
 			loot = { { itemID = 270180, name = "Horrible Rootcore", slot = "Quest Item", quality = 1 } },

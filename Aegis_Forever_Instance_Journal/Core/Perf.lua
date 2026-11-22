@@ -32,7 +32,7 @@ end
 
 local function FirstBoss(instance)
 	for _, boss in ipairs(instance.bosses) do
-		if not boss.trash then return boss end
+		if not ns.IsLootSection(boss) then return boss end
 	end
 	return nil
 end
@@ -55,8 +55,12 @@ end
 	/aegis where: where the player stands, as the journal's map data needs it: the map and
 	the position on it, the area's name, and the height (which tells a level below a city
 	from the streets above it). Each reading is also kept in the saved file, under "where".
-	Under it, for each map with a way down (Old Ironforge), what the journal remembers the player
-	as there and its last changes this session (UI/DungeonMap.lua's BelowLines; not saved).
+	Inside a dungeon of several floors, the floor the journal's map takes there and the name it
+	went by (kept with the reading, as floor). Under it, for each map with a way down (Old
+	Ironforge), what the journal remembers the player as there and its last changes this
+	session (UI/DungeonMap.lua's BelowLines; not saved).
+	With the game's Gamepad UI on, a last line on the journal's dealings with its pad code this
+	session (Core/Compat.lua's ns.Gamepad:Readout; not saved).
 ]]
 function Perf:Where()
 	local mapID, x, y = ns.PlayerMapPosition()
@@ -66,12 +70,17 @@ function Perf:Where()
 	local _, _, height = Readable(UnitPosition, "player")
 	ns.Print(string.format(L.WHERE, tostring(mapID), info and info.name or "?", x or 0, y or 0, area, minimap,
 		height and string.format("%.1f", height) or "?"))
+	-- Inside a dungeon of several floors: the floor the journal's map takes there (UI/DungeonMap.lua's FloorLine)
+	local floor = ns.DungeonMap and ns.DungeonMap.FloorLine and ns.DungeonMap:FloorLine()
+	if floor then ns.Print(floor) end
 	for _, line in ipairs(ns.DungeonMap and ns.DungeonMap.BelowLines and ns.DungeonMap:BelowLines() or {}) do
 		ns.Print(line)
 	end
+	local pad = ns.Gamepad:Readout()
+	if pad then ns.Print(pad) end
 	ns.db.where = ns.db.where or {}
 	table.insert(ns.db.where, { mapID = mapID, x = x, y = y, area = area, minimap = minimap, height = height,
-		at = date("%Y-%m-%d %H:%M:%S") })
+		floor = floor, at = date("%Y-%m-%d %H:%M:%S") })
 end
 
 --[[
@@ -79,7 +88,7 @@ end
 	world map is given flight points and transport icons: whether the map shows them by
 	itself, how many it knows (the client's whole list, with the points the map leaves out), and
 	which of retail's travel icons the client has. Each sample carries its node id (#86), the
-	number the map's NOT_ON_FOREVER list goes by. Each reading is also kept in the saved file,
+	number ns.NOT_ON_FOREVER_TAXI (Core/Compat.lua) goes by. Each reading is also kept in the saved file,
 	under "taxi".
 ]]
 local TRAVEL_ATLASES = {
@@ -192,12 +201,35 @@ function Perf:Items()
 	Next()
 end
 
+-- What is timed, the journal's pages in full: the gate of Adventure Mode is skipped (UI/Journal.lua).
+local Measure
+
 function Perf:Run()
 	if InCombatLockdown() then
 		ns.Print(L.PERF_COMBAT)
 		return
 	end
 	local journal = ns.Journal
+	journal.ungated = true
+	local ok, results = pcall(Measure, journal)
+	journal.ungated = nil
+	if not ok then
+		geterrorhandler()(results)
+		return
+	end
+	collectgarbage("collect")
+	if type(UpdateAddOnMemoryUsage) == "function" then UpdateAddOnMemoryUsage() end
+	ns.Print(L.PERF_HEADER)
+	ns.Print(string.format(L.PERF_MEMORY, ns.name, MemoryKB(ns.name) or 0))
+	for _, name in ipairs(OTHERS) do
+		if IsLoaded(name) then ns.Print(string.format(L.PERF_MEMORY, name, MemoryKB(name) or 0)) end
+	end
+	if ns.perfBuildMS then ns.Print(string.format(L.PERF_TIME, L.PERF_BUILD, ns.perfBuildMS)) end
+	if ns.perfBookMS then ns.Print(string.format(L.PERF_TIME, L.PERF_BOOK, ns.perfBookMS)) end
+	for _, result in ipairs(results) do ns.Print(string.format(L.PERF_TIME, result[1], result[2])) end
+end
+
+Measure = function(journal)
 	local wasShown = journal:IsShown()
 	local results = {}
 
@@ -244,15 +276,5 @@ function Perf:Run()
 	ns.EncounterPage:SetTab(page, ns.EncounterPage.TAB_OVERVIEW)
 	journal:SelectTab(previousTab)
 	if not wasShown then journal:Toggle() end
-
-	collectgarbage("collect")
-	if type(UpdateAddOnMemoryUsage) == "function" then UpdateAddOnMemoryUsage() end
-	ns.Print(L.PERF_HEADER)
-	ns.Print(string.format(L.PERF_MEMORY, ns.name, MemoryKB(ns.name) or 0))
-	for _, name in ipairs(OTHERS) do
-		if IsLoaded(name) then ns.Print(string.format(L.PERF_MEMORY, name, MemoryKB(name) or 0)) end
-	end
-	if ns.perfBuildMS then ns.Print(string.format(L.PERF_TIME, L.PERF_BUILD, ns.perfBuildMS)) end
-	if ns.perfBookMS then ns.Print(string.format(L.PERF_TIME, L.PERF_BOOK, ns.perfBookMS)) end
-	for _, result in ipairs(results) do ns.Print(string.format(L.PERF_TIME, result[1], result[2])) end
+	return results
 end

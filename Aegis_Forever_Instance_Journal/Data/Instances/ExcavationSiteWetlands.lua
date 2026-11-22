@@ -15,6 +15,8 @@ ns.AddInstance({
 	levelMax = 33,
 	location = "Wetlands",
 	description = "A Titan dig site above Whelgar's Excavation, caught out of time, where the Titans' constructs answer to no one now. Inside: the Lost Marsh, Stalker's Thicket, the Site of the Guardian and the Lost Dig Site.",
+	-- Its practical words, kept in the overview's facts where Spoken's story shows (UI/EncounterPage.lua).
+	overviewNote = "Inside: the Lost Marsh, Stalker's Thicket, the Site of the Guardian and the Lost Dig Site.",
 	buttonArt = 7963777,
 	map = {
 		entrance = {
@@ -96,7 +98,7 @@ ns.AddInstance({
 				{
 					itemID = 273106,
 					name = "Blueprint: Greenhouse",
-					slot = "Blueprint",
+					slot = "Recipe, Book",
 					quality = 2,
 				},
 			},
@@ -141,7 +143,7 @@ ns.AddInstance({
 				{
 					itemID = 273097,
 					name = "Blueprint: Rock Garden",
-					slot = "Blueprint",
+					slot = "Recipe, Book",
 					quality = 2,
 				},
 			},

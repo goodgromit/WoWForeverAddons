@@ -140,7 +140,11 @@ Audit("RuinsOfLordaeron", {
 			},
 			note = "Theodore Griffs offers it once you have done A Recipe For Death, the apothecaries' three quests between the Sepulcher in Silverpine Forest and the Undercity.",
 		},
-		-- Remember That I Love You: pickup, startItem, endMap, note (Questie, foreverchanges, Wowhead)
+		-- Remember That I Love You: pickup, startItem, endMap, note (Forever's quest data, two quest pages).
+		-- Her spot is on Forever's redrawn Stormwind: 47.2, 38.4, which some guides still give, is her spot
+		-- on the classic map. Part 2 (95161) takes the letter to Avette Fellwood in Darkshire: where the chain
+		-- goes next is the quest's own followUp (Data/Instances/RuinsOfLordaeron.lua, 0.39.19's audit), which names
+		-- her; the shorter line this file gave since 2026-11-05 is gone with the merge of 0.39.19.
 		[92415] = {
 			pickup = "Blood-Stained Parchment, found inside Ruins of Lordaeron",
 			startItem = { itemID = 251270, name = "Blood-Stained Parchment" },
@@ -263,6 +267,8 @@ Audit("WailingCaverns", {
 		-- Leaders of the Fang: note (Questie, FDJ)
 		[914] = {
 			note = "Needs the Barrens oasis chain first: The Forgotten Pools, The Stagnant Oasis and Altered Beings, then Hamuul Runetotem and Nara Wildmane, before Leaders of the Fang opens.",
+			-- (the quests the note names that are named after someone: Adventure Mode hides them as quests)
+			namesQuests = { 1489, 1490 },
 		},
 		-- Hamuul Runetotem: prerequisites (Questie, FDJ, foreverchanges)
 		[1489] = {
@@ -488,7 +494,7 @@ Audit("RazorfenKraul", {
 			questID = 1782, name = "Furen's Armor", level = 28, requiredLevel = 20, faction = "Alliance", classOnly = "WARRIOR",
 			pickup = "Furen Longbeard, Stormwind City", turnin = "Furen Longbeard, Stormwind City",
 			startMap = { mapID = 1453, x = 0.646, y = 0.372, label = "Furen Longbeard" },
-			objective = "Talk to Furen Longbeard in Stormwind to get your armour.",
+			objective = "Talk to Furen Longbeard in Stormwind to get your armor.",
 			prerequisites = {
 				{ questID = 1699, name = "The Rethban Gauntlet" },
 				{ questID = 1702, name = "The Shieldsmith" },
@@ -516,16 +522,16 @@ Audit("RazorfenKraul", {
 			questID = 1848, name = "Brutal Hauberk", level = 30, requiredLevel = 20, faction = "Horde", classOnly = "WARRIOR",
 			pickup = "Thun'grim Firegaze, The Barrens", turnin = "Thun'grim Firegaze, The Barrens",
 			startMap = { mapID = 1413, x = 0.572, y = 0.303, label = "Thun'grim Firegaze" },
-			objective = "Talk to Thun'grim Firegaze in the Barrens to get your armour.",
+			objective = "Talk to Thun'grim Firegaze in the Barrens to get your armor.",
 			prerequisites = {
 				{ questID = 1824, name = "Trial at the Field of Giants" },
 				{ questID = 1838, name = "Brutal Armor" },
 			},
 			rewards = { xp = 3050, items = { { itemID = 7133, name = "Brutal Hauberk", quality = 3 } } },
 		},
-		-- An Unholy Alliance (FDJ, Questie, foreverchanges); its 40 silver and 2,800 XP as Razorfen Downs' copy
-		-- has them (foreverchanges.pro's quest page, 2026-10-30: "Changed in Forever. Gives 2,800 experience
-		-- instead of 3,500", so Forever's number, not marked)
+		-- An Unholy Alliance: its 40 silver as Razorfen Downs' copy has it. Its
+		-- 5,900 XP: the owner read it in the quest window (2026-11-13), as a player's recorded hand-in gave it;
+		-- the 2,800 read earlier (2026-10-30) was out of date. Forever's number, not marked.
 		{
 			questID = 6522, name = "An Unholy Alliance", level = 36, requiredLevel = 28, faction = "Horde",
 			pickup = "Small Scroll, dropped by Charlga Razorflank in Razorfen Kraul", turnin = "Varimathras, Royal Quarter, Undercity",
@@ -533,7 +539,7 @@ Audit("RazorfenKraul", {
 			endMap = { mapID = 1458, x = 0.563, y = 0.922, label = "Varimathras — Royal Quarter, Undercity" },
 			objective = "Take the Small Scroll to Varimathras in the Undercity.",
 			prerequisites = {},
-			rewards = { xp = 2800, money = 4000 },
+			rewards = { xp = 5900, money = 4000 },
 		},
 		-- Elemental Aid (its quest page); its two givers, Rau Cliffrunner and Prate Cloudseer, both in Thousand
 		-- Needles, are Forever's quest data's (2026-11-05; the pin stays at Rau's). The turn-in is Bath'rah the
@@ -681,7 +687,15 @@ Audit("TheDrownedCity", {
 	-- no giver or taker, so none is given: the page says the place is not known yet. Added on the
 	-- owner's call of 2026-11-03 (the deep audit of 2026-10-30, g09-1); the site's pages for them are
 	-- unread. 95776's objective names Var'Taka, the journal's second boss since 2026-11-08 (it had been
-	-- Zin'aka).
+	-- Zin'aka). Zin'aka is still in the dungeon, as an elite shark in the central pool, not a boss (2026-11-12), and
+	-- off the boss list since the owner's call of 2026-11-12 (it drops no loot yet: Data/Authored/Upcoming.lua).
+	-- The Horde's tablet quest, The Drowned City (95775), needs no earlier quest: the owner's word of 2026-11-12 ("make
+	-- sure these quests don't have pre-reqs"). It had Locating the Lost City, from the guide's chain and the quest's text
+	-- (2026-11-08), not from a player's report, and Forever's quest data lists no earlier quest for it either. Locating
+	-- the Lost City stays on the page as a quest of its own. The Alliance's Take Two With Water (95787) keeps An
+	-- Acquaintance in Southshore, as Magics of the Drowned City (95788) does: asked about it, the owner said to keep a
+	-- requirement as it is where a player's report gave it (2026-11-12). Whether 95775 stays without one is still to be
+	-- confirmed with the owner.
 	-- 2026-11-08: the chains before them, as a players' guide to the dungeon gives them (facts only): The Vile Reef
 	-- (629, Kin'weelay at Grom'gol) leads to The Gurubashi Legends of Old, then Locating the Lost City (the cavern
 	-- of Sunken Hollow), then The Drowned City; Enemies in the Water (the Brinescale Skirmishers outside the portal)
@@ -715,7 +729,7 @@ Audit("TheDrownedCity", {
 			questID = 95775, name = "The Drowned City", level = 40, requiredLevel = 30, faction = "Horde",
 			objective = "Use the hide and charcoal to create rubbings of the tablets found in the Drowned City.",
 			rewards = { reputation = { { faction = "Orgrimmar", amount = 100 }, { faction = "Darkspear Trolls", amount = 100 } } },
-			prerequisites = { { questID = 95770, name = "Locating the Lost City" } },
+			-- (no earlier quest: the owner's word of 2026-11-12, above)
 		},
 		{
 			questID = 95773, name = "Enemies in the Water", level = 37, requiredLevel = 30, faction = "Horde",
@@ -763,6 +777,7 @@ Audit("TheDrownedCity", {
 			objective = "Use the hide and charcoal to create rubbings of the tablets found in the Drowned City.",
 			note = "The same four tablets of I'lalai as the Horde's quest The Drowned City.",
 			rewards = { money = 15000, reputation = { { faction = "Stormwind", amount = 100 } } },
+			-- Kept on the owner's answer of 2026-11-12 (above)
 			prerequisites = { { questID = 95786, name = "An Acquaintance in Southshore" } },
 		},
 		{
@@ -796,7 +811,7 @@ Audit("TheDrownedCity", {
 			startMap = { mapID = 1424, x = 0.5057, y = 0.5709, label = "Loremaster Dibbs" },
 			endMap = { mapID = 1416, x = 0.1325, y = 0.6955, label = "Abra Cadabra — Dalaran" },
 			objective = "Bring the I'lalai Fetish to Abra Cadabra in Dalaran.",
-			note = "It can't be shared. The Kirin Tor only let noted visitors into Dalaran, so you may need their favour first.",
+			note = "It can't be shared. The Kirin Tor only let noted visitors into Dalaran, so you may need their favor first.",
 			rewards = {
 				choice = true,
 				items = {
@@ -841,7 +856,9 @@ Audit("TheDrownedCity", {
 			pickup = "Archmage Timear, Dalaran",
 			startMap = { mapID = 1416, x = 0.1617, y = 0.7166, label = "Archmage Timear — Dalaran" },
 			objective = "Recover an Ancient Gurubashi Idol from the Drowned City.",
-			note = "The idol drops from the Primeval Elemental. The Horde's quest for it is Ancient Gurubashi Idol, from Mazu'kon in Mulgore.",
+			-- (the idol: Deathless Marrow's, 2026-11-19: the drop data has it off Marrow on 1124 of 2185 kills and never off
+			-- the Primeval Elemental in 1450, and the owner remembers it off Marrow; Data/Authored/Upcoming.lua, at his loot)
+			note = "The idol drops from Deathless Marrow. The Horde's quest for it is Ancient Gurubashi Idol, from Mazu'kon in Mulgore.",
 			-- Its rewards: Wowhead's list of the dungeon's quests (2026-11-09).
 			rewards = { money = 5000, reputation = { { faction = "Kirin Tor", amount = 300 }, { faction = "Stormwind", amount = 150 } } },
 		},
@@ -871,7 +888,62 @@ Audit("TheDrownedCity", {
 	Reputation with the Brotherhood of the Horse is Forever's own faction (Data/Authored/Factions.lua).
 ]]
 -- Krol'dok Stronghold. The Krol'dok Compound Key's quests are done outside, so they are its Before you go's key
--- (Data/Authored/Upcoming.lua), with step pages, not rows. Commander Brant's spot is not in Forever's data.
+-- (Data/Authored/Upcoming.lua), with step pages, not rows.
+-- Checked again on 2026-11-17 (the owner's ask, "lets make sure the quests info is correct"): each quest's start and
+-- end NPC and map pin, level, side and series in Forever's quest database, a players' guide to the dungeon and the
+-- owner's table of its quests, and the client's item data (which items start which quest, the items' names). Every
+-- level, side, reward and prerequisite here matched. New: the givers and takers the first reading had no name or
+-- spot for (Sergeant Riftan, Demar Brant, Ashe Amberhall, Ranath Nightstride, Tran'gul, Da'grosh), each the
+-- database's start and end NPC at its pin, which the guide names too.
+-- The way in (2026-11-18, the owner's report: Eye of Mugg showed as open from level 40, "we cant get that yet"). The Eye
+-- of Mugg starts no quest (the client's item data: no start quest, and a quest item, so it drops only for a player who
+-- has the quest). Each side's dungeon quests are offered only after a chain outside, which the game data shows only in
+-- part (no series reaches the dungeon quests: that lock is the server's). So each one's lock is the whole chain, in
+-- order, as players' notes on the quests' pages, the owner's notes and pictures, the guides, the quests' own text and
+-- their series have it, each step a page of its own (Data/Authored/Upcoming.lua), so the lock line names the next step
+-- to do. Only steps surely needed: one a player may skip would keep the quest locked for good, as a step counts only
+-- once done (QuestsPanel:Status). Since the owner's evening notes of 2026-11-18, the chains from their first quests:
+-- The Horde's (fairly sure): Krom'rosh's A Message in Blood, then his Show Them How It's Done (players' notes).
+-- His Food for the Taking, given beside it, is no step of the lock (it keeps its page): one player (the note the owner
+-- sent) did both before Show Them How It's Done, another did both but is unsure both are needed, one only lists them
+-- side by side and one was offered both at once; one more says A Message in Blood and A Gift From Our Enemies
+-- (Krom'rosh's, the stolen feed to Gorg) must be done to move on to Show Them How It's Done, and names no Food for the
+-- Taking. So it may be optional (a question for the owner's run). Tran'gul's Twilight Missives, then Digging for Answers (its series); Clubtoe's The
+-- Purple Ones, in two parts (the first ends at a dead ogre in the caves, which gives the second: their series), and
+-- Sickening Lights, then Twilight No More! (two players' lists, one the note the owner sent; the series); Spread the
+-- Word back to Tran'gul, then Land of Giants on to Clugfist (their series; Clubtoe gives the head that Tran'gul sends
+-- on); Clugfist's Might Makes Right and Unworthy Champion, then Clugfist's Decree (two players' lists, one in so many
+-- words: do both "and you finally unlock Clugfist's Decree"; its text thanks you for smashing the Twilight); The
+-- Wayward Warrior (Clugfist's Decree's series); Da'grosh's Carving a Path, Break Their Chains and Rumblings of
+-- Discontent, then his Bring Me His Head (two players, each step by step, apart; A Token of Vengeance after it), and
+-- It Is Time, Brother... (Eye of Mugg and Tome of Twilight after it). Left out: Encroaching Twilight (one player's list
+-- has it beside Twilight Missives; no series or text ties it to Digging for Answers), A Gift From Our Enemies (the one
+-- player above names it in Food for the Taking's place; no one else does) and Rise Up! (one player: not needed).
+-- Encroaching Twilight stays out of the locks and off the road in Before you go, with no page: the owner's call of
+-- 2026-11-19 is to add it only if the game requires it. Players' notes on the quests' pages, read again that day, don't
+-- settle it: none says in so many words that it is needed or that it isn't; one had it offered together with Twilight
+-- Missives once Show Them How It's Done was handed in (so it is offered after that, fairly sure); other lists go from
+-- Twilight Missives to Digging for Answers without it; one bare reply naming it may mean it was needed too, or may
+-- only guess another quest's name; and one player's way to Clugfist ran through a kill-the-cultists quest from an orc
+-- mage in Rog'mar, which may be it. A question for the game: with Twilight Missives handed in and it not done, does
+-- Tran'gul offer Digging for Answers?
+-- The Alliance's (likely): Ashe Amberhall's Scraps of Knowledge or Demar Brant's Saving Sunnyglade, either one (ns.OneOf:
+-- a player had The Western Front once Scraps of Knowledge was done, and its completion sends you to Brant; another
+-- player's guess and another addon's chain view the owner saw put Saving Sunnyglade before it; the owner and a guide
+-- name Curious Trinkets too, which no chain puts there. Whether both are needed is not known: the smaller sure set);
+-- The Western Front (three players: Sergeant Riftan offers nothing before it); Riftan's No Soldier Left Behind and
+-- Carving a Path (the chain view the owner saw puts them before Bring Me His Head, the owner had both from Riftan with
+-- no Bring Me His Head yet, and its text speaks of "the soldiers we rescued"; Da'grosh's Horde quests are the same);
+-- Riftan's Bring Me His Head (Eye of Mugg after it: a player and a guide; Twilight Mementos: another player, and the
+-- chain view). Left out: News to Farholde, which that chain view alone puts before Eye of Mugg (a player has it
+-- "available once Kilgar has been killed"; a question for the owner's run). The Alliance's Tome of Twilight: Curious
+-- Trinkets, then A Small Favor (a player, the chain view, and A Small Favor's own text: "the reagents you collected";
+-- Scraps of Knowledge, which that view lists first too, left out).
+-- The Field Marshal's Log's quests (Saving Marshal Ryan, Dying Wish, Delivering Closure: their series) are no step of
+-- either: the log drops off the Twilight's Hammer at random and rarely (a player killed some 230 before one fell), so
+-- nothing waits on it, and no player's chain or the chain view has them (fairly sure). Krol'dok No More!, new in the
+-- database, stays out: its reward items aren't in the client (not live, by the best guess). XP is left out: the
+-- database's quest pages and its list of them disagree.
 -- (A new table each call, so the translations are laid over each quest's once.)
 local function Riverglades(x, y, label) return { mapID = 2548, x = x, y = y, label = label } end
 local function MuggChoice()
@@ -881,71 +953,147 @@ local function MuggChoice()
 		{ itemID = 279853, name = "Stick No Rock" },
 	}
 end
+-- Each side's way in to the dungeon's quests (above), in order; the steps' pages are in Data/Authored/Upcoming.lua.
+-- A new table each call. The Horde's, from Krom'rosh's first quest to Da'grosh's Bring Me His Head (Food for the
+-- Taking left out: it may be optional, above).
+local HORDE_WAY_IN = {
+	{ 93786, "A Message in Blood" }, { 94483, "Show Them How It's Done" },
+	{ 94680, "Twilight Missives" }, { 94727, "Digging for Answers" }, { 95417, "The Purple Ones" },
+	{ 95601, "The Purple Ones" }, { 95602, "Sickening Lights" }, { 95427, "Twilight No More!" },
+	{ 95418, "Spread the Word" }, { 95420, "Land of Giants" }, { 95424, "Might Makes Right" },
+	{ 95425, "Unworthy Champion" }, { 95428, "Clugfist's Decree" }, { 94744, "The Wayward Warrior" },
+	{ 94745, "Carving a Path" }, { 94748, "Break Their Chains" }, { 95431, "Rumblings of Discontent" },
+	{ 94768, "Bring Me His Head" },
+}
+local function DagroshsHead()
+	local list = {}
+	for _, step in ipairs(HORDE_WAY_IN) do list[#list + 1] = { questID = step[1], name = step[2] } end
+	return list
+end
+local function KromroshsMissive()
+	local list = DagroshsHead()
+	list[#list + 1] = { questID = 95278, name = "It Is Time, Brother..." }
+	return list
+end
+-- The Alliance's: either of the two Farholde Keep quests (above), then Sergeant Riftan's.
+local function RiftansHead()
+	return {
+		ns.OneOf("Scraps of Knowledge", { questID = 94879, name = "Scraps of Knowledge" },
+			{ questID = 94877, name = "Saving Sunnyglade" }),
+		{ questID = 94886, name = "The Western Front" },
+		{ questID = 94888, name = "No Soldier Left Behind" },
+		{ questID = 94889, name = "Carving a Path" },
+		{ questID = 94890, name = "Bring Me His Head" },
+	}
+end
 Audit("KroldokStronghold", {
 	add = {
-		-- Eye of Mugg, for each side: the proof is the Eye of Mugg (its page's item), Overseer Mugg's. The Horde's
-		-- text is Krom'rosh's, who takes it; the Alliance's is taken by Commander Brant.
+		-- Eye of Mugg, for each side: the proof is the Eye of Mugg (its page's item, 267086 in the client's data),
+		-- which Overseer Mugg drops. The Horde's text is Krom'rosh's, who takes it; the Alliance's quest text calls its giver
+		-- Commander Brant, who is Demar Brant <Knight Commander> in Farholde Keep (the database's start and end NPC
+		-- and pin, 66.6 81.0; the guide names him too). Each side's after its way in (above, since 2026-11-18; the whole
+		-- chain since the owner's evening notes): the Horde's once It Is Time, Brother... is handed in to Krom'rosh, the
+		-- Alliance's once Kilgar's head is with Sergeant Riftan (whether News to Farholde comes first too: a question for
+		-- the owner).
 		{
 			questID = 94968, name = "Eye of Mugg", level = 45, requiredLevel = 40, faction = "Horde",
 			pickup = "Krom'rosh, Rog'mar, Riverglades", turnin = "Krom'rosh, Rog'mar, Riverglades",
 			startMap = Riverglades(0.594, 0.456, "Krom'rosh"), endMap = Riverglades(0.594, 0.456, "Krom'rosh"),
 			objective = "Infiltrate Krol'dok Stronghold and return to Krom'rosh with proof of their leader's demise.",
-			note = "The proof is the Eye of Mugg.",
+			note = "The proof is the Eye of Mugg, which Overseer Mugg drops.",
 			rewards = { money = 13000, choice = true, items = MuggChoice() },
+			prerequisites = KromroshsMissive(),
 		},
 		{
 			questID = 94982, name = "Eye of Mugg", level = 45, requiredLevel = 40, faction = "Alliance",
-			pickup = "Commander Brant", turnin = "Commander Brant",
+			pickup = "Demar Brant, Farholde Keep, Riverglades", turnin = "Demar Brant, Farholde Keep, Riverglades",
+			startMap = Riverglades(0.666, 0.81, "Demar Brant"), endMap = Riverglades(0.666, 0.81, "Demar Brant"),
 			objective = "Infiltrate Krol'dok Stronghold and return to Commander Brant with proof of their leader's demise.",
-			note = "The proof is the Eye of Mugg. Commander Brant's spot is not known yet.",
+			note = "The proof is the Eye of Mugg, which Overseer Mugg drops.",
 			rewards = { money = 13000, choice = true, items = MuggChoice(),
 				reputation = { { faction = "Brotherhood of the Horse", amount = 150 } } },
+			prerequisites = RiftansHead(),
 		},
+		-- Ranath Nightstride gives and takes it in Dalaran (the database's start and end NPC and pin, 17.8 66.0 on the
+		-- Alterac Mountains map, as Dalaran's other givers are mapped; the guide names him too).
 		{
 			questID = 96771, name = "Vengeance of the Highborne", level = 45, requiredLevel = 37, faction = "Alliance",
+			pickup = "Ranath Nightstride, Dalaran", turnin = "Ranath Nightstride, Dalaran",
+			startMap = { mapID = 1416, x = 0.178, y = 0.66, label = "Ranath Nightstride — Dalaran" },
+			endMap = { mapID = 1416, x = 0.178, y = 0.66, label = "Ranath Nightstride — Dalaran" },
 			objective = "Travel to Krol'dok Stronghold and slay Zalfan Moonshadow.",
-			note = "Zalfan Moonshadow is a highborne seen in the stronghold with the Twilight's Hammer. Who gives the quest is not listed yet.",
+			note = "Zalfan Moonshadow is a highborne seen in the stronghold with the Twilight's Hammer.",
 			rewards = { money = 6500, reputation = { { faction = "Kirin Tor", amount = 250 },
 				{ faction = "Brotherhood of the Horse", amount = 150 } } },
 		},
+		-- Ashe Amberhall gives and takes the Alliance's (the database's start and end NPC and pin; the guide names her);
+		-- the tome (267104) drops from Nar'gurk, for each side's quest.
 		{
 			questID = 94984, name = "Tome of Twilight", level = 44, requiredLevel = 39, faction = "Alliance",
+			pickup = "Ashe Amberhall, Farholde Keep, Riverglades", turnin = "Ashe Amberhall, Farholde Keep, Riverglades",
+			startMap = Riverglades(0.667, 0.811, "Ashe Amberhall"), endMap = Riverglades(0.667, 0.811, "Ashe Amberhall"),
 			objective = "Kill Nar'gurk within Krol'dok Stronghold and recover any valuable information.",
-			note = "The information is the Tome of Twilight. Who gives the quest is not listed yet.",
+			note = "The information is the Tome of Twilight, which Nar'gurk drops.",
 			rewards = {
 				choice = true,
 				items = { { itemID = 279854, name = "Twilight Initiate's Belt" }, { itemID = 279855, name = "Torn Cultist Cloak" } },
 				reputation = { { faction = "Brotherhood of the Horse", amount = 150 } },
 			},
-			-- A Small Favor before it, by its page's series (a step's page: Data/Authored/Upcoming.lua)
-			prerequisites = { { questID = 94907, name = "A Small Favor" } },
+			-- A Small Favor before it, by its page's series, and Curious Trinkets before that (the block's comment above;
+			-- the steps' pages: Data/Authored/Upcoming.lua)
+			prerequisites = { { questID = 94881, name = "Curious Trinkets" }, { questID = 94907, name = "A Small Favor" } },
 		},
+		-- Tran'gul gives and takes the Horde's, in Rog'mar (the database's start and end NPC and pin, 59.4 44.0; the guide
+		-- names him too). After the Horde's way in, as Eye of Mugg (above): both players have Tran'gul offer it once It Is
+		-- Time, Brother... is handed in.
 		{
 			questID = 94972, name = "Tome of Twilight", level = 44, requiredLevel = 39, faction = "Horde",
+			pickup = "Tran'gul, Rog'mar, Riverglades", turnin = "Tran'gul, Rog'mar, Riverglades",
+			startMap = Riverglades(0.594, 0.44, "Tran'gul"), endMap = Riverglades(0.594, 0.44, "Tran'gul"),
 			objective = "Recover the Tome of Twilight from Krol'dok Stronghold.",
-			note = "Who gives the quest is not listed yet.",
+			note = "Nar'gurk drops the tome.",
 			rewards = {
 				choice = true,
 				items = { { itemID = 279859, name = "Indoctrinated Choker" }, { itemID = 279860, name = "Convert's Bindings" } },
 			},
+			prerequisites = KromroshsMissive(),
 		},
+		-- Da'grosh gives and takes it, outside the stronghold (the database's start and end NPC and pin, 33.4 38.0, in
+		-- the Krol'dok Stronghold Outskirts; the guide names him too). Its reward starts no quest (the client's data).
+		-- Da'grosh offers it once his Bring Me His Head is handed in (both players, above).
 		{
 			questID = 94975, name = "A Token of Vengeance", level = 42, requiredLevel = 38, faction = "Horde",
+			pickup = "Da'grosh, outside Krol'dok Stronghold, Riverglades",
+			turnin = "Da'grosh, outside Krol'dok Stronghold, Riverglades",
+			startMap = Riverglades(0.334, 0.38, "Da'grosh"), endMap = Riverglades(0.334, 0.38, "Da'grosh"),
 			objective = "Collect 15 Cultist Ears from the Twilight's Hammer in Krol'dok Stronghold.",
-			note = "Who gives the quest is not listed yet.",
 			rewards = { items = { { itemID = 267090, name = "Semblance of Twilight" } } },
+			prerequisites = DagroshsHead(),
 		},
+		-- Sergeant Riftan gives and takes it in the Twilight's Shroud (the database's start and end NPC and pin, 30.6
+		-- 49.0; the guide and the owner's table name him too). The bangles are the client's Twilight Bangle (267234).
+		-- Its row shows its chain (chainHead: UI/QuestsPanel.lua's BranchesOn; the owner's call of 2026-11-17, "make the
+		-- main dungeon quest the visible one"): Lingering Essence and Curios of Curiosity, its follow-ups outside, are
+		-- steps under its +, not rows. After the Alliance's way in (above, since 2026-11-18): a player has it offered once
+		-- Kilgar's head is with Riftan, and a guide says so of his Bring Me His Head.
 		{
 			questID = 94983, name = "Twilight Mementos", level = 42, requiredLevel = 38, faction = "Alliance",
+			pickup = "Sergeant Riftan, the Twilight's Shroud, Riverglades",
+			turnin = "Sergeant Riftan, the Twilight's Shroud, Riverglades",
+			startMap = Riverglades(0.306, 0.49, "Sergeant Riftan"), endMap = Riverglades(0.306, 0.49, "Sergeant Riftan"),
 			objective = "Collect 8 Cultist Bangles from the Twilight's Hammer in Krol'dok Stronghold.",
-			note = "Who gives the quest is not listed yet.",
+			note = "The bangles drop as Twilight Bangles from the Twilight's Hammer cultists inside.",
 			rewards = { reputation = { { faction = "Brotherhood of the Horse", amount = 150 } } },
+			prerequisites = RiftansHead(),
+			chainHead = true,
 		},
 		-- Its two follow-ups in Farholde Keep (the owner's rule: a chain's few follow-ups stay in it). Lingering
-		-- Essence is after Twilight Mementos by its page's series; Curios of Curiosity's text is Ashe's, after hers.
+		-- Essence is after Twilight Mementos by its page's series, and Sergeant Riftan gives it with the Satchel of
+		-- Cursed Mementos (its start NPC and pin); Curios of Curiosity's text is Ashe's, after hers.
 		{
 			questID = 94997, name = "Lingering Essence", level = 42, requiredLevel = 38, faction = "Alliance",
-			turnin = "Ashe Amberhall, Farholde Keep, Riverglades", endMap = Riverglades(0.667, 0.811, "Ashe Amberhall"),
+			pickup = "Sergeant Riftan, the Twilight's Shroud, Riverglades", turnin = "Ashe Amberhall, Farholde Keep, Riverglades",
+			startMap = Riverglades(0.306, 0.49, "Sergeant Riftan"), endMap = Riverglades(0.667, 0.811, "Ashe Amberhall"),
 			objective = "Bring the Satchel of Cursed Mementos to Ashe Amberhall in Farholde Keep.",
 			note = "It can't be shared.",
 			rewards = { money = 5500, reputation = { { faction = "Brotherhood of the Horse", amount = 100 } } },
@@ -966,32 +1114,197 @@ Audit("KroldokStronghold", {
 
 -- Alcaz Prison. The Dragon's Journal's text names Timear as its writer's partner: Archmage Lan'dalock, as in Dalaran's
 -- other dungeon quests. The prisoner's two quests are given inside: More Valuable Than Gold names him, Mason Connery.
--- State Secrets (96377) is left out: its page has no text yet, and it gives an Alliance quest Orgrimmar reputation.
+-- They and each side's State Secrets are the Alcaz Operative Insignia's chain (below, before the dungeon's rows).
 -- Alcaz Prison's givers and takers outside: Sully McCleary in Theramore's inn (Forever's quest data, Dustwallow
 -- Marsh), Thrall and Eitrigg in Orgrimmar (the same). A new table each call.
+-- The game has two Sully McClearys (Forever's NPC data, 2026-11-17, read from each one's page): the one in the inn
+-- (260146, 66.2 45.2) only takes Our Man in Theramore and gives Watch Yer Back; the one behind the graveyard outside
+-- town (260271, 63.4 42.4) gives and takes the rest: The Return of the King?, The Secret Prison, A Bit of Wet Work,
+-- Somber News and Shaw Needs To Know. Before 0.39.24 the journal had them all at the inn.
 local function Theramore() return { mapID = 1445, x = 0.662, y = 0.452, label = "Sully McCleary — Theramore" } end
+local function Graveyard() return { mapID = 1445, x = 0.634, y = 0.424, label = "Sully McCleary — Theramore's graveyard" } end
 local function Orgrimmar(x, y, label) return { mapID = 1454, x = x, y = y, label = label } end
+
+--[[
+	The Alliance's way in, as steps' pages (2026-11-12, the owner's report: Sully's quests need Mathias Shaw's
+	breadcrumb from Stormwind first). Forever's quest data (the game's copy, version 1.0.12) has none of these
+	quests yet; the site's quest pages (2026-11-12) give their ids, levels, sides and objectives, Our Man in
+	Theramore's spot at the end (Sully, 66.2 45.2, Sully McCleary's spot in Forever's quest data) and its
+	chain on to Watch Yer Back. The owner's screenshot of Shaw's quest window: Our Man in Theramore from
+	Master Mathias Shaw, to the dwarf Sully at Theramore's inn, 1,300 XP (the window's own number). Shaw's spot
+	is the one the Deadmines' chain has for him (Data/Generated/QuestSteps.lua).
+	The Return of the King? (the tower, in disguise) follows Watch Yer Back, and Sully gives The Secret Prison and A
+	Bit of Wet Work after it. Where (2026-11-17, the two Sullys' own pages, above): Watch Yer Back ends behind
+	Theramore's graveyard, and The Return of the King? is given and handed in there, not at the inn (before, a best
+	guess from a player's comment; Watch Yer Back had no end spot). Watch Yer Back's and The Return of the King?'s
+	1,300 XP are the site's numbers (Forever's, from players' quest windows); their reputation (25, 75 and 100
+	Stormwind, with Our Man in Theramore's) the quests' pages' (2026-11-17).
+]]
+-- Master Mathias Shaw at SI:7 in Stormwind: he gives Our Man in Theramore and takes Shaw Needs To Know. A new table each call.
+local function Shaw() return { mapID = 1453, x = 0.783, y = 0.707, label = "Master Mathias Shaw" } end
+local SULLY_GRAVEYARD = "Sully McCleary, behind Theramore's graveyard, Dustwallow Marsh"
+ns.AddQuestSteps({
+	[95194] = {
+		name = "Our Man in Theramore", level = 53, requiredLevel = 48, faction = "Alliance",
+		pickup = "Master Mathias Shaw, Stormwind City", startMap = Shaw(),
+		turnin = "Sully McCleary, the inn at Theramore, Dustwallow Marsh", endMap = Theramore(),
+		objective = "Seek out the SI:7 agent stationed on Theramore Isle.",
+		rewards = { xp = 1300, reputation = { { faction = "Stormwind", amount = 25 } } },
+	},
+	[95196] = {
+		name = "Watch Yer Back", level = 53, requiredLevel = 48, faction = "Alliance",
+		pickup = "Sully McCleary, the inn at Theramore, Dustwallow Marsh", startMap = Theramore(),
+		-- (the graveyard Sully's spot, above: before 2026-11-17 no source gave it, and it had none)
+		turnin = SULLY_GRAVEYARD, endMap = Graveyard(),
+		objective = "Meet Sully McCleary in Dustwallow Marsh and learn more about your mission.",
+		note = "Sully leaves the inn first. Wait until he is gone, then meet him behind the graveyard outside town.",
+		rewards = { xp = 1300, reputation = { { faction = "Stormwind", amount = 75 } } },
+		prerequisites = { { questID = 95194, name = "Our Man in Theramore" } },
+	},
+	[95198] = {
+		name = "The Return of the King?", level = 53, requiredLevel = 48, faction = "Alliance",
+		-- (given and taken back behind the graveyard: the graveyard Sully's page, above)
+		pickup = SULLY_GRAVEYARD, startMap = Graveyard(),
+		turnin = SULLY_GRAVEYARD, endMap = Graveyard(),
+		objective = "Use the SI:7 Disguise Kit to eavesdrop on Jaina and her inner circle at the Theramore Mage Tower.",
+		note = "Sully's SI:7 Disguise Kit makes you look like a Kul Tiras marine. Don't go near Jaina: she sees through it. If you lose the disguise, Sully gives you another kit.",
+		rewards = { xp = 1300, reputation = { { faction = "Stormwind", amount = 100 } } },
+		prerequisites = { { questID = 95194, name = "Our Man in Theramore" }, { questID = 95196, name = "Watch Yer Back" } },
+	},
+})
+-- Sully's quests after the tower (above): the way in, oldest first. A new table each call.
+local function SullysErrand()
+	return {
+		{ questID = 95194, name = "Our Man in Theramore" },
+		{ questID = 95196, name = "Watch Yer Back" },
+		{ questID = 95198, name = "The Return of the King?" },
+	}
+end
+
+--[[
+	The Horde's way in, as steps' pages (2026-11-12, the owner's answer: it starts in Orgrimmar). Forever's quest data
+	has none of these quests; the site's quest pages (2026-11-12) give their ids, levels, side, objectives
+	and texts, their order (one chain: The Missing Kor'kron, The Elite of the Elite, Right Place, Wrong Time), 1,300 XP
+	each, Right Place, Wrong Time's 20 silver and 75 Orgrimmar reputation. Their givers and takers, as players saw them
+	in game (the pages of 2026-11-13): Eitrigg in Orgrimmar gives The Missing Kor'kron (34.4 39.1; Nazeer's hand-in
+	line: "Eitrigg sent you?"), Nazeer Bloodpike takes it and gives The Elite of the Elite, Sergeant Ulka takes that one
+	and gives and takes Right Place, Wrong Time. The spots: Eitrigg's the one Blood Red Bandanas has for him (Forever's
+	quest data, NPC 3144, in Grommash Hold), Nazeer's his in Forever's quest data (NPC 4791, 35.2 30.7; the page has 35.3),
+	Sergeant Ulka's the owner's, 70.4 19.0 (the page has 70.3). The game names him Nazeer Bloodpike, the quest's
+	objective "Bloodspike". Best guess: Ulka's two quests at the prison (No Orc Left Behind, A Little Payback) wait for
+	Right Place, Wrong Time, as Sully's wait for the tower (her hand-in line asks if you are ready to do your duty).
+]]
+local EITRIGG = "Eitrigg, Grommash Hold, Orgrimmar"
+local NAZEER = "Nazeer Bloodpike, Brackenwall Village, Dustwallow Marsh"
+local ULKA = "Sergeant Ulka, outside Alcaz Prison"
+-- A new table each call.
+local function Nazeer() return { mapID = 1445, x = 0.352, y = 0.307, label = "Nazeer Bloodpike" } end
+local function Ulka() return { mapID = 1445, x = 0.704, y = 0.190, label = "Sergeant Ulka" } end
+ns.AddQuestSteps({
+	[95283] = {
+		name = "The Missing Kor'kron", level = 53, requiredLevel = 48, faction = "Horde",
+		pickup = EITRIGG, startMap = Orgrimmar(0.3428, 0.3935, "Eitrigg"),
+		turnin = NAZEER, endMap = Nazeer(),
+		objective = "Speak with Nazeer Bloodspike in Brackenwall Village.",
+		-- (its reputation: the quest's page, 2026-11-17)
+		rewards = { xp = 1300, reputation = { { faction = "Orgrimmar", amount = 50 } } },
+	},
+	[95284] = {
+		name = "The Elite of the Elite", level = 53, requiredLevel = 48, faction = "Horde",
+		pickup = NAZEER, startMap = Nazeer(),
+		turnin = ULKA, endMap = Ulka(),
+		objective = "Find the missing Kor'kron Elites.",
+		note = "An elite quest: bring friends. Nazeer thinks the Kor'kron went to Alcaz Island.",
+		-- (its reputation: the quest's page, 2026-11-17)
+		rewards = { xp = 1300, reputation = { { faction = "Orgrimmar", amount = 75 } } },
+		prerequisites = { { questID = 95283, name = "The Missing Kor'kron" } },
+	},
+	[95285] = {
+		name = "Right Place, Wrong Time", level = 53, requiredLevel = 48, faction = "Horde",
+		pickup = ULKA, startMap = Ulka(),
+		turnin = ULKA, endMap = Ulka(),
+		objective = "Speak with Sergeant Ulka to learn more about the situation on Alcaz Isle.",
+		rewards = { xp = 1300, money = 2000, reputation = { { faction = "Orgrimmar", amount = 75 } } },
+		prerequisites = { { questID = 95283, name = "The Missing Kor'kron" }, { questID = 95284, name = "The Elite of the Elite" } },
+	},
+})
+-- Sergeant Ulka's quests after Right Place, Wrong Time (above): the way in, oldest first. A new table each call.
+local function UlkasErrand()
+	return {
+		{ questID = 95283, name = "The Missing Kor'kron" },
+		{ questID = 95284, name = "The Elite of the Elite" },
+		{ questID = 95285, name = "Right Place, Wrong Time" },
+	}
+end
+
+--[[
+	The Alcaz Operative Insignia, a toy (the owner's steps, 2026-11-13): Mason Connery, chained at the prison's end,
+	gives The Man in the Iron Chains (The Questioner's key, so The Questioner must still be alive), then More Valuable
+	Than Gold, whose note ("WF, 43.4, 67.8") leads to a box under the floorboards upstairs in Moonbrook's inn in
+	Westfall: the quest is handed in there, for the Document Box. Each side's State Secrets takes the box for a
+	Fractured Insignia; six of those make the toy. Checked in the client's own item data: the Ornate Shackle Key
+	(274029, a quest item: the quest's objective calls it the Alcaz Shackle Key), the Document Box (274041, junk,
+	sells for 25 gold, not bound), the Fractured Insignia (279450, Uncommon, not bound, level 40; its use, "Combine 6
+	Operative Insignias.", as its item page gives it: the spell it casts is in the client's encrypted part), the toy
+	(279471, Rare, in the game's Toy table). Who gives and takes each State Secrets (each quest's page's start and end,
+	2026-11-18; their spots Forever's quest data's): the Alliance's, Renzik "The Shiv" (NPC 6946, at SI:7 in Stormwind,
+	78.29 71.14); the Horde's, Nazgrel (NPC 3230, in Grommash Hold, Orgrimmar 32.3 35.75), the Warchief's advisor its text
+	names. Before 2026-11-18 the journal had Rix Xizzix in Booty Bay for the Horde's, a best guess: he is a vendor who
+	gives no quest. Each needs More Valuable Than Gold done first (the steps' order, a best guess). The box: Connery's
+	Trunk, where the note says (More Valuable Than Gold's page's end, 2026-11-18). Their XP and gold: the pages' (below).
+	A new table each call.
+]]
+local MOONBROOK_BOX = "Mason Connery's treasure, upstairs in the inn at Moonbrook, Westfall"
+local RENZIK = "Renzik \"The Shiv\", SI:7, Old Town, Stormwind City"
+local NAZGREL = "Nazgrel, Grommash Hold, Orgrimmar"
+local function MoonbrookBox() return { mapID = 1436, x = 0.434, y = 0.678, label = "Mason Connery's treasure" } end
+local function Renzik() return { mapID = 1453, x = 0.7829, y = 0.7114, label = "Renzik \"The Shiv\"" } end
+local function Nazgrel() return Orgrimmar(0.323, 0.3575, "Nazgrel") end
+local function MasonsQuests()
+	return {
+		{ questID = 96335, name = "The Man in the Iron Chains" },
+		{ questID = 96337, name = "More Valuable Than Gold" },
+	}
+end
+-- (a State Secrets' reward: the Fractured Insignia)
+local function Insignia() return { { itemID = 279450, name = "Fractured Insignia" } } end
+
 Audit("AlcazPrison", {
 	add = {
 		{
 			questID = 96772, name = "The Dragon's Journal", level = 53, requiredLevel = 46, faction = "Alliance",
-			pickup = "Archmage Lan'dalock, Dalaran",
+			pickup = "Archmage Lan'dalock, Dalaran", turnin = "Archmage Lan'dalock, Dalaran",
+			-- (he takes it back too: its page's end, 2026-11-18, at the same pins)
 			startMap = { mapID = 1416, x = 0.1588, y = 0.7311, label = "Archmage Lan'dalock — Dalaran" },
+			endMap = { mapID = 1416, x = 0.1588, y = 0.7311, label = "Archmage Lan'dalock — Dalaran" },
 			objective = "Recover Zarla's Journal from the depths of Alcaz Prison.",
-			note = "Zarla's Journal drops from Blazeroar, the last boss: Zarla Ober, the prisoner who turns into a red dragon.",
-			rewards = { money = 8000, reputation = { { faction = "Kirin Tor", amount = 300 }, { faction = "Stormwind", amount = 150 } } },
+			-- (her dragon: the quest's own text calls her a black dragon in disguise, 2026-11-17)
+			note = "Zarla's Journal drops from Blazeroar, the last boss: Zarla Ober, the prisoner who turns out to be a dragon.",
+			-- (its XP and money: its page's, 2026-11-18, at level 53; the 80 silver before was a guide's)
+			rewards = { xp = 14400, money = 16752, reputation = { { faction = "Kirin Tor", amount = 300 }, { faction = "Stormwind", amount = 150 } } },
 		},
 		{
 			questID = 96335, name = "The Man in the Iron Chains", level = 53, requiredLevel = 48, faction = "Both",
 			pickup = "Mason Connery, inside Alcaz Prison", turnin = "Mason Connery, inside Alcaz Prison",
 			objective = "Recover the Alcaz Shackle Key from The Questioner in Alcaz Prison.",
-			note = "Mason Connery is a prisoner chained inside. It can't be shared.",
+			-- (the owner's steps, 2026-11-13: he offers it at the end, after Blazeroar, as its text says, and The
+			-- Questioner must still be alive; the key is the Ornate Shackle Key in the client's item data)
+			-- (handed in together: two players' reports on its page, 2026-11-14 and 11-16, that once one player had freed him,
+			-- he walked off and the others could not hand it in; its XP: its page's, 2026-11-18)
+			note = "Mason Connery is a prisoner chained at the end of the prison. The Questioner must still be alive: skip him on your way in, then go back for him once you have this quest. He drops the Ornate Shackle Key. Everyone in the group should hand it in at the same time: once one player frees him, he walks off, and the others can't hand it in. This quest can't be shared.",
+			rewards = { xp = 2850 },
 		},
 		{
 			questID = 96337, name = "More Valuable Than Gold", level = 53, requiredLevel = 48, faction = "Both",
 			pickup = "Mason Connery, inside Alcaz Prison",
-			objective = "Use the note Mason Connery gives you to find his hidden treasure.",
-			note = "It can't be shared.",
+			-- (handed in at a box in Westfall: the owner's steps, 2026-11-13, above; its objective as the game gives it. Its
+			-- page, 2026-11-18: its goal is the Loose Floorboard (an object), and it ends at Connery's Trunk (an object,
+			-- Westfall 43.4 67.9), whose "?" shows once the floorboard is clicked (a player, 2026-11-13). The taker's words
+			-- stay "Mason Connery's treasure": the spot is the trunk's. Its XP: its page's.)
+			turnin = MOONBROOK_BOX, endMap = MoonbrookBox(),
+			objective = "Use the note provided by Mason Connery to find his hidden treasure.",
+			note = "Mason's note reads \"WF, 43.4, 67.8\": the inn at Moonbrook in Westfall. Upstairs, click the loose floorboard, then hand the quest in at Connery's Trunk beside it. Don't sell the Document Box it gives you (a vendor pays 25 gold): State Secrets needs it. This quest can't be shared.",
+			rewards = { xp = 11550, items = { { itemID = 274041, name = "Document Box" } } },
 			prerequisites = { { questID = 96335, name = "The Man in the Iron Chains" } },
 		},
 		--[[
@@ -1000,57 +1313,116 @@ Audit("AlcazPrison", {
 			there (2026-11-09: Mathias Shaw's errand to the dwarf in Theramore's inn, then Jaina's tower; Before you
 			go): the dwarf is Sully McCleary, whose text A Bit of Wet Work is and to whom Somber News returns, so he
 			gives The Secret Prison too (its text is a dwarf's). The Horde's Sergeant Ulka is the players' guide's
-			(Data/Authored/Upcoming.lua), and A Little Payback's text is his; Commander Folkar's text is The Honor of
-			the Kor'kron's and Thrall Needs to Know's. Its series: The Honor of the Kor'kron, Bad News for Folkar,
-			Thrall Needs to Know; and The Man in the Iron Chains, Somber News. Each State Secrets has no text yet:
-			the Alliance's page lists Orgrimmar reputation, as the Horde's does, which is left out as a slip.
+			(Data/Authored/Upcoming.lua), and A Little Payback's text is hers (Right Place, Wrong Time's text calls her
+			"she"); Commander Folkar's text is The Honor of the Kor'kron's and Thrall Needs to Know's. Its series: The Honor of the Kor'kron, Bad News for Folkar,
+			Thrall Needs to Know; and The Man in the Iron Chains, Somber News. Each State Secrets: its giver and reward
+			since the owner's steps of 2026-11-13 (above). Its reputation: the Alliance's page of 2026-11-09 listed
+			Orgrimmar's, as the Horde's did; left out of the Alliance's on purpose (an Alliance player gains no Orgrimmar
+			reputation), kept on the Horde's. The Alliance quest's own data on the site still carries the 150 Orgrimmar
+			(read again 2026-11-18); neither the client's files nor the owner's steps say either way.
+			Since 2026-11-12 the Alliance's way in is three quests of its own, the steps above (SullysErrand), and the
+			Horde's from Orgrimmar too (UlkasErrand).
+			XP and money (2026-11-18): the figures each quest's page shows at level 53, as No Orc Left Behind's and The
+			Honor of the Kor'kron's were read (fairly sure; State Secrets' money only from the page's scaling reward).
 		]]
 		{
 			questID = 95262, name = "The Secret Prison", level = 53, requiredLevel = 48, faction = "Alliance",
-			pickup = "Sully McCleary, the inn at Theramore, Dustwallow Marsh",
-			startMap = Theramore(),
+			pickup = SULLY_GRAVEYARD, startMap = Graveyard(),
 			objective = "Enter Alcaz Prison and learn what became of the King of Stormwind.",
-			note = "It can't be shared. Sully gives it after his errand at Jaina Proudmoore's tower (Before you go).",
-			rewards = { reputation = { { faction = "Stormwind", amount = 150 } } },
+			-- (its two goals on its page, 2026-11-17: the last boss, Blazeroar, and the note on the ground after him, which
+			-- a player's comment on the Horde's twin places)
+			note = "It can't be shared. It is done once Blazeroar, the last boss, is dead and you have read the note about the King on the ground after the fight.",
+			rewards = { xp = 14400, money = 13919, reputation = { { faction = "Stormwind", amount = 150 } } },
+			prerequisites = SullysErrand(),
 		},
 		{
 			questID = 96381, name = "A Bit of Wet Work", level = 53, requiredLevel = 48, faction = "Alliance",
-			pickup = "Sully McCleary, the inn at Theramore, Dustwallow Marsh",
-			turnin = "Sully McCleary, the inn at Theramore, Dustwallow Marsh",
-			startMap = Theramore(), endMap = Theramore(),
+			pickup = SULLY_GRAVEYARD, turnin = SULLY_GRAVEYARD,
+			startMap = Graveyard(), endMap = Graveyard(),
 			objective = "Kill 15 Strashaz Soldiers and 8 Strashaz Enchantresses in Alcaz Prison, and bring Tidemistress Ca'zass's head to Sully McCleary.",
 			rewards = {
+				xp = 11550,
 				money = 8000,
 				choice = true,
 				items = { { itemID = 279825, name = "Theramore Defender's Gauntlets" }, { itemID = 279826, name = "Marshdweller's Pants" }, { itemID = 279829, name = "Naga Scale Spaulders" } },
 				reputation = { { faction = "Stormwind", amount = 100 }, { faction = "Ironforge", amount = 100 } },
 			},
+			prerequisites = SullysErrand(),
 		},
 		{
 			questID = 95263, name = "Somber News", level = 53, requiredLevel = 48, faction = "Alliance",
-			pickup = "Inside Alcaz Prison", turnin = "Sully McCleary, the inn at Theramore, Dustwallow Marsh",
-			endMap = Theramore(),
+			pickup = "Inside Alcaz Prison", turnin = SULLY_GRAVEYARD,
+			endMap = Graveyard(),
 			objective = "Take what you learned of the King of Stormwind back to Sully McCleary in Dustwallow Marsh.",
-			note = "It can't be shared. It starts from what you find inside, after The Man in the Iron Chains.",
-			rewards = { reputation = { { faction = "Stormwind", amount = 75 } } },
-			prerequisites = { { questID = 96335, name = "The Man in the Iron Chains" } },
+			-- (where it starts: its text is an object's or an item's, and two guides name the Perfumed Note by Blazeroar,
+			-- 2026-11-18; its XP: its page's)
+			note = "It can't be shared. It starts from the Perfumed Note on the ground by Blazeroar after the fight, once you have done The Secret Prison and The Man in the Iron Chains.",
+			rewards = { xp = 2850, reputation = { { faction = "Stormwind", amount = 75 } } },
+			-- (The Secret Prison too since 2026-11-17, both kept at the owner's word of 2026-11-18: the quests' series lists
+			-- The Secret Prison and The Man in the Iron Chains side by side just before this one, and a walk-through posted
+			-- on its own page, 2026-11-09, warns that killing The Questioner before the last boss loses the last quest. Its
+			-- news, the King's death, is what The Secret Prison finds out.)
+			prerequisites = {
+				{ questID = 95262, name = "The Secret Prison" },
+				{ questID = 96335, name = "The Man in the Iron Chains" },
+			},
+		},
+		--[[
+			The chain's end, back at Shaw (the owner's yes, 2026-11-12), as the Horde's Thrall Needs to Know. Its page on the
+			site (2026-11-12): its objective (it spells him "Matthias", kept as the game shows it), text, and rewards:
+			1,300 XP (the site's number, not yet seen in game), 80 silver, 100 Stormwind reputation, a choice of the three
+			items. The page names no giver and no series: Sully gives it (its text is his, "I beg ye", and sends you back to
+			Stormwind with the news), after Somber News brings him that news: a best guess, as Thrall Needs to Know follows
+			Bad News for Folkar. Not shareable, by its page (no "Shareable"), as Somber News.
+		]]
+		{
+			questID = 95264, name = "Shaw Needs To Know", level = 53, requiredLevel = 48, faction = "Alliance",
+			pickup = SULLY_GRAVEYARD, turnin = "Master Mathias Shaw, Stormwind City",
+			-- (the graveyard Sully gives it: his page lists it, 2026-11-17)
+			startMap = Graveyard(), endMap = Shaw(),
+			objective = "Bring the news to Matthias Shaw in Stormwind.",
+			note = "It can't be shared.",
+			rewards = {
+				xp = 1300,
+				money = 8000,
+				choice = true,
+				items = { { itemID = 279833, name = "Courier's Clasp" }, { itemID = 279831, name = "Fatebound Buckler" }, { itemID = 279474, name = "Dustwallow Dirk" } },
+				reputation = { { faction = "Stormwind", amount = 100 } },
+			},
+			prerequisites = {
+				{ questID = 96335, name = "The Man in the Iron Chains" },
+				{ questID = 95263, name = "Somber News" },
+			},
 		},
 		{
 			questID = 96377, name = "State Secrets", level = 53, requiredLevel = 48, faction = "Alliance",
+			pickup = RENZIK, turnin = RENZIK, startMap = Renzik(), endMap = Renzik(),
 			objective = "Bring back the Document Box.",
-			note = "It can't be shared. Who gives it is not listed yet. The Horde has its own State Secrets.",
+			note = "It needs the Document Box from More Valuable Than Gold. Its reward, the {item:279450:Fractured Insignia:2}, can be traded: six of them combine into the {item:279471:Alcaz Operative Insignia:3}, a toy. One run is enough: trade or buy the other five. This quest can't be shared. The Horde has its own State Secrets.",
+			rewards = { xp = 6550, money = 16000, items = Insignia() },
+			prerequisites = MasonsQuests(),
 		},
 		{
 			questID = 95309, name = "No Orc Left Behind", level = 53, requiredLevel = 48, faction = "Horde",
 			pickup = "Sergeant Ulka, outside Alcaz Prison", turnin = "Commander Folkar, inside Alcaz Prison",
+			-- (Ulka's spot and her quests after Right Place, Wrong Time since 2026-11-12: the steps above, UlkasErrand)
+			startMap = Ulka(),
 			objective = "Go down into Alcaz Prison and find Commander Folkar.",
-			rewards = { reputation = { { faction = "Orgrimmar", amount = 150 } } },
+			-- (its page, 2026-11-17: its goal, Find Commander Folkar, is credited by Katerina the Cleaner; a guide, 2026-11-18:
+			-- Folkar is chained behind her and gives The Honor of the Kor'kron once she is dead. Fairly sure, to check in
+			-- game. Its XP and its money at level 53, about 1 gold 39 silver)
+			note = "Commander Folkar is chained just past Katerina the Cleaner: he counts as found once she is dead.",
+			rewards = { xp = 12100, money = 13919, reputation = { { faction = "Orgrimmar", amount = 150 } } },
+			prerequisites = UlkasErrand(),
 		},
 		{
 			questID = 96332, name = "A Little Payback", level = 53, requiredLevel = 48, faction = "Horde",
 			pickup = "Sergeant Ulka, outside Alcaz Prison", turnin = "Sergeant Ulka, outside Alcaz Prison",
+			startMap = Ulka(), endMap = Ulka(),
+			prerequisites = UlkasErrand(),
 			objective = "Kill 15 Strashaz Soldiers and 8 Strashaz Enchantresses in Alcaz Prison, and bring Tidemistress Ca'zass's head to Sergeant Ulka.",
 			rewards = {
+				xp = 9700,
 				money = 8000,
 				choice = true,
 				items = { { itemID = 279824, name = "Kor'kron Battle Gauntlets" }, { itemID = 279826, name = "Marshdweller's Pants" }, { itemID = 279829, name = "Naga Scale Spaulders" } },
@@ -1061,15 +1433,21 @@ Audit("AlcazPrison", {
 			questID = 95454, name = "The Honor of the Kor'kron", level = 53, requiredLevel = 48, faction = "Horde",
 			pickup = "Commander Folkar, inside Alcaz Prison",
 			objective = "Search Alcaz Prison for King Varian Wrynn, and read the note on the ground.",
-			note = "Folkar waits inside, wounded, once No Orc Left Behind has brought you to him.",
-			rewards = { reputation = { { faction = "Orgrimmar", amount = 100 } } },
+			-- (its page, 2026-11-17: its goals are Blazeroar, the last boss, and the note on the ground after him; its XP and
+			-- its money at level 53. Folkar gives it once Katerina is dead: a guide, 2026-11-18, as No Orc Left Behind's.
+			-- Whether it needs No Orc Left Behind done: nothing says, so no lock)
+			note = "Commander Folkar, chained past Katerina the Cleaner, gives it once she is dead. It is done once Blazeroar, the last boss, is dead and you have read the note about the King on the ground after the fight.",
+			rewards = { xp = 12100, money = 13919, reputation = { { faction = "Orgrimmar", amount = 100 } } },
 		},
 		{
 			questID = 96369, name = "Bad News for Folkar", level = 53, requiredLevel = 48, faction = "Horde",
 			pickup = "Inside Alcaz Prison", turnin = "Commander Folkar, inside Alcaz Prison",
 			objective = "Take what you learned of King Varian Wrynn back to Commander Folkar.",
-			note = "It starts from the note you find while searching for the King.",
-			rewards = { reputation = { { faction = "Orgrimmar", amount = 50 } } },
+			-- (where it starts: its text is an object's or an item's, and two guides name the Perfumed Note by Blazeroar,
+			-- 2026-11-18)
+			note = "It starts from the Perfumed Note on the ground by Blazeroar after the fight.",
+			-- (its XP: its page, 2026-11-17)
+			rewards = { xp = 2400, reputation = { { faction = "Orgrimmar", amount = 50 } } },
 			prerequisites = { { questID = 95454, name = "The Honor of the Kor'kron" } },
 		},
 		{
@@ -1078,6 +1456,7 @@ Audit("AlcazPrison", {
 			endMap = Orgrimmar(0.3173, 0.3782, "Thrall"),
 			objective = "Bring word of King Varian Wrynn's fate to Thrall in Orgrimmar.",
 			rewards = {
+				xp = 2400,
 				choice = true,
 				items = { { itemID = 279831, name = "Fatebound Buckler" }, { itemID = 279833, name = "Courier's Clasp" }, { itemID = 279474, name = "Dustwallow Dirk" } },
 				reputation = { { faction = "Orgrimmar", amount = 100 } },
@@ -1089,10 +1468,17 @@ Audit("AlcazPrison", {
 		},
 		{
 			questID = 96334, name = "Blood Red Bandanas", level = 53, requiredLevel = 48, faction = "Horde",
+			-- (its giver: Sergeant Ulka, its page's Quick Facts, read again 2026-11-17 for the review of e36e2fe, with its
+			-- XP, 9,700. The quests before it are the BEST GUESS: its page shows no series and no quest it needs; a
+			-- player's comment has The Elite of the Elite lead to it, and Ulka's other quests come after her errand (the
+			-- owner's steps), so her errand as theirs. A question for the owner: does it need her earlier quests?)
+			pickup = ULKA, startMap = Ulka(),
 			turnin = "Eitrigg, Orgrimmar", endMap = Orgrimmar(0.3428, 0.3935, "Eitrigg"),
 			objective = "Collect 8 Blood Red Bandanas from the human guards in Alcaz Prison and take them to Eitrigg in Orgrimmar.",
-			note = "Who gives it is not listed yet; its text is a Kor'kron's. The bandanas drop rarely: a group may need several runs.",
+			note = "Sergeant Ulka gives it, outside the prison. The bandanas drop rarely: a group may need several runs.",
+			prerequisites = UlkasErrand(),
 			rewards = {
+				xp = 9700,
 				choice = true,
 				items = { { itemID = 279448, name = "Bloodsplattered Bandana" }, { itemID = 279473, name = "Makeshift Belt" } },
 				reputation = { { faction = "Orgrimmar", amount = 75 } },
@@ -1100,9 +1486,13 @@ Audit("AlcazPrison", {
 		},
 		{
 			questID = 96376, name = "State Secrets", level = 53, requiredLevel = 48, faction = "Horde",
+			-- (Nazgrel in Orgrimmar since 2026-11-18, its page's start and end, above)
+			pickup = NAZGREL, turnin = NAZGREL, startMap = Nazgrel(), endMap = Nazgrel(),
 			objective = "Bring back the Document Box.",
-			note = "It can't be shared. Who gives it is not listed yet. The Alliance has its own State Secrets.",
-			rewards = { reputation = { { faction = "Orgrimmar", amount = 150 } } },
+			note = "It needs the Document Box from More Valuable Than Gold. Its reward, the {item:279450:Fractured Insignia:2}, can be traded: six of them combine into the {item:279471:Alcaz Operative Insignia:3}, a toy. One run is enough: trade or buy the other five. This quest can't be shared. The Alliance has its own State Secrets.",
+			-- (the Orgrimmar reputation as the page of 2026-11-09 listed it: not confirmed, above)
+			rewards = { xp = 6550, money = 16000, items = Insignia(), reputation = { { faction = "Orgrimmar", amount = 150 } } },
+			prerequisites = MasonsQuests(),
 		},
 	},
 })
@@ -1202,6 +1592,108 @@ Audit("BlackmawHold", {
 			pickup = "Ekkal, Ruins of Eldarath, Azshara", turnin = "Ekkal, Ruins of Eldarath, Azshara",
 			objective = "Recover 5 Blackmaw Pouches inside Blackmaw Hold for Ekkal at the Ruins of Eldarath.",
 			rewards = { money = 9000, reputation = { { faction = "Timbermaw Hold", amount = 150 } } },
+		},
+	},
+})
+
+--[[
+	The Shaper's Terrace's six quests (2026-11-18), each read by hand from its quest page (level, side, giver and taker,
+	objective, rewards, whether it can be shared), facts only, in our own words; where each quest's items come from,
+	the items' own pages and a players' guide to the dungeon. Forever's quest data has none of them yet. The givers'
+	spots: Forever's quest data (Curator Thorius, Chemist Fuely; Master Apothecary Faranell as above); Mayena
+	Earthseeker's, the quest page's mark (the quest data has eight spots for her, around it). Digestible Research's
+	page names no giver, only Curator Thorius, who takes it. Their names and objectives stay English, as the game shows
+	these new quests in every language; their notes and givers are drafted in the other languages, to be checked.
+]]
+local THORIUS_LINE = "Curator Thorius, Hall of Explorers, Ironforge"
+local function Thorius() return { mapID = 1455, x = 0.715, y = 0.1574, label = "Curator Thorius — Hall of Explorers" } end
+local FUELY_LINE = "Chemist Fuely, the Apothecarium, Undercity"
+local function Fuely() return { mapID = 1458, x = 0.4745, y = 0.7335, label = "Chemist Fuely — the Apothecarium" } end
+local MAYENA_LINE = "Mayena Earthseeker, Mulgore"
+local function Mayena() return { mapID = 1412, x = 0.348, y = 0.220, label = "Mayena Earthseeker" } end
+-- (each quest's XP: the figure its page shows, 2026-11-18; the page's hidden list says 6,600, as Alcaz Prison's did,
+-- and the shown figure is the one kept there too. No turn-in seen in game yet)
+Audit("ShapersTerrace", {
+	add = {
+		{
+			questID = 95924, name = "Panic at the Digsite", level = 60, requiredLevel = 55, faction = "Alliance",
+			pickup = THORIUS_LINE, turnin = THORIUS_LINE, startMap = Thorius(), endMap = Thorius(),
+			objective = "Kill Venomridge, 6 Ravasaur Matriarchs and 9 Ironhide Ravasaurs in the Shaper's Terrace.",
+			note = "Venomridge, a great diemetradon, is one of the optional bosses, on the plain south of the tar pits.",
+			rewards = {
+				xp = 17650, money = 9000, choice = true,
+				items = { { itemID = 279903, name = "Diemetradon Scale Spaulders" }, { itemID = 279905, name = "Ravasaur Hide Footpads" } },
+				reputation = { { faction = "Ironforge", amount = 100 }, { faction = "Stormwind", amount = 50 } },
+			},
+		},
+		{
+			questID = 95925, name = "Mapping the Way Forward", level = 60, requiredLevel = 55, faction = "Alliance",
+			pickup = THORIUS_LINE, turnin = THORIUS_LINE, startMap = Thorius(), endMap = Thorius(),
+			objective = "Find five landmarks in the Shaper's Terrace and fill in the explorer's map at each.",
+			-- (the kit, 271770, is given with the quest; the five places as its page names them. Its three choices are The
+			-- Dark Crystal's too, on both pages: possibly a placeholder, to check at a turn-in)
+			note = "Use the Explorers' League Cartographer's Kit you are given at the Pillar of Assimilation, the Achromatic Crystal, the Western Gates, the Regrowth Vestibule and the Unearthed Stone Watcher. It can't be shared.",
+			rewards = {
+				xp = 17650, choice = true,
+				items = { { itemID = 279908, name = "Crystal-Infused Cleaver" }, { itemID = 279910, name = "Beastslayer's Trident" },
+					{ itemID = 279912, name = "Faintly Glowing Orb" } },
+				reputation = { { faction = "Ironforge", amount = 100 }, { faction = "Stormwind", amount = 50 } },
+			},
+		},
+		{
+			questID = 95790, name = "Digestible Research", level = 60, requiredLevel = 55, faction = "Alliance",
+			turnin = THORIUS_LINE, endMap = Thorius(),
+			objective = "Collect 15 Partially Digested Journal Pages in the Shaper's Terrace.",
+			-- (the pages' own page: they drop off the dungeon's ravasaurs, its hunters, matriarchs, juveniles and trappers)
+			note = "Who gives it is not listed yet. The pages drop from the ravasaurs inside. It can't be shared.",
+			rewards = {
+				xp = 17650, choice = true,
+				items = { { itemID = 279931, name = "Lost Researcher's Hood" }, { itemID = 279901, name = "Expeditionary Legplates" } },
+				reputation = { { faction = "Ironforge", amount = 100 }, { faction = "Stormwind", amount = 100 } },
+			},
+		},
+		{
+			questID = 95928, name = "Crystalline Elements", level = 60, requiredLevel = 55, faction = "Horde",
+			pickup = MAYENA_LINE, turnin = MAYENA_LINE, startMap = Mayena(), endMap = Mayena(),
+			objective = "Bring Mayena Earthseeker a Moist Crystal, a Charged Crystal, a Noxious Crystal and a Fiery Crystal from the Shaper's Terrace.",
+			-- (the items' own pages: the Fiery, Charged and Moist Crystals from crystal fragments of their kinds; the
+			-- Noxious Crystal's page not read, the same by its name, a best guess)
+			note = "Each most likely comes from a crystal fragment of its kind in the terrace. They are not the Power Crystals the consoles take.",
+			rewards = {
+				xp = 17650, choice = true,
+				items = { { itemID = 279904, name = "Crystalline Pauldrons" }, { itemID = 279906, name = "Potent Treads" } },
+				reputation = { { faction = "Orgrimmar", amount = 50 }, { faction = "Earthen Ring", amount = 100 } },
+			},
+		},
+		{
+			questID = 97049, name = "Essence of Seeping Slimes", level = 60, requiredLevel = 55, faction = "Horde",
+			pickup = FUELY_LINE, turnin = FUELY_LINE, startMap = Fuely(), endMap = Fuely(),
+			objective = "Gather 8 Seeping Slime Essence in the Shaper's Terrace.",
+			-- (the quest's own text and a players' guide)
+			note = "The essence drops from the small slimes in the pools by the Achromatic Crystal.",
+			rewards = {
+				xp = 17650, money = 9000, choice = true,
+				items = { { itemID = 279932, name = "Slime-Resistant Shroud" }, { itemID = 279902, name = "Reinforced Muck Protectors" } },
+				reputation = { { faction = "Undercity", amount = 100 }, { faction = "Orgrimmar", amount = 50 } },
+			},
+		},
+		{
+			questID = 95926, name = "The Dark Crystal", level = 60, requiredLevel = 55, faction = "Horde",
+			pickup = "Master Apothecary Faranell, the Apothecarium, Undercity",
+			turnin = "Master Apothecary Faranell, the Apothecarium, Undercity", startMap = FARANELL, endMap = FARANELL,
+			objective = "Gather a Drained Crystal Fragment near the Achromatic Crystal in the Shaper's Terrace.",
+			-- (the quest's own text and a players' guide)
+			note = "The fragment lies on the ground near the Achromatic Crystal, a colorless crystal in the terrace.",
+			-- (the same three choices as Mapping the Way Forward, on both quest pages: possibly a placeholder; to check at
+			-- a turn-in)
+			-- Its XP as the owner's table gives it (2026-11-18): 6,600, where the other five give 17,650 (the Horde's three,
+			-- 41,900 in all, add up only so). Its quest page shows 17,650: to be checked at a turn-in.
+			rewards = {
+				xp = 6600, choice = true,
+				items = { { itemID = 279908, name = "Crystal-Infused Cleaver" }, { itemID = 279910, name = "Beastslayer's Trident" },
+					{ itemID = 279912, name = "Faintly Glowing Orb" } },
+				reputation = { { faction = "Undercity", amount = 100 }, { faction = "Orgrimmar", amount = 50 } },
+			},
 		},
 	},
 })
@@ -2915,7 +3407,7 @@ Audit("Scholomance", {
 	},
 })
 
-Audit("StratholmeMainGate", {
+Audit("Stratholme", {
 	add = {
 		-- Sweet Serenity (Questie)
 		{
@@ -2927,67 +3419,6 @@ Audit("StratholmeMainGate", {
 			prerequisites = {},
 			rewards = { xp = 8300, items = { { itemID = 12824, name = "Plans: Enchanted Battlehammer" } } },
 		},
-		-- Menethil's Gift (Questie, foreverchanges)
-		{
-			questID = 5464, name = "Menethil's Gift", level = 60, requiredLevel = 57, faction = "Both",
-			pickup = "Menethil's Gift, inside Stratholme", turnin = "Leonid Barthalomew the Revered, Eastern Plaguelands",
-			endMap = { mapID = 1423, x = 0.719, y = 0.483 },
-			startObject = { name = "Menethil's Gift", note = "Inside Stratholme, where the Keepsake of Remembrance is placed." },
-			objective = "Take the Soulbound Keepsake to Leonid Barthalomew in Eastern Plaguelands.",
-			note = "Then Leonid gives Soulbound Keepsake, which sends you back to Magistrate Marduke in Caer Darrow. The chain ends with The Lich, Ras Frostwhisper, in Scholomance.",
-			prerequisites = { { questID = 5382, name = "Doctor Theolen Krastinov, the Butcher" }, { questID = 5515, name = "Krastinov's Bag of Horrors" }, { questID = 5384, name = "Kirtonos the Herald" }, { questID = 5461, name = "The Human, Ras Frostwhisper" }, { questID = 5462, name = "The Dying, Ras Frostwhisper" }, { questID = 5463, name = "Menethil's Gift" } },
-			rewards = { xp = 8300, reputation = { { faction = "Argent Dawn", amount = 150 } } },
-		},
-	},
-	patches = {
-		-- Aurius' Reckoning: pickup, turnin (Questie, foreverchanges, AAL)
-		[5125] = {
-			pickup = "Aurius, inside Stratholme",
-			turnin = "Aurius, inside Stratholme",
-		},
-		-- The Truth Comes Crashing Down: pickup, startItem (Questie, foreverchanges)
-		[5262] = {
-			pickup = "Head of Balnazzar, dropped by Balnazzar inside Stratholme",
-			startItem = { itemID = 13250, name = "Head of Balnazzar", note = "Drops from Balnazzar inside Stratholme." },
-		},
-		-- Menethil's Gift: turnin, prerequisites (Questie, foreverchanges)
-		[5463] = {
-			turnin = "Menethil's Gift, inside Stratholme",
-			prerequisites = {
-				{ questID = 5382, name = "Doctor Theolen Krastinov, the Butcher" },
-				{ questID = 5515, name = "Krastinov's Bag of Horrors" },
-				{ questID = 5384, name = "Kirtonos the Herald" },
-				{ questID = 5461, name = "The Human, Ras Frostwhisper" },
-				{ questID = 5462, name = "The Dying, Ras Frostwhisper" },
-			},
-		},
-		-- Of Love and Family: prerequisites (Questie, foreverchanges)
-		[5848] = {
-			note = "Then Tirion Fordring gives Find Myranda, which sends you to Myranda the Hag in the Western Plaguelands.",
-			prerequisites = {
-				{ questID = 5542, name = "Demon Dogs" },
-				{ questID = 5543, name = "Blood Tinged Skies" },
-				{ questID = 5544, name = "Carrion Grubbage" },
-				{ questID = 5742, name = "Redemption" },
-				{ questID = 5781, name = "Of Forgotten Memories" },
-				{ questID = 5845, name = "Of Lost Honor" },
-				{ questID = 5846, name = "Of Love and Family" },
-			},
-		},
-		-- Dead Man's Plea: prerequisites (Questie, foreverchanges)
-		[8945] = {
-			prerequisites = {
-				{ questID = 8921, name = "The Ectoplasmic Distiller" },
-				{ questID = 8924, name = "Hunting for Ectoplasm" },
-				{ questID = 8925, name = "A Portable Power Source" },
-				{ questID = 8928, name = "A Shifty Merchant" },
-			},
-		},
-	},
-})
-
-Audit("StratholmeServiceGate", {
-	add = {
 		-- Corruption (Questie)
 		{
 			questID = 5307, name = "Corruption", level = 60, requiredLevel = 50, faction = "Both",
@@ -3028,6 +3459,11 @@ Audit("StratholmeServiceGate", {
 			pickup = "Aurius, inside Stratholme",
 			turnin = "Aurius, inside Stratholme",
 		},
+		-- The Truth Comes Crashing Down: pickup, startItem (Questie, foreverchanges)
+		[5262] = {
+			pickup = "Head of Balnazzar, dropped by Balnazzar inside Stratholme",
+			startItem = { itemID = 13250, name = "Head of Balnazzar", note = "Drops from Balnazzar inside Stratholme." },
+		},
 		-- Above and Beyond: prerequisites (Questie, foreverchanges)
 		[5263] = {
 			prerequisites = { { questID = 5251, name = "The Archivist" }, { questID = 5262, name = "The Truth Comes Crashing Down" } },
@@ -3041,7 +3477,8 @@ Audit("StratholmeServiceGate", {
 				{ questID = 5264, name = "Lord Maxwell Tyrosus" },
 			},
 		},
-		-- Menethil's Gift: turnin, prerequisites (Questie, foreverchanges)
+		-- Menethil's Gift: turnin, prerequisites (Questie, foreverchanges); the turnin as the Service Gate's page had it, the
+		-- dungeon unnamed, since 0.39.22's one page
 		[5463] = {
 			turnin = "Menethil's Gift, inside the dungeon",
 			prerequisites = {

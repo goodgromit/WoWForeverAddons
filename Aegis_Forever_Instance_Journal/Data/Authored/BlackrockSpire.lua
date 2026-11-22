@@ -110,6 +110,10 @@ local function Valthalak()
 		-- He has no page of his own. Upper Blackrock Spire's (see the header); where his brazier is
 		-- used is not yet checked on Forever.
 		boss = "Lord Valthalak",
+		-- The quests that say his name in the game's own words (each version of the amulet's Left and Right
+		-- Piece, Mea Culpa, Lord Valthalak, and The Challenge, whose objective names his amulet): Adventure
+		-- Mode names him once one is offered (Core/Discovery.lua), or once he is met.
+		summons = { 8966, 8967, 8968, 8969, 8989, 8990, 8991, 8992, 8995, 9015 },
 		text = "Bodley gives you the {item:22056:Brazier of Beckoning} with Mea Culpa, Lord Valthalak, near the "
 			.. "end of the amulet's quests. Use it in Blackrock Spire to call him. Kill him, use Lord Valthalak's "
 			.. "Amulet on his body, and give the amulet to his spirit.",
@@ -120,6 +124,8 @@ local function MorGrayhoof()
 		title = "Mor Grayhoof, a hidden boss",
 		-- Lower Blackrock Spire's (see the header).
 		boss = "Mor Grayhoof",
+		-- His versions of the pieces call him up: Adventure Mode names him once one is offered.
+		summons = { 8966, 8989 },
 		text = "Bodley gives you the {item:22049:Brazier of Beckoning} with the Mor Grayhoof versions of The Left "
 			.. "Piece and The Right Piece of Lord Valthalak's Amulet. Use it in Blackrock Spire to call his spirit, "
 			.. "and kill him for the piece.",
@@ -179,7 +185,7 @@ end
 
 ns.AmendInstance("LowerBlackrockSpire", {
 	--[[
-		Before you go (the overview): the Seal of Ascension, begun here; Urok Doomhowl, and Mor
+		Before you go (the Quests tab): the Seal of Ascension, begun here; Urok Doomhowl, and Mor
 		Grayhoof, the spirit the amulet's pieces call: the bosses the players call themselves.
 	]]
 	prepare = {
@@ -198,7 +204,7 @@ ns.AmendInstance("LowerBlackrockSpire", {
 
 ns.AmendInstance("UpperBlackrockSpire", {
 	--[[
-		Before you go (the overview): the Seal of Ascension that opens the door; the raid attunements
+		Before you go (the Quests tab): the Seal of Ascension that opens the door; the raid attunements
 		that run through here (Onyxia's for the player's side, Blackwing Lair's), and where Molten
 		Core's is; and Lord Valthalak, whom Mea Culpa, Lord Valthalak calls.
 	]]
@@ -265,7 +271,7 @@ do
 		return ns.OneOf("In Search of Anthion", { questID = 8929, faction = "Alliance" }, { questID = 8930, faction = "Horde" })
 	end
 	local keys = { "BlackrockDepths", "LowerBlackrockSpire", "UpperBlackrockSpire", "DireMaulEast", "DireMaulNorth",
-		"DireMaulWest", "Scholomance", "StratholmeMainGate", "StratholmeServiceGate" }
+		"DireMaulWest", "Scholomance", "Stratholme" }
 	for _, key in ipairs(keys) do
 		for _, quest in ipairs(ns.GetInstance(key).quests) do
 			local list, distiller, merchant = quest.prerequisites or {}, nil, nil
@@ -468,7 +474,7 @@ do
 	end
 	-- The pages that hold the chain: each its own copies, so the translations are laid over each once.
 	for _, key in ipairs({ "BlackrockDepths", "LowerBlackrockSpire", "UpperBlackrockSpire", "DireMaulEast",
-		"DireMaulNorth", "DireMaulWest", "Scholomance", "StratholmeMainGate", "StratholmeServiceGate" }) do
+		"DireMaulNorth", "DireMaulWest", "Scholomance", "Stratholme" }) do
 		ns.AmendInstance(key, { addQuests = Copy(quests) })
 	end
 end
@@ -646,3 +652,10 @@ do
 	ns.AmendInstance("LowerBlackrockSpire", { removeQuests = { 8181 }, questPatches = { [4788] = { note = note } } })
 	ns.AmendInstance("UpperBlackrockSpire", { removeQuests = { 8181 } })
 end
+
+-- The fog of war (UI/DungeonFog.lua's Counts; the owner's answers of 2026-11-13): Urok Doomhowl is called up with
+-- Omokk's Head at his Tribute Pile, and Solakar Flamewreath by the Rookery's event, so neither holds back any fog at
+-- all (the owner's rule of 2026-11-14 for summoned bosses: Urok's corridor is clear from the start, the Rookery clears
+-- with Pyroguard Emberseer, and neither one's kill changes the fog). Both fogs' data say the same (their counts).
+ns.AmendInstance("LowerBlackrockSpire", { bosses = { ["Urok Doomhowl"] = { summoned = true } } })
+ns.AmendInstance("UpperBlackrockSpire", { bosses = { ["Solakar Flamewreath"] = { summoned = true } } })

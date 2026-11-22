@@ -390,6 +390,7 @@ local function CatchLines(catch, log)
 		end
 	end
 	if catch.travel > 0 then Add(string.format(L.RECORD_TRAVEL, catch.travel), MEDIUM, 0, 14) end
+	if (catch.models or 0) > 0 then Add(string.format(L.RECORD_MODELS, catch.models), MEDIUM, 0, 14) end
 
 	if #lines == 0 then Add(L.RECORD_NOTHING_YET, BODY, 0, 0) end
 

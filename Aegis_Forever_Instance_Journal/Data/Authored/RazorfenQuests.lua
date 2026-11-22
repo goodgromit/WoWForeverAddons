@@ -34,7 +34,7 @@ local _, ns = ...
 ]]
 
 ns.AmendInstance("RazorfenKraul", {
-	-- Before you go (the overview): Blueleaf Tubers' tools, which wait in Ratchet, not in the Kraul.
+	-- Before you go (the Quests tab): Blueleaf Tubers' tools, which wait in Ratchet, not in the Kraul.
 	prepare = {
 		{
 			title = "Blueleaf Tubers: the tools in Ratchet",
@@ -58,7 +58,7 @@ ns.ListQuestAfter("RazorfenKraul", 6521, 6522)
 
 ns.AmendInstance("RazorfenDowns", {
 	--[[
-		Before you go (the overview): Belnistrasz's escort, best done first, and Tuten'kash, the boss
+		Before you go (the Quests tab): Belnistrasz's escort, best done first, and Tuten'kash, the boss
 		the Gong calls (also on his own page).
 	]]
 	prepare = {
@@ -85,3 +85,8 @@ ns.AmendInstance("RazorfenDowns", {
 		[6521] = { note = "Ambassador Malcin stands outside the instance, in the Barrens near the entrance." },
 	},
 })
+
+-- The fog of war (UI/DungeonFog.lua's Counts; the owner's answers of 2026-11-13): Tuten'kash is called up by the gong,
+-- so he holds back no fog at all (the owner's rule of 2026-11-14 for summoned bosses: his place clears with the rooms
+-- round it, his kill changes nothing). The fog's data says the same (Data/Fog/RazorfenDowns.lua's counts).
+ns.AmendInstance("RazorfenDowns", { bosses = { ["Tuten'kash"] = { summoned = true } } })

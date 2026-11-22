@@ -15,6 +15,9 @@ local L = ns.L
 	the journal's preview and result buttons), because those templates are made in XML with
 	settings a frame made in Lua cannot give them. The index is built on the first search,
 	once; the full list draws only the rows in view.
+
+	In Adventure Mode it finds only what the character has found, as the pages show it
+	(Discovered, below).
 ]]
 
 local Search = {}
@@ -34,6 +37,10 @@ local ROCK = "Interface\\FrameGeneral\\UI-Background-Rock"
 local NAME_COLOR = { 0.96875, 0.8984375, 0.578125 }
 local PATH_COLOR = { 0.66796875, 0.51171875, 0.3359375 }
 local NO_PORTRAIT = "Interface\\TargetingFrame\\UI-TargetingFrame-Skull"
+-- In Adventure Mode a boss not met: the journal's own unknown-boss picture (128 x 64) in place of its portrait,
+-- the square of it round the figure's head (pixels 31-93 across, 0-62 down).
+local UNKNOWN_BOSS = "Interface\\EncounterJournal\\UI-EJ-BOSS-Default"
+local UNKNOWN_BOSS_COORDS = { 31 / 128, 93 / 128, 0, 62 / 64 }
 
 -- Results of the same match quality list in this order.
 local KIND_ORDER = { instance = 1, faction = 2, boss = 3, quest = 4, ability = 5, item = 6 }
@@ -49,13 +56,26 @@ local function Add(entry)
 	index[#index + 1] = entry
 end
 
+-- The items a dungeon's bosses drop (not its trash or recipes): a boss's own recipe, listed again in the Recipes
+-- row, is one result, the boss's, as the dungeon's loot page lists it once, under its boss.
+local function BossItems(instance)
+	local items = {}
+	for _, boss in ipairs(instance.bosses) do
+		if not ns.IsLootSection(boss) then
+			for _, row in ipairs(boss.loot or {}) do items[row.itemID] = true end
+		end
+	end
+	return items
+end
+
 local function BuildIndex()
 	index = {}
 	for _, kind in ipairs({ "dungeon", "raid" }) do
 		for _, instance in ipairs(ns.GetInstances(kind)) do
 			Add({ kind = "instance", name = instance.name, instance = instance })
+			local bossItems = BossItems(instance)
 			for _, boss in ipairs(instance.bosses) do
-				if not boss.trash then Add({ kind = "boss", name = boss.name, instance = instance, boss = boss }) end
+				if not ns.IsLootSection(boss) then Add({ kind = "boss", name = boss.name, instance = instance, boss = boss }) end
 				for _, ability in ipairs(boss.abilities or {}) do
 					Add({ kind = "ability", name = ability.name, spellID = ability.spellID, instance = instance, boss = boss })
 				end
@@ -68,7 +88,9 @@ local function BuildIndex()
 					end
 				end
 				for _, row in ipairs(boss.loot or {}) do
-					Add({ kind = "item", itemID = row.itemID, row = row, instance = instance, boss = boss })
+					if not (boss.recipes and bossItems[row.itemID]) then
+						Add({ kind = "item", itemID = row.itemID, row = row, instance = instance, boss = boss })
+					end
 				end
 			end
 			for _, quest in ipairs(instance.quests) do
@@ -81,6 +103,15 @@ local function BuildIndex()
 		for _, standing in ipairs(faction.bosses) do
 			for _, row in ipairs(standing.loot or {}) do
 				Add({ kind = "item", itemID = row.itemID, row = row, instance = faction, boss = standing })
+			end
+		end
+	end
+	-- A currency vendor's wares (Core/Registry.lua's currency vendors), each found as on a faction's page, by its vendor
+	-- and currency ("Pix Xizzix, Tarnished Undermine Real"); the page itself is no faction, and is not a result.
+	for _, page in ipairs(ns.GetCurrencyPages()) do
+		for _, vendor in ipairs(page.bosses) do
+			for _, row in ipairs(vendor.loot or {}) do
+				Add({ kind = "item", itemID = row.itemID, row = row, instance = page, boss = vendor })
 			end
 		end
 	end
@@ -135,6 +166,12 @@ local function WarmUp()
 end
 
 local function Available(entry)
+	-- In Adventure Mode a faction not met (Core/Discovery.lua's FactionKnown) is not found, nor its rewards; nor a
+	-- currency vendor's wares, whose pages Adventure Mode keeps back (UI/FactionSelect.lua).
+	if entry.instance and entry.instance.kind == "faction" and not ns.Discovery:FactionKnown(entry.instance) then
+		return false
+	end
+	if entry.instance and entry.instance.kind == "currency" and ns.Style:Adventure() then return false end
 	if entry.kind == "quest" then return ns.QuestsPanel:IsForPlayer(entry.quest) end
 	-- Nothing hidden until confirmed (Core/Items.lua) is found either.
 	if entry.kind == "item" then
@@ -171,6 +208,36 @@ local function FoldOf(entry)
 end
 
 --[[
+	Adventure Mode (Core/Discovery.lua): what the character has found, as the pages show it (Available asks
+	the rest). A dungeon is found by its name, as the list names it, entered or a rumor (it opens through the
+	gate: UI/Journal.lua). A boss once met; an ability once its boss is fought, in a dungeon entered (the
+	Abilities tab's rule; its trash's once entered). An item once seen to drop where the result opens it (off
+	that boss; for the trash, anywhere in the dungeon: UI/LootPanel.lua's Seen); one seen in the dungeon with
+	its boss not known is one result for the dungeon's own loot page (atDungeon), as that page lists it. A
+	faction's reward once seen at its quartermaster, of a faction met (Available). A quest once offered, by its
+	row on the Quests tab (QuestsPanel:Known: a row of same-named quests once one of them is), under the name
+	the tab gives it. Nothing a result shows names what is not found: an item's boss not met is "???" there
+	(PathOf). Every other style finds everything, as before.
+]]
+local function Discovered(entry)
+	entry.atDungeon = nil
+	if not ns.Style:Adventure() then return true end
+	local D, kind, instance = ns.Discovery, entry.kind, entry.instance
+	if kind == "boss" then return not D:Unmet(instance, entry.boss) end
+	if kind == "ability" then return not D:Rumour(instance) and D:Fought(instance, entry.boss) end
+	if kind == "quest" then return ns.QuestsPanel:Known(FoldOf(entry) or entry.quest) end
+	if kind == "item" then
+		if ns.LootPanel:Seen(instance, entry.boss, entry.itemID) then return true end
+		if instance.kind ~= "faction" and D:Knows("item", entry.itemID, instance) then
+			entry.atDungeon = true
+			return true
+		end
+		return false
+	end
+	return true
+end
+
+--[[
 	Every match for the text, best first: the whole name, then names that start with it,
 	then the rest; within each, by kind and then name.
 
@@ -197,12 +264,40 @@ function Search:Find(text)
 				local spellRank = Rank(entry.spellLower, query)
 				if spellRank and (not rank or spellRank <= rank) then rank, shown = spellRank, spell end
 			end
-			if rank and Available(entry) then
+			if rank and Available(entry) and Discovered(entry) then
 				entry.fold = entry.kind == "quest" and FoldOf(entry) or nil
 				if entry.fold then shown = entry.fold.name end
+				-- (Adventure Mode: a quest by the name its row has on the Quests tab)
+				if entry.kind == "quest" and ns.Style:Adventure() then
+					shown = ns.QuestsPanel:ShownName(entry.fold or entry.quest) or shown
+				end
 				entry.rank = rank
 				entry.shownName = shown
 				results[#results + 1] = entry
+			end
+		end
+	end
+	-- (Adventure Mode: an item seen in a dungeon alone, its boss not known, is one result there, and none where
+	-- another of its results opens its page there: off a boss it was seen off, or the trash's)
+	if ns.Style:Adventure() then
+		local placed, count = {}, 0
+		for _, entry in ipairs(results) do
+			if entry.kind == "item" and not entry.atDungeon then
+				placed[entry.instance] = placed[entry.instance] or {}
+				placed[entry.instance][entry.itemID] = true
+			end
+		end
+		for position = 1, #results do
+			local entry = results[position]
+			results[position] = nil
+			local at = entry.atDungeon and (placed[entry.instance] or {})
+			if not (at and at[entry.itemID]) then
+				if at then
+					placed[entry.instance] = at
+					at[entry.itemID] = true
+				end
+				count = count + 1
+				results[count] = entry
 			end
 		end
 	end
@@ -246,12 +341,17 @@ local function PathOf(entry)
 	if kind == "instance" then return TypeOf(entry) end
 	if kind == "faction" then return L.TAB_REPUTATION end
 	if kind == "boss" or kind == "quest" then return entry.instance.name end
-	local source = entry.boss.trash and L.LOOT_TRASH or entry.boss.name
+	-- (Adventure Mode: an item seen in the dungeon, its boss not known, says so; a boss not met is "???". A dungeon's
+	-- recipes are "Recipes", the page the result opens: ns.BossTitle)
+	if entry.atDungeon then return string.format(L.ADVENTURE_LOOT_IN_DUNGEON, entry.instance.name) end
+	-- (a Trash page's row the bosses and rares drop names them: offBosses)
+	local source = entry.boss.trash and (entry.row and ns.OffBossesText(entry.row) or L.LOOT_TRASH)
+		or ns.Discovery:BossTitle(entry.instance, entry.boss)
 	return source .. ", " .. entry.instance.name
 end
 
 local function InstanceIcon(texture, instance)
-	if instance.kind == "faction" then
+	if ns.IsRewardsPage(instance) then
 		texture:SetTexture(ns.Reputation:Crest(instance))
 		texture:SetTexCoord(0.07, 0.93, 0.07, 0.93)
 	elseif instance.buttonImage then
@@ -274,6 +374,9 @@ local function SetIcon(texture, entry)
 	local kind = entry.kind
 	if kind == "instance" or kind == "faction" then
 		InstanceIcon(texture, entry.instance)
+	elseif kind == "boss" and ns.Discovery:Unmet(entry.instance, entry.boss) then
+		texture:SetTexture(UNKNOWN_BOSS)
+		texture:SetTexCoord(UNKNOWN_BOSS_COORDS[1], UNKNOWN_BOSS_COORDS[2], UNKNOWN_BOSS_COORDS[3], UNKNOWN_BOSS_COORDS[4])
 	elseif kind == "boss" then
 		local drawn = entry.boss.displayID and type(SetPortraitTextureFromCreatureDisplayID) == "function"
 			and pcall(SetPortraitTextureFromCreatureDisplayID, texture, entry.boss.displayID)
@@ -346,7 +449,14 @@ local function PreviewLines(found)
 	return lines
 end
 
--- Opens a result where it lives.
+-- Whether the result's own page is the one showing.
+local function Opened(journal, entry)
+	local page = journal:Page()
+	return page ~= nil and page.instance == entry.instance and page:IsShown()
+end
+
+-- Opens a result where it lives. Where the gate (UI/Journal.lua) shows something else instead (a faction not
+-- met: the Reputation tab), the page's tab is left alone: it is hidden, and may hold nothing yet.
 function Search:Open(entry)
 	local journal = ns.Journal
 	local EncounterPage = ns.EncounterPage
@@ -359,16 +469,19 @@ function Search:Open(entry)
 		journal:OpenBoss(entry.instance, entry.boss)
 	elseif kind == "ability" then
 		journal:OpenBoss(entry.instance, entry.boss)
+		if not Opened(journal, entry) then return end
 		EncounterPage:SetTab(journal:Page(), EncounterPage.TAB_ABILITIES)
 	elseif kind == "quest" then
 		ns.QuestsPanel:Open(entry.instance, entry.fold or entry.quest)
 	elseif kind == "item" then
-		-- Trash drops are listed on the dungeon's own loot page, not a boss's.
-		if entry.boss.trash then
+		-- Trash drops are listed on the dungeon's own loot page, not a boss's; so is an item seen in the
+		-- dungeon with its boss not known (Adventure Mode: Discovered). A dungeon's recipes open their own page.
+		if entry.boss.trash or entry.atDungeon then
 			journal:OpenInstance(entry.instance)
 		else
 			journal:OpenBoss(entry.instance, entry.boss)
 		end
+		if not Opened(journal, entry) then return end
 		EncounterPage:SetTab(journal:Page(), EncounterPage.TAB_LOOT)
 		ns.LootPanel:Reveal(entry.itemID)
 	end

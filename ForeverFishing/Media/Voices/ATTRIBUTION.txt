@@ -1,0 +1,15 @@
+Forever Fishing spoken notification clips
+
+The included short voice clips were generated for Forever Fishing using the
+Kokoro-82M v1.0 text-to-speech model by hexgrad.
+Model: https://huggingface.co/hexgrad/Kokoro-82M
+Female voice: af_heart
+Male voice: am_michael
+Male Voice 2 (saved ID: wise): bm_george (British English delivery, 1.10x synthesis speed)
+Model and voice weights: Apache License 2.0
+License: https://www.apache.org/licenses/LICENSE-2.0
+
+The model and inference software are not included in this addon. These Ogg
+clips were generated from original Forever Fishing notification phrases.
+Male Voice 2 uses the same short alert wording as Male Voice. It does not
+imitate a named character or actor.

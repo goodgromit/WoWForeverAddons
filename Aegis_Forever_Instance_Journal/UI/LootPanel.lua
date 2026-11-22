@@ -7,11 +7,28 @@ local L = ns.L
 
 	On a boss page it lists that boss's loot; on the dungeon's own page it lists everything,
 	each row naming its boss, as retail does. A faction's page works the same way, with its
-	standings in place of bosses. On top of retail:
+	standings in place of bosses, and a quartermaster's card listing the rewards he sells.
+	On top of retail:
 	  - a star on each row marks a favourite; favourites sort to the top, and the class menu
 	    can show favourites only
 	  - right-click pins an item; a dungeon's pinned items stay at the top of every loot page
 	    in that dungeon, whatever the filters say
+	In Adventure Mode (Core/Discovery.lua) a dungeon's pages list only what the character has seen
+	drop, item by item: off that boss on a boss's page, anywhere in the dungeon on its own page, its
+	trash's and its recipes' (ns.IsLootSection). A row names its boss only once the item was seen off it
+	and the boss is met; else it says the item drops in the dungeon. Pins and favourites stay saved,
+	hidden while their item is unseen.
+	The Recipes page (recipes = true) lists the dungeon's recipes, a boss's own too, which his page lists
+	as well. On the dungeon's own page an item is listed once, by the first that lists it: a boss's recipe
+	by its boss, so one listed by the recipes alone drops off the trash, and its row says so, as the
+	trash's rows do. A Trash page's row the dungeon's bosses and rares drop instead (offBosses, the Drowned
+	City's Linken's Boots of Iron: Data/Authored/Upcoming.lua's OffBosses) names them where it would name the
+	trash, and its tooltip says so on either page; a Recipes page's row its bosses drop, not its trash (offBosses =
+	"bosses": Forever's shared recipes, Data/Authored/SiteLoot.lua's AnyBoss) says "Any boss" the same way
+	(ns.OffBossesText). A row kept though no drop of it is recorded yet (notSeen: SiteLoot.lua's NotSeen) says so
+	in its tooltip, in gray, on any page; not in Adventure Mode, where a row shows only once the character has seen
+	it drop.
+	A faction's page lists the rewards seen at its quartermaster.
 ]]
 
 local LootPanel = {}
@@ -134,19 +151,61 @@ local function SortAnyStanding(entries, first)
 end
 LootPanel.SortAnyStanding = SortAnyStanding   -- (for the tests)
 
+--[[
+	A currency vendor's wares (Core/Registry.lua's currency vendors): gear first, by slot in the Type menu's order (the
+	client's slot, known at once), then the rest; within a slot the cheapest first, then as captured. entries[first]
+	on are one vendor's.
+]]
+local SLOT_RANK = {}
+for index, slot in ipairs(Items.SLOT_ORDER) do SLOT_RANK[slot] = index end
+
+local function SortVendorWares(entries, first)
+	local keyed = {}
+	for index = first, #entries do
+		local entry = entries[index]
+		local kind, amount = CostOrder(entry.row)
+		local slot = entry.info.kind == "EQUIPMENT" and SLOT_RANK[entry.info.slot] or #Items.SLOT_ORDER + 1
+		keyed[#keyed + 1] = { entry = entry, slot = slot, kind = kind, amount = amount, at = index }
+	end
+	table.sort(keyed, function(a, b)
+		if a.slot ~= b.slot then return a.slot < b.slot end
+		if a.kind ~= b.kind then return a.kind < b.kind end
+		if a.amount ~= b.amount then return a.amount < b.amount end
+		return a.at < b.at
+	end)
+	for offset, item in ipairs(keyed) do entries[first + offset - 1] = item.entry end
+end
+LootPanel.SortVendorWares = SortVendorWares   -- (for the tests)
+
+-- How many rows the sources hold, and the wares a quartermaster's card sells: a list kept for fewer is built again (a
+-- capture added to a faction or a vendor).
+local function RowCount(sources, sells)
+	local count = 0
+	for _, source in ipairs(sources) do count = count + #(source.loot or {}) end
+	for _ in pairs(sells or {}) do count = count + 1 end
+	return count
+end
+
 local function Entries(instance, boss)
 	local key = boss or instance
+	-- A quartermaster's card on a faction's page (Core/Registry.lua's FACTION_VENDOR_CARDS): the faction's rewards he
+	-- sells, each under its standing, which its row names as on the faction's own list.
+	local sells = boss and boss.vendor and instance.kind == "faction" and boss.sells or nil
+	local sources = (boss and not sells) and { boss } or instance.bosses
 	local entries = entriesCache[key]
-	if entries then return entries end
+	if entries and entries.rowCount == RowCount(sources, sells) then return entries end
 	entries = {}
-	local sources = boss and { boss } or instance.bosses
 	for _, source in ipairs(sources) do
 		local first = #entries + 1
 		for _, row in ipairs(source.loot or {}) do
-			entries[#entries + 1] = { itemID = row.itemID, row = row, boss = source, info = Items:Get(row.itemID, row) }
+			if not sells or sells[row.itemID] then
+				entries[#entries + 1] = { itemID = row.itemID, row = row, boss = source, info = Items:Get(row.itemID, row) }
+			end
 		end
 		if source.standing and source.reaction == ns.ANY_STANDING then SortAnyStanding(entries, first) end
+		if source.vendor then SortVendorWares(entries, first) end
 	end
+	entries.rowCount = RowCount(sources, sells)
 	entriesCache[key] = entries
 	return entries
 end
@@ -156,11 +215,34 @@ local function Wipe(list)
 	return list
 end
 
+--[[
+	Whether the character has seen an item drop where a page lists it (always, outside Adventure Mode):
+	off a boss, or anywhere in the dungeon for its own page (no boss), its trash's and its recipes'; a
+	faction's reward, at its quartermaster.
+]]
+function LootPanel:Seen(instance, boss, itemID)
+	if instance.kind == "faction" then return ns.Discovery:Knows("reward", instance, itemID) end
+	if boss and not ns.IsLootSection(boss) then return ns.Discovery:Knows("item", itemID, instance, boss) end
+	return ns.Discovery:Knows("item", itemID, instance)
+end
+
+-- Whether a row may name its boss: seen off it, and the boss met. A faction's reward names its standing.
+local function NamesBoss(instance, entry)
+	if entry.boss.standing then return true end
+	return ns.Discovery:Knows("item", entry.itemID, instance, entry.boss) and not ns.Discovery:Unmet(instance, entry.boss)
+end
+
+--[[
+	The class shows what it can use (Items:ClassCanUse). The armor type narrows only the pieces that come in one
+	(info.armor: cloth, leather, mail or plate): weapons, shields, jewelry, cloaks, trinkets, off-hands and anything
+	not worn stay, for the class to judge. A shield is no armor type: the classes that carry one wear more than one as
+	they level (a shaman leather, then mail; a warrior or paladin mail, then plate).
+]]
 local function PassesFilters(entry, filters)
 	local info = entry.info
 	if filters.favoritesOnly and not LootPanel:IsFavorite(entry.itemID) then return false end
 	if filters.class ~= ALL and not Items:ClassCanUse(filters.class, info) then return false end
-	if filters.armor ~= ALL and info.armor ~= filters.armor then return false end
+	if filters.armor ~= ALL and info.armor and info.armor ~= filters.armor then return false end
 	if filters.kind ~= ALL and info.kind ~= filters.kind then return false end
 	if filters.slot ~= ALL and info.slot ~= filters.slot then return false end
 	if filters.profession ~= ALL and info.profession ~= filters.profession then return false end
@@ -170,6 +252,10 @@ end
 -- Scratch lists, reused by every redraw rather than made anew; only one page shows at a time.
 local pinned, favorites, others, seen, rows = {}, {}, {}, {}, {}
 local pinnedHeader, restHeader = { header = L.LOOT_PINNED }, {}
+-- Adventure Mode: whether the page's loot is the character's finds; the entries not seen yet; on the
+-- dungeon's own page, the entry each item is listed by (one off a boss it was seen off).
+local gated = false
+local unseen, listedBy, pinnedAt = {}, {}, {}
 
 -- The rows to draw: pinned items of this dungeon first, then the filtered list with
 -- favourites at the top. Each row is an entry or a divider { header = text }.
@@ -181,6 +267,10 @@ local function BuildRows(instance, boss)
 	Wipe(others)
 	Wipe(seen)
 	Wipe(rows)
+	Wipe(unseen)
+	Wipe(listedBy)
+	Wipe(pinnedAt)
+	gated = ns.Style:Adventure()
 
 	-- Items:Get keeps each item's info, and brings in a name the server has sent since.
 	local all = Entries(instance, boss)
@@ -195,18 +285,43 @@ local function BuildRows(instance, boss)
 			seen[entry.itemID] = true
 		end
 	end
+	-- Adventure Mode: what has not been seen drop is left out as those are. On the dungeon's own page an
+	-- item many bosses drop is listed by one it was seen off, where there is one.
+	local found = 0
+	if gated then
+		for _, entry in ipairs(all) do
+			if not LootPanel:Seen(instance, boss, entry.itemID) then
+				unseen[entry] = true
+			elseif not seen[entry.itemID] then
+				found = found + 1
+				if not boss then
+					local first = listedBy[entry.itemID]
+					if not first or (not NamesBoss(instance, first) and NamesBoss(instance, entry)) then
+						listedBy[entry.itemID] = entry
+					end
+				end
+			end
+		end
+	end
 
-	-- Pinned items come from the whole dungeon, so they show on every boss's page.
+	-- Pinned items come from the whole dungeon, so they show on every boss's page. In Adventure Mode one
+	-- seen in the dungeon, listed by a boss it was seen off where there is one.
 	for _, entry in ipairs(Entries(instance, nil)) do
 		local pin = pins[entry.itemID]
-		if pin and pin.instance == instance.key and not seen[entry.itemID] and not Items:IsHidden(entry.itemID) then
+		if pin and pin.instance == instance.key and not seen[entry.itemID] and not Items:IsHidden(entry.itemID)
+			and not (gated and not LootPanel:Seen(instance, nil, entry.itemID)) then
 			pinned[#pinned + 1] = entry
+			pinnedAt[entry.itemID] = #pinned
 			seen[entry.itemID] = true
+		elseif gated and pin and pinnedAt[entry.itemID] then
+			local at = pinnedAt[entry.itemID]
+			if not NamesBoss(instance, pinned[at]) and NamesBoss(instance, entry) then pinned[at] = entry end
 		end
 	end
 
 	for _, entry in ipairs(all) do
-		if not seen[entry.itemID] and PassesFilters(entry, filters) then
+		local by = listedBy[entry.itemID]
+		if not seen[entry.itemID] and not unseen[entry] and (not by or by == entry) and PassesFilters(entry, filters) then
 			if LootPanel:IsFavorite(entry.itemID) then
 				favorites[#favorites + 1] = entry
 			else
@@ -220,13 +335,14 @@ local function BuildRows(instance, boss)
 		rows[#rows + 1] = pinnedHeader
 		for _, entry in ipairs(pinned) do rows[#rows + 1] = entry end
 		if #favorites + #others > 0 then
-			restHeader.header = boss and boss.name or (instance.kind == "faction" and L.REP_ALL_REWARDS or L.LOOT_ALL)
+			restHeader.header = boss and (ns.Discovery:Unmet(instance, boss) and ns.Discovery.UNKNOWN or boss.name)
+				or (ns.IsRewardsPage(instance) and L.REP_ALL_REWARDS or L.LOOT_ALL)
 			rows[#rows + 1] = restHeader
 		end
 	end
 	for _, entry in ipairs(favorites) do rows[#rows + 1] = entry end
 	for _, entry in ipairs(others) do rows[#rows + 1] = entry end
-	return rows, all
+	return rows, all, not gated or found > 0
 end
 
 ------------------------------------------------------------------------------------------
@@ -234,7 +350,8 @@ end
 ------------------------------------------------------------------------------------------
 
 local function ShowTooltip(row)
-	-- The row names its boss: the item's tooltip names only the other dungeons it drops in.
+	-- The row names its boss: the item's tooltip names only the other dungeons it drops in. A Trash page's row that
+	-- the bosses and rares drop says so here, on the Trash page as on the dungeon's own.
 	ns.ItemTooltip:UseSource(row, row.itemID, row.instanceKey and ns.GetInstance(row.instanceKey))
 	GameTooltip:SetOwner(row, "ANCHOR_RIGHT")
 	if row.link then
@@ -251,6 +368,9 @@ local function ShowTooltip(row)
 	else
 		GameTooltip:SetItemByID(row.itemID)
 	end
+	local _, offNote = ns.OffBossesText(row)
+	if offNote then GameTooltip:AddLine(offNote, 1, 0.82, 0, true) end
+	if row.notSeen then GameTooltip:AddLine(L.LOOT_NOT_SEEN_NOTE, 0.6, 0.6, 0.6, true) end
 	GameTooltip:AddLine(" ")
 	if LootPanel:IsPinned(row.itemID) then
 		GameTooltip:AddLine(L.LOOT_TOOLTIP_UNPIN, 0.5, 0.8, 1)
@@ -348,7 +468,7 @@ local function CreateItemRow(parent)
 	row:SetScript("OnClick", function(self, button)
 		if button == "RightButton" then
 			LootPanel:TogglePin(self.itemID, self.instanceKey, self.bossName)
-		elseif not (self.link and type(HandleModifiedItemClick) == "function" and HandleModifiedItemClick(self.link)) then
+		elseif not ns.Gamepad:ItemClick(self.link) then
 			ns.PlaySoundKit("IG_MAINMENU_OPTION")
 		end
 	end)
@@ -363,17 +483,19 @@ function LootPanel:UpdateStar(row, hovered)
 end
 
 -- What a faction's reward costs at its quartermaster: coins, then any other cost; nil if unknown.
--- What a row that is not equipment shows where a slot would go: "Recipe, Alchemy", "Mount".
+-- What a row that is not equipment shows where a slot would go, in the client's words: "Recipe, Alchemy", "Mount",
+-- "Quest Item" (the line the game's tooltip gives a quest item); nil where the client cannot describe it.
 local function KindText(info)
 	if info.kind == "RECIPE" then
 		local recipe = info.itemType or L.LOOT_RECIPE
 		return info.profession and (recipe .. ", " .. info.profession) or recipe
 	end
 	if info.kind == "MOUNT" or info.kind == "PET" or info.kind == "TOY" then return L.LOOT_KIND_ONE[info.kind] end
+	if info.kind == "QUEST" then return Items:QuestItemText() end
 	if info.itemType and info.subType and info.subType ~= "" and info.subType ~= info.itemType then
 		return info.itemType .. ", " .. info.subType
 	end
-	return info.itemType
+	return info.itemType ~= "" and info.itemType or nil
 end
 
 local function CostText(lootRow)
@@ -394,26 +516,43 @@ local function SetItemRow(row, entry, instanceView, instance, reaction)
 	local info = entry.info
 	row.itemID, row.link = entry.itemID, info.link
 	row.instanceKey, row.bossName = instance.key, entry.boss.name
-	row.unavailable, row.unidentified, row.slotText = info.unavailable, info.unidentified, entry.row.slot
+	-- (the data's slot words in the player's language, for an item known by its name alone: its tooltip)
+	row.unavailable, row.unidentified = info.unavailable, info.unidentified
+	row.slotText = info.unidentified and Items:Words(entry.row.slot) or nil
 
 	local reached = entry.boss.standing and reaction ~= nil and reaction >= entry.boss.reaction or false
-	if row.drawnEntry ~= entry or row.drawnView ~= instanceView or row.drawnReached ~= reached then
+	-- In Adventure Mode a boss is named only once the item was seen off it and the boss met.
+	local section = ns.IsLootSection(entry.boss)
+	row.offBosses = section and entry.row.offBosses or nil
+	-- (not seen dropping yet: no such line in Adventure Mode, whose rows are the character's own finds)
+	row.notSeen = not gated and entry.row.notSeen or nil
+	local inDungeon = gated and not section and not NamesBoss(instance, entry)
+	if row.drawnEntry ~= entry or row.drawnView ~= instanceView or row.drawnReached ~= reached
+		or row.drawnInDungeon ~= inDungeon then
 		row.drawnEntry, row.drawnView, row.drawnReached, row.drawnName = entry, instanceView, reached, nil
+		row.drawnInDungeon = inDungeon
 		row:SetHeight(instanceView and INSTANCE_ROW_HEIGHT or BOSS_ROW_HEIGHT)
 		row.BossFrame:SetShown(instanceView)
 		row.Frame:SetShown(not instanceView)
 		row.Boss:SetShown(instanceView)
-		if entry.boss.standing then
-			-- A faction's reward names the standing it needs, green once the player has it.
+		if entry.boss.standing or entry.boss.vendor then
+			-- A faction's reward names the standing it needs, green once the player has it; a currency vendor's ware,
+			-- the vendor.
 			row.Boss:SetText(entry.boss.name)
+		elseif inDungeon then
+			row.Boss:SetText(string.format(L.ADVENTURE_LOOT_IN_DUNGEON, instance.name))
 		else
-			row.Boss:SetText(string.format(L.LOOT_BOSS_LINE, entry.boss.trash and L.LOOT_TRASH or entry.boss.name))
+			-- (the recipes' own: off the trash, as a boss's recipe is listed by its boss: above; a Trash page's row the
+			-- bosses and rares drop: them; a Recipes page's row the bosses drop: "Any boss")
+			local source = section and (ns.OffBossesText(row) or L.LOOT_TRASH) or entry.boss.name
+			row.Boss:SetText(string.format(L.LOOT_BOSS_LINE, source))
 		end
 		local lineColor = reached and REACHED_COLOR or ns.PARCHMENT_TEXT_COLOR
 		row.Boss:SetTextColor(lineColor[1], lineColor[2], lineColor[3])
 		row.Icon:SetTexture(info.icon or QUESTION_MARK)
-		local slot = info.equipLoc and _G[info.equipLoc] or entry.row.slot or KindText(info)
-		local cost = entry.boss.standing and CostText(entry.row)
+		-- The client's words for what the item is; the data's, in the player's language, only where it has none.
+		local slot = info.equipLoc and _G[info.equipLoc] or KindText(info) or Items:Words(entry.row.slot)
+		local cost = (entry.boss.standing or entry.boss.vendor) and CostText(entry.row)
 		if cost then
 			-- A faction's reward: what its quartermaster asks, where the armour type would go.
 			local kind = info.equipLoc and info.subType ~= "" and info.subType or nil
@@ -661,6 +800,11 @@ function LootPanel:Reveal(itemID)
 	if not (container and container:IsShown()) then return false end
 	local row = ShownRow(container, itemID)
 	if not row then
+		-- In Adventure Mode an item not seen yet has no row: the filters stay as the reader set them.
+		local page = container.page
+		if ns.Style:Adventure() and page and page.instance and not self:Seen(page.instance, page.boss, itemID) then
+			return false
+		end
 		ClearFilters()
 		self:Refresh(container)
 		row = ShownRow(container, itemID)
@@ -683,7 +827,7 @@ function LootPanel:Refresh(container)
 	if not instance then return end
 	local instanceView = boss == nil
 
-	local rows, all = BuildRows(instance, boss)
+	local rows, all, anySeen = BuildRows(instance, boss)
 	local standing = instance.kind == "faction" and ns.Reputation:Player(instance.factionID)
 	local reaction = standing and standing.reaction or nil
 
@@ -695,7 +839,7 @@ function LootPanel:Refresh(container)
 	local professions = {}
 	for _, entry in ipairs(all) do
 		if not Items:IsHidden(entry.itemID) and not Items:Superseded(entry.boss, entry.row)
-			and not Items:Unremarkable(entry.boss, entry.row) then
+			and not Items:Unremarkable(entry.boss, entry.row) and not unseen[entry] then
 			local info = entry.info
 			if info.armor then container.presentArmor[info.armor] = true end
 			container.presentKinds[info.kind] = true
@@ -757,7 +901,10 @@ function LootPanel:Refresh(container)
 	for index = dividerIndex + 1, #container.Dividers do container.Dividers[index]:Hide() end
 
 	container.Empty:SetShown(#rows == 0)
-	container.Empty:SetText(#all == 0 and L.LOOT_NONE or L.LOOT_NO_MATCH)
+	-- Adventure Mode: nothing seen to drop yet.
+	container.Empty:SetText(#all == 0 and L.LOOT_NONE
+		or not anySeen and (instance.kind == "faction" and L.ADVENTURE_REP_NONE_SEEN or L.ADVENTURE_LOOT_NONE)
+		or L.LOOT_NO_MATCH)
 	child:SetHeight(math.max(1, y))
 	container.rows = rows
 end

@@ -6,7 +6,8 @@ local L = ns.L
 
 	While it is on, it writes down what the client will tell an addon on Forever: dungeon
 	visits and their area names, boss pulls and kills, what the loot windows held and what the
-	group looted, and each quest's text, giver, place and rewards. Inside a dungeon it also turns on the game's own
+	group looted, each quest's text, giver, place and rewards, and the model of each creature targeted in a
+	dungeon. Inside a dungeon it also turns on the game's own
 	combat log, the one place boss abilities are not withheld, and turns it off again on the
 	way out if it was the one that turned it on.
 
@@ -47,12 +48,7 @@ local function Log(text)
 	Changed()
 end
 
-local function Call(fn, ...)
-	if type(fn) ~= "function" then return nil end
-	local ok, value = pcall(fn, ...)
-	if ok then return ns.Readable(value) end
-	return nil
-end
+local Call = ns.Call
 
 ------------------------------------------------------------------------------------------
 -- State
@@ -70,6 +66,7 @@ function Recorder:Init()
 	state.entrances = state.entrances or {}
 	state.vendors = state.vendors or {}
 	state.combatLogs = state.combatLogs or {}
+	state.models = state.models or {}
 	if state.combatLog == nil then state.combatLog = true end
 	-- On unless the player turns it off: recording starts on entering a dungeon.
 	if state.autoRecord == nil then state.autoRecord = true end
@@ -185,7 +182,7 @@ end
 
 function Recorder:Clear()
 	seenItems = nil
-	for _, key in ipairs({ "log", "visits", "areas", "encounters", "loot", "quests", "entrances", "vendors", "combatLogs" }) do
+	for _, key in ipairs({ "log", "visits", "areas", "encounters", "loot", "quests", "entrances", "vendors", "combatLogs", "models" }) do
 		state[key] = {}
 	end
 	state.copiedTotal = nil
@@ -202,7 +199,8 @@ local function Count(list)
 end
 
 function Recorder:Counts()
-	local counts = { dungeons = 0, visits = 0, kills = 0, items = 0, quests = 0, areas = 0, entrances = 0, wares = 0 }
+	local counts = { dungeons = 0, visits = 0, kills = 0, items = 0, quests = 0, areas = 0, entrances = 0, wares = 0,
+		models = Count(state.models) }
 	for _, visit in pairs(state.visits) do
 		counts.dungeons = counts.dungeons + 1
 		counts.visits = counts.visits + (visit.count or 0)
@@ -217,7 +215,7 @@ function Recorder:Counts()
 	for _, vendor in pairs(state.vendors) do counts.wares = counts.wares + Count(vendor.items) end
 	-- Everything caught, and how much of it is new since the last Copy.
 	counts.caught = counts.dungeons + counts.kills + counts.items + counts.quests + counts.areas + counts.entrances
-		+ counts.wares + #(ns.db.travel or {})
+		+ counts.wares + counts.models + #(ns.db.travel or {})
 	counts.new = math.max(0, counts.caught - (state.copiedTotal or 0))
 	return counts
 end
@@ -250,11 +248,12 @@ end
 	visits, entrance and areas, the bosses killed, and the drops the journal does not list there
 	yet, off a boss, off trash, off chests and plants (objects) and looted by the group (the ones it
 	lists are only counted). Then the quests (new: no dungeon in the journal has them), the
-	quartermasters (new: wares their faction's own rewards lack) and the travel marks. new adds up
-	everything new.
+	quartermasters (new: wares their faction's own rewards lack), the travel marks and the creatures'
+	models (only counted: Copy has them). new adds up everything new.
 ]]
 function Recorder:Catch()
-	local catch = { places = {}, quests = {}, vendors = {}, travel = #(ns.db.travel or {}), new = 0 }
+	local catch = { places = {}, quests = {}, vendors = {}, travel = #(ns.db.travel or {}), models = Count(state.models),
+		new = 0 }
 	local byID = {}
 	local function Place(instanceID)
 		local place = byID[instanceID]
@@ -334,6 +333,9 @@ function Recorder:Catch()
 			entry.wares = entry.wares + 1
 			local faction = via and ns.WareFaction(whose, ware.reaction and ware or via)
 			if faction and not ns.FactionListsItem(faction, itemID) then entry.new = entry.new + 1 end
+			-- A currency vendor's (no ware that needs a standing): new when its currency's page lacks it.
+			local currency = not via and ns.CostCurrency(ware.cost)
+			if currency and not ns.CurrencyListsItem(currency, itemID) then entry.new = entry.new + 1 end
 		end
 		catch.vendors[#catch.vendors + 1] = entry
 		catch.new = catch.new + entry.new
@@ -345,6 +347,17 @@ end
 	Everything recorded as text to paste in our Discord: one line per thing caught, its fields
 	split by ";" (taken out of any name). The first line says which build of the journal and the
 	game it came from, the player's side, and the name they want credited.
+
+	A quest's line: QUEST;id;title;giver's npc id;giver;mapID;x;y;start item;turn-in npc id;turn-in
+	npc;mapID;x;y;XP;money;choices;items;reputation;the quest window's XP. The XP is what the turn-in
+	gave (QUEST_TURNED_IN), which counts any XP buff the player has (a sleeping bag's +3%), else the
+	window's. The last field, since 0.39.22, is the number the quest's reward window showed
+	(GetRewardXP, at the turn-in, else at the offer), most likely with no buff: a best guess (the owner
+	read 4,850 in Return of the Ring's window, the turn-in gave 4,996; whether the bag's buff was on
+	while they looked is not known). Dev/build_data.py takes it first.
+	New fields only ever go at the end, so older recordings and readers still line up.
+
+	A creature's model (since 0.39.22): MODEL;npc id;name;display id;dungeon's instance id (Recorder:NoteTarget).
 ]]
 local EXPORT_VERSION = 1
 
@@ -411,7 +424,7 @@ function Recorder:Export(credit)
 		Line("QUEST", id, quest.title, pickup.npc and pickup.npc.npcID, pickup.npc and pickup.npc.name, from.mapID, from.x, from.y,
 			pickup.startItemID, turnin.npc and turnin.npc.npcID, turnin.npc and turnin.npc.name, to.mapID, to.x, to.y,
 			quest.turnedIn and quest.turnedIn.xp or rewards.xp, quest.turnedIn and quest.turnedIn.money or rewards.money,
-			Join(rewards.choices), Join(rewards.items), Join(reputation))
+			Join(rewards.choices), Join(rewards.items), Join(reputation), rewards.xp)
 	end
 	for _, spot in ipairs(ns.db.travel or {}) do
 		Line("TRAVEL", spot.kind, spot.mapID, spot.x, spot.y, spot.faction, Join(spot.to), spot.area)
@@ -424,6 +437,10 @@ function Recorder:Export(credit)
 			Line("VENDOR", npcID, vendor.name, place.mapID, place.x, place.y, itemID, ware.name, ware.price, ware.faction,
 				ware.reaction, ware.cost)
 		end
+	end
+	for _, npcID in ipairs(SortedKeys(state.models)) do
+		local model = state.models[npcID]
+		Line("MODEL", npcID, model.name, model.displayID, model.instanceID)
 	end
 	-- Items an /aegis items scan found the server knows nothing of.
 	local scan = ns.db.missingItems
@@ -557,8 +574,96 @@ function Recorder:NoteInstance(isReload)
 end
 
 ------------------------------------------------------------------------------------------
+-- Creatures' models
+------------------------------------------------------------------------------------------
+
+--[[
+	The model of each creature targeted inside a dungeon, by its creature id, for the bosses' pictures (displayID):
+	the new dungeons' bosses have none until a run brings them. The client tells an addon no creature's model, but a
+	model frame of the journal's own, set to the target (SetUnit), says which one it shows (GetDisplayInfo, in
+	Forever's client). Once per creature, never a player or a pet; the frame is never drawn (no place on screen) and
+	is emptied at once. When the model is not ready yet, it is read as it loads (OnModelLoaded).
+]]
+local probe, probing
+
+local function Probe()
+	if probe == nil then
+		local ok, frame = pcall(CreateFrame, "PlayerModel")
+		if ok and frame and type(frame.SetUnit) == "function" and type(frame.GetDisplayInfo) == "function" then
+			frame:SetSize(1, 1)
+			frame:SetAlpha(0)
+			pcall(frame.SetScript, frame, "OnModelLoaded", function() Recorder:ModelLoaded() end)
+			probe = frame
+		else
+			probe = false
+		end
+	end
+	return probe or nil
+end
+
+local function ProbeDisplayID(frame)
+	local displayID = tonumber(Call(frame.GetDisplayInfo, frame))
+	if displayID and displayID > 0 then return displayID end
+	return nil
+end
+
+local function KeepModel(creature, displayID)
+	state.models[creature.npcID] = { name = creature.name, displayID = displayID, instanceID = creature.instanceID,
+		at = Stamp() }
+	Changed()
+end
+
+function Recorder:NoteTarget()
+	if not currentInstanceID then return end
+	local npcID = ns.NpcIDFromGUID(Call(UnitGUID, "target"))
+	if not npcID or state.models[npcID] or Call(UnitIsPlayer, "target") or Call(UnitPlayerControlled, "target") then return end
+	local frame = Probe()
+	if not frame then return end
+	local creature = { npcID = npcID, name = Call(UnitName, "target"), instanceID = currentInstanceID }
+	probing = nil
+	if not pcall(frame.SetUnit, frame, "target") then return end
+	local displayID = ProbeDisplayID(frame)
+	if displayID then
+		KeepModel(creature, displayID)
+		pcall(frame.ClearModel, frame)
+	else
+		probing = creature
+	end
+end
+
+-- A model that was not ready when the target was set: read once it has loaded, if it is still the one asked for.
+function Recorder:ModelLoaded()
+	local creature = probing
+	probing = nil
+	if not (creature and probe and state and not state.models[creature.npcID]) then return end
+	local displayID = ProbeDisplayID(probe)
+	if displayID then KeepModel(creature, displayID) end
+	pcall(probe.ClearModel, probe)
+end
+
+------------------------------------------------------------------------------------------
 -- Bosses and loot
 ------------------------------------------------------------------------------------------
+
+--[[
+	A fight's boss by the journal's English name, the name recordings are read by, whatever the client's language: by
+	the fight's id, among the bosses of the dungeon the player is in (all its wings: the Scarlet Monastery's share one
+	id), as the loot window names a boss's corpse by its creature id (LootSource, below). Where several bosses share
+	the fight (Sneed and his Shredder), the one the client named. Nil where no boss there has the id: a fight the
+	journal does not know yet keeps the client's name. (A Russian client's recording filed twelve drops of Wailing
+	Caverns under the bosses' Russian names, 2026-11-14.) Named otherwise, the fight's own boss rather than one who only
+	joins it (joinsFight: Mograine in Whitemane's fight, Data/Authored/RunTracker.lua).
+]]
+local function EnglishBossName(encounterID, clientName)
+	local found
+	for _, instance in ipairs(currentInstanceID and ns.GetInstancesByInstanceID(currentInstanceID) or {}) do
+		for _, boss in ipairs(ns.BossesForEncounter(instance, encounterID)) do
+			if ns.NamedAs(boss, clientName) then return boss.enName or boss.name end
+			if not found or (found.joinsFight and not boss.joinsFight) then found = boss end
+		end
+	end
+	return found and (found.enName or found.name) or nil
+end
 
 function Recorder:EncounterStart(encounterID, encounterName)
 	encounterID, encounterName = ns.Readable(encounterID), ns.Readable(encounterName)
@@ -578,18 +683,35 @@ function Recorder:EncounterEnd(encounterID, encounterName, _, _, success)
 	local entry = state.encounters[encounterID] or { kills = 0, wipes = 0 }
 	entry.name = ns.Readable(encounterName) or entry.name
 	state.encounters[encounterID] = entry
-	if success == 1 or success == true then
+	if ns.EncounterWon(success) then
 		entry.kills = entry.kills + 1
 		if pull and pull.encounterID == encounterID then
 			entry.lastKillSeconds = math.floor(GetTime() - pull.started + 0.5)
 		end
-		lastKill = { name = entry.name, encounterID = encounterID, time = GetTime() }
+		-- The loot credited to this kill goes under the boss's English name (EnglishBossName); the ENCOUNTER line
+		-- keeps the game's own name for the fight.
+		lastKill = { name = EnglishBossName(encounterID, entry.name) or entry.name, encounterID = encounterID,
+			time = GetTime() }
 		Log(string.format(L.RECORD_LOG_KILL, entry.name or tostring(encounterID)))
 	else
 		entry.wipes = entry.wipes + 1
 		Log(string.format(L.RECORD_LOG_WIPE, entry.name or tostring(encounterID)))
 	end
 	pull = nil
+end
+
+--[[
+	The creatures a loot slot comes from, in the order the client names them (guid, count, guid,
+	count, ...): each one's creature id, or false where the client keeps the guid back or it is no
+	creature. Shared with the dungeon map's kills and the character's journal (Core/Discovery.lua).
+]]
+function ns.LootSlotSources(slot)
+	local sources = {}
+	if type(GetLootSourceInfo) ~= "function" then return sources end
+	local found = { pcall(GetLootSourceInfo, slot) }
+	if not found[1] then return sources end
+	for index = 2, #found, 2 do sources[#sources + 1] = ns.NpcIDFromGUID(found[index]) or false end
+	return sources
 end
 
 --[[
@@ -709,33 +831,60 @@ local function PickupPatterns()
 	return pickupPatterns
 end
 
-function Recorder:LootMessage(text)
+-- The item a loot line in chat tells of, with its name, when the line is one of the client's own for
+-- loot received; nil for anything else (an item pushed into the bags, one made). Shared with the
+-- character's journal (Core/Discovery.lua).
+function ns.LootLineItem(text)
 	text = ns.Readable(text)
-	if type(text) ~= "string" or not currentInstanceID then return end
-	local received = false
+	if type(text) ~= "string" then return nil end
 	for _, pattern in ipairs(PickupPatterns()) do
 		if text:find(pattern) then
-			received = true
-			break
+			local itemID = ns.ItemIDFromLink(text)
+			if not itemID then return nil end
+			return itemID, text:match("|h%[(.-)%]|h")
 		end
 	end
-	if not received then return end
-	local itemID = ns.ItemIDFromLink(text)
-	if not itemID or HasLoot(currentInstanceID, itemID) then return end
-	PutLoot(currentInstanceID, GROUP_SOURCE, itemID, text:match("|h%[(.-)%]|h"))
+	return nil
 end
 
--- The boss an encounter's drops belong to; nil for the history's bucket of everything else.
-local function EncounterName(encounterID)
+function Recorder:LootMessage(text)
+	if not currentInstanceID then return end
+	local itemID, name = ns.LootLineItem(text)
+	if not itemID or HasLoot(currentInstanceID, itemID) then return end
+	PutLoot(currentInstanceID, GROUP_SOURCE, itemID, name)
+end
+
+-- The boss an encounter's drops belong to in the loot history, by the history's name for it, else
+-- the fallback; nil for the history's bucket of everything else. Shared (Core/Discovery.lua).
+function ns.LootHistoryBossName(encounterID, fallback)
 	local name
-	if C_LootHistory.GetInfoForEncounter then
+	if C_LootHistory and C_LootHistory.GetInfoForEncounter then
 		local ok, info = pcall(C_LootHistory.GetInfoForEncounter, encounterID)
 		info = ok and ns.Readable(info)
 		name = type(info) == "table" and ns.Readable(info.encounterName) or nil
 	end
-	name = name or (state.encounters[encounterID] and state.encounters[encounterID].name)
+	name = name or fallback
 	if type(name) ~= "string" or name == "" or name == MISCELLANEOUS then return nil end
-	return name
+	-- The boss's English name where the journal knows the fight, as the loot window files a corpse's loot
+	return EnglishBossName(encounterID, name) or name
+end
+
+local function EncounterName(encounterID)
+	return ns.LootHistoryBossName(encounterID, state.encounters[encounterID] and state.encounters[encounterID].name)
+end
+
+-- A drop in the loot history: its item and link, or nil while the client cannot say yet. Shared
+-- (Core/Discovery.lua).
+function ns.LootHistoryItem(encounterID, lootListID)
+	encounterID, lootListID = ns.Readable(encounterID), ns.Readable(lootListID)
+	if type(encounterID) ~= "number" or type(lootListID) ~= "number" then return nil end
+	if not (C_LootHistory and C_LootHistory.GetSortedInfoForDrop) then return nil end
+	local ok, drop = pcall(C_LootHistory.GetSortedInfoForDrop, encounterID, lootListID)
+	drop = ok and ns.Readable(drop)
+	local link = type(drop) == "table" and ns.Readable(drop.itemHyperlink) or nil
+	local itemID = ns.ItemIDFromLink(link)
+	if not itemID then return nil end
+	return itemID, link
 end
 
 function Recorder:LootHistoryDrop(encounterID, lootListID)
@@ -744,14 +893,12 @@ function Recorder:LootHistoryDrop(encounterID, lootListID)
 	if not (C_LootHistory and C_LootHistory.GetSortedInfoForDrop) then return end
 	local key = encounterID .. ":" .. lootListID
 	if historySeen[key] then return end
-	local ok, drop = pcall(C_LootHistory.GetSortedInfoForDrop, encounterID, lootListID)
-	drop = ok and ns.Readable(drop)
-	local itemID = type(drop) == "table" and ns.ItemIDFromLink(drop.itemHyperlink)
+	local itemID, link = ns.LootHistoryItem(encounterID, lootListID)
 	-- Not readable yet: the drop is asked about again at its next update.
 	if not itemID then return end
 	historySeen[key] = true
 	local boss = EncounterName(encounterID)
-	local name = ns.Readable(drop.itemHyperlink):match("|h%[(.-)%]|h")
+	local name = link:match("|h%[(.-)%]|h")
 	if boss then
 		-- Off a known boss even when the loot window filed it under the creature's number.
 		local items = state.loot[currentInstanceID] and state.loot[currentInstanceID][boss]
@@ -933,7 +1080,9 @@ local function WareInfo(index)
 	if ok then return ns.Readable(name), ns.Readable(price) end
 end
 
--- Other costs of a ware, as "2 Arcane Crystal + 5 Holy Water", or nil.
+-- Other costs of a ware, as "2 Arcane Crystal + 5 Holy Water", or nil. A currency the journal knows is kept by its
+-- English name (ns.CurrencyKey), so a capture read again at login, before the client has named the coin, still finds
+-- its page.
 local function WareCost(index)
 	local parts = {}
 	for costIndex = 1, Call(GetMerchantItemCostInfo, index) or 0 do
@@ -941,7 +1090,7 @@ local function WareCost(index)
 		if ok then
 			value, link = ns.Readable(value), ns.Readable(link)
 			local name = ns.Readable(currencyName) or (type(link) == "string" and link:match("%[(.-)%]")) or nil
-			if value and name then parts[#parts + 1] = value .. " " .. name end
+			if value and name then parts[#parts + 1] = value .. " " .. ns.CurrencyKey(name) end
 		end
 	end
 	return #parts > 0 and table.concat(parts, " + ") or nil
@@ -984,9 +1133,10 @@ end
 
 --[[
 	Keeps the open shop's wares (onPurpose: even a vendor with none that need a standing). Returns
-	what was found, { name, wares, forStanding, unknown, new, factions = { name, ... } }, or nil
+	what was found, { name, wares, forStanding, unknown, new, factions = { name, ... }, currency }, or nil
 	with no shop open or no vendor to name. forStanding counts the wares that need a standing,
-	unknown those whose faction is not known yet, new those that joined a faction's rewards just now.
+	unknown those whose faction is not known yet, new those that joined a faction's rewards (or a
+	currency's page) just now; currency names what a vendor with none for a standing takes, if anything.
 ]]
 function Recorder:CaptureVendor(onPurpose)
 	if not merchantOpen then return nil end
@@ -1007,6 +1157,11 @@ function Recorder:CaptureVendor(onPurpose)
 	state.vendors[npc.npcID] = vendor
 	local entry = VendorEntry(npc.npcID, vendor)
 	found.new = ns.AddCapturedVendors({ entry }, true)
+	-- A currency vendor (no ware that needs a standing): the currency a ware of theirs costs, for the status line.
+	for _, ware in ipairs(found.forStanding == 0 and entry.wares or {}) do
+		local currency = ns.CostCurrency(ware.cost)
+		if currency and not found.currency then found.currency = ns.CurrencyName(currency) end
+	end
 	-- Which factions, now that the wares that name theirs have been heard.
 	local named = {}
 	for _, ware in ipairs(entry.wares) do
@@ -1042,6 +1197,8 @@ shop:SetScript("OnEvent", function(_, event)
 	if merchantOpen and Recorder:IsRecording() then
 		local ok, err = pcall(Recorder.CaptureVendor, Recorder, false)
 		if not ok then Log("|cffff4040" .. event .. ": " .. tostring(err) .. "|r") end
+		-- (the wares that join a faction's rewards now are seen there, in Adventure Mode)
+		ns.Discovery:ReadShop()
 	end
 	Changed()
 end)
@@ -1068,6 +1225,7 @@ local HANDLERS = {
 	QUEST_COMPLETE = function() Recorder:QuestComplete() end,
 	QUEST_TURNED_IN = function(...) Recorder:QuestTurnedIn(...) end,
 	CHAT_MSG_COMBAT_FACTION_CHANGE = function(text) Recorder:ReputationMessage(text) end,
+	PLAYER_TARGET_CHANGED = function() Recorder:NoteTarget() end,
 }
 
 -- Heard even while stopped: the way into a dungeon and out of it, for recording by itself there.

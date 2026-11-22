@@ -3,12 +3,12 @@ local _, ns = ...
 --[[
 	Ragefire Chasm, written by hand over the generated data.
 	Facts from warcraft.wiki.gg, "Ragefire Chasm (Classic)" (CC BY-SA 4.0), in our own words.
+
+	Its lore, and each of its four bosses', is Spoken's story, word for word (Core/SpokenLore.lua; the owner's
+	decision of 2026-11-14: Spoken tells Ragefire Chasm and all four of its bosses).
 ]]
 
 ns.AmendInstance("RagefireChasm", {
-	description = "Beneath Orgrimmar's Cleft of Shadow runs a chasm of lava and stone where troggs, fire "
-		.. "elementals and the Searing Blade, a cult of demon-worshippers, have taken root under the Horde's capital.",
-
 	bosses = {
 		["Oggleflint"] = {
 			notes = { "A trogg brute on the main path; a straightforward fight if no other packs join in." },

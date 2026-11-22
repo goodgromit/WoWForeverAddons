@@ -9,17 +9,32 @@ local _, ns = ...
 	Horde's own Crest of Lordaeron, and where five quests are handed in. Its loot and quests
 	already matched ours; the journal's earlier boss spots were off.
 
-	The four places the Crest of Lordaeron can lie are back as the journal had them before
-	(the owner's call, 2026-11-06): the site describes them only in words.
+	The Crest of Lordaeron lies in one of five places (the owner, 2026-11-17: "The Crest of Lordaeron
+	map shows 4 locations, but there are 5"), as the owner's picture marks them on this same map
+	(Mausoleum, Tower 3, Tower 2, Crypt, Tower 1) and a player's account, pasted by the owner, tells
+	them. Each spot names its place in our own words, in its mark's tooltip. The four the journal had
+	(back since the owner's call of 2026-11-06) are four of them, each on the building or tower the
+	owner's shield is drawn over; the fifth, Tower 1 (the East tower, at the south-west corner of
+	Witherfang's courtyard, on the alley you come in by), is the center of its round tower, as the
+	West tower's (Tower 2) is: the two are twins, and the owner's shield over it is centered within
+	0.003 of there.
 ]]
 
 -- Where Captain Truman stands: the owner's spot, in game (2026-11-11; the site's (0.624, 0.285) was well south of him).
 local TRUMAN = { x = 0.628, y = 0.178, floor = 1 }
+-- The crest's five places, each naming where it hangs or lies (Data/Authored/InsideQuestSpots.lua's name: its mark's
+-- tooltip line), the owner's names for them first.
 local CREST_SPOTS = {
-	{ x = 0.347, y = 0.207, floor = 1 },
-	{ x = 0.376, y = 0.493, floor = 1 },
-	{ x = 0.433, y = 0.290, floor = 1 },
-	{ x = 0.566, y = 0.596, floor = 1 },
+	-- Mausoleum: the small building in the far north-west corner (the spot drawn on its north side)
+	{ x = 0.347, y = 0.207, floor = 1, name = "Mausoleum in the far north-west corner, on the wall" },
+	-- Tower 2: the West tower, the center of its round tower
+	{ x = 0.376, y = 0.493, floor = 1, name = "West tower, top floor, on the wall left of the doors" },
+	-- Tower 3: the north-west tower Bjork walks around, at its foot
+	{ x = 0.433, y = 0.290, floor = 1, name = "North-west tower, at the bottom, in front of the split staircase" },
+	-- Crypt: the small crypt south-east of the Throne Room, on the alley you come in by
+	{ x = 0.566, y = 0.596, floor = 1, name = "Behind the closed crypt doors, on the pitch-black wall" },
+	-- Tower 1: the East tower, the center of its round tower (the fifth, 2026-11-17)
+	{ x = 0.671, y = 0.495, floor = 1, name = "East tower, top floor, on the wall left of the doors" },
 }
 local CREST_NOTE = "The crest is not always in the same place: on the floor of a tower near Bjork, or on the wall of the "
 	.. "small temple at the far end, past him, among other spots."

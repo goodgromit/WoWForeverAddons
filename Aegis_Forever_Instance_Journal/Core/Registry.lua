@@ -9,6 +9,16 @@ local addonName, ns = ...
 ]]
 
 local instances, byKey, byInstanceID = {}, {}, {}
+--[[
+	Keys a dungeon was saved under before, read as the key it has now: Stratholme was two pages, one for each gate,
+	until 0.39.22 (the owner's call of 2026-11-12). Saved data under the old keys is moved over at login
+	(ns.MoveRenamedKeys); an amendment written for an old key (the 0.40 branch's) still finds the dungeon. The
+	journal's own data names only the new key: a smoke check reads its files for the old ones.
+]]
+local RENAMED = { StratholmeMainGate = "Stratholme", StratholmeServiceGate = "Stratholme" }
+local function Lookup(key)
+	return byKey[key] or byKey[RENAMED[key]]
+end
 -- Wings of one dungeon (Scarlet Monastery's) share the client's instance id: id -> { wing, ... }.
 local wingsByInstanceID, lastWing = {}, {}
 local factions = {}
@@ -118,10 +128,15 @@ function ns.AddInstance(instance)
 	DataChanged()
 	assert(type(instance.key) == "string", "AddInstance: key is required")
 	assert(not byKey[instance.key], "AddInstance: duplicate key " .. instance.key)
+	assert(not RENAMED[instance.key], "AddInstance: " .. instance.key .. " is an old key")
 	instance.kind = instance.kind or "dungeon"
 	instance.bosses = instance.bosses or {}
 	instance.quests = instance.quests or {}
 	ResolveTiles(instance)
+	-- A dungeon with several doors outside (doors: Stratholme's Main Gate and Service Gate, each { name, mapID,
+	-- world or x and y }): its first is its door wherever one door is read (zoneEntrance: the journal's own
+	-- waypoint, Show Map's own zone). The zone maps show each (UI/DungeonMap.lua).
+	if instance.doors and not instance.zoneEntrance then instance.zoneEntrance = instance.doors[1] end
 	for _, boss in ipairs(instance.bosses) do KeyUnidentified(boss.loot) end
 	for _, quest in ipairs(instance.quests) do KeyUnidentified(quest.rewards and quest.rewards.items) end
 	instance.buttonImage = FirstFile(instance.buttonImage)
@@ -143,14 +158,25 @@ end
 --[[
 	Hand-written additions from Data/Authored, laid over the dungeon's own data:
 	  bosses = { ["Boss Name"] = { field = value, ... } }  merged into that boss
+	                                                         (rumour = "...": in Adventure Mode, the one line
+	                                                         an unmet boss's page shows in place of its
+	                                                         description, UI/EncounterPage.lua)
 	  bossOrder = { "Boss Name", ... }                       run order; unlisted bosses keep theirs, after
 	  addQuests = { quest, ... }                             quests the dungeon's data lacks, added after
 	                                                         its own (one it already has is left alone)
 	  addBosses = { boss, ... }                              bosses the dungeon's data lacks, added before
-	                                                         its trash (one it already has is left alone);
-	                                                         added first, so the other fields can name them
+	                                                         its trash and its recipes (ns.IsLootSection;
+	                                                         one it already has is left alone); a Recipes
+	                                                         entry (recipes = true) after its trash
+	                                                         (ns.PlaceBoss); added first, so the other fields
+	                                                         can name them
 	  questPatches = { [questID] = { field = value } }       merged into that quest (false clears a field)
 	  removeQuests = { questID, ... }                        quests that are not the dungeon's on Forever
+	  rumour = "..."                                         in Adventure Mode, the one line a world-map door
+	                                                         of the dungeon not entered yet shows in place of
+	                                                         its name (Core/Discovery.lua's DoorRumour); in
+	                                                         English, its translations kept as a boss's
+	                                                         rumour's are (each language's L.STRINGS, below)
 	  anything else                                          replaces the instance's field
 ]]
 local function AddBosses(instance, bosses)
@@ -158,16 +184,14 @@ local function AddBosses(instance, bosses)
 		if not FindBoss(instance, boss.name) then
 			KeyUnidentified(boss.loot)
 			boss.loot = boss.loot or {}
-			local at = #instance.bosses + 1
-			while at > 1 and instance.bosses[at - 1].trash do at = at - 1 end
-			table.insert(instance.bosses, at, boss)
+			ns.PlaceBoss(instance, boss)
 		end
 	end
 end
 
 function ns.AmendInstance(key, patch)
 	DataChanged()
-	local instance = byKey[key]
+	local instance = Lookup(key)
 	assert(instance, "AmendInstance: unknown instance " .. tostring(key))
 	if patch.addBosses then AddBosses(instance, patch.addBosses) end
 	for field, value in pairs(patch) do
@@ -227,11 +251,24 @@ function ns.AmendInstance(key, patch)
 	end
 end
 
+--[[
+	One of a dungeon's several doors (instance.doors: Stratholme's Main Gate and Service Gate) amended by its place in
+	the list: each field of the patch set on it (Data/Authored/Rumours.lua: the Service Gate's own line of rumour, as
+	the two gates had one each when they were two pages, until 0.39.22).
+]]
+function ns.AmendDoor(key, index, patch)
+	DataChanged()
+	local instance = Lookup(key)
+	local door = instance and instance.doors and instance.doors[index]
+	assert(door, "AmendDoor: " .. tostring(key) .. " has no door " .. tostring(index))
+	for field, value in pairs(patch) do door[field] = value end
+end
+
 -- A dungeon's quest moved to just after another of its quests: a chain's last step after the step before
 -- it, so the Quests tab lists the chain in its order.
 function ns.ListQuestAfter(key, questID, afterID)
 	DataChanged()
-	local quests = byKey[key].quests
+	local quests = Lookup(key).quests
 	local moved
 	for index, quest in ipairs(quests) do
 		if quest.questID == questID then moved = table.remove(quests, index) break end
@@ -246,7 +283,7 @@ end
 -- And just before another: a lead-in before the quest it leads to.
 function ns.ListQuestBefore(key, questID, beforeID)
 	DataChanged()
-	local quests = byKey[key].quests
+	local quests = Lookup(key).quests
 	local moved
 	for index, quest in ipairs(quests) do
 		if quest.questID == questID then moved = table.remove(quests, index) break end
@@ -305,6 +342,16 @@ local function RecordedAdds(boss, adds)
 	return out
 end
 
+-- Recorded adds carry no display id, so the Model tab cannot draw them. A hand-written file may give one
+-- (boss.addModels, { [npcID] = displayID }, set before Data/Generated/Abilities.lua loads): Overlord
+-- Ramtusk's two Razorfen Spearhides, an entry of their own until 2026-11-13, keep their picture that way.
+local function GiveAddModels(boss)
+	if not boss.addModels then return end
+	for _, add in ipairs(boss.adds or {}) do
+		if add.displayID == nil and add.npcID then add.displayID = boss.addModels[add.npcID] end
+	end
+end
+
 function ns.SetAbilities(byInstance)
 	for key, bosses in pairs(byInstance) do
 		local instance = byKey[key]
@@ -313,6 +360,7 @@ function ns.SetAbilities(byInstance)
 			if boss then
 				MergeRecorded(boss, found.abilities)
 				if boss.adds == nil then boss.adds = RecordedAdds(boss, found.adds) end
+				GiveAddModels(boss)
 				if boss.encounterID == nil then boss.encounterID = found.encounterID end
 			end
 		end
@@ -335,7 +383,9 @@ end
 --[[
 	Factions are registered in the shape of an instance, a standing in place of a boss:
 	{ key = "Faction529", kind = "faction", factionID, name, bosses = { standing, ... } },
-	each standing { name, reaction, standing = true, loot = { { itemID, price, cost }, ... } }.
+	each standing { name, reaction, standing = true, loot = { { itemID, price, cost }, ... } };
+	then, for a faction in FACTION_VENDOR_CARDS (below), its quartermasters' cards after the standings:
+	{ name, vendor = true, npcID, mapID, x, y, sells = { [itemID] = true }, loot = {} }, with no reaction.
 	The journal then draws a faction's rewards the way it draws a dungeon's loot, filters and
 	all. The list itself (Data/Reputation/Factions.lua) has no rewards: they come from captured
 	quartermasters (ns.AddCapturedVendors).
@@ -373,8 +423,9 @@ end
 	journal does not have is left alone. A ware that needs no standing (reaction nil: Stondry
 	Darkhammer's 30-Favor plans) joins the faction of its vendor's wares that do, in a group of its
 	own, "Any standing", first on the page; a vendor with no ware that needs a standing is no
-	faction's, and adds nothing. The vendor is kept on the faction as one of its quartermasters.
-	Returns how many wares joined.
+	faction's: its wares that cost an item or a currency join that currency's page (the currency
+	vendors, below), and the rest nothing. The vendor is kept on the faction as one of its
+	quartermasters. Returns how many wares joined.
 ]]
 -- The "Any standing" group's reaction: below Hated (1), so it comes first and any standing reaches it.
 ns.ANY_STANDING = 0
@@ -387,7 +438,8 @@ local function StandingFor(faction, reaction)
 		or _G["FACTION_STANDING_LABEL" .. tostring(reaction)] or tostring(reaction)
 	local standing = { name = name, reaction = reaction, standing = true, loot = {} }
 	local at = #faction.bosses + 1
-	while at > 1 and (faction.bosses[at - 1].reaction or 0) > reaction do at = at - 1 end
+	-- (before a quartermaster's card, which comes after the standings: FACTION_VENDOR_CARDS, below)
+	while at > 1 and (faction.bosses[at - 1].vendor or (faction.bosses[at - 1].reaction or 0) > reaction) do at = at - 1 end
 	table.insert(faction.bosses, at, standing)
 	return standing
 end
@@ -502,7 +554,7 @@ function ns.AddListedRewards(byFaction)
 					end
 				end
 			end
-			faction.rewardCount, faction.crest = nil, nil
+			faction.rewardCount, faction.crest, faction.rewardCrest = nil, nil, nil
 		end
 	end
 end
@@ -521,6 +573,17 @@ function ns.StandingWare(vendor)
 	return first
 end
 
+--[[
+	A quartermaster's card on his faction's page, as a currency's vendor has on its page (the owner's ask of 2026-11-17:
+	Friz Frazzlespark, Powderfuse's, in the Riverglades): his name, the zone and Show Map, after the standings; a click
+	shows the faction's rewards he sells, each under the standing it needs, with its price (UI/LootPanel.lua). For the
+	factions listed here alone, by id: every other faction's page stays as it was, its quartermasters named on its card's
+	tooltip only. The card is VendorOn's (below), with sells = { [itemID] = true } and no rows of its own, so the
+	faction's count, crest, search and the rest see the standings' rows alone.
+]]
+local FACTION_VENDOR_CARDS = { [2827] = "Powderfuse" }
+local VendorOn
+
 -- One ware joining its faction's rewards; false when its faction is not known yet. A listed
 -- (unconfirmed) row it matches is confirmed: it takes the ware's price, cost and standing. via is
 -- the ware whose faction it takes: itself, or for one that needs no standing, a ware of the same
@@ -532,6 +595,11 @@ local function AddWare(vendor, ware, seen, via)
 	faction.quartermasters = faction.quartermasters or {}
 	faction.quartermasters[vendor.npcID or vendor.name] = { name = vendor.name, mapID = vendor.mapID,
 		x = vendor.x, y = vendor.y }
+	if FACTION_VENDOR_CARDS[faction.factionID] then
+		local card = VendorOn(faction, vendor)
+		card.sells = card.sells or {}
+		card.sells[ware.itemID] = true
+	end
 	local reaction = ware.reaction or ns.ANY_STANDING
 	local row, standing, index = RewardRow(faction, ware.itemID)
 	if row and row.listed then
@@ -548,18 +616,19 @@ local function AddWare(vendor, ware, seen, via)
 	local loot = StandingFor(faction, reaction).loot
 	loot[#loot + 1] = { itemID = ware.itemID, price = ware.price, cost = ware.cost, seen = seen or nil }
 	-- Its count and crest are worked out again.
-	faction.rewardCount, faction.crest = nil, nil
+	faction.rewardCount, faction.crest, faction.rewardCrest = nil, nil, nil
 	return true, 1
 end
 
 --[[
 	Everyday goods (the owner's call of 2026-11-12, "yes hide those"): Kalsey Sanden's and Aza'bek's water, spices,
-	flour, wood and the like are no faction's rewards, and stay off the Authority's "Any standing". Those two vendors
-	only (by creature id): their wares that need no standing, priced in gold with no other cost, that are not a recipe,
-	plan, pattern, formula or schematic (the client's Recipe item class, known at once: GetItemInfoInstant). An item the
+	flour, wood and the like are no faction's rewards, and stay off the Authority's "Any standing"; so are Friz
+	Frazzlespark's arrows, shot, drinks, weapons and reagents (2026-11-17), off Powderfuse's page. Those vendors only (by
+	creature id): their wares that need no standing, priced in gold with no other cost, that are not a recipe, plan,
+	pattern, formula or schematic (the client's Recipe item class, known at once: GetItemInfoInstant). An item the
 	client cannot describe counts as such goods. A capture of the player's own is held to it too.
 ]]
-local EVERYDAY_GOODS_VENDORS = { [256731] = "Kalsey Sanden", [248198] = "Aza'bek" }
+local EVERYDAY_GOODS_VENDORS = { [256731] = "Kalsey Sanden", [248198] = "Aza'bek", [255897] = "Friz Frazzlespark" }
 local RECIPE_CLASS = 9   -- Enum.ItemClass.Recipe
 
 function ns.IsEverydayGoods(vendor, ware)
@@ -570,6 +639,99 @@ function ns.IsEverydayGoods(vendor, ware)
 	local getInstant = (C_Item and C_Item.GetItemInfoInstant) or GetItemInfoInstant
 	local ok, _, _, _, _, _, classID = pcall(getInstant, ware.itemID)
 	return not (ok and classID == RECIPE_CLASS)
+end
+
+--[[
+	Vendors who sell for an item or a currency and for no standing (the owner's ask of 2026-11-12: Pix Xizzix in Booty
+	Bay, whose wares cost Tarnished Undermine Real, "just under the reputation tab"): a page for each currency, under
+	the Reputation tab after the factions, in a faction's shape with its vendors in place of standings:
+	  { key = "Currency:<English name>", kind = "currency", name, currency = English name, crest, color,
+	    bosses = { { name, vendor = true, npcID, mapID, x, y, loot = { { itemID, price, cost, seen }, ... } }, ... } }
+	A ware joins the page of the first currency its cost names; one priced in gold alone is left off, and a vendor
+	with nothing else adds nothing (a page for every innkeeper would be clutter). The pages are kind "currency", not
+	"dungeon": the Gear Finder, which looks in the dungeons alone, does not see them (the owner: "later it could be
+	incorporated into the gear finder").
+]]
+local currencyPages = {}
+local CURRENCY_CARD_COLOR = { 0.62, 0.5, 0.2 }
+
+-- Whether a page is rewards alone, no overview or other tabs: a faction's, or a currency's vendors'.
+function ns.IsRewardsPage(instance)
+	return instance ~= nil and (instance.kind == "faction" or instance.kind == "currency")
+end
+
+local function CurrencyPage(name)
+	local page = currencyPages[name]
+	if page then return page end
+	page = { key = "Currency:" .. name, kind = "currency", name = ns.CurrencyName(name), enName = name, currency = name,
+		crest = ns.CurrencyIcon(name), color = CURRENCY_CARD_COLOR }
+	ns.AddInstance(page)
+	currencyPages[name] = page
+	return page
+end
+
+-- The vendor's entry on a currency's page, or his card on a faction's (FACTION_VENDOR_CARDS: after the standings, the
+-- cards by name); where they stand is the latest capture's.
+function VendorOn(page, vendor)
+	local key = vendor.npcID or vendor.name
+	local entry
+	for _, candidate in ipairs(page.bosses) do
+		if candidate.vendorKey == key then entry = candidate end
+	end
+	if not entry then
+		entry = { name = vendor.name or tostring(key), vendor = true, vendorKey = key, npcID = vendor.npcID, loot = {} }
+		local at = #page.bosses + 1
+		while at > 1 and page.bosses[at - 1].vendor and page.bosses[at - 1].name > entry.name do at = at - 1 end
+		table.insert(page.bosses, at, entry)
+	end
+	if vendor.mapID and vendor.x and vendor.y then entry.mapID, entry.x, entry.y = vendor.mapID, vendor.x, vendor.y end
+	return entry
+end
+
+-- A vendor with no ware that needs a standing: its wares that cost something besides gold join their currency's
+-- page (one it already lists is left as it is). Returns how many joined.
+local function AddCurrencyWares(vendor, seen)
+	local added = 0
+	for _, ware in ipairs(vendor.wares or {}) do
+		local name = type(ware.itemID) == "number" and ns.CurrencyKey(CostNames(ware.cost)[1])
+		if name then
+			local entry = VendorOn(CurrencyPage(name), vendor)
+			local listed = false
+			for _, row in ipairs(entry.loot) do
+				if row.itemID == ware.itemID then listed = true end
+			end
+			if not listed then
+				entry.loot[#entry.loot + 1] = { itemID = ware.itemID, price = ware.price, cost = ware.cost, seen = seen or nil }
+				added = added + 1
+			end
+		end
+	end
+	return added
+end
+
+-- The currencies' pages, by name.
+function ns.GetCurrencyPages()
+	local list = {}
+	for _, page in pairs(currencyPages) do list[#list + 1] = page end
+	table.sort(list, function(a, b) return a.name < b.name end)
+	return list
+end
+
+-- Whether a currency's page lists an item (not counting wares a vendor was seen selling): the Record tab's count of new.
+function ns.CurrencyListsItem(name, itemID)
+	local page = currencyPages[ns.CurrencyKey(name)]
+	for _, entry in ipairs(page and page.bosses or {}) do
+		for _, row in ipairs(entry.loot) do
+			if row.itemID == itemID and not row.seen then return true end
+		end
+	end
+	return false
+end
+
+-- The first currency a ware's cost names ("75 Tarnished Undermine Real"), by its English name where the journal
+-- knows it (ns.CurrencyKey), or nil (gold alone).
+function ns.CostCurrency(cost)
+	return ns.CurrencyKey(CostNames(cost)[1])
 end
 
 function ns.AddCapturedVendors(vendors, seen)
@@ -589,8 +751,10 @@ function ns.AddCapturedVendors(vendors, seen)
 	local added = 0
 	for _, vendor in ipairs(vendors) do
 		local via = ns.StandingWare(vendor)
+		-- No ware that needs a standing: a currency vendor, or nothing (above).
+		if not via then added = added + AddCurrencyWares(vendor, seen) end
 		for _, ware in ipairs(via and vendor.wares or {}) do
-			-- (two vendors' everyday goods left off: ns.IsEverydayGoods)
+			-- (the everyday goods of EVERYDAY_GOODS_VENDORS left off: ns.IsEverydayGoods)
 			if not ns.IsEverydayGoods(vendor, ware) then
 				local whose = not ware.reaction and via or nil
 				local placed, count = AddWare(vendor, ware, seen, whose)
@@ -650,31 +814,202 @@ function ns.JournalHasQuest(questID)
 	return false
 end
 
--- A boss's name as the journal titles it: the dungeon's trash is "Trash".
+--[[
+	Whether a row of a dungeon's boss list is a part of its loot rather than a boss: its trash's drops
+	(trash = true, "Trash Drops") or its recipes (recipes = true, "Recipes": the recipes that drop in the
+	dungeon, a boss's own also on his list). Either is an entry of the boss list whose page is its loot,
+	never a creature: no portrait, abilities, lore, map pin or place in the run's count.
+]]
+function ns.IsLootSection(boss)
+	return type(boss) == "table" and (boss.trash or boss.recipes) and true or false
+end
+
+--[[
+	An entry put in its place in a dungeon's boss list, where a later file adds one the data lacks (AmendInstance's
+	addBosses; the Trash and the Recipes that Data/Authored/FromForeverChanges.lua and Data/Authored/SiteLoot.lua make):
+	a boss (or rare) before the loot sections, the trash after the bosses, the recipes last. The list's sections are
+	shown in the data's order (UI/EncounterPage.lua's BossesOf), so a dungeon given its Recipes first and its Trash
+	after still lists the Trash first.
+]]
+local function SectionRank(boss)
+	return boss.recipes and 2 or boss.trash and 1 or 0
+end
+
+function ns.PlaceBoss(instance, boss)
+	DataChanged()
+	local bosses = instance.bosses
+	local at = #bosses + 1
+	while at > 1 and SectionRank(bosses[at - 1]) > SectionRank(boss) do at = at - 1 end
+	table.insert(bosses, at, boss)
+	return boss
+end
+
+--[[
+	A loot section's row that the section's own creatures do not drop (offBosses): a Trash page's row the dungeon's
+	bosses and rares drop (true: the Drowned City's Linken's Boots of Iron), or a Recipes page's row two or more of its
+	bosses drop, and its trash does not ("bosses": Forever's shared recipes, the owner's call of 2026-11-20). Its line
+	where the trash would be named ("Any boss or rare", "Any boss") and its tooltip's note, or nil for any other row.
+]]
+function ns.OffBossesText(row)
+	local kind = type(row) == "table" and row.offBosses
+	if kind == "bosses" then return ns.L.LOOT_ANY_BOSS, ns.L.LOOT_ANY_BOSS_NOTE end
+	if kind then return ns.L.LOOT_BOSSES_AND_RARES, ns.L.LOOT_BOSSES_AND_RARES_NOTE end
+	return nil
+end
+
+-- A boss's name as the journal titles it: the dungeon's trash is "Trash", its recipes "Recipes".
 function ns.BossTitle(boss)
+	if boss.recipes then return ns.L.RECIPES end
 	return boss.trash and ns.L.TRASH or boss.name
 end
 
 function ns.GetInstance(key)
-	return byKey[key]
+	return Lookup(key)
+end
+
+--[[
+	Saved data under a dungeon's old key (RENAMED, above) moved to its key now, silently, at login (Core/Init.lua):
+	the map's kills (defeated: by boss name, joined), when each part was left (defeatedLeftAt: the later), the open
+	run and the last one (their key, part and finished part, and their kills, joined) and loot pins (pins[itemID]
+	.instance). Nothing else the character keeps names a dungeon by key; the account's record is by the client's
+	instance id. Once the old keys are gone it changes nothing, so it needs no version of its own.
+]]
+local function Join(into, from)
+	for name, value in pairs(from) do
+		if into[name] == nil then into[name] = value end
+	end
+end
+
+function ns.MoveRenamedKeys(charDB)
+	if type(charDB) ~= "table" then return end
+	for old, new in pairs(RENAMED) do
+		if type(charDB.defeated) == "table" and type(charDB.defeated[old]) == "table" then
+			charDB.defeated[new] = charDB.defeated[new] or {}
+			Join(charDB.defeated[new], charDB.defeated[old])
+			charDB.defeated[old] = nil
+		end
+		local leftAt = charDB.defeatedLeftAt
+		if type(leftAt) == "table" and leftAt[old] ~= nil then
+			if type(leftAt[old]) == "number" and not (type(leftAt[new]) == "number" and leftAt[new] >= leftAt[old]) then
+				leftAt[new] = leftAt[old]
+			end
+			leftAt[old] = nil
+		end
+		for _, field in ipairs({ "run", "lastRun" }) do
+			local run = charDB[field]
+			if type(run) == "table" then
+				for _, part in ipairs({ "key", "wing", "finishedWing" }) do
+					if run[part] == old then run[part] = new end
+				end
+				if type(run.kills) == "table" and type(run.kills[old]) == "table" then
+					run.kills[new] = run.kills[new] or {}
+					Join(run.kills[new], run.kills[old])
+					run.kills[old] = nil
+				end
+			end
+		end
+		for _, pin in pairs(type(charDB.pins) == "table" and charDB.pins or {}) do
+			if type(pin) == "table" and pin.instance == old then pin.instance = new end
+		end
+		-- Adventure Mode's record (Core/Discovery.lua), of the 0.40 test builds: the dungeon entered, its bosses met or
+		-- killed (the further of the two kept), and where each item was seen, all under the new key, so a kill saved
+		-- under an old one still counts for the new key's page, run and fog (the fog rules' spec, E4)
+		local found = charDB.discovered
+		if type(found) == "table" then
+			if type(found.instances) == "table" and found.instances[old] ~= nil then
+				if found.instances[new] == nil then found.instances[new] = found.instances[old] end
+				found.instances[old] = nil
+			end
+			if type(found.bosses) == "table" and type(found.bosses[old]) == "table" then
+				local into = type(found.bosses[new]) == "table" and found.bosses[new] or {}
+				for boss, level in pairs(found.bosses[old]) do
+					if type(level) == "number" and not (type(into[boss]) == "number" and into[boss] >= level) then
+						into[boss] = level
+					end
+				end
+				found.bosses[new], found.bosses[old] = into, nil
+			end
+			for _, seen in pairs(type(found.items) == "table" and found.items or {}) do
+				if type(seen) == "table" and type(seen[old]) == "table" then
+					seen[new] = type(seen[new]) == "table" and seen[new] or {}
+					Join(seen[new], seen[old])
+					seen[old] = nil
+				end
+			end
+		end
+	end
+end
+
+--[[
+	The wing of this visit, for the wings that are each their own copy behind their own door (Scarlet Monastery's: not
+	oneCopy, Data/Authored/RunTracker.lua), by client instance id: once an area or the map has named it, or a fight of
+	it has started or ended (ns.WingOfFight, UI/DungeonMap.lua), or the run kept through a /reload or a login inside
+	says it (UI/DungeonMap.lua), it stays the wing for the rest of the visit where nothing names one: a hall with no
+	name (the entrance halls, Houndmaster Loksey's), since walking into another wing takes a loading screen. Every
+	loading screen forgets it (ns.ForgetVisitWings). Not for the wings walked between inside (Dire Maul's, Blackrock
+	Spire's): there an area of no wing's leaves the wing unsure, as before.
+]]
+local visitWing = {}
+
+local function OwnCopy(wing)
+	return wing ~= nil and wing.sharesInstanceID == true and not wing.oneCopy
+end
+
+function ns.ForgetVisitWings()
+	visitWing = {}
+end
+
+function ns.SetVisitWing(instanceID, wing)
+	if instanceID ~= nil and OwnCopy(wing) then visitWing[instanceID] = wing end
+end
+
+-- Whether the client instance id is one of several wings that are each their own copy (Scarlet Monastery's).
+function ns.WingsAreCopies(instanceID)
+	local wings = instanceID ~= nil and wingsByInstanceID[instanceID] or nil
+	return wings ~= nil and OwnCopy(wings[1])
 end
 
 -- The wing the player stands in: by the area's name (wingAreas), else by the map the client
--- puts them on; else the wing they were last seen in, else the first. The second value says
--- whether the place itself told (the area or the map), not a guess.
-local function WingHere(instanceID, wings)
+-- puts them on; else this visit's wing where it is known (above); else the wing they were last
+-- seen in, else the first. The second value says whether the place itself told (the area, the
+-- map, or this visit's wing), not a guess. look: only looks (ns.GetInstanceByInstanceID).
+local function WingHere(instanceID, wings, look)
 	local ok, area = pcall(GetSubZoneText)
 	area = ok and ns.Readable(area) or nil
 	for _, wing in ipairs(wings) do
-		if area and ns.AreaIn(wing.wingAreas, area) then return wing, true end
+		if area and ns.AreaIn(wing.wingAreas, area) then
+			if not look then ns.SetVisitWing(instanceID, wing) end
+			return wing, true
+		end
 	end
 	local mapID = ns.PlayerMapPosition()
 	for _, wing in ipairs(wings) do
 		for _, floor in ipairs(mapID and wing.map and wing.map.floors or {}) do
-			if floor.uiMapID == mapID then return wing, true end
+			if floor.uiMapID == mapID then
+				if not look then ns.SetVisitWing(instanceID, wing) end
+				return wing, true
+			end
 		end
 	end
+	if visitWing[instanceID] then return visitWing[instanceID], true end
 	return lastWing[instanceID] or wings[1], false
+end
+
+--[[
+	The wing a fight is of, among the wings that share the client's instance id: the one whose bosses it is for (by the
+	fight's id, else by its name: ns.BossesForFight), where that is one wing alone. Nil for a fight of none of them or
+	of several, and for a dungeon of one part. So a boss fight names the wing when no area has (Scarlet Monastery's:
+	444 or 2779 the Graveyard, 446 or 447 the Library, 448 the Armory, 449 or 450 the Cathedral), in any language.
+]]
+function ns.WingOfFight(instanceID, encounterID, name)
+	local found
+	for _, wing in ipairs(instanceID ~= nil and wingsByInstanceID[instanceID] or {}) do
+		if #ns.BossesForFight(wing, encounterID, name) > 0 then
+			if found then return nil end
+			found = wing
+		end
+	end
+	return found
 end
 
 -- Every instance a client instance id stands for: the wings of one that has several.
@@ -682,15 +1017,47 @@ function ns.GetInstancesByInstanceID(instanceID)
 	return wingsByInstanceID[instanceID] or { byInstanceID[instanceID] }
 end
 
+--[[
+	A dungeon the journal has no instance id for yet (Forever's announced dungeons, Data/Authored/Upcoming.lua: Alcaz
+	Prison, Blackmaw Hold and Shaper's Terrace on 2026-11-13) is known by its name once the player is inside it: the
+	first time the client is in a five-player instance whose id the journal does not know, and calls it by one of these
+	dungeons' names (the journal's, the English or the client's own), that dungeon takes the id for the session. The
+	Drowned City and Krol'dok Stronghold had no id until a player's recording gave theirs (0.39.22): until then no kill
+	there counted and no run started, though the client called both by the journal's names. It names the instance in
+	its own language, so this finds the dungeon where the journal's name for it is the client's. Each unknown id is
+	looked at once.
+]]
+local unknownIDs = {}
+local function LearnInstanceID(instanceID)
+	if instanceID == nil or unknownIDs[instanceID] then return nil end
+	local ok, name, kind, _, _, _, _, _, current = pcall(GetInstanceInfo)
+	if not ok or ns.Readable(current) ~= instanceID then return nil end
+	unknownIDs[instanceID] = true
+	name = ns.Readable(name)
+	if ns.Readable(kind) ~= "party" or type(name) ~= "string" or name == "" then return nil end
+	for _, instance in ipairs(instances) do
+		if not instance.instanceID and instance.kind == "dungeon" and ns.NamedAs(instance, name) then
+			instance.instanceID = instanceID
+			IndexInstanceID(instance)
+			return instance
+		end
+	end
+	return nil
+end
+
 -- The instance the player is standing in, from GetInstanceInfo's instance id; and whether that is
--- sure: always for a dungeon with one wing, and for a wing only when the area or the map named it.
--- The wing found is the one guessed next time where nothing names one; look = true only looks, and
--- leaves that guess as the map, the Recorder and the search left it (the run block asks so:
--- Core/Run.lua, UI/RunTracker.lua).
+-- sure: always for a dungeon with one wing, and for a wing only when the area or the map named it
+-- (or this visit's wing: WingHere). The wing found is the one guessed next time where nothing names
+-- one; look = true only looks, and leaves that guess as the map, the Recorder and the search left it
+-- (Core/Discovery.lua and the run block ask so: Core/Run.lua, UI/RunTracker.lua). A dungeon known
+-- only by its name until now takes the id (above).
 function ns.GetInstanceByInstanceID(instanceID, look)
 	local wings = wingsByInstanceID[instanceID]
-	if not wings then return byInstanceID[instanceID], byInstanceID[instanceID] ~= nil end
-	local wing, placed = WingHere(instanceID, wings)
+	if not wings then
+		local instance = byInstanceID[instanceID] or LearnInstanceID(instanceID)
+		return instance, instance ~= nil
+	end
+	local wing, placed = WingHere(instanceID, wings, look)
 	if not look then lastWing[instanceID] = wing end
 	return wing, placed
 end
@@ -706,26 +1073,30 @@ function ns.CurrentInstance(look)
 	return instance, placed, instanceID
 end
 
--- A boss of the instance by a name the client gives: the journal's, the English, the client's own
--- or one of its other names (aliases).
-function ns.BossNamed(instance, name)
-	if not (instance and name) then return nil end
+-- Every boss of the instance a name the client gives stands for: the journal's name, the English, the client's own or
+-- one of its other names (aliases). More than one where the game names one fight for several of the journal's
+-- bosses, each of them with that name among its other names (Uldaman's "The Lost Dwarves": Eric "The Swift", Olaf
+-- and Baelog, Data/Authored/RunTracker.lua). Empty where it is none of them.
+function ns.BossesNamed(instance, name)
+	local bosses = {}
+	if not (instance and name) then return bosses end
 	for _, boss in ipairs(instance.bosses) do
-		if ns.NamedAs(boss, name) then return boss end
+		local named = ns.NamedAs(boss, name)
 		for _, alias in ipairs(boss.aliases or {}) do
-			if alias == name then return boss end
+			if alias == name then named = true end
 		end
+		if named then bosses[#bosses + 1] = boss end
 	end
-	return nil
+	return bosses
 end
 
 -- The bosses a fight is for: each boss with the encounter's id where the journal knows it (two where
--- they share one fight: Sneed's Shredder and Sneed, ns.BossesForEncounter), else the one the fight is
--- named for. The client's name for a fight is not always the boss's (Magmatus's is "Infurnus"), nor
--- each boss's where two share it. Empty where it is none of the instance's.
+-- they share one fight: Sneed's Shredder and Sneed, ns.BossesForEncounter), else each boss the fight is
+-- named for (ns.BossesNamed). The client's name for a fight is not always the boss's (Magmatus's is
+-- "Infurnus"), nor each boss's where several share it. Empty where it is none of the instance's.
 function ns.BossesForFight(instance, encounterID, name)
 	local bosses = ns.BossesForEncounter(instance, encounterID)
-	if #bosses == 0 then bosses[1] = ns.BossNamed(instance, name) end
+	if #bosses == 0 then bosses = ns.BossesNamed(instance, name) end
 	return bosses
 end
 
@@ -734,6 +1105,33 @@ end
 function ns.EncounterWon(success)
 	success = ns.Readable(success)
 	return success == 1 or success == true
+end
+
+-- Every quest id the journal has, as a set: each dungeon's and raid's quests, the versions of a
+-- row any one of several quests will do, and the steps before them; and Before you go's keys' quests,
+-- which a step's page alone may hold (Krol'dok Stronghold's Compound Key, 0.39.23: Data/Authored/Upcoming.lua),
+-- so that Adventure Mode keeps them once offered (Core/Discovery.lua's Quest; the review of 0.40.0, 2026-11-18).
+function ns.JournalQuestIDs()
+	local ids = {}
+	local function Add(entry)
+		if type(entry) ~= "table" then return end
+		if type(entry.questID) == "number" then ids[entry.questID] = true end
+		for _, version in ipairs(entry.oneOf or {}) do
+			if type(version.questID) == "number" then ids[version.questID] = true end
+		end
+	end
+	for _, instance in ipairs(instances) do
+		for _, quest in ipairs(instance.quests) do
+			Add(quest)
+			for _, step in ipairs(quest.prerequisites or {}) do Add(step) end
+		end
+		for _, entry in ipairs(instance.prepare or {}) do
+			for _, questID in ipairs(type(entry.quests) == "table" and entry.quests or {}) do
+				if type(questID) == "number" then ids[questID] = true end
+			end
+		end
+	end
+	return ids
 end
 
 local function ByLevelThenName(a, b)
@@ -799,6 +1197,16 @@ function ns.GetSubMap(key)
 end
 
 --[[
+	A dungeon's fog of war (Data/Fog, one file a dungeon): kept on the dungeon as it is written, and
+	read and checked only once a map of it is drawn (UI/DungeonFog.lua). A dungeon the journal hasn't
+	got keeps nothing.
+]]
+function ns.AddFog(key, spec)
+	local instance = ns.GetInstance(key)
+	if instance then instance.fog = spec end
+end
+
+--[[
 	Transports written into the journal (Data/Authored/Transports.lua): boats, zeppelins,
 	airships, trams and portals, in the shape /aegis travel saves them:
 	{ kind, mapID, x, y, area, faction, to = { destination, ... }, notes = { [destination] = note } }.
@@ -829,6 +1237,29 @@ function ns.AddQuestSteps(list)
 end
 
 --[[
+	A step's fields written by hand over the generated ones (Data/Authored/ScarletMonasteryQuests.lua: Journey to the
+	Marsh's other givers' spots, alsoStarts), each set on the step; `horde`'s are set on the Horde's own (ns.GetQuestStep),
+	which must have one. Before the client's language is laid over them.
+]]
+function ns.AmendQuestStep(questID, fields)
+	local step = questSteps[questID]
+	if not step then return end
+	for key, value in pairs(fields) do
+		if key == "horde" then
+			for field, own in pairs(value) do step.horde[field] = own end
+		else
+			step[key] = value
+		end
+	end
+end
+
+-- A step as the data keeps it, both sides' givers on it (its Horde's as `horde`), whatever the player's side: for the
+-- world map, which marks each side's givers (UI/QuestMap.lua's Index).
+function ns.GetQuestStepBothSides(questID)
+	return questSteps[questID]
+end
+
+--[[
 	Which bosses each dungeon's quests have business with (Data/Generated/QuestLinks.lua, written by
 	Tools/build_quest_links.py: by dungeon, then by the boss's English name, his links), kept on each boss of that
 	name as questLinks, for his quest badge (UI/QuestMap.lua). Loaded after every file that adds or amends a dungeon's
@@ -838,7 +1269,7 @@ function ns.AddQuestLinks(byInstance)
 	for key, byBoss in pairs(byInstance) do
 		local instance = ns.GetInstance(key)
 		for _, boss in ipairs(instance and instance.bosses or {}) do
-			if not boss.trash and byBoss[boss.name] then boss.questLinks = byBoss[boss.name] end
+			if not ns.IsLootSection(boss) and byBoss[boss.name] then boss.questLinks = byBoss[boss.name] end
 		end
 	end
 end
@@ -933,8 +1364,8 @@ function ns.InsideNamed(text, name)
 	return (text:gsub(INSIDE_DUNGEON, (("inside " .. name):gsub("%%", "%%%%"))))
 end
 
--- The dungeon a wing is part of, by its English name: "Dire Maul" for "Dire Maul: Warpwood Quarter",
--- "Stratholme" for "Stratholme: Service Gate"; nil for an instance that is no wing. A quest several
+-- The dungeon a wing is part of, by its English name: "Dire Maul" for "Dire Maul: Warpwood Quarter";
+-- nil for an instance that is no wing. A quest several
 -- wings keep is named by it on another dungeon's page, not by whichever wing comes first.
 function ns.WingDungeon(enName)
 	return type(enName) == "string" and enName:match("^(.-): ") or nil
@@ -964,10 +1395,11 @@ end
 
 --[[
 	Where each item drops, for its tooltip (UI/ItemTooltip.lua): the bosses whose loot lists it, and
-	the trash, in the journal's order (dungeons, then raids, as GetInstances sorts them; each one's
-	bosses in their order, its trash last). Most items drop in one place: drops[itemID] is that boss,
-	and moreDrops[itemID] lists them all only for an item with more than one. A faction's rewards are
-	not drops, and are left out. Built on first use, and again after the data changes.
+	the trash and the recipes, in the journal's order (dungeons, then raids, as GetInstances sorts them;
+	each one's bosses in their order, its trash and recipes last). Most items drop in one place:
+	drops[itemID] is that boss, and moreDrops[itemID] lists them all only for an item with more than
+	one. A faction's rewards are not drops, and are left out. Built on first use, and again after the
+	data changes.
 ]]
 local function IndexDrops()
 	drops, moreDrops, dropInstance = {}, {}, {}
@@ -1075,7 +1507,7 @@ function ns.ApplyLocale()
 	local descriptions = L.INSTANCE_DESCRIPTIONS
 	local factionNames = L.FACTION_NAMES
 	local subMapNames = L.SUBMAP_NAMES
-	local trash = L.TRASH_DROPS
+	local trash, recipes = L.TRASH_DROPS, L.RECIPES
 	local bossNames = L.BOSS_NAMES
 	local abilityNames = L.ABILITY_NAMES
 	local strings = L.STRINGS
@@ -1098,13 +1530,16 @@ function ns.ApplyLocale()
 	end
 	local function TrBoss(boss)
 		boss.enName = boss.enName or boss.name
-		if trash and (boss.trash or boss.name == "Trash Drops") then
+		if recipes and boss.recipes then
+			boss.name = recipes
+		elseif trash and (boss.trash or boss.name == "Trash Drops") then
 			boss.name = trash
 		else
 			boss.name = TrBossName(boss.name)
 		end
 		if boss.description then boss.description = Tr(boss.description) end
 		if boss.fightNote then boss.fightNote = Tr(boss.fightNote) end
+		if boss.rumour then boss.rumour = Tr(boss.rumour) end
 		if boss.area then
 			boss.enArea = boss.enArea or boss.area
 			local named = ns.AreaName(boss.enArea)
@@ -1191,6 +1626,11 @@ function ns.ApplyLocale()
 		if quest.pickup then quest.pickup = Tr(quest.pickup) end
 		if quest.turnin then quest.turnin = Tr(quest.turnin) end
 		if quest.startMap and quest.startMap.label then quest.startMap.label = Tr(quest.startMap.label) end
+		-- A quest's other givers' spots (alsoStarts: Journey to the Marsh's trainers), their names and places as the
+		-- marks' tooltips show them.
+		for _, spot in ipairs(quest.alsoStarts or {}) do
+			if spot.label then spot.label = Tr(spot.label) end
+		end
 		-- Who or what stands at a spot inside the dungeon (Data/Authored/InsideQuestSpots.lua), as its mark's tooltip
 		-- names it: from its English, kept, as quests share a spot's table; a giver or taker by their giver or taker line
 		-- too (PersonName), where the language names the line and not them (the review of 3cc3416).
@@ -1255,6 +1695,21 @@ function ns.ApplyLocale()
 			instance.location = location or Tr(instance.location)
 			local description = descriptions and descriptions[instance.key]
 			instance.description = description or Tr(instance.description)
+			-- A world-map door's line of rumour, in Adventure Mode (Core/Discovery.lua's DoorRumour)
+			if instance.rumour then instance.rumour = Tr(instance.rumour) end
+			-- Its description's practical words, kept in the overview's facts where lore shows (true: the whole
+			-- description, translated above)
+			if type(instance.overviewNote) == "string" then instance.overviewNote = Tr(instance.overviewNote) end
+			-- Its doors' names (Stratholme's Main Gate and Service Gate), the English kept.
+			for _, door in ipairs(instance.doors or {}) do
+				door.enName = door.enName or door.name
+				door.name = Tr(door.enName)
+				-- (its own line of rumour, Adventure Mode: ns.AmendDoor)
+				if door.rumour then
+					door.enRumour = door.enRumour or door.rumour
+					door.rumour = Tr(door.enRumour)
+				end
+			end
 		end
 		for _, boss in ipairs(instance.bosses or {}) do TrBoss(boss) end
 		-- Whoever gives or takes a quest at a boss's spot (Data/Generated/QuestLinks.lua's who, his quest badge's
@@ -1272,9 +1727,21 @@ function ns.ApplyLocale()
 			end
 		end
 		for _, quest in ipairs(instance.quests or {}) do TrQuest(quest, instance) end
-		-- Before you go's notes (UI/BeforeYouGo.lua); the boss a note names stays English, as matched.
+		-- Before you go's notes (UI/BeforeYouGo.lua); the boss a note names stays English, as matched. Its
+		-- name in this language is kept beside it (bossName), for Adventure Mode to keep a hidden boss with
+		-- no page unnamed (Core/Discovery.lua): its own, else the start of the note's title where the
+		-- English title starts with the name ("Theldren, a hidden boss").
 		for _, entry in ipairs(instance.prepare or {}) do
+			local english = entry.title
 			entry.title, entry.text = Tr(entry.title), Tr(entry.text)
+			if type(entry.boss) == "string" and not entry.bossName then
+				local name = bossNames and bossNames[entry.boss]
+				if not name and type(english) == "string" and english:sub(1, #entry.boss + 1) == entry.boss .. ","
+					and entry.title ~= english then
+					name = entry.title:match("^(.-)%s*,") or entry.title:match("^(.-)\239\188\140")
+				end
+				entry.bossName = name
+			end
 		end
 	end
 	for _, quest in pairs(questSteps) do

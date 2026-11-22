@@ -266,9 +266,6 @@ ns.AddInstance({
 				{
 					itemID = 11828,
 				},
-				{
-					itemID = 252514,
-				},
 			},
 			mapPin = {
 				x = 0.315,
@@ -288,7 +285,7 @@ ns.AddInstance({
 				{
 					itemID = 9455,
 					name = "Emissary Cuffs",
-					slot = "Wrist, Mail",
+					slot = "Wrist, Leather",
 					quality = 3,
 				},
 				{
@@ -352,7 +349,7 @@ ns.AddInstance({
 				},
 				{
 					itemID = 9487,
-					name = "Hi-tech Supergun",
+					name = "Hi-Tech Supergun",
 					slot = "Ranged, Gun",
 					quality = 3,
 					droppedBy = "Gnomeregan trash (rare)",
@@ -393,34 +390,7 @@ ns.AddInstance({
 					droppedBy = "Gnomeregan trash (rare)",
 				},
 				{
-					itemID = 11827,
-				},
-				{
-					itemID = 9327,
-				},
-				{
 					itemID = 7191,
-				},
-				{
-					itemID = 9308,
-				},
-				{
-					itemID = 9326,
-				},
-				{
-					itemID = 9279,
-				},
-				{
-					itemID = 9280,
-				},
-				{
-					itemID = 9282,
-				},
-				{
-					itemID = 9281,
-				},
-				{
-					itemID = 9316,
 				},
 			},
 		},

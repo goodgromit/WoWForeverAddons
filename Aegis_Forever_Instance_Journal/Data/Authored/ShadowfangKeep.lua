@@ -14,7 +14,7 @@ ns.AmendInstance("ShadowfangKeep", {
 		.. "fight the Scourge and lost control of them. Now the keep belongs to Arugal and his pack.",
 
 	--[[
-		Before you go (the overview), from the quest audit of 2026-10-29 (Dev/docs/audit_2026-10-29,
+		Before you go (the Quests tab), from the quest audit of 2026-10-29 (Dev/docs/audit_2026-10-29,
 		step 8 of its plan). The prisoner for each side: Deathstalker Adamant (3849, Horde-friendly) and
 		Sorcerer Ashcrombe (3850, Alliance-friendly), both inside the keep in QuestieDB's Forever data;
 		that freeing him opened the courtyard door is the original game's, and the note says so. The
@@ -76,3 +76,9 @@ ns.AmendInstance("ShadowfangKeep", {
 		},
 	},
 })
+
+-- The fog of war (UI/DungeonFog.lua's Counts; the owner's answers of 2026-11-13 and rules of 2026-11-14 and -17):
+-- Arugal's Voidwalkers are called up by Arugal, and the Fel Steed / Shadow Charger, whose kill is known only by his
+-- own loot or his corpse, is the owner's call (Data/Fog/ShadowfangKeep.lua's counts): neither holds back any fog at
+-- all. The Voidwalkers share Fenrus's room, the stable is part of the courtyard, and neither one's kill changes the fog.
+ns.AmendInstance("ShadowfangKeep", { bosses = { ["Arugal's Voidwalker"] = { summoned = true } } })

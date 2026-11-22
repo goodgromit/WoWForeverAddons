@@ -6,10 +6,17 @@ local L = ns.L
 	framed the same way. A card shows the faction's crest in the journal's gold ring over a glow
 	of its colour, the player's standing, and how many rewards it has (or that its quartermaster
 	is not captured yet). Clicking one opens its rewards in the book, its standings where a
-	dungeon lists bosses.
+	dungeon lists bosses. After the factions, under Vendors, a card for each currency some vendor
+	takes for wares that need no standing (Pix Xizzix's Tarnished Undermine Real): its icon, how
+	many the player has, and its page, the vendors where a faction lists standings.
 
 	Above the grid, Capture: with a quartermaster's shop open, it keeps everything they sell,
 	and the wares that need a standing join that faction's rewards at once.
+
+	In Adventure Mode (Core/Discovery.lua) a faction has a card once it has been on the character's
+	Reputation tab (Discovery:FactionKnown), not because the client gives a standing with it (Forever
+	gives one for a faction never met); its rewards show on its page once seen at its quartermaster
+	(UI/LootPanel.lua).
 ]]
 
 local FactionSelect = {}
@@ -60,8 +67,38 @@ local function SetName(card, name)
 	end
 end
 
+-- What the player has of a currency, with its icon ("37 [coin]"); nil where the client cannot say.
+local function CurrencyHeld(page)
+	local count = ns.CurrencyCount(page.currency)
+	if not count then return nil end
+	local icon = ns.CurrencyIcon(page.currency)
+	return icon and string.format("%d|T%s:0:0:2:0|t", count, icon) or tostring(count)
+end
+FactionSelect.CurrencyHeld = CurrencyHeld
+
+-- A currency's card: its vendors, by name and where they stand.
+local function ShowCurrencyTooltip(card)
+	local page = card.faction
+	GameTooltip:SetOwner(card, "ANCHOR_RIGHT")
+	GameTooltip:SetText(page.name, 1, 1, 1)
+	local held = CurrencyHeld(page)
+	if held then GameTooltip:AddLine(string.format(L.CURRENCY_YOU_HAVE, held), 1, 0.82, 0) end
+	for _, vendor in ipairs(page.bosses) do
+		local map = vendor.mapID and ns.DungeonMap:MapInfo(vendor.mapID)
+		local line = string.format(L.CURRENCY_VENDOR, vendor.name)
+		GameTooltip:AddLine(map and map.name and (line .. ", " .. map.name) or line, 1, 1, 1)
+	end
+	-- Where the currency comes from, where the journal knows (Carved Centaur Totem's centaurs)
+	local note = ns.CurrencyNote(page.currency)
+	if note then GameTooltip:AddLine(note, 1, 0.82, 0, true) end
+	GameTooltip:AddLine(" ")
+	GameTooltip:AddLine(L.CURRENCY_CARD_CLICK, 0.5, 0.8, 1)
+	GameTooltip:Show()
+end
+
 local function ShowTooltip(card)
 	local faction = card.faction
+	if faction.kind == "currency" then return ShowCurrencyTooltip(card) end
 	GameTooltip:SetOwner(card, "ANCHOR_RIGHT")
 	GameTooltip:SetText(faction.name, 1, 1, 1)
 	local standing = Reputation:Player(faction.factionID)
@@ -153,8 +190,14 @@ local function SetCard(card, faction)
 	card.Crest:SetTexture(Reputation:Crest(faction))
 	card.Crest:SetTexCoord(CREST_COORDS[1], CREST_COORDS[2], CREST_COORDS[3], CREST_COORDS[4])
 
-	local standing = Reputation:Player(faction.factionID)
-	if standing then
+	-- A currency's card says how many the player has, where a faction's says their standing.
+	local standing = faction.kind ~= "currency" and Reputation:Player(faction.factionID)
+	if faction.kind == "currency" then
+		local held = CurrencyHeld(faction)
+		-- (the count and the coin alone: "You have" would run into the crest; the tooltip says it)
+		card.Standing:SetText(held or "")
+		card.Standing:SetTextColor(1, 0.82, 0)
+	elseif standing then
 		card.Standing:SetText(Reputation:Label(standing.reaction))
 		card.Standing:SetTextColor(Reputation:Color(standing.reaction))
 	else
@@ -204,6 +247,9 @@ function FactionSelect:RefreshCapture(panel)
 				found.new))
 		elseif found.forStanding > 0 then
 			status:SetText(string.format(L.REP_CAPTURED_UNKNOWN, found.name, found.forStanding))
+		elseif found.currency then
+			-- A currency vendor: their page under Vendors (Core/Registry.lua's currency vendors).
+			status:SetText(string.format(L.REP_CAPTURED_CURRENCY, found.name, found.wares, found.currency))
 		else
 			status:SetText(string.format(L.REP_CAPTURED_NONE, found.name, found.wares))
 		end
@@ -221,6 +267,8 @@ end
 function FactionSelect:Capture(panel)
 	ns.PlaySoundKit("IG_MAINMENU_OPTION")
 	panel.lastCapture = ns.Recorder:CaptureVendor(true)
+	-- (the wares that join a faction's rewards now are seen there, in Adventure Mode)
+	ns.Discovery:ReadShop()
 	self:RefreshCapture(panel)
 	if panel:IsVisible() then self:Refresh(panel) end
 end
@@ -259,26 +307,78 @@ function FactionSelect:Build(panel)
 	panels[#panels + 1] = panel
 end
 
-function FactionSelect:Refresh(panel)
+-- The factions with a card: every one, or in Adventure Mode those the character knows.
+local function Listed()
 	local list = ns.GetFactions()
+	if not ns.Style:Adventure() then return list end
+	local known = {}
+	for _, faction in ipairs(list) do
+		if ns.Discovery:FactionKnown(faction) then known[#known + 1] = faction end
+	end
+	return known
+end
+
+--[[
+	The factions' cards, then, after them, the Vendors: a heading over the cards of the currency vendors' pages (Core/
+	Registry.lua's currency vendors), one for each currency, laid out the same, from a row of their own.
+]]
+local GROUP_HEADING_HEIGHT = 34
+
+local function PlaceCards(panel, list, first, top)
 	local child = panel.Scroll.Child
-	for index, faction in ipairs(list) do
+	for offset, faction in ipairs(list) do
+		local index = first + offset - 1
 		local card = panel.Buttons[index]
 		if not card then
 			card = CreateCard(child)
 			panel.Buttons[index] = card
 		end
-		local column = (index - 1) % COLUMNS
-		local row = math.floor((index - 1) / COLUMNS)
+		local column = (offset - 1) % COLUMNS
+		local row = math.floor((offset - 1) / COLUMNS)
 		card:ClearAllPoints()
-		card:SetPoint("TOPLEFT", column * (CARD_WIDTH + SPACING_X), -row * (CARD_HEIGHT + SPACING_Y))
+		card:SetPoint("TOPLEFT", column * (CARD_WIDTH + SPACING_X), -(top + row * (CARD_HEIGHT + SPACING_Y)))
 		SetCard(card, faction)
 		card:Show()
 	end
-	for index = #list + 1, #panel.Buttons do panel.Buttons[index]:Hide() end
-
 	local rows = math.ceil(#list / COLUMNS)
-	child:SetHeight(math.max(1, rows * (CARD_HEIGHT + SPACING_Y) - SPACING_Y))
-	panel.Empty:SetShown(#list == 0)
+	return top + math.max(0, rows * (CARD_HEIGHT + SPACING_Y) - SPACING_Y)
+end
+
+function FactionSelect:Refresh(panel)
+	local list = Listed()
+	-- (Adventure Mode keeps the currency vendors' pages back: nothing yet tells which the character has found, and the
+	-- journal there starts empty. A best guess until the owner says when one should show.)
+	local vendors = ns.Style:Adventure() and {} or ns.GetCurrencyPages()
+	local child = panel.Scroll.Child
+	local bottom = PlaceCards(panel, list, 1, 0)
+
+	-- (rawget: the field is the journal's own)
+	if #vendors > 0 and not rawget(panel, "VendorsHeading") then
+		panel.VendorsHeading = child:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+		panel.VendorsHeading:SetJustifyH("LEFT")
+		panel.VendorsHeading:SetText(L.REP_VENDORS)
+	end
+	if rawget(panel, "VendorsHeading") then panel.VendorsHeading:SetShown(#vendors > 0) end
+	if #vendors > 0 then
+		-- Each page by the client's name for its currency, once the server has described it.
+		for _, page in ipairs(vendors) do page.name = ns.CurrencyName(page.currency) end
+		local top = (#list > 0 and bottom + SPACING_Y or 0)
+		panel.VendorsHeading:ClearAllPoints()
+		panel.VendorsHeading:SetPoint("TOPLEFT", 4, -(top + 8))
+		bottom = PlaceCards(panel, vendors, #list + 1, top + GROUP_HEADING_HEIGHT)
+	end
+	for index = #list + #vendors + 1, #panel.Buttons do panel.Buttons[index]:Hide() end
+
+	child:SetHeight(math.max(1, bottom))
+	panel.Empty:SetShown(#list + #vendors == 0)
+	-- (in Adventure Mode, the factions the character knows: none met yet says so)
+	panel.Empty:SetText(ns.Style:Adventure() and L.ADVENTURE_REP_NONE or panel.emptyText)
 	self:RefreshCapture(panel)
+end
+
+-- The tab drawn again where it shows, for a find in Adventure Mode (UI/Journal.lua's Redraw).
+function FactionSelect:RefreshShown()
+	for _, panel in ipairs(panels) do
+		if panel:IsVisible() then self:Refresh(panel) end
+	end
 end

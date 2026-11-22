@@ -31,10 +31,14 @@ ns.AmendInstance("WailingCaverns", {
 		.. "fell into a nightmare. His disciples, the Druids of the Fang, have turned the caverns into a "
 		.. "twisted den of deviate creatures.",
 
-	areas = { "Screaming Gully", "Pit of Fangs", "Crag of the Everliving", "Dreamer's Rock", "Cavern of Mists" },
+	-- The Winding Chasm: where Lord Pythas and Skum are fought, in all three recorded runs (the owner's of 2026-11-10 and
+	-- two players', 2026-11-13 and 2026-11-14, one on a Russian client), as the map pins have them (Data/Authored/
+	-- ClassicMaps.lua).
+	areas = { "Screaming Gully", "Pit of Fangs", "Winding Chasm", "Crag of the Everliving", "Dreamer's Rock",
+		"Cavern of Mists" },
 
 	--[[
-		Before you go (the overview): Mutanus the Devourer, the boss the Naralex event brings (the deep
+		Before you go (the Quests tab): Mutanus the Devourer, the boss the Naralex event brings (the deep
 		audit of 2026-10-30, G01-16). From QuestieDB's Forever data: the Disciple of Naralex (npc 3678)
 		stands inside, and the Glowing Shard (10441), which starts The Glowing Shard (6981), drops only
 		from Mutanus (3654). The escort as the boss notes below tell it.
@@ -71,7 +75,7 @@ ns.AmendInstance("WailingCaverns", {
 			spellFlags = FANG_SPELLS,
 		},
 		["Lord Pythas"] = {
-			area = "Pit of Fangs",
+			area = "Winding Chasm",
 			notes = { "The toughest Fanglord, with heavy melee and a large health pool." },
 			spellFlags = FANG_SPELLS,
 		},
@@ -85,7 +89,7 @@ ns.AmendInstance("WailingCaverns", {
 			},
 		},
 		["Skum"] = {
-			area = "Crag of the Everliving",
+			area = "Winding Chasm",
 			notes = { "A thunder lizard in the water; killing him is optional." },
 			spellFlags = { [6254] = { "Healer" } }, -- Chained Bolt
 		},
@@ -101,6 +105,8 @@ ns.AmendInstance("WailingCaverns", {
 		},
 		["Mutanus the Devourer"] = {
 			area = "Dreamer's Rock",
+			-- Called up by the Naralex escort, so he does not hold the fog of war back (UI/DungeonFog.lua Counts).
+			summoned = true,
 			notes = {
 				"With all four Fanglords dead, speak to the Disciple of Naralex at the entrance and escort him to Naralex.",
 				"Guard the Disciple through waves of serpents and then oozes; Mutanus surfaces right after the oozes.",

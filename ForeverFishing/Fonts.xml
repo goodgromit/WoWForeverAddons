@@ -1,0 +1,24 @@
+<!-- Forever Fishing; Copyright © 2026 Hamish336. All Rights Reserved. -->
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+  <FontFamily name="ForeverFishingSettingsFont" virtual="true">
+    <Member alphabet="roman"><Font font="Fonts\2002.TTF" height="14"/></Member>
+    <Member alphabet="korean"><Font font="Fonts\2002.TTF" height="14"/></Member>
+    <Member alphabet="simplifiedchinese"><Font font="Fonts\ARKai_T.ttf" height="14"/></Member>
+    <Member alphabet="traditionalchinese"><Font font="Fonts\blei00d.TTF" height="14"/></Member>
+    <Member alphabet="russian"><Font font="Fonts\FRIZQT___CYR.TTF" height="14"/></Member>
+  </FontFamily>
+  <FontFamily name="ForeverFishingSansFont" virtual="true">
+    <Member alphabet="roman"><Font font="Fonts\ARIALN.TTF" height="14"/></Member>
+    <Member alphabet="korean"><Font font="Fonts\2002.TTF" height="14"/></Member>
+    <Member alphabet="simplifiedchinese"><Font font="Fonts\ARKai_T.ttf" height="14"/></Member>
+    <Member alphabet="traditionalchinese"><Font font="Fonts\blei00d.TTF" height="14"/></Member>
+    <Member alphabet="russian"><Font font="Fonts\FRIZQT___CYR.TTF" height="14"/></Member>
+  </FontFamily>
+  <FontFamily name="ForeverFishingWelcomeItalicFont" virtual="true">
+    <Member alphabet="roman"><Font font="Interface\AddOns\ForeverFishing\Media\LiberationSans-Italic.ttf" height="15"/></Member>
+    <Member alphabet="korean"><Font font="Fonts\2002.TTF" height="15"/></Member>
+    <Member alphabet="simplifiedchinese"><Font font="Fonts\ARKai_T.ttf" height="15"/></Member>
+    <Member alphabet="traditionalchinese"><Font font="Fonts\blei00d.TTF" height="15"/></Member>
+    <Member alphabet="russian"><Font font="Interface\AddOns\ForeverFishing\Media\LiberationSans-Italic.ttf" height="15"/></Member>
+  </FontFamily>
+</Ui>

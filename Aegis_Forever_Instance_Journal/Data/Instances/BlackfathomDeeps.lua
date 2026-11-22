@@ -251,7 +251,7 @@ ns.AddInstance({
 				{
 					itemID = 273141,
 					name = "Blueprint: Fishing Rack",
-					slot = "Blueprint",
+					slot = "Recipe, Fishing",
 					quality = 2,
 				},
 			},
@@ -507,9 +507,6 @@ ns.AddInstance({
 					slot = "Recipe, Tailoring",
 					quality = 3,
 				},
-				{
-					itemID = 252513,
-				},
 			},
 			mapPin = {
 				x = 0.855,
@@ -555,7 +552,7 @@ ns.AddInstance({
 				{
 					itemID = 2567,
 					name = "Evocator's Blade",
-					slot = "One-Hand, Dagger",
+					slot = "Main Hand, Dagger",
 					quality = 3,
 				},
 				{

@@ -12,6 +12,18 @@ local L = ns.L
 	arrows through the other dungeons, and the ranged slot.
 
 	The character panel's own tab for this is UI/CharacterTab.lua.
+
+	In Adventure Mode an upgrade is shown as much as the character knows of it (Core/GearFinder.lua's
+	states, the owner's calls of 2026-11-07). Seen to drop: in full, as in every other style. Its dungeon
+	entered but the item not seen there yet: its slot's empty picture from the character sheet (a helmet's
+	outline for the head) in its rarity's border, "Something better", "Drops in" the dungeon, its boss "???"
+	until met, and nothing of the item (no name, picture, level, gain, link or compare). Its dungeon not
+	entered, a rumour: the same picture and words, pointed to by the zone its door
+	is in and its level range, with the door's line of rumour in the tooltip, never the dungeon's name or
+	the boss's; a click on the slot shows that door on the world map with the client's own map pin link
+	(UI/QuestsPanel.lua's link faces, as the quest page's Show Start does), not the journal's page. A
+	suggested dungeon that is a rumour shows as one: "A rumor", its line, its place, its upgrades' count
+	and Show on map. Rumours are never picked (the slot's box lists the others).
 ]]
 
 local GearPanel = {}
@@ -44,6 +56,25 @@ local PLACES = {
 local SIDE_ROWS, ROW_WIDTH, ROW_HEIGHT = 5, 187, 23
 
 local GAIN_COLOR = { 0.25, 1, 0.25 }
+--[[
+	A rumour's card (the right pane's suggested dungeon not entered yet) shows one of the game's own loading screens
+	that the journal uses nowhere else, by its file id (nothing shipped), never the dungeon's own picture. Each is cut
+	to the card's shape (174 x 96) inside the screen's frame: { its width over its height as the game shows it, left,
+	right, top, bottom }. RUMOUR_ART is the one shown: the owner's pick is a change of that line. A light shade only,
+	so the picture shows as a dungeon button's does and the name still reads.
+]]
+local RUMOUR_ARTS = {
+	[131838] = { 4 / 3, 0.17, 0.9245, 0.24, 0.795 }, -- LoadScreenDungeon: a torchlit way in
+	[131840] = { 4 / 3, 0.1126, 0.8874, 0.225, 0.795 }, -- LoadScreenEnviroment: a misty forest path
+	[131829] = { 4 / 3, 0.1208, 0.8793, 0.24, 0.798 }, -- no file name: a pencil drawing of a sealed round door in a cave
+	[6225617] = { 2992 / 1684, 0.1516, 0.8484, 0.159, 0.842 }, -- a map by lantern light: the owner's pick (2026-11-10)
+	[7963776] = { 2992 / 1684, 0.1736, 0.8264, 0.18, 0.82 }, -- Forever's Eastern Kingdoms
+	[131856] = { 4 / 3, 0.1126, 0.8874, 0.28, 0.85 }, -- an icy cavern
+	[4661969] = { 2992 / 1684, 0.1736, 0.8264, 0.18, 0.82 }, -- a dark blue hall
+	[8423398] = { 2992 / 1684, 0.1736, 0.8264, 0.18, 0.82 }, -- Forever's Darkspear Islands
+}
+local RUMOUR_ART = 6225617
+local RUMOUR_SHADE = 0.8
 local DIM_COLOR = { 0.5, 0.5, 0.5 }
 -- The level an item waits for, in the red the game gives what a player cannot use yet.
 local LATER_COLOR = { 1, 0.1, 0.1 }
@@ -85,11 +116,19 @@ local function AtlasCut(texture, atlas, width, height)
 	return true
 end
 
--- The empty picture of an inventory slot, as the character sheet shows it.
+--[[
+	The empty picture of an inventory slot, as the character sheet shows it (the client's own: a helmet's
+	outline for the head; the back slot has none of its own, and the client gives it the chest's). Adventure
+	Mode shows an upgrade not seen yet by it too, in its rarity's border (SetCell, the picker's rows). The sheet's
+	own rule for the ranged slot, asked as it draws: a class with a relic slot (librams, idols, totems) gets the
+	relic's picture there, not the bow.
+]]
+local RELIC_SLOT_TEXTURE = "Interface\\Paperdoll\\UI-PaperDoll-Slot-Relic"
 local function EmptySlotTexture(inv)
 	local getInfo = (C_PaperDollInfo and C_PaperDollInfo.GetInventorySlotInfo) or GetInventorySlotInfo
 	if getInfo then
-		local ok, _, texture = pcall(getInfo, inv)
+		local ok, _, texture, checkRelic = pcall(getInfo, inv)
+		if ok and checkRelic and UnitHasRelicSlot and UnitHasRelicSlot("player") then return RELIC_SLOT_TEXTURE end
 		if ok and texture then return texture end
 	end
 	return "Interface\\PaperDoll\\UI-Backpack-EmptySlot"
@@ -118,10 +157,43 @@ local function GainText(compare)
 end
 GearPanel.GainText = GainText
 
--- Who drops it: the boss, or the dungeon's trash.
+-- Who drops it: the boss, or the dungeon's trash (a Trash page's row the bosses and rares drop: them, offBosses). In
+-- Adventure Mode a boss not met is "???" (Core/Discovery.lua).
 local function SourceName(entry)
-	return entry.boss.trash and L.LOOT_TRASH or entry.boss.name
+	if entry.boss.trash then return entry.row and ns.OffBossesText(entry.row) or L.LOOT_TRASH end
+	if ns.Discovery:Unmet(entry.instance, entry.boss) then return ns.Discovery.UNKNOWN end
+	return entry.boss.name
 end
+GearPanel.SourceName = SourceName
+
+-- Whether an upgrade is shown by its slot and rarity alone (Adventure Mode): not seen to drop yet, or a rumour.
+local function Hidden(entry)
+	return entry ~= nil and entry.state ~= nil and entry.state ~= "seen"
+end
+GearPanel.Hidden = Hidden
+
+--[[
+	A rumour's zone (Adventure Mode): the zone its door is in, by the client's name for it (UI/DungeonMap.lua's
+	DoorPoint, which is also where its map pin link leads), else its location. Never its name: a place that holds
+	it is left out (nil). And that point.
+]]
+local function RumourZone(instance)
+	local point = ns.DungeonMap:DoorPoint(instance)
+	local place = point and point.place or instance.location
+	if type(place) ~= "string" or place == "" or place:find(instance.name, 1, true) then place = nil end
+	return place, point
+end
+
+-- Its zone and level range, "Westfall · Level 17-26", where the slots and tooltips say where a rumour is.
+local function RumourPlace(instance)
+	local place = RumourZone(instance)
+	local range = instance.levelMin and string.format(L.LEVEL_RANGE, instance.levelMin, instance.levelMax or instance.levelMin)
+	if place and range then return string.format(L.GEAR_ADVENTURE_PLACE, place, range) end
+	return place or range or ""
+end
+GearPanel.RumourPlace = RumourPlace
+-- The rumour card's picture, for the checks (Tools/smoke_scenario.lua).
+GearPanel.RUMOUR_ART, GearPanel.RUMOUR_ARTS, GearPanel.RUMOUR_SHADE = RUMOUR_ART, RUMOUR_ARTS, RUMOUR_SHADE
 
 local function QualityRGB(quality)
 	local r, g, b = ns.Items:QualityColor(quality)
@@ -163,7 +235,35 @@ end
 -- ItemTooltip.lua, which shows the gain the Gear Finder found for its own spec: on a second ring,
 -- over the other one), where it drops, and what a click on `owner` does; `picked`, that the
 -- player chose it for its slot.
-local function ShowEntryTooltip(owner, entry, anchor, clickText, picked)
+--[[
+	An upgrade shown by its slot and rarity alone (Adventure Mode, Hidden): no item in the tooltip, so nothing of
+	it reaches the game's tooltips, compare or another addon's scores. "Something better" in its rarity's colour, its
+	slot (`slotKey`), then where: its dungeon and boss ("???" until met) and that it has not been seen to drop, or for
+	a rumour "A rumor", the door's line and its place; then the click (`clickText`, and `moreText` under it).
+]]
+local function ShowHiddenTooltip(owner, entry, anchor, clickText, picked, slotKey, moreText)
+	ns.ItemTooltip:UseCompare(owner, nil)
+	ns.ItemTooltip:UseSource(owner, nil)
+	GameTooltip:SetOwner(owner, anchor or "ANCHOR_RIGHT")
+	local r, g, b = QualityRGB(entry.info.quality)
+	GameTooltip:SetText(L.GEAR_ADVENTURE_BETTER, r, g, b)
+	if slotKey and SLOT_LABELS[slotKey] then GameTooltip:AddLine(SLOT_LABELS[slotKey], 1, 1, 1) end
+	if entry.rumour then
+		GameTooltip:AddLine(L.ADVENTURE_DOOR_TITLE, 1, 0.82, 0)
+		GameTooltip:AddLine(ns.Discovery:DoorRumour(entry.instance), 1, 1, 1, true)
+		GameTooltip:AddLine(RumourPlace(entry.instance), 1, 0.82, 0)
+	else
+		GameTooltip:AddLine(entry.instance.name .. " \194\183 " .. SourceName(entry), 1, 0.82, 0)
+		GameTooltip:AddLine(L.GEAR_ADVENTURE_UNSEEN, DIM_COLOR[1], DIM_COLOR[2], DIM_COLOR[3], true)
+	end
+	if picked then GameTooltip:AddLine(L.GEAR_TIP_PICKED, 1, 0.82, 0) end
+	if clickText then GameTooltip:AddLine(clickText, 0.5, 0.5, 0.5, true) end
+	if moreText then GameTooltip:AddLine(moreText, 0.5, 0.5, 0.5, true) end
+	GameTooltip:Show()
+end
+
+local function ShowEntryTooltip(owner, entry, anchor, clickText, picked, slotKey, moreText)
+	if Hidden(entry) then return ShowHiddenTooltip(owner, entry, anchor, clickText, picked, slotKey, moreText) end
 	ns.ItemTooltip:UseCompare(owner, entry.link, entry.compare)
 	-- Its own line below says where it drops, and a click opens that place.
 	ns.ItemTooltip:UseSource(owner, entry.itemID)
@@ -178,8 +278,16 @@ end
 
 -- Opens the item where the journal lists it, as a search result opens: trash drops on the
 -- dungeon's own loot page, past any loot filter that would hide it.
+-- One not seen to drop yet (Adventure Mode) opens its dungeon's loot, which lists what has been seen there; a
+-- rumour never opens the journal (its door is shown on the map instead).
 local function OpenEntry(entry)
+	if entry.rumour then return end
 	ns.PlaySoundKit("IG_ABILITY_PAGE_TURN")
+	if Hidden(entry) then
+		ns.Journal:OpenInstance(entry.instance)
+		ns.EncounterPage:SetTab(ns.Journal:Page(), ns.EncounterPage.TAB_LOOT)
+		return
+	end
 	if entry.boss.trash then
 		ns.Journal:OpenInstance(entry.instance)
 	else
@@ -192,9 +300,15 @@ end
 -- A click on an upgrade: shift and ctrl do what they do on any item (link it, try it on); a
 -- plain one opens it.
 local function ClickEntry(entry)
-	if not entry then return end
-	if entry.link and type(HandleModifiedItemClick) == "function" and HandleModifiedItemClick(entry.link) then return end
+	if not entry or entry.rumour then return end
+	if not Hidden(entry) and ns.Gamepad:ItemClick(entry.link) then return end
 	OpenEntry(entry)
+end
+
+-- Whether a rumour's slot is its map pin link on its picture alone (SetCellDoor): the slot has upgrades to pick.
+local function FaceOnIcon(cell)
+	local face = rawget(cell, "LinkFace")
+	return face and face:IsShown() and rawget(cell, "faceRegion") ~= nil or false
 end
 
 --[[
@@ -203,9 +317,30 @@ end
 	click opens its upgrade's loot.
 ]]
 local function ClickCell(cell, button)
-	local link = cell.entry and cell.entry.link or GetInventoryItemLink("player", cell.def.slot)
-	if link and type(HandleModifiedItemClick) == "function" and HandleModifiedItemClick(link) then return end
-	if not cell.entry then return end
+	local entry, link = cell.entry, nil
+	-- (one shown by its slot and rarity alone has no link to give: Adventure Mode)
+	if entry then
+		if not Hidden(entry) then link = entry.link end
+	else
+		link = GetInventoryItemLink("player", cell.def.slot)
+	end
+	if ns.Gamepad:ItemClick(link) then return end
+	if not entry then return end
+	-- A rumour's slot is the map pin link to its door (SetCellDoor): the whole slot, or its picture alone where the slot
+	-- has upgrades to pick, whose words then open them. Where the client allows it no face, its own click marks the
+	-- door, as Show Start's does (UI/MapPin.lua), and a right-click opens the picks; with no door placed, any click.
+	if entry.rumour then
+		if button == "RightButton" or FaceOnIcon(cell) or not cell.point then
+			GearPanel:TogglePicker(cell)
+			return
+		end
+		GearPanel:ClosePicker()
+		if cell.point then
+			ns.PlaySoundKit("IG_MAINMENU_OPTION")
+			ns.MapPin:Mark(cell.point, ns.Discovery:DoorName(entry.instance))
+		end
+		return
+	end
 	if button == "RightButton" then
 		GearPanel:ClosePicker()
 		OpenEntry(cell.entry)
@@ -222,7 +357,21 @@ local function ShowCellTooltip(cell)
 	local entry = cell.entry
 	local anchor = cell.mirrored and "ANCHOR_LEFT" or "ANCHOR_RIGHT"
 	if entry then
-		ShowEntryTooltip(cell, entry, anchor, L.GEAR_TIP_CELL_CLICK, cell.picked)
+		local click, more = L.GEAR_TIP_CELL_CLICK, nil
+		if entry.rumour then
+			-- Its picture the link to the door and its words the picks (SetCellDoor); else the slot's own clicks (ClickCell)
+			if FaceOnIcon(cell) then
+				click = L.GEAR_ADVENTURE_MAP_PICK_CLICK
+			else
+				click = cell.point and L.GEAR_ADVENTURE_MAP_CLICK or L.GEAR_ADVENTURE_NO_DOOR
+				if ns.GearFinder:Pickable({ entries = cell.others or {} }) > 0 then
+					more = L.GEAR_ADVENTURE_RUMOUR_PICKS
+				end
+			end
+		elseif Hidden(entry) then
+			click = L.GEAR_ADVENTURE_CELL_CLICK
+		end
+		ShowEntryTooltip(cell, entry, anchor, click, cell.picked, cell.def.key, more)
 		return
 	end
 	-- No upgrade: what is worn, as the sheet's own slot shows it, with what it is worth.
@@ -337,7 +486,32 @@ local function CreateCell(panel, def)
 	cell:SetScript("OnClick", ClickCell)
 	-- The tooltip rebuilds itself when the client sends more of the item, or shift is pressed.
 	cell.UpdateTooltip = ShowCellTooltip
+	-- Over its map pin link's face (a rumour's, Adventure Mode: SetCellDoor), its own tooltip still.
+	cell.ShowFaceTip = ShowCellTooltip
 	return cell
+end
+
+--[[
+	A slot showing a rumour (Adventure Mode) is the client's map pin link to the rumour's door (UI/QuestsPanel.lua's
+	link faces, as the quest page's Show Start is): the player's click on it runs the client's own link handler,
+	which sets the waypoint there and opens the map on it; the journal sets no waypoint and opens no map itself.
+	The link lies over the whole slot, or over its picture alone where the slot has upgrades to pick (`entries`), so a
+	click on its words still opens them (ClickCell): every button of a click on the link goes to the link. The
+	face is made the first time a slot shows a rumour, and hidden while it shows anything else, so the slot's own
+	clicks are its own again. No door placed, no face.
+]]
+local function SetCellDoor(cell, entry, entries)
+	cell.point = entry and entry.rumour and ns.DungeonMap:DoorPoint(entry.instance) or nil
+	if cell.point and rawget(cell, "LinkFace") == nil then cell.LinkFace = ns.QuestsPanel.CreateLinkFace(cell) or false end
+	local face = rawget(cell, "LinkFace")
+	if not face then return end
+	local region = cell.point and ns.GearFinder:Pickable({ entries = entries or {} }) > 0 and cell.Icon or nil
+	if region ~= rawget(cell, "faceRegion") then
+		cell.faceRegion = region
+		face:ClearAllPoints()
+		face:SetAllPoints(region or cell)
+	end
+	ns.QuestsPanel.SetLinkFace(cell)
 end
 
 -- The second line's words, as wide as they need and no wider than the gain leaves them. They are
@@ -352,6 +526,7 @@ local function SetSource(cell, text, gain)
 end
 GearPanel.SetSource = SetSource
 
+-- (nil: the slot's empty picture, as the sheet draws it, undimmed: the same for an upgrade not seen yet)
 local function SetIcon(cell, texture, quality)
 	cell.Icon:SetTexture(texture or cell.emptyTexture)
 	if quality and quality >= 2 then
@@ -367,6 +542,24 @@ end
 local function SetCell(cell, shown, entries, picked)
 	cell.entry, cell.others, cell.picked = shown, entries, picked and shown ~= nil or false
 	cell.Picked:SetShown(cell.picked and cell.hasPickedArt)
+	cell.emptyTexture = EmptySlotTexture(cell.def.inv)
+	SetCellDoor(cell, shown, entries)
+	-- Adventure Mode: "Something better" behind its slot's empty picture in its rarity's border (a ring's or a
+	-- trinket's own slot; a two-hand weapon the main hand's); where it drops, or a rumour's place.
+	if shown and Hidden(shown) then
+		local quality = shown.info.quality
+		SetIcon(cell, cell.emptyTexture, quality)
+		cell.Level:SetText("")
+		cell.Name:SetText(L.GEAR_ADVENTURE_BETTER)
+		cell.Name:SetTextColor(QualityRGB(quality))
+		if shown.rumour then
+			SetSource(cell, RumourPlace(shown.instance))
+		else
+			SetSource(cell, string.format(L.ADVENTURE_LOOT_IN_DUNGEON, shown.instance.name))
+		end
+		cell.Source:SetTextColor(1, 1, 1)
+		return
+	end
 	if shown then
 		local compare = shown.compare
 		SetIcon(cell, ns.Items:Icon(shown.itemID), shown.info.quality)
@@ -409,14 +602,15 @@ local PICKER_WIDTH, PICK_ROW_WIDTH, PICK_ROW_HEIGHT = 268, 252, 42
 local PICKER_TOP, PICKER_BOTTOM = 46, 38
 
 local function ShowPickRowTooltip(row)
-	ShowEntryTooltip(row, row.entry, "ANCHOR_RIGHT", L.GEAR_TIP_PICK_CLICK, row.picked)
+	ShowEntryTooltip(row, row.entry, "ANCHOR_RIGHT", Hidden(row.entry) and L.GEAR_ADVENTURE_PICK_CLICK or L.GEAR_TIP_PICK_CLICK,
+		row.picked, row.key)
 end
 
 -- A row's click: shift and ctrl as on any item; a right click opens its loot, a plain one picks it.
 local function ClickPickRow(row, button)
 	local entry = row.entry
 	if not entry then return end
-	if entry.link and type(HandleModifiedItemClick) == "function" and HandleModifiedItemClick(entry.link) then return end
+	if not Hidden(entry) and ns.Gamepad:ItemClick(entry.link) then return end
 	if button == "RightButton" then
 		GearPanel:ClosePicker()
 		OpenEntry(entry)
@@ -531,12 +725,13 @@ function GearPanel:PaintPicker(cells)
 	for _, each in ipairs(cells or finder:Cells()) do
 		if each.def.key == picker.key then cell = each end
 	end
-	if not cell or not cell.shown then
+	-- (nothing left to pick: no upgrade, or rumours alone, which are never picked)
+	local choices = cell and cell.shown and finder:Choices(cell) or {}
+	if #choices == 0 then
 		picker:Hide()
 		return
 	end
-	local choices = finder:Choices(cell)
-	local total = #cell.entries
+	local total = finder:Pickable(cell)
 	picker.Title:SetText(SLOT_LABELS[cell.def.key] or cell.def.key)
 	if total <= 1 then
 		picker.Count:SetText(L.GEAR_PICK_ONE)
@@ -551,15 +746,17 @@ function GearPanel:PaintPicker(cells)
 		if entry then
 			local shown = entry.itemID == cell.shown.itemID
 			row.picked = shown and cell.picked
-			row.Icon:SetTexture(ns.Items:Icon(entry.itemID))
+			-- (one not seen to drop yet, Adventure Mode: its slot and rarity alone, by the slot's empty picture)
+			local hidden = Hidden(entry)
+			row.Icon:SetTexture(hidden and EmptySlotTexture(cell.def.inv) or ns.Items:Icon(entry.itemID))
 			local quality = entry.info.quality
 			row.IconBorder:SetShown(quality ~= nil and quality >= 2)
 			if quality then row.IconBorder:SetVertexColor(QualityRGB(quality)) end
-			row.Name:SetText(entry.info.name or "")
+			row.Name:SetText(hidden and L.GEAR_ADVENTURE_BETTER or entry.info.name or "")
 			row.Name:SetTextColor(QualityRGB(quality))
 			row.Source:SetText(entry.instance.name .. " \194\183 " .. SourceName(entry))
-			row.Level:SetText(entry.compare.later and entry.compare.minLevel or "")
-			row.Gain:SetText(GainText(entry.compare))
+			row.Level:SetText(not hidden and entry.compare.later and entry.compare.minLevel or "")
+			row.Gain:SetText(hidden and "" or GainText(entry.compare))
 			row.Mark:SetText(shown and (cell.picked and L.GEAR_PICK_YOURS or L.GEAR_PICK_BIGGEST) or "")
 			row.Selected:SetShown(shown)
 			row:Show()
@@ -609,13 +806,19 @@ end
 ------------------------------------------------------------------------------------------
 
 -- A row's tooltip: its upgrade's, or for the last row of a long list, the slots it stands for.
+-- An upgrade's gain as the rows give it: "?" for one shown by its slot alone (Adventure Mode).
+local function RowGain(entry)
+	if Hidden(entry) then return "?" end
+	return GainText(entry.compare)
+end
+
 local function ShowRowTooltip(row)
 	if row.entry then
-		ShowEntryTooltip(row, row.entry, "ANCHOR_LEFT")
+		ShowEntryTooltip(row, row.entry, "ANCHOR_LEFT", Hidden(row.entry) and L.GEAR_ADVENTURE_ROW_CLICK or nil, nil, row.slotKey)
 	elseif row.more then
 		GameTooltip:SetOwner(row, "ANCHOR_LEFT")
 		for index, entry in ipairs(row.more.entries) do
-			GameTooltip:AddDoubleLine(SLOT_LABELS[row.more.slots[index]] or row.more.slots[index], GainText(entry.compare),
+			GameTooltip:AddDoubleLine(SLOT_LABELS[row.more.slots[index]] or row.more.slots[index], RowGain(entry),
 				1, 0.82, 0, GAIN_COLOR[1], GAIN_COLOR[2], GAIN_COLOR[3])
 		end
 		GameTooltip:Show()
@@ -745,9 +948,80 @@ local function CreateSide(panel)
 	return side
 end
 
+--[[
+	The right pane's rumour (Adventure Mode: the suggested dungeon not entered yet), made the first time one shows.
+	In the dungeon's button's place, a card in that button's look, on one of the game's loading screens (RUMOUR_ART),
+	lightly shaded, and with no name: "A rumor" where a dungeon button has its name, its level range and its place
+	where the button has its own. Under its upgrades' count, the door's line of rumour and Show on map: the client's
+	map pin link to its door, over the button (UI/QuestsPanel.lua's Show Start). The rows of slots stand aside: the
+	slots show them.
+]]
+local function ShowMapTip(button)
+	GameTooltip:SetOwner(button, "ANCHOR_LEFT")
+	GameTooltip:SetText(L.ADVENTURE_DOOR_TITLE, 1, 1, 1)
+	if button.place then GameTooltip:AddLine(button.place, 1, 0.82, 0) end
+	GameTooltip:AddLine(button.point and L.GEAR_ADVENTURE_MAP_CLICK or L.GEAR_ADVENTURE_NO_DOOR, 0.5, 0.5, 0.5, true)
+	GameTooltip:Show()
+end
+
+local function CreateRumour(side)
+	local content = side.Suggestion
+	local card = ns.CreateInstanceButton(content)
+	card:SetPoint("TOP", side.Header, "BOTTOM", 0, -4)
+	-- Nothing to open: the journal's page of a rumour is shut (UI/Journal.lua), and its door is Show on map's.
+	card:SetScript("OnClick", nil)
+	card:EnableMouse(false)
+	card.Untested:Hide()
+	card.Forever:Hide()
+	local art = RUMOUR_ARTS[RUMOUR_ART]
+	card.Art:SetTexture(RUMOUR_ART)
+	card.Art:SetTexCoord(art[2], art[3], art[4], art[5])
+	ns.TintInstanceArt(card.Art, nil, RUMOUR_SHADE)
+	-- Where the button has its name (ns.CreateInstanceButton), in its font.
+	card.Name:SetText(L.ADVENTURE_DOOR_TITLE)
+	card.Location:ClearAllPoints()
+	card.Location:SetPoint("BOTTOMRIGHT", -7, 7)
+	card.Location:SetWidth(112)
+	card.Location:Show()
+	side.Rumour = card
+
+	side.RumourLine = content:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+	side.RumourLine:SetPoint("TOP", side.Count, "BOTTOM", 0, -8)
+	side.RumourLine:SetWidth(ROW_WIDTH - 12)
+	side.RumourLine:SetJustifyH("CENTER")
+	if side.RumourLine.SetMaxLines then side.RumourLine:SetMaxLines(5) end
+
+	local button = ns.QuestsPanel:CreateMapButton(content, L.GEAR_ADVENTURE_SHOW_MAP)
+	button:SetSize(150, 22)
+	button:SetPoint("TOP", side.RumourLine, "BOTTOM", 0, -10)
+	button:SetScript("OnEnter", ShowMapTip)
+	button.ShowFaceTip = ShowMapTip
+	side.ShowMap = button
+end
+
+-- The rumour's card, line and Show on map for `instance`.
+local function SetRumour(side, instance)
+	local card = side.Rumour
+	if instance.levelMin and instance.levelMax and instance.levelMin ~= instance.levelMax then
+		card.Range:SetText(instance.levelMin .. "-" .. instance.levelMax)
+	else
+		card.Range:SetText(instance.levelMin or "")
+	end
+	local place, point = RumourZone(instance)
+	card.Location:SetText(place or "")
+	side.RumourLine:SetText(ns.Discovery:DoorRumour(instance))
+	ns.QuestsPanel:SetMapButton(side.ShowMap, point, ns.Discovery:DoorName(instance), RumourPlace(instance))
+end
+
 local function SetSide(side, suggestions, index)
 	local dungeon = suggestions[index]
-	for _, region in ipairs({ side.Dungeon, side.Count }) do region:SetShown(dungeon ~= nil) end
+	local rumour = dungeon ~= nil and dungeon.rumour == true
+	if rumour and not rawget(side, "Rumour") then CreateRumour(side) end
+	side.Dungeon:SetShown(dungeon ~= nil and not rumour)
+	side.Count:SetShown(dungeon ~= nil)
+	if rawget(side, "Rumour") then
+		for _, region in ipairs({ side.Rumour, side.RumourLine, side.ShowMap }) do region:SetShown(rumour) end
+	end
 	local paged = dungeon ~= nil and #suggestions > 1
 	side.Previous:SetShown(paged)
 	side.Next:SetShown(paged)
@@ -759,17 +1033,22 @@ local function SetSide(side, suggestions, index)
 	end
 	if not dungeon then return end
 
-	ns.SetInstanceButton(side.Dungeon, dungeon.instance)
 	side.Count.Text:SetText(dungeon.count == 1 and L.GEAR_UPGRADE_HERE or string.format(L.GEAR_UPGRADES_HERE, dungeon.count))
+	side.Of:SetText(string.format(L.GEAR_DUNGEON_OF, index, #suggestions))
+	if rumour then
+		SetRumour(side, dungeon.instance)
+		return
+	end
+	ns.SetInstanceButton(side.Dungeon, dungeon.instance)
 	-- One row a slot; past the last row, how many more.
 	local count = #dungeon.slots
 	local rows = count > SIDE_ROWS and SIDE_ROWS - 1 or count
 	for rowIndex = 1, rows do
 		local row = side.Rows[rowIndex]
 		local entry = dungeon.entries[rowIndex]
-		row.entry = entry
+		row.entry, row.slotKey = entry, dungeon.slots[rowIndex]
 		row.Label:SetText(SLOT_LABELS[dungeon.slots[rowIndex]] or dungeon.slots[rowIndex])
-		row.Value:SetText(GainText(entry.compare))
+		row.Value:SetText(RowGain(entry))
 		row:Show()
 	end
 	if count > rows then
@@ -783,7 +1062,6 @@ local function SetSide(side, suggestions, index)
 		row.Value:SetText("")
 		row:Show()
 	end
-	side.Of:SetText(string.format(L.GEAR_DUNGEON_OF, index, #suggestions))
 end
 
 ------------------------------------------------------------------------------------------

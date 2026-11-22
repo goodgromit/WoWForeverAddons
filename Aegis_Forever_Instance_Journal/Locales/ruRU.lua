@@ -24,7 +24,7 @@ L.DOCK_ON = "Теперь окно открывается в левом верх
 L.DOCK_OFF = "Окно снова свободно: оно открывается там, куда вы перетащили его в последний раз."
 L.DOCK_AFTER_COMBAT = "Это вступит в силу после окончания боя."
 -- Its /aegis style sentence (2026-11-03; drafted, to be checked).
-L.SLASH_HELP = "/aegis (или /ij) открывает путеводитель. /aegis record включает или выключает запись. /aegis reset возвращает окно на место по умолчанию. /aegis dock закрепляет окно слева вверху, рядом с окнами игры, или снова освобождает его. /aegis perf измеряет память и скорость путеводителя. /aegis where и /aegis taxi показывают, где вы стоите и точки полетов на карте. /aegis travel сохраняет корабль, дирижабль, подземку или портал для карты мира. /aegis items находит предметы из списка, о которых сервер ничего не знает. /aegis gear открывает поиск снаряжения, /aegis weights — настройку приоритетов характеристик; /aegis gearscan сохраняет данные экипировки для проверки расчета улучшений. /aegis style снова показывает выбор вида путеводителя. /aegis run показывает или скрывает блок забега (вне подземелья — ваш последний забег); /aegis run new начинает новый забег."
+L.SLASH_HELP = "/aegis (или /ij) открывает путеводитель. /aegis record включает или выключает запись. /aegis reset возвращает окно на место по умолчанию. /aegis dock закрепляет окно слева вверху, рядом с окнами игры, или снова освобождает его. /aegis perf измеряет память и скорость путеводителя. /aegis where и /aegis taxi показывают, где вы стоите и точки полетов на карте. /aegis travel сохраняет корабль, дирижабль, подземку или портал для карты мира. /aegis items находит предметы из списка, о которых сервер ничего не знает. /aegis gear открывает поиск снаряжения, /aegis weights — настройку приоритетов характеристик; /aegis gearscan сохраняет данные экипировки для проверки расчета улучшений. /aegis style снова показывает выбор вида путеводителя. /aegis run показывает или скрывает блок забега (вне подземелья — ваш последний забег); /aegis run new начинает новый забег. /aegis test открывает режим проверки."
 L.LANG_USAGE = "/aegis lang de, fr, ru, cn, tw, es, mx, pt или ko показывает путеводитель на немецком, французском, русском, китайском (упрощённом или традиционном), испанском (Испания или Латинская Америка), бразильском португальском или корейском после следующего /reload, чтобы проверить перевод; /aegis lang off возвращает язык вашего клиента. Сейчас: %s."
 L.LANG_SET = "После следующего /reload путеводитель перейдёт на язык %s — только его собственные тексты: названия из самой игры останутся на языке вашего клиента. Введите /reload сейчас; /aegis lang off вернёт всё как было."
 L.LANG_OFF = "После следующего /reload путеводитель снова будет на языке вашего клиента. Введите /reload сейчас."
@@ -32,17 +32,72 @@ L.LANG_FONTS = "Для китайского нужны шрифты китайс
 L.LANG_FONTS_KO = "Для корейского нужны шрифты корейского клиента: в вашем часть символов может не отображаться."
 L.LANG_ON = "Предпросмотр путеводителя на языке %s. /aegis lang off завершает его."
 L.LANG_UNAVAILABLE = "Этот клиент загрузил путеводитель раньше его сохранённых настроек, поэтому предпросмотр языка не удалось запустить."
+-- A map addon the owner asked us to warn about, while it is loaded: its name twice (2026-11-12; drafted, to be checked).
+L.MAP_ADDON_HIDES = "%s включён. Он перекрывает карту мира, поэтому некоторые карты и функции путеводителя могут быть скрыты. Рекомендуем отключить %s."
 L.AREAS_START = "Поиск в клиенте идентификаторов для %d названий зон журнала..."
 L.AREAS_DONE = "Найдены идентификаторы %d из %d названий зон. Введите /reload, чтобы сохранить их."
 L.AREAS_MISSING = "Не найдено: %s."
 L.AREAS_SCANNING = "Поиск названий зон еще не завершен."
 L.AREAS_ENGLISH = "Запустите /aegis areas в английском клиенте: команда ищет английские названия."
+-- Test mode (UI/TestPanel.lua, UI/TestRun.lua, UI/FogTest.lua): the owner's fog test of 2026-11-13, made test
+-- mode on 2026-11-18, for this session only (2026-11-18; drafted, to be checked).
+L.FOGTEST_FOG_OFF = "Туман у этого персонажа выключен, поэтому меняются только метки. Чтобы увидеть его, включите туман войны в легенде карты или играйте в режиме приключения."
+L.FOGTEST_PIN_CLICK = "Режим проверки: нажмите, чтобы отметить босса побежденным или снова живым."
+L.TEST_TITLE = "Режим проверки"
+L.TEST_PICK = "Выберите подземелье"
+L.TEST_NO_MAP = "У него пока нет карты."
+L.TEST_INSIDE = "Как будто я внутри"
+L.TEST_INSIDE_TIP = "Блок забега показывает это подземелье так, как при входе: побед нет, таймер ждёт первого боя (кнопка воспроизведения запускает его). Боссы, которых вы отметите, засчитываются в нём как настоящие победы. Ничего из этого не сохраняется."
+L.TEST_INSIDE_RAID = "Блок забега нужен для подземелий, а не для рейдов."
+L.TEST_INSIDE_REAL = "Вы внутри: %s. Блок забега показывает ваш настоящий забег."
+L.TEST_TRACKER_COMBAT = "Дождитесь конца боя: блок забега находится внутри списка заданий."
+L.TEST_WALK_IN = "Войти"
+L.TEST_WALK_IN_TIP = "Забег в Монастыре Алого ордена ждёт у входа, пока первая комната или первый бой крыла не назовёт крыло. «Войти» называет его: %s."
+L.TEST_FOUND = "Как найденное (режим приключения)"
+L.TEST_FOUND_TIP = "Включено: путеводитель считает это подземелье найденным, как будто вы в нём были. Его боссы, добыча и задания всё равно открываются только по мере находок или когда их открывает победа в проверке. Выключено: так, как его нашёл ваш персонаж. Победа в проверке тоже его находит."
+L.TEST_FOUND_OFF = "Ваш персонаж не в режиме приключения, поэтому всё и так показано."
+L.TEST_FOUND_REAL = "Ваш персонаж его уже нашёл."
+L.TEST_BOSSES = "Боссы"
+L.TEST_DEFEATED = "Побеждено %d из %d"
+L.TEST_TAG_RARE = "редкий"
+L.TEST_TAG_SUMMONED = "призываемый"
+L.TEST_TAG_NOT_COUNTED = "не в счёт"
+L.TEST_TAG_MAYBE = "возможно"
+L.TEST_TAG_QUEST = "задание"
+L.TEST_TAG_OUTSIDE = "снаружи"
+L.TEST_TAG_FINAL = "последний"
+L.TEST_TIP_RARE = "Редкий: ни круга, ни строки в блоке забега, и он не держит туман."
+L.TEST_TIP_SUMMONED = "Призываемый: он не держит туман."
+L.TEST_TIP_NOT_COUNTED = "Не в счёт: строка в блоке забега после победы, без круга."
+L.TEST_TIP_MAYBE = "Возможно: он встречается не в каждом забеге. Строка в блоке забега после победы, без круга."
+L.TEST_TIP_QUEST = "Задание: цель задания. Строка в блоке забега после победы, без круга. Вне проверки его метка открывает его задание."
+L.TEST_TIP_OUTSIDE = "Снаружи: он стоит вне подземелья, поэтому блок забега никогда его не показывает."
+L.TEST_TIP_FINAL = "Последний: победа над ним останавливает таймер забега."
+L.TEST_END = "Завершить проверку"
+L.TEST_ON = "Режим проверки включён, только до конца сеанса: ничего не сохраняется. «Завершить проверку» или /reload выключает его."
+L.TEST_OFF = "Режим проверки выключен: всё как было."
+L.TEST_RUN_TITLE = "%s (проверка)"
+L.TEST_RUN_ENDED = "Вы вошли в подземелье, поэтому мнимый забег проверки завершён."
+L.TEST_STATE_INSIDE = "внутри"
+L.TEST_STATE_DOOR = "у входа (какое крыло?)"
+L.TEST_STATE_OUTSIDE = "снаружи"
+L.TEST_STATE_DEFEATED = "побеждено %d/%d"
+L.TEST_STATE_FOG_ON = "туман вкл."
+L.TEST_STATE_FOG_OFF = "туман выкл."
+L.TEST_STATE_NO_FOG = "без тумана"
+L.TEST_STATE_FOUND = "показано как найденное"
+L.TEST_STATE_REAL = "как у персонажа"
+L.TEST_STATE_KILL_FOUND = "найдено победой в проверке"
+L.TEST_STATE_REAL_INSIDE = "внутри по-настоящему"
+L.TEST_STATE_NOT_ADVENTURE = "не режим приключения"
+L.TEST_STATE_COMBAT = "в бою"
+L.TEST_USAGE = "/ij test открывает режим проверки. /ij test off завершает его. /ij test debug выводит, что он делает."
 L.OPTIONS_TITLE = "Aegis Instance Journal"
-L.OPTIONS_BOSS_LEVELS = "Показывать уровни боссов в списке боссов"
+L.OPTIONS_BOSS_LEVELS = "Показывать уровни боссов"
 L.OPTIONS_BOSS_LEVELS_TIP = "Значок с уровнем на портрете каждого босса, окрашенный по тому, насколько босс для вас сложен: серый, зелёный, жёлтый, оранжевый или красный."
-L.OPTIONS_ARROWS = "Отмечать улучшения зелёной стрелкой"
+L.OPTIONS_ARROWS = "Отмечать улучшения стрелкой"
 L.OPTIONS_MINIMAP = "Показывать кнопку у миникарты"
-L.OPTIONS_PAWN_WEIGHTS = "Использовать приоритет характеристик из Pawn в поиске снаряжения"
+L.OPTIONS_PAWN_WEIGHTS = "Использовать приоритеты Pawn"
 L.OPTIONS_PAWN_WEIGHTS_TIP = "Если установлен Pawn, показываются его подсказки к предметам и стрелки улучшений. Флажок установлен: поиск снаряжения оценивает предметы по вашей шкале Pawn для вашей специализации. Флажок снят: Pawn вместо этого показывает приоритет журнала для вашей специализации в виде шкалы журнала, а его собственные шкалы скрыты на этом персонаже, пока вы не установите флажок."
 L.PAWN_ASK = "Также установлен Pawn. Будут показываться его подсказки к предметам и стрелки улучшений.\n\nОткуда Pawn и поиску снаряжения брать приоритет характеристик?\n\nИз журнала: Pawn показывает его для вашей специализации и скрывает свои шкалы на этом персонаже.\nИз Pawn: поиск снаряжения использует ваши шкалы Pawn."
 L.PAWN_USE_PAWN = "Из Pawn"
@@ -53,15 +108,32 @@ L.PAWN_RELOAD_NOW = "Перезагрузить"
 L.PAWN_RELOAD_LATER = "Позже"
 L.WEIGHTS_SOURCE_PAWN_LIVE = "Шкала Pawn «%s». Измените её в Pawn или выберите в настройках приоритет журнала."
 L.OPTIONS_MINIMAP_TIP = "Кнопка путеводителя на краю миникарты: ЛКМ открывает путеводитель, ПКМ — эти настройки, перетаскивание перемещает кнопку."
-L.OPTIONS_DOCK = "Закрепить окно в левом верхнем углу"
+-- The journal's line in the minimap's addon menu, its box beside the minimap button's (UI/Options.lua; 2026-11-20; drafted, to be checked).
+L.OPTIONS_ADDON_MENU = "Показывать в меню аддонов"
+L.OPTIONS_ADDON_MENU_TIP = "Строка путеводителя в меню аддонов у миникарты (маленькая кнопка с числом): ЛКМ открывает путеводитель, ПКМ — эти настройки. Если снять флажок, строка исчезнет из меню после /reload."
+L.OPTIONS_DOCK = "Закрепить окно слева вверху"
 L.OPTIONS_DOCK_TIP = "Включено: путеводитель открывается в левом верхнем углу экрана, там, где игра открывает свои окна, и сдвигается, когда там открывается одно из них, как они делают друг для друга; если места для обоих нет, игра закрывает более старое. Перетащите его, чтобы переместить куда угодно: при следующем открытии он снова закрепится. Выключено: он открывается там, куда вы перетащили его в последний раз."
+-- Test mode's button, last on the options' page (UI/Options.lua; 2026-11-18; drafted, to be checked).
+L.OPTIONS_TEST = "Режим проверки"
+L.OPTIONS_TEST_BUTTON = "Открыть"
+L.OPTIONS_TEST_TIP = "Карта, туман и блок забега любого подземелья без входа в него: выберите подземелье, отметьте побеждённых боссов, сделайте вид, что вы внутри. Только до конца сеанса: ничего не сохраняется, а /reload завершает его."
+L.OPTIONS_DUNGEON_FOG = "Туман на картах подземелий"
+L.OPTIONS_DUNGEON_FOG_TIP = "Карты подземелий сначала скрыты туманом, открыт только вход. Каждый босс, побеждённый вашей группой, открывает свои залы и путь назад, а последний — всю карту; открытое остаётся открытым. В режиме приключения всегда включено. Только для этого персонажа."
+-- Adventure Mode's news: the chat line for new finds, the minimap button's line while it glows, and their two
+-- boxes in the options (2026-11-11; translation drafted, to be checked).
+L.ADVENTURE_NEWS = "Новое в путеводителе: %s"
+L.MINIMAP_NEWS = "В путеводителе есть что-то новое."
+L.OPTIONS_ADVENTURE_CHAT = "Новые находки в чате"
+L.OPTIONS_ADVENTURE_CHAT_TIP = "В режиме приключения — строка в чате, когда вы находите что-то новое для путеводителя: подземелье, босса, добычу, задание, фракцию или маршрут полета. Щелкните по названию, чтобы открыть его страницу (у маршрута полета ее нет). Для всех ваших персонажей."
+L.OPTIONS_ADVENTURE_GLOW = "Свечение кнопки у миникарты"
+L.OPTIONS_ADVENTURE_GLOW_TIP = "В режиме приключения кнопка у миникарты светится, если вы нашли что-то новое с тех пор, как в последний раз открывали путеводитель, — пока вы его не откроете. Для всех ваших персонажей."
 L.MINIMAP_LEFT_CLICK = "ЛКМ — открыть или закрыть путеводитель."
 L.MINIMAP_RIGHT_CLICK = "ПКМ — настройки."
 L.MINIMAP_DRAG = "Перетащите, чтобы передвинуть кнопку вдоль миникарты."
 L.OPTIONS_ARROWS_TIP = "Зелёная стрелка на предметах, которые по расчёту поиска снаряжения являются улучшениями для вашей специализации: в сумках, в окне добычи и при розыгрыше добычи."
-L.WEIGHTS_SHOW_GAINS = "Показывать приоритет характеристик в подсказках"
+L.WEIGHTS_SHOW_GAINS = "Показывать приоритеты в подсказках"
 L.WEIGHTS_SHOW_GAINS_TIP = "Под каждым предметом — строка для каждой вашей специализации: сколько стоит предмет по её приоритету и, если это улучшение, зелёная стрелка с тем, что он добавит к вашему снаряжению. Для всех ваших персонажей с включённым поиском снаряжения. Если установлен Pawn, этот флажок вместо этого показывает или скрывает шкалу журнала в Pawn, а вместе с ней стрелки улучшений Pawn по приоритету журнала: Pawn отмечает улучшения только для тех шкал, которые показывает."
-L.OPTIONS_SOURCES = "Показывать в подсказках, где добывается предмет"
+L.OPTIONS_SOURCES = "Показывать источник добычи"
 L.OPTIONS_SOURCES_TIP = "Под каждым предметом, который добывается в подземельях и рейдах путеводителя, — строка с боссом и подземельем: в сумках, на персонаже, в ссылках в чате, у торговцев и везде, где игра показывает предмет. Для всех ваших персонажей."
 L.ITEMS_START = "Запрос к серверу о %d предметах из списка путеводителя. Ответ придет примерно через %d сек.; можете продолжать игру."
 L.ITEMS_SCANNING = "Ожидание ответа от сервера; данные появятся через секунду."
@@ -86,6 +158,10 @@ L.WHERE_BELOW_BELOW = "внизу"
 L.WHERE_BELOW_TOP = "наверху"
 L.WHERE_BELOW_NOTHING = "ничего"
 L.WHERE_BELOW_CHANGE = "  %s  %s  карта %s  зона \"%s\"  x %s  y %s:  %s -> %s"
+L.WHERE_GAMEPAD = "Интерфейс геймпада: геймпад возвращён в начале боя: %d (последний раз по %s); слишком поздно: %d; получено событий боевого ограничения: %d; ожидают меток пропуска: %d"
+L.WHERE_FLOOR = "%s: карта на уровне %d (%s), по зоне \"%s\""
+L.WHERE_FLOOR_KEPT = "%s: карта на уровне %d (%s), без изменений: зона \"%s\" не относится ни к одному уровню"
+L.WHERE_FLOOR_HELD = "%s: карта на уровне %d (%s), не следует за зоной \"%s\": выбран уровень или вся карта"
 L.TAXI = "Карта %s  сама показывает точки полетов: %s  точек на ней: %d (%d открыто)  %s"
 L.TAXI_ATLASES = "Иконки перемещения: %s"
 L.YES = YES or "да"
@@ -281,6 +357,7 @@ L.RECORD_NEW = "новое"
 L.RECORD_QUARTERMASTERS = "Интенданты"
 L.RECORD_WARES = "%s: товаров: %d, новых: %s"
 L.RECORD_TRAVEL = "Точки перемещения: %d"
+L.RECORD_MODELS = "Модели: %d"
 L.FOREVER_LINE = "Новое в WoW: Forever."
 L.LOCATION_LINE = "Расположение: %s"
 
@@ -302,6 +379,19 @@ L.LOOT_KIND = {
 L.LOOT_KIND_ALL = { EQUIPMENT = "Вся экипировка", RECIPE = "Все рецепты" }
 L.LOOT_KIND_ONE = { MOUNT = "Транспорт", PET = "Питомец", TOY = "Игрушка" }
 L.LOOT_RECIPE = "Рецепт"
+-- A loot row's type where the client cannot describe the item (2026-11-19; drafted, to be checked).
+L.LOOT_QUEST_ITEM = "Предмет, необходимый для задания"
+L.LOOT_WORDS = {
+	Alchemy = "Алхимия", Blacksmithing = "Кузнечное дело", Cooking = "Кулинария", Enchanting = "Наложение чар",
+	Engineering = "Инженерное дело", ["First Aid"] = "Первая помощь", Fishing = "Рыбная ловля",
+	Leatherworking = "Кожевничество", Tailoring = "Портняжное дело", Book = "Книга", Blueprint = "Чертеж",
+	Bag = "Сумка", ["Ammo Pouch"] = "Подсумок", Quiver = "Колчан", Arrow = "Стрелы", Bullet = "Пули",
+	Consumable = "Расходуемые", ["Food & Drink"] = "Еда и напитки", Potions = "Зелья", Junk = "Хлам", Key = "Ключ",
+	Other = "Разное", Parts = "Детали", Reagent = "Реагент", Weapon = "Оружие", Cloth = "Ткань", Leather = "Кожа",
+	Mail = "Кольчуга", Plate = "Латы", Shield = "Щит", Idol = "Идол", Libram = "Манускрипт", Totem = "Тотем",
+	Axe = "Топор", Bow = "Лук", Crossbow = "Арбалет", Dagger = "Кинжал", ["Fist Weapon"] = "Кистевое оружие",
+	Gun = "Огнестрельное", Mace = "Дробящее", Polearm = "Древковое", Staff = "Посох", Sword = "Меч", Wand = "Жезл",
+}
 L.LOOT_FAVORITES = "Избранное"
 L.LOOT_FAVORITES_ONLY = "Только избранное"
 L.LOOT_FAVORITE = "Добавить в избранное"
@@ -309,9 +399,17 @@ L.LOOT_UNFAVORITE = "Удалить из избранного"
 L.LOOT_PINNED = "Закрепленные"
 L.LOOT_ALL = "Добыча"
 L.LOOT_TRASH = "Трэш подземелья"
+L.LOOT_BOSSES_AND_RARES = "Любой босс или редкий противник"
+L.LOOT_BOSSES_AND_RARES_NOTE = "Добыча с боссов и редких противников подземелья, не с трэша."
+-- A Recipes page's row the bosses drop, and a row not seen dropping yet (2026-11-20; drafted, to be checked).
+L.LOOT_ANY_BOSS = "Любой босс"
+L.LOOT_ANY_BOSS_NOTE = "Добыча с боссов подземелья, не с трэша."
+L.LOOT_NOT_SEEN_NOTE = "Ещё не замечено в добыче."
 L.DROPS_FROM_BOSS = "Добыча: %s (%s)"
 L.DROPS_FROM_TRASH = "Добыча: трэш (%s)"
 L.DROPS_FROM_BOSSES = "Добыча с боссов: %d (%s)"
+L.DROPS_FROM_BOSSES_AND_RARES = "Добыча: боссы и редкие противники (%s)"
+L.DROPS_FROM_ANY_BOSS = "Добыча: боссы (%s)"
 L.DROPS_IN = "Добыча в подземельях: %s"
 L.DROPS_ALSO_IN = "Также добыча в подземельях: %s"
 L.LEGEND_CLICK_HIDE = "Нажмите, чтобы скрыть их на карте."
@@ -325,7 +423,28 @@ L.PREPARE_PROGRESS = "Выполнено заданий: %d из %d."
 -- The same for a key with one quest (2026-10-30; drafted, to be checked).
 L.PREPARE_PROGRESS_ONE = "Задание еще не выполнено."
 L.PREPARE_HAVE = "Уже есть."
-L.PREPARE_QUEST_HINT = "Нажмите, чтобы открыть на вкладке «Задания»."
+-- A chain of quests done, Before you go (2026-11-12; drafted, to be checked).
+L.PREPARE_CHAIN_DONE = "Задания выполнены."
+-- Before you go's line on a dungeon's overview, pointing to the Quests tab (2026-11-13; drafted, to be checked).
+L.PREPARE_POINTER = "Перед походом: заметки (%d) на вкладке «Задания»."
+L.PREPARE_POINTER_ONE = "Перед походом: заметка на вкладке «Задания»."
+-- The Play button beside the lore, which plays Spoken's recorded story; "Spoken" kept as it is (2026-11-13; drafted, to be checked).
+L.SPOKEN_PLAY = "Воспроизвести историю"
+L.SPOKEN_REPLAY = "Воспроизвести историю снова"
+L.SPOKEN_STOP = "Остановить"
+L.SPOKEN_BY = "Читает вслух Spoken."
+L.SPOKEN_REQUIRES = "Требуется Spoken"
+L.SPOKEN_ABOUT_PLACE = "Читает вслух историю этого места."
+L.SPOKEN_ABOUT_BOSS = "Читает вслух историю этого босса."
+L.SPOKEN_NO_STORY_PLACE = "У Spoken нет записанной истории этого места."
+L.SPOKEN_NO_STORY_BOSS = "У Spoken нет записанной истории этого босса."
+-- Spoken's own story API says no, the reason not known (2026-11-14; drafted, to be checked).
+L.SPOKEN_NO_STORY_YET = "У Spoken пока нет истории, которую можно воспроизвести здесь."
+L.SPOKEN_NEEDS_BOSS_VOICES = "Нужны голоса боссов Spoken, а они не установлены."
+L.SPOKEN_NEEDS_PLACE_VOICES = "Нужны голоса мест Spoken, а они не установлены."
+L.SPOKEN_OFF = "Выключено в настройках Spoken."
+L.SPOKEN_LOCKED_PLACE = "Spoken расскажет эту историю, когда вы найдёте это место."
+L.SPOKEN_LOCKED_BOSS = "Spoken расскажет эту историю, когда вы встретите этого босса."
 L.QUESTS_DUNGEON = "Задания подземелья"
 -- The same on a raid's Quests tab (2026-10-30; drafted, to be checked).
 L.QUESTS_RAID = "Задания рейда"
@@ -333,6 +452,9 @@ L.QUESTS_RAID = "Задания рейда"
 L.QUESTS_CLASS = "Классовые задания"
 L.TRASH = "Трэш"
 L.TRASH_DESCRIPTION = "Что стоит знать о добыче с остальных существ подземелья: редкое и эпическое снаряжение, рецепты и предметы для заданий."
+-- The recipes' entry in a dungeon's boss list, and its page (drafted, to be checked).
+L.RECIPES = "Рецепты"
+L.RECIPES_DESCRIPTION = "Рецепты, чертежи и выкройки, которые выпадают в подземелье с боссов и остальных существ. Собственный рецепт босса есть и на странице этого босса."
 L.LOOT_BOSS_LINE = BOSS_INFO_STRING or "Босс: %s"
 L.LOOT_FILTER_BAR = "Фильтр: %s"
 L.LOOT_RETRIEVING = RETRIEVING_ITEM_INFO or "Получение сведений о предмете"
@@ -391,6 +513,8 @@ L.QUESTMAP_OBJECTIVE_TAKE_NAMED = "Взять: %s"
 L.QUESTMAP_TITLE_QUOTED = "«%s»"
 L.QUESTMAP_OBJECTIVE_USE = "Использовать: %s"
 L.QUESTMAP_OBJECTIVE_EXPLORE = "Исследовать это место"
+-- At the Drowned City's tablets of I'lalai, a rubbing with the hide and charcoal (2026-11-12; drafted, to be checked).
+L.QUESTMAP_OBJECTIVE_RUBBING = "Сделать оттиск шкурой и углем"
 -- A Matrix Punchograph's step, what goes in, then what comes out, in short words ("Yellow > Blue"), and the punch
 -- cards' colors, as the cards' own names in the language have them (2026-11-12, the owner's "Blue > Red"; drafted, to
 -- be checked); where what goes in drops (2026-11-12; drafted, to be checked).
@@ -449,11 +573,34 @@ L.REP_NOT_CAPTURED = "Еще не записано"
 L.REP_NOT_CAPTURED_TIP = "Интенданта этой фракции еще никто не записал."
 L.REP_NOT_CAPTURED_TEXT = "Интенданта этой фракции еще никто не записал. Найдите его, откройте магазин и нажмите «Записать торговца» на вкладке «Репутация», затем опубликуйте запись в нашем Discord. Ваше имя попадет в список авторов путеводителя."
 L.REP_COMING_SOON_TEXT = "Новое в WoW: Forever, еще не записано. Когда фракция появится в игре, найдите интенданта, откройте магазин и нажмите «Записать торговца» на вкладке «Репутация», затем опубликуйте запись в нашем Discord."
+-- The Reputation tab's Vendors: a page for each currency a vendor takes for wares that need no standing (2026-11-12; drafted, to be checked).
+L.REP_VENDORS = "Торговцы"
+L.CURRENCY_YOU_HAVE = "У вас есть: %s"
+L.CURRENCY_VENDOR = "Торговец: %s"
+L.CURRENCY_CARD_CLICK = "Нажмите, чтобы увидеть товары."
+L.REP_CAPTURED_CURRENCY = "%s: сохранено товаров: %d, продаются за %s."
+-- Where Carved Centaur Totems come from, on its Vendors card and page (2026-11-13; drafted, to be checked: %s is the item's name as the client writes it; the quests keep their English names, their names in this language not known).
+L.CURRENCY_NOTE_CENTAUR_TOTEM = "%s: их оставляют кентавры любого племени в Пустошах, а задание «Khan Hratha» дает десять. Задание «Carved Centaur Totems» просит пять штук и у Альянса, и у Орды."
 L.REP_LISTED_TIP = "Ее награды взяты из данных предметов игры и еще не подтверждены у интенданта."
 L.REP_LISTED_TEXT = "Эти награды взяты из данных предметов игры, а не от интенданта: цены не показаны, и часть из них может вообще не продаваться. Найдите интенданта этой фракции, откройте его магазин и нажмите «Записать торговца» на вкладке «Репутация», затем опубликуйте запись в нашем Discord. Ваше имя попадет в список авторов путеводителя."
 L.MAP_SHOW = ENCOUNTER_JOURNAL_SHOW_MAP or "Показать карту"
-L.MAP_SHOW_UNEXPLORED = "Показывать неисследованные области"
+L.MAP_SHOW_UNEXPLORED = "Неисследованные области"
 L.OPTIONS_UNEXPLORED_TIP = "Затеняет на карте мира ещё не исследованные части каждой зоны."
+-- The map legend's Fog of War switch, the last of Movement's, and its tooltip (2026-11-11; translation drafted, to be checked).
+L.LEGEND_FOG = "Туман войны"
+L.LEGEND_FOG_TOOLTIP = "Скрывает ещё не исследованные вами части зоны и ещё не открытые вашей группой части карты подземелья."
+L.LEGEND_FOG_ZONE_HIDDEN = "На карте показаны только исследованные вами части этой зоны."
+L.LEGEND_FOG_ZONE_SHOWN = "Неисследованные части этой зоны тоже показаны, чуть темнее."
+L.LEGEND_FOG_ZONE_SHOW = "ЛКМ — показать неисследованные части."
+L.LEGEND_FOG_ZONE_HIDE = "ЛКМ — показывать только исследованные части."
+L.LEGEND_FOG_DUNGEON_ON = "Туман скрывает ещё не открытые части этой карты. Каждый босс, побеждённый вашей группой, открывает свои залы."
+L.LEGEND_FOG_DUNGEON_OFF = "Туман выключен: видна вся карта."
+L.LEGEND_FOG_DUNGEON_CLEARED = "Туман рассеялся: видна вся карта."
+L.LEGEND_FOG_DUNGEON_LIFT = "ЛКМ — выключить туман."
+L.LEGEND_FOG_DUNGEON_LAY = "ЛКМ — включить туман."
+L.LEGEND_FOG_ADVENTURE = "В режиме приключения не отключается."
+L.LEGEND_FOG_NONE = "На этой карте нет тумана войны."
+L.LEGEND_FOG_ZONE_EXPLORED = "Вы исследовали всю эту зону."
 L.MAP_FILTER_QUESTS = "Доступные задания"
 L.MAP_FILTER_DUNGEONS = "Входы в подземелья"
 L.MAP_FILTER_RAIDS = "Входы в рейды"
@@ -462,9 +609,17 @@ L.MAP_FILTER_CAVES = "Входы в пещеры"
 L.MAP_FILTER_TRANSPORT = "Корабли, дирижабли, подземка и порталы"
 L.MAP_PIN_OPEN = "Нажмите, чтобы открыть в путеводителе."
 L.MAP_DEFEATED = DUNGEON_ENCOUNTER_DEFEATED or "Побежден"
+L.MAP_FOG_HINT = "Победите его, чтобы рассеять туман здесь."
+L.MAP_UNMET_HINT = "Встречи ещё не было."
 L.MAP_LEVEL = "Уровень %d"
 L.MAP_FLOOR = "Уровень %d"
 L.MAP_GO_TO = "К %s"
+-- Under a way between floors, where two lead to one floor (the Drowned City's), where it comes out
+-- (2026-11-17; drafted, to be checked).
+L.MAP_WAY_OUT_SOUTHWEST = "Выход в юго-западном конце"
+L.MAP_WAY_OUT_NORTHEAST = "Выход в северо-восточном конце"
+L.MAP_WAY_OUT_DEEP_ARCHIVES = "Выход в Глубинных архивах"
+L.MAP_WAY_OUT_CENTRAL_POOL = "Выход в центральном бассейне"
 L.MAP_YOU_ARE_HERE = "Вы здесь"
 L.ENTRANCE_DUNGEON = LFG_TYPE_DUNGEON or "Подземелье"
 L.ENTRANCE_RAID = LFG_TYPE_RAID or "Рейд"
@@ -511,8 +666,13 @@ L.SEARCH_TYPE_QUEST = "Задание"
 L.SEARCH_TYPE_FACTION = FACTION or "Фракция"
 L.MAP_PIN_CLEAR = "Нажмите, чтобы убрать эту метку."
 L.MAP_PIN_COMBAT = "Карту нельзя открыть в бою."
+L.GAMEPAD_HUD_UP = "Сначала выйдите из режима HUD интерфейса геймпада, затем попробуйте снова."
 L.MAP_PIN_IN_ZONE = "%s: отмечено на карте локации %s."
 L.MAP_LEVEL_LINK_CLICK = "ЛКМ — посмотреть карту этого уровня"
+-- A place worth knowing on a dungeon's map (UI/DungeonMap.lua's MapSpot): its kind's name, and the Drowned City's
+-- hidden chest's line under it (2026-11-17; drafted, to be checked).
+L.MAP_SPOT_CHEST = "Тайный сундук"
+L.MAP_SPOT_DROWNED_CHEST = "На разбитой лодке за помостом босса Мин'лот Змей. Он не заперт: любой может открыть его и получить случайные предметы и материалы."
 L.DOOR_SPIRE_ONE_INSTANCE = "Нижняя и Верхняя части пика Черной горы — одно подземелье с одним входом."
 L.DOOR_SPIRE_LOWER = "Нижняя часть пика Черной горы: до 10 игроков, но задания можно выполнить только в группе из 5 игроков или меньше."
 L.DOOR_SPIRE_UPPER = "Верхняя часть пика Черной горы: дальше внутри, за запечатанной дверью, для которой нужна печать вознесения. До 10 игроков."
@@ -522,6 +682,9 @@ L.AND_MORE = "и еще %d"
 L.BULLET_AREA = "Встречается в зоне: %s."
 L.BULLET_RARE = "Редкий противник: появляется не в каждом заходе."
 L.BULLET_SUMMONED = "Скрытый босс, которого вы призываете сами: как именно — сказано в заметке выше."
+-- The same where his note names several bosses, not a hidden boss (2026-11-19; "summon" since 2026-11-20;
+-- drafted, to be checked).
+L.BULLET_CALLED_UP = "Босс, которого вы призываете сами: как именно — сказано в заметке выше."
 -- A quest's mob, on the map only, on his page (2026-11-11; translation drafted, to be checked).
 L.BULLET_QUEST_TARGET = "Цель задания, а не один из боссов подземелья."
 L.BULLET_LEVEL = "Противник %d-го уровня."
@@ -556,8 +719,7 @@ L.INSTANCE_NAMES = {
 	DireMaulNorth = "Забытый Город (север)",
 	DireMaulWest = "Забытый Город (запад)",
 	Scholomance = "Некроситет",
-	StratholmeMainGate = "Стратхольм (главные врата)",
-	StratholmeServiceGate = "Стратхольм (черный ход)",
+	Stratholme = "Стратхольм",
 	CityOfDalaran = "Даларан",
 	HallOfThanes = "Зал Танов",
 	RuinsOfLordaeron = "Руины Лордерона",
@@ -597,8 +759,7 @@ L.INSTANCE_LOCATIONS = {
 	DireMaulNorth = "Фералас",
 	DireMaulWest = "Фералас",
 	Scholomance = "Западные Чумные земли",
-	StratholmeMainGate = "Восточные Чумные земли",
-	StratholmeServiceGate = "Восточные Чумные земли",
+	Stratholme = "Восточные Чумные земли",
 	CityOfDalaran = "Альтеракские горы",
 	HallOfThanes = "Под Стальгорном, Дун Морог",
 	RuinsOfLordaeron = "Разрушенная столица Лордерона",
@@ -609,7 +770,8 @@ L.INSTANCE_LOCATIONS = {
 	KroldokStronghold = "Речные низины",
 	AlcazPrison = "Остров Алькац, Пылевые топи",
 	BlackmawHold = "Северная Азшара",
-	ShapersTerrace = "Кратер Ун'Горо",
+	-- (the Shaper's Terrace's way in, 2026-11-18; drafted, to be checked)
+	ShapersTerrace = "Северный край кратера Ун'Горо, вверх по лестнице от Укрытия Маршалла",
 }
 
 L.INSTANCE_DESCRIPTIONS = {
@@ -707,6 +869,15 @@ L.SUBMAP_LEVELS = {
 	-- Prismatic Talus (drafted, to be checked: the client's tables have the cave only as its building's name, in English)
 	["Shaper's Terrace"] = "Терраса ваятеля",
 	["Prismatic Talus"] = "Призматическая осыпь",
+	-- Blackmaw Hold's map (Data/Authored/Upcoming.lua's floor names): the dungeon's name, its cave, the Festering
+	-- Grotto, and the four levels of its depths, as Santiago Reyes's maps label them (drafted, to be checked: the
+	-- client's tables keep the hold's own names in encrypted rows)
+	["Blackmaw Hold"] = "Цитадель Чернопасти",
+	["Festering Grotto"] = "Гноящийся грот",
+	["Depths of the Fallen Grove"] = "Глубины Павшей рощи",
+	["Depths of the Elders"] = "Глубины Старейшин",
+	["Depths of the Burrow"] = "Глубины норы",
+	["Depths of Forbidden Magic"] = "Глубины Запретной магии",
 }
 
 L.FACTION_NAMES = {
@@ -822,11 +993,33 @@ L.EQUIP_PATTERNS = {
 -- here" and a wing's areas match these (Core/Areas.lua). Unconfirmed ones are listed in
 -- the translation's to-check list.
 L.AREA_NAMES = {
+	-- The Drowned City's areas (Data/Authored/Upcoming.lua's floors: Abyssal Dais, Altar of the Serpent, Deep
+	-- Archives, Eternal Amphitheater, the Flooded Shrine (the central pool) and Sunken Hollow on the city's map,
+	-- Ataal'Byzal and Atal'Byzal on Atal'byzal), as a player's English recording (2026-11-13) and the client's
+	-- English tables (2026-11-17) name them: drafted, to be checked (GetSubZoneText there)
+	["Abyssal Dais"] = "Возвышение Бездны",
 	["Aku'mai's Lair"] = "Логово Аку'Мая",
+	-- Alcaz Prison's two names for its rooms (Data/Authored/Upcoming.lua's floors: Alcaz Prison on the first,
+	-- Maximum Security on the second), as the client's English tables name them (2026-11-17): drafted, to be checked
+	-- (GetSubZoneText there); Alcaz Prison as the dungeon's name in this language
+	["Alcaz Prison"] = "Тюрьма Альказа",
+	-- (the Drowned City's, drafted: see Abyssal Dais)
+	["Altar of the Serpent"] = "Алтарь Змея",
 	["Anvilmar's Rest"] = "Покой Анвилмара",
+	-- (the Drowned City's shrine: its rooms' area and the building's own name, drafted: see Abyssal Dais)
+	["Ataal'Byzal"] = "Атаал'Бизал",
+	["Atal'Byzal"] = "Атал'Бизал",
 	["Athenaeum"] = "Читальня",
+	-- Blackmaw Hold's areas (Data/Authored/Upcoming.lua's floors: Blackmaw Grove, Blackmaw Stillwater, Bonesnout's
+	-- Thicket, the Festering Grotto and the depths' four levels), by the labels on Santiago Reyes's maps, not read in
+	-- game yet: drafted, to be checked (GetSubZoneText there). The client's tables keep the hold's own names in
+	-- encrypted rows
+	["Blackmaw Grove"] = "Роща Чернопасти",
+	["Blackmaw Stillwater"] = "Тихие воды Чернопасти",
 	["Blackrock Stadium"] = "Стадион Черной горы",
 	["Blackrock Stronghold"] = "Крепость Черной горы",
+	-- (Blackmaw Hold's, drafted: see Blackmaw Grove)
+	["Bonesnout's Thicket"] = "Чаща Костяного Рыла",
 	-- City of Dalaran's rooms (Data/Authored/CityOfDalaran.lua's floors: Cantrips & Crows, City of
 	-- Dalaran, Dalaran, Magus Commerce Exchange, Path of Renewal, Presage Plaza, Runeweaver Square, Sewer,
 	-- The Eventide, The Purple Parlor, The Underbelly, The Violet Citadel, The Violet Hold): the city's
@@ -851,17 +1044,35 @@ L.AREA_NAMES = {
 	["Crusaders' Square"] = "Площадь рыцарей",
 	["Dalaran"] = "Даларан",
 	["Dark Iron Ingress"] = "Проход Темного Железа",
+	-- (the Drowned City's, drafted: see Abyssal Dais)
+	["Deep Archives"] = "Глубинные архивы",
 	["Defias Hideout"] = "Убежище Братства Справедливости",
+	-- (Blackmaw Hold's, drafted: see Blackmaw Grove)
+	["Depths of Forbidden Magic"] = "Глубины Запретной магии",
+	["Depths of the Burrow"] = "Глубины норы",
+	["Depths of the Elders"] = "Глубины Старейшин",
+	["Depths of the Fallen Grove"] = "Глубины Павшей рощи",
 	["Dig One"] = "Раскоп номер один",
 	["Dragonspire Hall"] = "Зал Драконов",
-	["Dreamer's Rock"] = "Покои Спящего",
+	-- Wailing Caverns' Dreamer's Rock: as a player's recording on a Russian client read it (2026-11-14)
+	["Dreamer's Rock"] = "Скала Дремлющего",
 	["Elders' Square"] = "Площадь Старейшин",
 	["Eldre' Thalas"] = "Эльдре'Талас",
 	["Eldreth Row"] = "Улица Эльдрета",
 	["Engineering Labs"] = "Инженерные лаборатории",
+	-- (the Drowned City's, drafted: see Abyssal Dais)
+	["Eternal Amphitheater"] = "Вечный амфитеатр",
 	["Excavation Center"] = "Центр раскопок",
+	-- (Blackmaw Hold's, drafted: see Blackmaw Grove)
+	["Festering Grotto"] = "Гноящийся грот",
 	["Festival Lane"] = "Праздничная улица",
+	-- (the Drowned City's, drafted: see Abyssal Dais)
+	["Flooded Shrine"] = "Затопленное святилище",
 	["Footman's Armory"] = "Оружейная пехоты",
+	-- City of Dalaran's city rooms a player's recording read (Data/Authored/CityOfDalaran.lua, 2026-11-13: Forge of
+	-- Fate, Talismanic Textiles, Tempered Tomes, The Atrium of Fortune, The Silver Enclave, Violet Plates and
+	-- Framing), with no area id. Drafted, to be checked in game (GetSubZoneText there)
+	["Forge of Fate"] = "Кузня Судьбы",
 	["Forgewright's Tomb"] = "Гробница Кузнеца",
 	["Forlorn Cloister"] = "Покинутый двор",
 	["Gallery of Treasures"] = "Сокровищница",
@@ -882,6 +1093,8 @@ L.AREA_NAMES = {
 	["Loading Room"] = "Погрузочная",
 	["Magus Commerce Exchange"] = "Торговая палата волшебников",
 	["Market Row"] = "Торговый ряд",
+	-- (Alcaz Prison's lower floor, drafted: see Alcaz Prison)
+	["Maximum Security"] = "Строгий режим",
 	["Mast Room"] = "Мачтовая мастерская",
 	["Mok'Doom"] = "Мок'Дум",
 	["Moonshrine Ruins"] = "Руины Лунного святилища",
@@ -898,8 +1111,24 @@ L.AREA_NAMES = {
 	["Skitterweb Tunnels"] = "Паучий лабиринт",
 	["Slaughter Square"] = "Площадь Живодерни",
 	["South Common Hall"] = "Южный общий зал",
+	-- Razorfen Downs' rooms (Data/Instances/RazorfenDowns.lua: Spiral of Thorns, The Bone Pile, The Caller's Chamber
+	-- and The Murder Pens), as a player's recording read them in English (2026-11-13): the dungeon building's own
+	-- names, with no area id. Drafted, to be checked in game (GetSubZoneText there)
+	["Spiral of Thorns"] = "Спираль Шипов",
+	-- (the Drowned City's, drafted: see Abyssal Dais)
+	["Sunken Hollow"] = "Затонувшая впадина",
+	-- (City of Dalaran's, drafted: see Forge of Fate)
+	["Talismanic Textiles"] = "Талисманные ткани",
 	["Tazz'Alaor"] = "Тазз'Алаор",
 	["Tazz'Alor"] = "Тазз'Алор",
+	-- (City of Dalaran's, drafted: see Forge of Fate)
+	["Tempered Tomes"] = "Закаленные фолианты",
+	-- (City of Dalaran's, drafted: see Forge of Fate)
+	["The Atrium of Fortune"] = "Атриум Фортуны",
+	-- (Razorfen Downs', drafted: see Spiral of Thorns)
+	["The Bone Pile"] = "Груда костей",
+	-- (Razorfen Downs', drafted: see Spiral of Thorns)
+	["The Caller's Chamber"] = "Чертог Призывателя",
 	-- Gnomeregan's Clean Zone, a room the map follows since 0.39.21 (2026-11-12; drafted, to be checked)
 	["The Clean Zone"] = "Чистая зона",
 	["The Clockwerk Run"] = "Заводной проход",
@@ -916,12 +1145,16 @@ L.AREA_NAMES = {
 	["The Hoard"] = "Арсенал",
 	["The Masonary"] = "Каменотёсня",
 	["The Molten Span"] = "Огненный пролёт",
+	-- (Razorfen Downs', drafted: see Spiral of Thorns)
+	["The Murder Pens"] = "Загоны смерти",
 	["The Pool of Ask'ar"] = "Пруд Аск'ара",
 	["The Purple Parlor"] = "Аметистовая гостиная",
 	["The Rookery"] = "Гнездовье",
 	["The Scarlet Bastion"] = "Бастион Алого ордена",
 	["The Sealed Hall"] = "Запечатанный зал",
 	["The Shrine of Eldretharr"] = "Святилище Элдретарра",
+	-- (City of Dalaran's, drafted: see Forge of Fate)
+	["The Silver Enclave"] = "Серебряный Анклав",
 	["The Slaughter House"] = "Живодерня",
 	["The Storehouse"] = "Кладовая",
 	["The Underbelly"] = "Клоака",
@@ -932,9 +1165,16 @@ L.AREA_NAMES = {
 	-- Gnomeregan's way in, as the Loading Room above
 	["Train Depot"] = "Депо",
 	["Training Grounds"] = "Тренировочная площадка",
+	-- (City of Dalaran's, drafted: see Forge of Fate)
+	["Violet Plates and Framing"] = "Аметистовые латы и рамы",
 	["Warpwood Quarter"] = "Квартал Криводревов",
+	-- Wailing Caverns' Winding Chasm (Data/Authored/WailingCaverns.lua): as a player's recording on a Russian client read it (2026-11-14)
+	["Winding Chasm"] = "Извилистая расщелина",
 	-- Gnomeregan's way in, as the Loading Room above
 	["Workshop Entrance"] = "Вход в мастерскую",
+	-- (Blackmaw Hold's, drafted: see Blackmaw Grove; Zedrik's Rest a best guess from the label on a newer version
+	-- of Santiago Reyes's whole hold, 2026-11-18)
+	["Zedrik's Rest"] = "Покой Зедрика",
 	-- The Temple of Atal'Hakkar's way in (Data/Authored/SubMaps.lua, 2026-10-30): its nine rooms have no area id,
 	-- so they are found by these names alone. Pool of Tears, Sorrowmurk and the temple's own name have ids (74,
 	-- 1778, 1477): a scan (/aegis areas, Dev/bake_area_ids.py) can replace those three. LibBabble-SubZone's names,
@@ -965,11 +1205,67 @@ L.STYLE_MODERN = "Современный"
 L.STYLE_MODERN_DESC = "Всё, что есть в путеводителе, как сейчас: поиск снаряжения, карты путей внутрь и его отметки на карте мира."
 L.STYLE_CUSTOM = "Свой"
 L.STYLE_CUSTOM_DESC = "Выбираете вы. Выберите это, чтобы открыть настройки путеводителя, где у каждой функции свой флажок."
+-- Adventure Mode, in the options' list of styles, and what it does (2026-11-05; drafted, to be checked).
+L.STYLE_ADVENTURE = "Режим приключения"
+L.STYLE_ADVENTURE_DESC = "Путеводитель начинается пустым и заполняется по мере игры: подземелья, боссы, добыча и задания появляются, когда вы их находите."
+-- Adventure Mode's name on its box in the question at login, one word like Classic and Modern (2026-11-07).
+L.STYLE_ADVENTURE_BOX = "Приключение"
+-- Adventure Mode's pages: an unmet boss's line, the closed tabs' tooltips, the loot list with nothing seen
+-- yet, and an item seen with its boss unknown (2026-11-05; drafted, to be checked).
+L.ADVENTURE_BOSS_UNMET = "Вы ещё не встречали этого противника."
+L.ADVENTURE_ABILITIES_CLOSED = "Сразитесь с этим боссом, чтобы узнать его способности."
+L.ADVENTURE_MODEL_CLOSED = "Встретьте этого босса, чтобы увидеть его здесь."
+L.ADVENTURE_LOOT_NONE = "Здесь пока не видели никакой добычи."
+L.ADVENTURE_LOOT_IN_DUNGEON = "Добыча из: %s"
+-- Adventure Mode's Quests tab, a step not offered yet and no quests found yet; the Reputation tab, no
+-- faction met yet, and a faction's rewards not seen yet (2026-11-05; drafted, to be checked).
+L.ADVENTURE_QUEST_UNKNOWN = "Вам ещё не предлагали это задание."
+L.ADVENTURE_QUESTS_NONE = "Задания этого подземелья пока не найдены."
+L.ADVENTURE_REP_NONE = "Вы ещё не встречали ни одну из этих фракций."
+L.ADVENTURE_REP_TITLE = "Награды, которые предстоит найти"
+L.ADVENTURE_REP_SEEN = "Награды фракции появятся здесь, когда вы увидите их у её интенданта."
+L.ADVENTURE_REP_SEEN_AT = "Награды фракции появятся здесь, когда вы увидите их у её интенданта (%s)."
+L.ADVENTURE_REP_NONE_SEEN = "Ни одной награды пока не видели."
+L.ADVENTURE_DOOR_TITLE = "Слух"
+L.ADVENTURE_DOOR_LINE = "«%s»"
+L.ADVENTURE_DOOR_UNKNOWN = "Об этом месте пока мало что известно."
+L.ADVENTURE_DOOR_DUNGEON = "Неизведанное подземелье"
+L.ADVENTURE_DOOR_RAID = "Неизведанный рейд"
+L.ADVENTURE_DOOR_NTH = "%s %d"
+L.ADVENTURE_DOOR_CHOICE = "%s (%s)"
+L.ADVENTURE_DOOR_VIA = "Портал находится ниже: спуститесь у входа в пещеру."
+L.ADVENTURE_DOOR_VIA_BUILDING = "Портал находится внутри. Войдите через вход."
+L.ADVENTURE_DOOR_WAYPOINT_SET = "Точка маршрута установлена туда, куда ведёт слух."
+L.ADVENTURE_CAVE_LEADS_TO = "Путь к месту, о котором ходят слухи"
+L.ADVENTURE_CAVE_LEFT_CLICK = "ЛКМ — посмотреть карту пути внутрь"
+-- Adventure Mode's quest marks on the world map (UI/QuestMap.lua): a quest not offered yet is a faint "!", a
+-- rumor, under "A rumor" (ADVENTURE_DOOR_TITLE) and in ADVENTURE_DOOR_LINE's quotation marks: there may be work
+-- there, from someone or something (inside a dungeon, a tablet or a crest). It names no quest, dungeon or
+-- place (2026-11-11; translation drafted, to be checked).
+L.ADVENTURE_QUEST_RUMOR = "Возможно, здесь для вас найдётся работа."
+-- Adventure Mode's Gear Finder: an upgrade not seen to drop yet, a rumour's place (zone, level range), the
+-- tooltip's line for one not seen, the click lines, and Show on map for a rumour's door (2026-11-10; translation
+-- drafted, to be checked).
+L.GEAR_ADVENTURE_BETTER = "Кое-что получше"
+L.GEAR_ADVENTURE_PLACE = "%s · %s"
+L.GEAR_ADVENTURE_UNSEEN = "Вы ещё не видели, как это падает."
+L.GEAR_ADVENTURE_CELL_CLICK = "ЛКМ — лучшие улучшения; ПКМ — открыть подземелье."
+L.GEAR_ADVENTURE_PICK_CLICK = "ЛКМ — показать здесь; ПКМ — открыть подземелье."
+L.GEAR_ADVENTURE_ROW_CLICK = "ЛКМ — открыть подземелье."
+L.GEAR_ADVENTURE_MAP_CLICK = "ЛКМ — показать путь на карте мира."
+L.GEAR_ADVENTURE_NO_DOOR = "Где его вход, пока неизвестно."
+L.GEAR_ADVENTURE_SHOW_MAP = "Показать на карте"
+-- The Gear Finder's rumour slot with upgrades to pick: its picture leads to the door, its words to the picks;
+-- and the picks' right-click where the slot has no link (2026-11-10; translation drafted, to be checked).
+L.GEAR_ADVENTURE_MAP_PICK_CLICK = "ЛКМ по значку — показать путь на карте мира; ЛКМ по тексту — улучшения на выбор."
+L.GEAR_ADVENTURE_RUMOUR_PICKS = "ПКМ — улучшения на выбор."
 L.STYLE_STARTING = "Начальные настройки:"
 L.STYLE_LINE_ON = "%s: вкл."
 L.STYLE_LINE_OFF = "%s: выкл."
-L.STYLE_LINE_CHOOSE = "%s: на ваш выбор"
-L.STYLE_GEAR = "Поиск снаряжения и приоритет характеристик"
+L.STYLE_LINE_ADVENTURE_HIDDEN = "Подземелья, боссы и добыча сначала скрыты"
+L.STYLE_LINE_ADVENTURE_FOG = "Туман на картах подземелий, пока живы боссы"
+L.STYLE_LINE_ADVENTURE_ON = "Поиск снаряжения, карты путей, отметки: вкл."
+L.STYLE_GEAR = "Поиск снаряжения и приоритеты"
 L.STYLE_GEAR_TIP = "Вкладка поиска снаряжения, её вкладка в окне персонажа, строки приоритета характеристик в подсказках предметов, зелёные стрелки улучшений и приоритеты путеводителя в Pawn. Все они опираются на одни и те же приоритеты, поэтому идут вместе. Только для этого персонажа."
 L.STYLE_WAY_IN = "Карты путей внутрь и пещеры"
 L.STYLE_WAY_IN_TIP = "Карты пути к подземелью (пещеры, здания, уровни горы) поверх карты мира и входы в пещеры и здания к ним. Собственные карты подземелий остаются. Только для этого персонажа."
@@ -981,9 +1277,9 @@ L.STYLE_CLOSE_NOTE = "Если закрыть, останется: %s."
 L.STYLE_CHOSEN = "Вид путеводителя: %s. Его можно изменить в любой момент в настройках путеводителя (/aegis options)."
 L.STYLE_OPTIONS_AFTER_COMBAT = "Настройки путеводителя откроются после окончания боя."
 L.STYLE_OPTION = "Вид путеводителя"
-L.STYLE_OPTION_TIP = "Классический, Современный или Свой — только для этого персонажа. Если включить или выключить функцию ниже, вид станет «Свой»."
+L.STYLE_OPTION_TIP = "Классический, Современный, Режим приключения или Свой — только для этого персонажа. Если включить или выключить функцию ниже, вид станет «Свой» (режим приключения останется включён)."
 -- The Reset button under the style's dropdown, and its question (2026-11-03; drafted, to be checked).
-L.STYLE_RESET = "Сбросить путеводитель по подземельям"
+L.STYLE_RESET = "Сбросить путеводитель"
 L.STYLE_RESET_BUTTON = "Сбросить"
 L.STYLE_CHOOSE_BUTTON = "Выбрать"
 L.STYLE_RESET_TIP = "Возвращает настройки путеводителя к состоянию после установки для всех ваших персонажей и снова предлагает этому персонажу выбор вида. Записи, приоритеты характеристик и вид других персонажей сохраняются."
@@ -1018,23 +1314,44 @@ L.RUN_NOT_INSIDE = "Войдите в подземелье, чтобы нача�
 L.RUN_HIDDEN = "Блок забега скрыт до конца этого забега. Введите /ij run, чтобы показать его снова."
 L.RUN_NONE = "Забегов по подземельям пока нет."
 L.RUN_IS_OFF = "Учет забегов выключен. Включите его в настройках путеводителя (/aegis options)."
-L.RUN_FREE_ON = "Перетаскивайте блок забега за заголовок. /ij run lock вернет его к списку заданий."
 L.RUN_FREE_OFF = "Блок забега снова у списка заданий."
-L.RUN_USAGE = "/ij run показывает или скрывает блок забега (вне подземелья — ваш последний забег). /ij run new начинает новый забег. /ij run unlock позволяет перетаскивать его; /ij run lock и /ij run reset возвращают его к списку заданий. /ij run debug показывает, что было подсчитано."
+-- The run block's header lock and its chat lines, /ij run lock and unlock now the lock's, and /ij run's usage reworded for them (2026-11-17; drafted, to be checked).
+L.RUN_USAGE = "/ij run показывает или скрывает блок забега (вне подземелья — ваш последний забег). /ij run new начинает новый забег. /ij run lock и /ij run unlock закрепляют его на месте или снова позволяют перетаскивать, как замок на его заголовке; /ij run reset возвращает его к списку заданий. /ij run debug показывает, что было подсчитано."
+L.RUN_LOCKED = "Закреплено"
+L.RUN_LOCKED_TIP = "Щелкните, чтобы открепить блок, затем перетащите его за заголовок."
+L.RUN_UNLOCKED = "Не закреплено"
+L.RUN_UNLOCKED_TIP = "Перетащите блок за заголовок, чтобы переместить его. Щелкните, чтобы закрепить его на месте."
+L.RUN_LOCK_ON = "Блок забега закреплен на месте."
+L.RUN_LOCK_OFF = "Блок забега откреплен: перетащите его за заголовок, чтобы переместить."
+L.RUN_LOCK_NOT_FREE = "Он перемещается, только когда размещается свободно («%s» в настройках)."
+-- The clock's buttons on the run block, between the time and the count (2026-11-14; drafted, to be checked).
+L.RUN_CLOCK_START = "Запустить таймер сейчас"
+L.RUN_CLOCK_WAITING = "Иначе он запустится сам при первом бое."
+L.RUN_CLOCK_PAUSE = "Приостановить таймер"
+L.RUN_CLOCK_RESUME = "Продолжить таймер"
+L.RUN_CLOCK_DONE = "Забег завершён, таймер остановлен."
+L.RUN_RESTART = "Новый забег"
+L.RUN_RESTART_CONFIRM = "Начать новый забег? Убитые боссы будут сброшены, а таймер начнётся заново."
+-- The run block's one line inside a Scarlet Monastery wing before the wing is known (2026-11-17; drafted, to be checked).
+L.RUN_WHICH_WING = "Какое крыло?"
+-- /ij run new or New run before the wing is known: the new run starts once it is (2026-11-17; drafted, to be checked).
+L.RUN_NEW_WING = "Новый забег начнётся, как только станет известно крыло."
 L.OPTIONS_RUN = "Учет забегов по подземельям"
 L.OPTIONS_RUN_TIP = "В подземелье блок у списка заданий показывает, сколько длится забег, его боссов и вашу добычу. Если выключено, ничего не считается."
 L.OPTIONS_RUN_NUMBERS = "Показывать опыт и деньги"
 L.OPTIONS_RUN_NUMBERS_TIP = "Опыт и деньги (добытые монеты плюс цена ваших предметов у торговца), каждое — и в час, а также сколько предметов вы получили."
 L.OPTIONS_RUN_FREE = "Свободное размещение"
-L.OPTIONS_RUN_FREE_TIP = "Перетащите блок за заголовок в любое место. Если выключено, он стоит у списка заданий и двигается вместе с ним."
+-- "Place it freely" on by default since 0.39.23: its tip says so, and what unticking it does (2026-11-17; drafted, to be checked).
+L.OPTIONS_RUN_FREE_TIP = "Перетащите блок за заголовок в любое место. Включено по умолчанию: пока вы его не передвинете, он ждет у списка заданий. Если выключено, он стоит у списка заданий и двигается вместе с ним. «Внутри списка заданий» важнее этой настройки."
 -- The run block's dark mode: its gold art darkened, else the tracker's tint (UI/RunTracker.lua Paint), 2026-11-12; drafted, to be checked.
 L.OPTIONS_RUN_DARK_MODE = "Темный режим"
 L.OPTIONS_RUN_DARK_MODE_TIP = "Затемняет золото заголовка и рамки блока забега. Если выключено, блок выглядит как заголовки вашего списка заданий: он темный, когда ваш интерфейс затемняет их."
 L.OPTIONS_RUN_SUMMARY = "Итог в чате"
 L.OPTIONS_RUN_SUMMARY_TIP = "Одна строка в чате через минуту после остановки часов забега (раньше, если вы уйдете). Незавершенный забег, который вы покинули, получает свою строку, когда он окончен: при сбросе подземелья или через полчаса снаружи."
--- The run block inside the quest tracker: an experiment, off by default (UI/RunTrackerInside.lua), 2026-11-12; drafted, to be checked.
-L.OPTIONS_RUN_INSIDE = "Внутри списка заданий (эксперимент)"
-L.OPTIONS_RUN_INSIDE_TIP = "Блок встает в список заданий, сразу под «" .. (TRACKER_ALL_OBJECTIVES or "Все цели") .. "», а разделы списка (" .. (TRACKER_HEADER_QUESTS or "Задания") .. " и остальные) сдвигаются под него. Список, который вы передвинули в режиме редактирования, не выше заданной там высоты: если ее мало для блока, блок стоит рядом со списком, как при выключенной настройке, а кнопка ниже может сделать список выше. Это проверка: если игра сообщит о заблокированном действии, настройка выключится сама. Если она уже использовалась, полностью она выключится только после /reload."
+-- The run block inside the quest tracker: off by default (the owner's call of 2026-11-13; on in 0.39.22's tests), its tip warning of blocked actions in combat until a /reload once the block has been inside the tracker (the owner's words, 2026-11-13), its name marked as a test (UI/RunTrackerInside.lua), 2026-11-12; drafted, to be checked.
+L.OPTIONS_RUN_INSIDE = "Внутри списка заданий (тест)"
+-- Its tip: beside the tracker with this off only while "Place it freely" is unticked too, since that is on by default (2026-11-17; drafted, to be checked).
+L.OPTIONS_RUN_INSIDE_TIP = "Блок встает в список заданий, сразу под «" .. (TRACKER_ALL_OBJECTIVES or "Все цели") .. "», а разделы списка (" .. (TRACKER_HEADER_QUESTS or "Задания") .. " и остальные) сдвигаются под него. Выключено по умолчанию. Список, который вы передвинули в режиме редактирования, не выше заданной там высоты: если ее мало для блока, путеводитель один раз увеличит эту высоту в вашем макете режима редактирования и сообщит об этом в чате (видно после /reload; кнопка ниже делает это снова). До тех пор блок стоит рядом со списком, как при выключенной настройке и снятом флажке «Свободное размещение». Если блок уже побывал в списке заданий, до /reload она может вызывать заблокированные действия в бою. Это тест: если игра сообщит о заблокированном действии, настройка выключится сама. Если она уже использовалась, полностью она выключится только после /reload."
 L.RUN_INSIDE_BLOCKED = "Игра заблокировала действие путеводителя (%s), поэтому «Внутри списка заданий» теперь выключено, и блок забега вернется к списку заданий. Пожалуйста, сообщите об этой строке. Введите /reload, чтобы полностью убрать его из списка."
 L.RUN_INSIDE_RELOAD = "«Внутри списка заданий» теперь выключено, и блок забега вернется к списку заданий. Введите /reload, чтобы полностью убрать его из списка."
 -- The tracker too short for the block inside: the Height it needs, and the options' Make taller button (UI/RunTrackerInside.lua), 2026-11-12; drafted, to be checked.
@@ -1051,6 +1368,11 @@ L.RUN_TALLER_ENOUGH = "Список заданий уже достаточно �
 L.RUN_TALLER_FAILED = "Не удалось изменить ваш макет режима редактирования отсюда. Задайте сами: %s, выберите «%s», %s %d или больше."
 L.RUN_TALLER_DONE = "%s – %s: теперь %d в вашем макете «%s» режима редактирования. Введите /reload сейчас, чтобы увидеть."
 L.RUN_TALLER_MOST = "Больше режим редактирования не позволяет, так что блок может все еще не поместиться."
+-- The tracker's Height raised once by the journal itself when too short, 0.39.22 (UI/RunTrackerInside.lua AutoTaller), 2026-11-12; drafted, to be checked.
+L.RUN_INSIDE_AUTO = "Список заданий был слишком коротким для блока забега, поэтому путеводитель изменил параметр «%s» с %d на %d в вашем макете «%s» режима редактирования. Введите /reload, чтобы увидеть. Вернуть прежнее можно здесь: %s."
+L.RUN_INSIDE_SAVED_TIP = "В вашем макете режима редактирования параметр «%s» списка заданий теперь %d. Введите /reload, чтобы увидеть."
+-- Edit Mode opened before the /reload after the journal saved a Height: its old copy (UI/RunTrackerInside.lua EditModeEntered), 2026-11-12; drafted, to be checked.
+L.RUN_INSIDE_EDIT_MODE_OLD = "До /reload в окне «%s» у списка заданий остаётся старый параметр «%s». Если сейчас что-то там сохранить, вернётся старое значение."
 
 -- Matched against the client's own text: the client's language's only, previewed or not.
 if client then client.EQUIP_PATTERNS, client.AREA_NAMES = L.EQUIP_PATTERNS, L.AREA_NAMES end

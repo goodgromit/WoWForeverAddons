@@ -42,7 +42,7 @@ end
 
 ns.AmendInstance("Gnomeregan", {
 	--[[
-		Before you go (the overview): the Workshop Key, which drops inside, and for the Horde the
+		Before you go (the Quests tab): the Workshop Key, which drops inside, and for the Horde the
 		Goblin Transponder, their way in from Booty Bay; and Grubbis, the boss Blastmaster Emi
 		Shortfuse's event calls.
 	]]
@@ -106,11 +106,13 @@ ns.AmendInstance("Gnomeregan", {
 		[2962] = { wholeChain = true },
 		[2948] = { wholeChain = true },
 		[2950] = { wholeChain = true },
-		-- 2,450 XP, the original game's number (the site's list, in plain; its quest page calls the quest
-		-- unchanged; the audit's step 19). 4606's is left out: the site's list gives it in gold, as Forever's,
-		-- while its quest page calls it unchanged.
+		-- 2,450 XP on Forever: the owner's recording of 2026-11-11 read 2,523 at 4606's turn-in, the sleeping bag's
+		-- +3% XP over the quest window's 2,450 (2,523 / 1.03; the owner, 2026-11-12). 2952 and 4605 are the same
+		-- step at the other two machines, so the same 2,450 (a best guess: only 4606 was read). Dev/build_original_xp.py
+		-- has the three in CONFIRMED, so none is marked as the original game's. 4606's XP was left out until then
+		-- (the audit's step 19: its sources disagreed).
 		[4605] = { rewards = Box(2450) },
-		[4606] = { rewards = Box() },
+		[4606] = { rewards = Box(2450) },
 	},
 })
 

@@ -4,7 +4,8 @@ local L = ns.L
 --[[
 	Area names in the client's language. The client names the area the player stands in
 	(GetSubZoneText, GetMinimapZoneText) in its own language, while the journal's data names
-	areas in English: a dungeon's "You are here" areas (mapAreas), a wing's (wingAreas), an area
+	areas in English: a dungeon's "You are here" areas (mapAreas), a wing's (wingAreas), a door's side
+	of its dungeon (doors' areas: Stratholme's), an area
 	below a zone (a sub-map's areas, sharedAreas and zones), a boss's area.
 
 	The client also names any area by its id (C_Map.GetAreaInfo), in its own language. ns.AREA_IDS
@@ -45,6 +46,7 @@ function ns.AreaNamesUsed()
 		for _, instance in ipairs(ns.GetInstances(kind)) do
 			Keys(instance.mapAreas)
 			Keys(instance.wingAreas)
+			for _, door in ipairs(instance.doors or {}) do Keys(door.areas) end
 			for _, name in ipairs(instance.areas or {}) do Add(name) end
 			for _, boss in ipairs(instance.bosses or {}) do Add(boss.enArea or boss.area) end
 			for _, floor in ipairs(instance.map and instance.map.floors or {}) do Keys(floor.areas) end

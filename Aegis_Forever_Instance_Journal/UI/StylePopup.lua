@@ -2,10 +2,14 @@ local addonName, ns = ...
 local L = ns.L
 
 --[[
-	The question of the journal's style (Core/Style.lua): Classic, Modern or Custom, three boxes side
-	by side in the look of Forever's own Classic or Enhanced choice. Each box has its name in gold,
-	a short description, and "Starting Settings:" with what it turns on and off. A click on a box
-	chooses it; Custom then opens the journal's options, where each feature has its own box.
+	The question of the journal's style (Core/Style.lua): Classic, Modern or Adventure Mode, three boxes
+	side by side in the look of Forever's own Classic or Enhanced choice, and Custom as one long, low bar
+	beneath them, as wide as the row, in the same look. Each box has its name in gold, a short
+	description, and "Starting Settings:" with what it turns on and off (Adventure Mode's: what is
+	different about it). The bar has its name at the left, its description in the middle and its hint at
+	the right, on one row. A click on a box or the bar chooses that style: Adventure Mode turns Adventure
+	Mode on, as the options' choice does; Custom opens the journal's options, where each feature has its
+	own box.
 
 	Asked once of each character, at its first login with the journal: at the first
 	PLAYER_ENTERING_WORLD after logging in, and only when the player can see it and answer: once combat
@@ -34,11 +38,19 @@ ns.StylePopup = StylePopup
 local FRAME_NAME = "AegisJournalStylePopup"
 local BOX_WIDTH, BOX_HEIGHT, BOX_GAP = 290, 340, 44
 local HEADER, FOOTER = 78, 44
+-- Custom's bar, under the row and as wide as it: low, with a gap above it a little under half the
+-- boxes' own, and tall enough for its description on two lines in every language.
+local BAR_HEIGHT, BAR_GAP = 72, 18
+-- In the bar, its name at the left and its hint at the right each take BAR_SIDE units, BAR_SPACE from
+-- its description, which is centred between them: room for the widest name (German's, about 128) and
+-- hint (Russian's, about 120), and the rest for the description, so it fits on one line in English
+-- and splits into two fuller lines in the longer languages, not one line and a lone word.
+local BAR_SIDE, BAR_SPACE = 135, 16
 -- Where "Starting Settings:" sits in every box, so the three lists line up whatever the descriptions.
 local LIST_TOP = -164
 local TEXT_INSET = 24
 -- The lines under it: indented for their bullets, and running a little nearer the right edge than the
--- description, so the longest (Custom's first, in Chinese) stays on one line.
+-- description, so the longest in English and in Chinese (Adventure Mode's) stay on one line.
 local LINE_INDENT, LINE_RIGHT = 16, 20
 -- The name's size: its font object's own (12 in most languages, 15 in Chinese) and 2 more, a little
 -- under the game's large font, as on Forever's own choice. The rest of the text keeps its font
@@ -102,22 +114,20 @@ StylePopup.BORDER = { file = EDGE, edgeSize = EDGE_SIZE, inset = EDGE_INSET, cut
 	rim = BORDER_RIM, width = { left = BORDER_LEFT, right = BORDER_RIGHT, top = BORDER_TOP, bottom = BORDER_BOTTOM },
 	color = BORDER_COLOR, lit = BORDER_LIT }
 
--- What a box lists under "Starting Settings:": each feature on or off in the style, or Custom's
--- "your choice". From the presets themselves (Core/Style.lua), so the lists cannot drift from them.
+-- What a box lists under "Starting Settings:": each feature on or off in the style, from the presets
+-- themselves (Core/Style.lua), so the lists cannot drift from them. Adventure Mode's say what is
+-- different about it instead: the journal hidden till found, the dungeon maps' fog, and its preset's
+-- features on. Custom, the bar, has no list.
 function StylePopup.Lines(choice)
+	if choice == "adventure" then
+		return { L.STYLE_LINE_ADVENTURE_HIDDEN, L.STYLE_LINE_ADVENTURE_FOG, L.STYLE_LINE_ADVENTURE_ON }
+	end
 	local lines = {}
 	local preset = ns.Style.PRESETS[choice]
+	if not preset then return lines end
 	for _, feature in ipairs(ns.Style.FEATURES) do
 		local name = L[feature.name]
-		local text
-		if not preset then
-			text = string.format(L.STYLE_LINE_CHOOSE, name)
-		elseif preset[feature.key] ~= false then
-			text = string.format(L.STYLE_LINE_ON, name)
-		else
-			text = string.format(L.STYLE_LINE_OFF, name)
-		end
-		lines[#lines + 1] = text
+		lines[#lines + 1] = string.format(preset[feature.key] ~= false and L.STYLE_LINE_ON or L.STYLE_LINE_OFF, name)
 	end
 	return lines
 end
@@ -145,11 +155,12 @@ local function Text(parent, template, color, grow, outline)
 	return text
 end
 
-local function CreateBox(parent, choice, index)
+-- A box or the bar, without its words: the fill, its shade, the border, the hover's highlight, and a
+-- click choosing its style. Its words are the caller's, Hint among them.
+local function Panel(parent, choice, width, height)
 	local box = ns.CreateFrameWithTemplate("Button", nil, parent, "BackdropTemplate")
 	box.choice = choice
-	box:SetSize(BOX_WIDTH, BOX_HEIGHT)
-	box:SetPoint("TOPLEFT", parent, "TOPLEFT", (index - 1) * (BOX_WIDTH + BOX_GAP), -HEADER)
+	box:SetSize(width, height)
 	-- A level above the popup's own frame.
 	box:SetFrameLevel(parent:GetFrameLevel() + 1)
 	if box.SetBackdrop then
@@ -172,9 +183,21 @@ local function CreateBox(parent, choice, index)
 	box.Highlight:SetPoint("TOPLEFT", BORDER_LEFT, -BORDER_TOP)
 	box.Highlight:SetPoint("BOTTOMRIGHT", -BORDER_RIGHT, BORDER_BOTTOM)
 
+	box:SetScript("OnEnter", function(self) Paint(self, true) end)
+	box:SetScript("OnLeave", function(self) Paint(self, self.choice == ns.Style:Choice()) end)
+	box:SetScript("OnClick", function(self) StylePopup:Choose(self.choice) end)
+	return box
+end
+
+-- One of the row's boxes: its name, description, "Starting Settings:" and lines, and its hint at the foot.
+local function CreateBox(parent, choice, index)
+	local box = Panel(parent, choice, BOX_WIDTH, BOX_HEIGHT)
+	box:SetPoint("TOPLEFT", parent, "TOPLEFT", (index - 1) * (BOX_WIDTH + BOX_GAP), -HEADER)
+
 	box.Title = Text(box, "GameFontNormal", GOLD, TITLE_GROW)
 	box.Title:SetPoint("TOP", 0, -24)
-	box.Title:SetText(ns.Style.Name(choice))
+	-- One word on each box: Adventure Mode's box says just "Adventure", its full name being for the options and chat.
+	box.Title:SetText(choice == "adventure" and L.STYLE_ADVENTURE_BOX or ns.Style.Name(choice))
 
 	box.Description = Text(box, "GameFontHighlight", CREAM)
 	box.Description:SetPoint("TOP", box.Title, "BOTTOM", 0, -28)
@@ -205,11 +228,32 @@ local function CreateBox(parent, choice, index)
 
 	box.Hint = Text(box, "GameFontNormalSmall", HINT)
 	box.Hint:SetPoint("BOTTOM", 0, 20)
-
-	box:SetScript("OnEnter", function(self) Paint(self, true) end)
-	box:SetScript("OnLeave", function(self) Paint(self, self.choice == ns.Style:Choice()) end)
-	box:SetScript("OnClick", function(self) StylePopup:Choose(self.choice) end)
 	return box
+end
+
+-- Custom's bar under the row, as wide as it: its name at the left, its description in the middle and its
+-- hint at the right, each centred top to bottom. No list: Custom's is the options themselves.
+local function CreateBar(parent, choice, width)
+	local bar = Panel(parent, choice, width, BAR_HEIGHT)
+	bar:SetPoint("TOPLEFT", parent, "TOPLEFT", 0, -(HEADER + BOX_HEIGHT + BAR_GAP))
+
+	bar.Title = Text(bar, "GameFontNormal", GOLD, TITLE_GROW)
+	bar.Title:SetPoint("LEFT", TEXT_INSET, 0)
+	bar.Title:SetWidth(BAR_SIDE)
+	bar.Title:SetJustifyH("LEFT")
+	bar.Title:SetText(ns.Style.Name(choice))
+
+	bar.Description = Text(bar, "GameFontHighlight", CREAM)
+	bar.Description:SetPoint("CENTER", 0, 0)
+	bar.Description:SetWidth(width - 2 * (TEXT_INSET + BAR_SIDE + BAR_SPACE))
+	bar.Description:SetJustifyH("CENTER")
+	bar.Description:SetText(ns.Style.Description(choice))
+
+	bar.Hint = Text(bar, "GameFontNormalSmall", HINT)
+	bar.Hint:SetPoint("RIGHT", -TEXT_INSET, 0)
+	bar.Hint:SetWidth(BAR_SIDE)
+	bar.Hint:SetJustifyH("RIGHT")
+	return bar
 end
 
 local events = CreateFrame("Frame")
@@ -316,12 +360,12 @@ end
 local function Create()
 	local width = #ns.Style.CHOICES * BOX_WIDTH + (#ns.Style.CHOICES - 1) * BOX_GAP
 	local f = CreateFrame("Frame", FRAME_NAME, UIParent)
-	f:SetSize(width, HEADER + BOX_HEIGHT + FOOTER)
+	f:SetSize(width, HEADER + BOX_HEIGHT + BAR_GAP + BAR_HEIGHT + FOOTER)
 	f:SetPoint("CENTER", 0, 20)
 	f:SetFrameStrata("DIALOG")
 	f:SetToplevel(true)
 	-- Nothing behind the boxes, so the game shows around and between them, and a click there reaches it.
-	-- The boxes and the close X take their own clicks.
+	-- The boxes, the bar and the close X take their own clicks.
 	f:EnableMouse(false)
 	f:Hide()
 
@@ -334,6 +378,7 @@ local function Create()
 
 	f.Boxes = {}
 	for index, choice in ipairs(ns.Style.CHOICES) do f.Boxes[index] = CreateBox(f, choice, index) end
+	f.Bar = CreateBar(f, ns.Style.BAR_CHOICE, width)
 
 	-- In the dim cream of the boxes' lines, not the hint's darker shade, which was chosen for a black veil.
 	f.Note = Text(f, "GameFontDisable", CREAM_DIM, nil, WORLD_OUTLINE)
@@ -367,15 +412,17 @@ function StylePopup:Show()
 	due = nil
 	local current = ns.Style:Choice()
 	frame.Note:SetText(string.format(L.STYLE_CLOSE_NOTE, ns.Style.Name(current)))
-	for _, box in ipairs(frame.Boxes) do
+	local function Mark(box)
 		box.Hint:SetText(box.choice == current and L.STYLE_NOW or L.STYLE_CLICK)
 		Paint(box, box.choice == current)
 	end
+	for _, box in ipairs(frame.Boxes) do Mark(box) end
+	Mark(frame.Bar)
 	frame:Show()
 	ns.PlaySoundKit("IG_MAINMENU_OPEN")
 end
 
--- Closed by the player (its X, or a box chosen): answered.
+-- Closed by the player (its X, or a box or the bar chosen): answered.
 function StylePopup:Hide()
 	if frame and frame:IsShown() then
 		byPlayer = true
@@ -400,7 +447,7 @@ function StylePopup:Frame()
 	return frame
 end
 
--- A box clicked: that style, and for Custom the journal's options, to tick each feature there. In
+-- A box or the bar clicked: that style, and for Custom the journal's options, to tick each feature there. In
 -- combat the game opens no settings window for an addon, so they open once combat ends.
 function StylePopup:Choose(choice)
 	if not ns.Style:Choose(choice) then return end

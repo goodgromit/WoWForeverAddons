@@ -8,7 +8,12 @@ local L = ns.L
 	(C_TaxiMap.GetTaxiNodesForMap) but its maps do not show them (C_TaxiMap.ShouldMapShowTaxiNodes
 	says no), so the journal draws them itself, with the map legend's Flightpoint icon. Only the
 	player's faction's and neutral ones show, as on retail. The client's list also holds a few
-	points Forever has no flight master for (NOT_ON_FOREVER); those are left out.
+	points Forever has no flight master for (ns.NOT_ON_FOREVER_TAXI, in
+	Core/Compat.lua); those are left out. In Adventure Mode (Core/Discovery.lua) a flight point shows
+	only once the character knows its path ("flight": a flight master's map opened, or a new path
+	learned), and one learned with the map open shows at once (Discovery:OnChange). A character from
+	before knows its paths again as it opens a flight master's map on each continent (that map lists
+	its own continent's paths only): the client's list marks none as unknown on Forever.
 
 	Transports (boats, zeppelins, the tram, portals), on zone and continent maps: the client has
 	no list of them, and Forever moved several (Stormwind's harbor), so the player saves each
@@ -60,18 +65,6 @@ local function NodeFaction(node)
 	return FLIGHT_FACTION.Neutral
 end
 
--- Points in the client's list (by node id) that Forever has no flight master for. Found by
--- setting Forever's own flight-node table (101 rows, client 1.60.1) against the flight masters in
--- Forever's quest data, 2026-11-10: every other point the maps list stands within 12 yards of one.
-local NOT_ON_FOREVER = {
-	-- Eastern Plaguelands' four towers: no flight master within 570 yards, and no one can learn them (the
-	-- client gives them no character bit). Light's Hope Chapel is the zone's only flight point.
-	[84] = true, [85] = true, [86] = true, [87] = true,
-	-- Old Riverglades placeholders ("zzOLD..."), drawn on top of Southshore's, Thorium Point's and
-	-- Ratchet's own points; Riverglades' real ones are Rog'mar's and Farholde Keep's.
-	[3206] = true, [3207] = true, [3208] = true,
-}
-
 -- The flight points on a map, worked out once: the client's list holds every flight master of
 -- the continent, placed on the map asked for, so only those on it are kept.
 local nodesByMap = {}
@@ -84,8 +77,8 @@ local function Nodes(mapID)
 	for _, node in ipairs(ok and type(list) == "table" and list or {}) do
 		local x, y
 		if node.position then x, y = node.position:GetXY() end
-		if x and x >= 0 and x <= 1 and y >= 0 and y <= 1 and node.name and not NOT_ON_FOREVER[node.nodeID] then
-			nodes[#nodes + 1] = { name = node.name, x = x, y = y, faction = NodeFaction(node) }
+		if x and x >= 0 and x <= 1 and y >= 0 and y <= 1 and node.name and ns.ForeverTaxiNode(node.nodeID) then
+			nodes[#nodes + 1] = { name = node.name, x = x, y = y, faction = NodeFaction(node), nodeID = ns.Readable(node.nodeID) }
 		end
 	end
 	nodesByMap[mapID] = nodes
@@ -535,7 +528,10 @@ function ProviderMethods:RefreshAllData()
 	if info.mapType == MAP_TYPE_ZONE and not ClientShows(mapID) and ns.MapLegend.Shows("flight") then
 		local playerFaction = UnitFactionGroup("player")
 		for _, node in ipairs(Nodes(mapID)) do
-			if ServesPlayer(node, playerFaction) then ns.CanvasPins:Acquire(map, FLIGHT_PIN_TEMPLATE, node) end
+			-- (in Adventure Mode, a path the character knows: Knows says yes to every one in the other styles)
+			if ServesPlayer(node, playerFaction) and ns.Discovery:Knows("flight", node.nodeID) then
+				ns.CanvasPins:Acquire(map, FLIGHT_PIN_TEMPLATE, node)
+			end
 		end
 	end
 	for _, spot in ipairs(ns.MapLegend.Shows("transport") and ShownTransports() or {}) do
@@ -548,6 +544,16 @@ end
 function TravelMap:Refresh()
 	if provider and WorldMapFrame:IsShown() then provider:RefreshAllData() end
 end
+
+-- Adventure Mode: a flight path learned with the map open shows at once. Told after each burst of finds
+-- (Core/Discovery.lua); drawn again only when a path was learned in it, not for a boss or its loot.
+local flightsDrawn
+ns.Discovery:OnChange(function()
+	local count = ns.Discovery:Finds("flight")
+	if count == flightsDrawn then return end
+	flightsDrawn = count
+	TravelMap:Refresh()
+end)
 
 function TravelMap:SetUp()
 	if provider then return true end

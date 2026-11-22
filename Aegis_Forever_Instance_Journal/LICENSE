@@ -9,7 +9,9 @@ Not covered by this notice, each under its own terms (see CREDITS.md):
 - World of Warcraft and its art, names and game data, which are Blizzard Entertainment's;
 - Santiago Reyes's maps (Atlas de Azeroth: Forever), used on his terms;
 - Lionel Schramm's paintings (Media/Raids/OnyxiasLair.tga and Media/DungeonPlaceholder.tga),
-  used with his permission.
+  used with his permission;
+- the dungeon and boss stories from Spoken (Data/Generated/SpokenLore.lua), used with its author's
+  permission and, as adapted from warcraft.wiki.gg, shared under CC BY-SA 4.0: see LICENSE-LORE.md.
 
 The code of versions released before 0.39.0 was published under the MIT License, and copies of
 those versions keep it. The maps in them signed "Redrawn by Torchlite" were all rights reserved

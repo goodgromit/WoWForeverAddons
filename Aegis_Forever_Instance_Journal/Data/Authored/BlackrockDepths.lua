@@ -41,7 +41,7 @@ local _, ns = ...
 
 ns.AmendInstance("BlackrockDepths", {
 	--[[
-		Before you go (the overview): the Shadowforge Key and the Prison Cell Key, the Molten Core
+		Before you go (the Quests tab): the Shadowforge Key and the Prison Cell Key, the Molten Core
 		attunement, and Theldren, Watchman Doomgrip and Hurley Blackbreath, the bosses the players call
 		themselves (Hurley's note for each side, naming its own quest).
 	]]
@@ -81,6 +81,8 @@ ns.AmendInstance("BlackrockDepths", {
 			title = "Theldren, a hidden boss",
 			-- He has no page of his own: no model or loot is known beyond the amulet's piece.
 			boss = "Theldren",
+			-- The quest that calls him up: Adventure Mode names him once it is offered (Core/Discovery.lua).
+			summons = { 9015 },
 			text = "Falrin Treeshaper in Dire Maul gives you the {item:21986:Banner of Provocation} with The "
 				.. "Challenge. Plant it in the middle of the Ring of Law as High Justice Grimstone sentences you, "
 				.. "then kill Theldren and his gladiators. Theldren drops the {item:22047:Top Piece of Lord "
@@ -102,6 +104,8 @@ ns.AmendInstance("BlackrockDepths", {
 			title = "Hurley Blackbreath, a hidden boss",
 			faction = "Alliance",
 			boss = "Hurley Blackbreath",
+			-- The quest that leads to him: Adventure Mode names him once it is offered (Core/Discovery.lua).
+			summons = { 4126 },
 			text = "Ragnar Thunderbrew in Kharanos gives Hurley Blackbreath. Hurley and his Blackbreath Cronies drop "
 				.. "the {item:11312:Lost Thunderbrew Recipe}. In the original game, they came out when the kegs of "
 				.. "Thunderbrew Lager by the Grim Guzzler were broken. This is not yet checked on Forever.",
@@ -110,6 +114,7 @@ ns.AmendInstance("BlackrockDepths", {
 			title = "Hurley Blackbreath, a hidden boss",
 			faction = "Horde",
 			boss = "Hurley Blackbreath",
+			summons = { 4134 },
 			text = "Shadowmage Vivian Lagrave in Kargath gives Lost Thunderbrew Recipe. Hurley Blackbreath and his "
 				.. "Blackbreath Cronies drop the {item:11312:Lost Thunderbrew Recipe}. In the original game, they came "
 				.. "out when the kegs of Thunderbrew Lager by the Grim Guzzler were broken. This is not yet checked on "
@@ -191,3 +196,16 @@ for _, questID in ipairs({ 3906, 4262 }) do
 	local step = ns.GetQuestStep(questID)
 	if step then step.note = "Overmaster Pyron is in the quarry in Blackrock Mountain, outside the dungeon." end
 end
+
+--[[
+	The fog of war (UI/DungeonFog.lua's Counts; the owner's answers of 2026-11-13): Watchman Doomgrip is called up by the
+	twelve Relic Coffers, so he holds back no fog at all, as a summoned boss never does (the owner's rule of 2026-11-14:
+	the Domicile is Warder Stilgiss's, his kill changes nothing). The Guzzler's other name, Plugger Spazzring, the bar's
+	boss in the original game: no creature here is called Guzzler, so his fight's or his corpse's name can count him.
+	Which of the bar's creatures he stands for is a best guess (the Blackrock Depths fog's question 8), to check in
+	game. Princess Moira and Verek hold nothing back by the fog's own data (Data/Fog/BlackrockDepths.lua's counts).
+]]
+ns.AmendInstance("BlackrockDepths", { bosses = {
+	["Watchman Doomgrip"] = { summoned = true },
+	["Guzzler"] = { aliases = { "Plugger Spazzring" } },
+} })

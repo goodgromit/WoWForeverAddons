@@ -25,7 +25,7 @@ L.DOCK_ON = "Das Fenster öffnet sich jetzt oben links neben den Fenstern des Sp
 L.DOCK_OFF = "Das Fenster ist wieder frei: Es öffnet sich dort, wo Ihr es zuletzt hingezogen habt."
 L.DOCK_AFTER_COMBAT = "Das gilt, sobald der Kampf endet."
 -- Its /aegis style sentence (2026-11-03; drafted, to be checked).
-L.SLASH_HELP = "/aegis (oder /ij) öffnet das Kompendium. /aegis record startet oder beendet die Aufzeichnung. /aegis reset setzt das Fenster an seinen Standardplatz zurück. /aegis dock dockt das Fenster oben links neben den Fenstern des Spiels an oder gibt es wieder frei. /aegis perf misst Speicherbedarf und Geschwindigkeit des Kompendiums. /aegis where und /aegis taxi melden, wo Ihr steht und welche Flugpunkte auf Eurer Karte liegen. /aegis travel speichert ein Schiff, einen Zeppelin, eine Bahn oder ein Portal für die Weltkarte. /aegis items sucht die aufgeführten Gegenstände, die der Server nicht kennt. /aegis gear öffnet die Ausrüstungssuche, /aegis weights ihre Wertgewichtung; /aegis gearscan speichert, was sie aus Eurer Ausrüstung ausliest, um ihre Bewertung zu prüfen. /aegis options öffnet die Optionen des Kompendiums. /aegis style zeigt die Stilfrage des Kompendiums erneut. /aegis lang zeigt das Kompendium zur Probe in einer seiner anderen Sprachen. /aegis run zeigt oder verbirgt die Durchlaufanzeige (außerhalb eines Dungeons Euren letzten Durchlauf); /aegis run new beginnt einen neuen Durchlauf."
+L.SLASH_HELP = "/aegis (oder /ij) öffnet das Kompendium. /aegis record startet oder beendet die Aufzeichnung. /aegis reset setzt das Fenster an seinen Standardplatz zurück. /aegis dock dockt das Fenster oben links neben den Fenstern des Spiels an oder gibt es wieder frei. /aegis perf misst Speicherbedarf und Geschwindigkeit des Kompendiums. /aegis where und /aegis taxi melden, wo Ihr steht und welche Flugpunkte auf Eurer Karte liegen. /aegis travel speichert ein Schiff, einen Zeppelin, eine Bahn oder ein Portal für die Weltkarte. /aegis items sucht die aufgeführten Gegenstände, die der Server nicht kennt. /aegis gear öffnet die Ausrüstungssuche, /aegis weights ihre Wertgewichtung; /aegis gearscan speichert, was sie aus Eurer Ausrüstung ausliest, um ihre Bewertung zu prüfen. /aegis options öffnet die Optionen des Kompendiums. /aegis style zeigt die Stilfrage des Kompendiums erneut. /aegis lang zeigt das Kompendium zur Probe in einer seiner anderen Sprachen. /aegis run zeigt oder verbirgt die Durchlaufanzeige (außerhalb eines Dungeons Euren letzten Durchlauf); /aegis run new beginnt einen neuen Durchlauf. /aegis test öffnet den Testmodus."
 -- /aegis lang (Core/Init.lua)
 L.LANG_USAGE = "/aegis lang de, fr, ru, cn, tw, es, mx, pt oder ko zeigt das Kompendium ab Eurem nächsten /reload auf Deutsch, Französisch, Russisch, Chinesisch (vereinfacht oder traditionell), Spanisch (Spanien oder Lateinamerika), brasilianischem Portugiesisch oder Koreanisch, um eine Übersetzung zu prüfen; /aegis lang off kehrt zur Sprache Eures Clients zurück. Aktuell: %s."
 L.LANG_SET = "Ab Eurem nächsten /reload erscheint das Kompendium in der Sprache %s: nur seine eigenen Texte, denn die Namen aus dem Spiel bleiben in der Sprache Eures Clients. Gebt jetzt /reload ein; /aegis lang off macht es rückgängig."
@@ -34,11 +34,66 @@ L.LANG_FONTS = "Chinesisch braucht die Schriftarten eines chinesischen Clients: 
 L.LANG_FONTS_KO = "Koreanisch braucht die Schriftarten eines koreanischen Clients: Auf Eurem werden manche Zeichen womöglich nicht angezeigt."
 L.LANG_ON = "Vorschau des Kompendiums in der Sprache %s. /aegis lang off beendet sie."
 L.LANG_UNAVAILABLE = "Dieser Client hat das Kompendium vor seinen gespeicherten Einstellungen geladen, daher konnte die Sprachvorschau nicht starten."
+-- A map addon the owner asked us to warn about, while it is loaded: its name twice (2026-11-12; drafted, to be checked).
+L.MAP_ADDON_HIDES = "%s ist aktiviert. Es überdeckt die Weltkarte, daher können einige Karten und Funktionen des Kompendiums verborgen sein. Wir empfehlen, %s zu deaktivieren."
 L.AREAS_START = "Die IDs der %d Gebietsnamen des Kompendiums werden im Client gesucht..."
 L.AREAS_DONE = "IDs für %d der %d Gebietsnamen gefunden. Gebt /reload ein, um sie zu speichern."
 L.AREAS_MISSING = "Nicht gefunden: %s."
 L.AREAS_SCANNING = "Die Gebietsnamen werden noch gesucht."
 L.AREAS_ENGLISH = "Führt /aegis areas auf einem englischen Client aus: Die gesuchten Namen sind englisch."
+-- Test mode (UI/TestPanel.lua, UI/TestRun.lua, UI/FogTest.lua): the owner's fog test of 2026-11-13, made test
+-- mode on 2026-11-18, for this session only (2026-11-18; drafted, to be checked).
+L.FOGTEST_FOG_OFF = "Der Nebel ist bei dieser Figur aus, also ändern sich nur die Symbole. Um ihn zu sehen, schaltet den Kriegsnebel in der Legende der Karte ein oder spielt im Abenteuermodus."
+L.FOGTEST_PIN_CLICK = "Testmodus: Klickt, um ihn als besiegt zu markieren oder wieder aufzustellen."
+L.TEST_TITLE = "Testmodus"
+L.TEST_PICK = "Dungeon wählen"
+L.TEST_NO_MAP = "Dafür gibt es noch keine Karte."
+L.TEST_INSIDE = "Als wäre ich drin"
+L.TEST_INSIDE_TIP = "Die Durchlaufanzeige zeigt diesen Dungeon wie beim Betreten: keine Siege, die Uhr wartet auf den ersten Kampf (Abspielen startet sie). Bosse, die Ihr als besiegt markiert, zählen dort wie echte Siege. Nichts davon wird gespeichert."
+L.TEST_INSIDE_RAID = "Die Durchlaufanzeige ist für Dungeons da, nicht für Schlachtzüge."
+L.TEST_INSIDE_REAL = "Ihr seid in %s: Die Durchlaufanzeige zeigt Euren echten Durchlauf."
+L.TEST_TRACKER_COMBAT = "Wartet, bis der Kampf vorbei ist: Die Durchlaufanzeige steckt in der Questverfolgung."
+L.TEST_WALK_IN = "Eintreten"
+L.TEST_WALK_IN_TIP = "Der Durchlauf im Scharlachroten Kloster wartet an der Tür, bis der erste Raum oder Kampf eines Flügels den Flügel nennt. Eintreten nennt ihn: %s."
+L.TEST_FOUND = "Als gefunden zeigen (Abenteuermodus)"
+L.TEST_FOUND_TIP = "Aktiviert: Das Kompendium behandelt diesen Dungeon als gefunden, als hättet Ihr ihn betreten. Seine Bosse, Beute und Quests erscheinen trotzdem erst, wenn Ihr sie findet oder ein Testsieg sie freischaltet. Deaktiviert: so, wie Eure Figur ihn gefunden hat. Ein Testsieg findet ihn ebenfalls."
+L.TEST_FOUND_OFF = "Eure Figur spielt nicht im Abenteuermodus, also wird ohnehin alles gezeigt."
+L.TEST_FOUND_REAL = "Eure Figur hat ihn gefunden."
+L.TEST_BOSSES = "Bosse"
+L.TEST_DEFEATED = "%d von %d besiegt"
+L.TEST_TAG_RARE = "selten"
+L.TEST_TAG_SUMMONED = "beschworen"
+L.TEST_TAG_NOT_COUNTED = "nicht gezählt"
+L.TEST_TAG_MAYBE = "vielleicht"
+L.TEST_TAG_QUEST = "Quest"
+L.TEST_TAG_OUTSIDE = "draußen"
+L.TEST_TAG_FINAL = "letzter"
+L.TEST_TIP_RARE = "Selten: kein Kreis und keine Zeile in der Durchlaufanzeige, und er hält keinen Nebel zurück."
+L.TEST_TIP_SUMMONED = "Beschworen: Er hält keinen Nebel zurück."
+L.TEST_TIP_NOT_COUNTED = "Nicht gezählt: eine Zeile in der Durchlaufanzeige, sobald er besiegt ist, kein Kreis."
+L.TEST_TIP_MAYBE = "Vielleicht: Nur manche Durchläufe treffen auf ihn. Eine Zeile in der Durchlaufanzeige, sobald er besiegt ist, kein Kreis."
+L.TEST_TIP_QUEST = "Quest: das Ziel einer Quest. Eine Zeile in der Durchlaufanzeige, sobald er besiegt ist, kein Kreis. Außerhalb des Tests öffnet seine Markierung seine Quest."
+L.TEST_TIP_OUTSIDE = "Draußen: Er steht außerhalb des Dungeons, daher zeigt ihn die Durchlaufanzeige nie."
+L.TEST_TIP_FINAL = "Letzter: Sein Sieg hält die Uhr des Durchlaufs an."
+L.TEST_END = "Test beenden"
+L.TEST_ON = "Testmodus an, nur für diese Sitzung: Nichts wird gespeichert. Test beenden oder ein /reload schaltet ihn aus."
+L.TEST_OFF = "Testmodus aus: Alles ist wie zuvor."
+L.TEST_RUN_TITLE = "%s (Test)"
+L.TEST_RUN_ENDED = "Ihr habt einen Dungeon betreten, daher endet der vorgetäuschte Durchlauf des Tests."
+L.TEST_STATE_INSIDE = "drin"
+L.TEST_STATE_DOOR = "an der Tür (welcher Flügel?)"
+L.TEST_STATE_OUTSIDE = "draußen"
+L.TEST_STATE_DEFEATED = "%d/%d besiegt"
+L.TEST_STATE_FOG_ON = "Nebel an"
+L.TEST_STATE_FOG_OFF = "Nebel aus"
+L.TEST_STATE_NO_FOG = "kein Nebel"
+L.TEST_STATE_FOUND = "als gefunden gezeigt"
+L.TEST_STATE_REAL = "wie bei Eurer Figur"
+L.TEST_STATE_KILL_FOUND = "durch Testsieg gefunden"
+L.TEST_STATE_REAL_INSIDE = "wirklich drin"
+L.TEST_STATE_NOT_ADVENTURE = "nicht im Abenteuermodus"
+L.TEST_STATE_COMBAT = "im Kampf"
+L.TEST_USAGE = "/ij test öffnet den Testmodus. /ij test off beendet ihn. /ij test debug gibt aus, was er gerade tut."
 L.ITEMS_START = "Der Server wird nach den %d Gegenständen gefragt, die das Kompendium aufführt. Die Antwort kommt in etwa %d Sekunden; spielt ruhig weiter."
 L.ITEMS_SCANNING = "Der Server wird noch gefragt; die Antwort kommt gleich."
 L.ITEMS_DONE = "Von %d Gegenständen kennt der Server %d nicht: Wahrscheinlich gibt es sie in Forever noch nicht. Das Kompendium blendet sie aus, bis der Server oder ein aufgezeichneter Durchlauf sie bestätigt. Die vollständige Liste kommt beim nächsten /reload oder Ausloggen in die gespeicherte Datei."
@@ -62,6 +117,10 @@ L.WHERE_BELOW_BELOW = "unten"
 L.WHERE_BELOW_TOP = "oben"
 L.WHERE_BELOW_NOTHING = "nichts"
 L.WHERE_BELOW_CHANGE = "  %s  %s  Karte %s  Gebiet \"%s\"  x %s  y %s:  %s -> %s"
+L.WHERE_GAMEPAD = "Gamepad-Oberfläche: Gamepad bei Kampfbeginn zurückgegeben: %d (zuletzt bei %s); zu spät: %d; Ereignisse der Kampfbeschränkung gehört: %d; wartende Überspring-Markierungen: %d"
+L.WHERE_FLOOR = "%s: Karte auf Ebene %d (%s), nach dem Gebiet \"%s\""
+L.WHERE_FLOOR_KEPT = "%s: Karte auf Ebene %d (%s), beibehalten: das Gebiet \"%s\" gehört zu keiner Ebene"
+L.WHERE_FLOOR_HELD = "%s: Karte auf Ebene %d (%s), folgt dem Gebiet \"%s\" nicht: eine Ebene gewählt oder die ganze Karte"
 L.TAXI = "Karte %s  zeigt selbst Flugpunkte: %s  Flugpunkte darauf: %d (%d entdeckt)  %s"
 L.TAXI_ATLASES = "Reisesymbole: %s"
 L.YES = YES or "Ja"
@@ -144,11 +203,11 @@ L.WEIGHTS_PAWN_SIMS = "Ein Pawn-Export von WoWSims (wowsims.com/forever) geht au
 L.WEIGHTS_NO_STATS = "Diese Pawn-Skala hat keine Gewichtung, die das Kompendium verwenden kann."
 -- The journal's page in the game's options (Options > AddOns).
 L.OPTIONS_TITLE = "Aegis Instance Journal"
-L.OPTIONS_BOSS_LEVELS = "Bossstufen in der Bossliste anzeigen"
+L.OPTIONS_BOSS_LEVELS = "Bossstufen in der Liste anzeigen"
 L.OPTIONS_BOSS_LEVELS_TIP = "Ein Abzeichen auf dem Porträt jedes Bosses zeigt seine Stufe, gefärbt danach, wie schwer der Boss für Euch ist: grau, grün, gelb, orange oder rot."
-L.OPTIONS_ARROWS = "Verbesserungen mit einem grünen Pfeil markieren"
-L.OPTIONS_MINIMAP = "Schaltfläche an der Minikarte anzeigen"
-L.OPTIONS_PAWN_WEIGHTS = "Wertgewichtung von Pawn in der Ausrüstungssuche verwenden"
+L.OPTIONS_ARROWS = "Grüner Pfeil für Verbesserungen"
+L.OPTIONS_MINIMAP = "Schaltfläche an der Minikarte"
+L.OPTIONS_PAWN_WEIGHTS = "Wertgewichtung von Pawn nutzen"
 L.OPTIONS_PAWN_WEIGHTS_TIP = "Ist Pawn installiert, werden seine Gegenstands-Tooltips und Verbesserungspfeile angezeigt. Angehakt: Die Ausrüstungssuche bewertet Gegenstände mit Eurer Pawn-Skala für Eure Spezialisierung. Nicht angehakt: Pawn zeigt stattdessen die Gewichtung des Kompendiums für Eure Spezialisierung, als Skala des Kompendiums, und seine eigenen Skalen bleiben auf diesem Charakter ausgeblendet, bis Ihr dies anhakt."
 L.PAWN_ASK = "Pawn ist ebenfalls installiert. Seine Gegenstands-Tooltips und Verbesserungspfeile werden angezeigt.\n\nWessen Wertgewichtung sollen Pawn und die Ausrüstungssuche beide verwenden?\n\nDie des Kompendiums: Pawn zeigt sie für Eure Spezialisierung an und blendet auf diesem Charakter seine eigenen Skalen aus.\nDie von Pawn: Die Ausrüstungssuche verwendet Eure Pawn-Skalen."
 L.PAWN_USE_PAWN = "Die von Pawn"
@@ -159,15 +218,32 @@ L.PAWN_RELOAD_NOW = "Neu laden"
 L.PAWN_RELOAD_LATER = "Später"
 L.WEIGHTS_SOURCE_PAWN_LIVE = "Pawn-Skala %s. Ändert sie in Pawn oder wählt in den Optionen die Gewichtung des Kompendiums."
 L.OPTIONS_MINIMAP_TIP = "Die Schaltfläche des Kompendiums am Rand der Minikarte: Klickt darauf, um das Kompendium zu öffnen; ein Rechtsklick öffnet diese Optionen; zieht sie, um sie zu verschieben."
+-- The journal's line in the minimap's addon menu, its box beside the minimap button's (UI/Options.lua; 2026-11-20; drafted, to be checked).
+L.OPTIONS_ADDON_MENU = "Im Addon-Menü der Minikarte"
+L.OPTIONS_ADDON_MENU_TIP = "Die Zeile des Kompendiums im Addon-Menü der Minikarte, der kleinen Schaltfläche mit einer Zahl: Klickt darauf, um das Kompendium zu öffnen; ein Rechtsklick öffnet diese Optionen. Abgewählt verschwindet sie nach einem /reload aus dem Menü."
 L.OPTIONS_DOCK = "Fenster oben links andocken"
 L.OPTIONS_DOCK_TIP = "Aktiviert: Das Kompendium öffnet sich oben links, wo das Spiel seine eigenen Fenster öffnet, und rückt zur Seite, wenn dort eines davon geöffnet wird, so wie sie es untereinander tun; ist für beide kein Platz, schließt das Spiel das ältere. Zieht es, um es irgendwohin zu verschieben: Beim nächsten Öffnen dockt es wieder an. Deaktiviert: Es öffnet sich dort, wo Ihr es zuletzt hingezogen habt."
+-- Test mode's button, last on the options' page (UI/Options.lua; 2026-11-18; drafted, to be checked).
+L.OPTIONS_TEST = "Testmodus"
+L.OPTIONS_TEST_BUTTON = "Öffnen"
+L.OPTIONS_TEST_TIP = "Zeigt die Karte, den Nebel und die Durchlaufanzeige jedes Dungeons, ohne hineinzugehen: Wählt einen Dungeon, markiert Bosse als besiegt, tut so, als wärt Ihr drin. Nur für diese Sitzung: Nichts wird gespeichert, und ein /reload beendet ihn."
+L.OPTIONS_DUNGEON_FOG = "Kriegsnebel auf Dungeonkarten"
+L.OPTIONS_DUNGEON_FOG_TIP = "Dungeonkarten liegen zu Beginn unter Nebel, nur der Eingang ist frei. Jeder Boss, den Eure Gruppe besiegt, macht seine Räume und den Weg zurück frei, und der letzte die ganze Karte; was frei ist, bleibt frei. Im Abenteuermodus immer an. Nur für diesen Charakter."
+-- Adventure Mode's news: the chat line for new finds, the minimap button's line while it glows, and their two
+-- boxes in the options (2026-11-11; translation drafted, to be checked).
+L.ADVENTURE_NEWS = "Neu in Eurem Kompendium: %s"
+L.MINIMAP_NEWS = "Es gibt Neues in Eurem Kompendium."
+L.OPTIONS_ADVENTURE_CHAT = "Neue Funde im Chat"
+L.OPTIONS_ADVENTURE_CHAT_TIP = "Im Abenteuermodus eine Zeile im Chat, wenn Ihr etwas Neues für das Kompendium findet: einen Dungeon, einen Boss, Beute, eine Quest, eine Fraktion oder eine Flugroute. Klickt auf einen Namen, um seine Seite zu öffnen (eine Flugroute hat keine). Für alle Eure Charaktere."
+L.OPTIONS_ADVENTURE_GLOW = "Minikartenschaltfläche leuchtet"
+L.OPTIONS_ADVENTURE_GLOW_TIP = "Im Abenteuermodus leuchtet die Schaltfläche an der Minikarte, wenn Ihr seit dem letzten Öffnen des Kompendiums etwas Neues gefunden habt, bis Ihr es öffnet. Für alle Eure Charaktere."
 L.MINIMAP_LEFT_CLICK = "Klickt, um das Kompendium zu öffnen oder zu schließen."
 L.MINIMAP_RIGHT_CLICK = "Rechtsklick für die Optionen."
 L.MINIMAP_DRAG = "Zieht die Schaltfläche, um sie am Rand der Minikarte zu verschieben."
 L.OPTIONS_ARROWS_TIP = "Ein grüner Pfeil auf Gegenständen, die für Eure Spezialisierung Verbesserungen sind, so wie die Ausrüstungssuche sie zählt: in Euren Taschen, im Beutefenster und beim Würfeln um Beute."
-L.WEIGHTS_SHOW_GAINS = "Wertgewichtung in Tooltips anzeigen"
+L.WEIGHTS_SHOW_GAINS = "Gewichtung in Tooltips anzeigen"
 L.WEIGHTS_SHOW_GAINS_TIP = "Unter jedem Gegenstand eine Zeile für jede Eurer Spezialisierungen: was der Gegenstand nach ihrer Gewichtung wert ist, und ein grüner Pfeil mit dem, was er Eurer Ausrüstung hinzufügt, wenn er eine Verbesserung ist. Für alle Eure Charaktere mit eingeschalteter Ausrüstungssuche. Ist Pawn installiert, blendet dies stattdessen die Skala des Kompendiums in Pawn ein oder aus, und mit ihr Pawns Verbesserungspfeile für die Gewichtung des Kompendiums: Pawn markiert Verbesserungen nur für die Skalen, die es anzeigt."
-L.OPTIONS_SOURCES = "In Tooltips anzeigen, wo Gegenstände zu finden sind"
+L.OPTIONS_SOURCES = "Fundorte in Tooltips anzeigen"
 L.OPTIONS_SOURCES_TIP = "Unter jedem Gegenstand, der in den Dungeons und Schlachtzügen des Kompendiums als Beute zu finden ist, eine Zeile mit dem Boss und dem Dungeon: in Euren Taschen, an Eurem Charakter, in Chatlinks, bei Händlern und überall sonst, wo das Spiel den Gegenstand zeigt. Für alle Eure Charaktere."
 L.GEAR_WHY_CUSTOM = "%s (Eure Gewichtung)"
 -- The specs' names and the units their weights count in, by spec key and by the English unit.
@@ -285,6 +361,7 @@ L.RECORD_NEW = "neu"
 L.RECORD_QUARTERMASTERS = "Rüstmeister"
 L.RECORD_WARES = "%s: %d Waren, %s neu"
 L.RECORD_TRAVEL = "Reisepunkte: %d"
+L.RECORD_MODELS = "Modelle: %d"
 L.FOREVER_LINE = "Neu in WoW: Forever."
 L.LOCATION_LINE = "Ort: %s"
 
@@ -307,6 +384,20 @@ L.LOOT_KIND = {
 L.LOOT_KIND_ALL = { EQUIPMENT = "Gesamte Ausrüstung", RECIPE = "Alle Rezepte" }
 L.LOOT_KIND_ONE = { MOUNT = "Reittier", PET = "Haustier", TOY = "Spielzeug" }
 L.LOOT_RECIPE = "Rezept"
+-- A loot row's type where the client cannot describe the item (2026-11-19; drafted, to be checked).
+L.LOOT_QUEST_ITEM = "Questgegenstand"
+L.LOOT_WORDS = {
+	Alchemy = "Alchemie", Blacksmithing = "Schmiedekunst", Cooking = "Kochkunst", Enchanting = "Verzauberkunst",
+	Engineering = "Ingenieurskunst", ["First Aid"] = "Erste Hilfe", Fishing = "Angeln",
+	Leatherworking = "Lederverarbeitung", Tailoring = "Schneiderei", Book = "Buch", Blueprint = "Bauplan",
+	Bag = "Tasche", ["Ammo Pouch"] = "Munitionsbeutel", Quiver = "Köcher", Arrow = "Pfeil", Bullet = "Kugel",
+	Consumable = "Verbrauchbar", ["Food & Drink"] = "Essen & Trinken", Potions = "Tränke", Junk = "Plunder",
+	Key = "Schlüssel", Other = "Sonstiges", Parts = "Teile", Reagent = "Reagenz", Weapon = "Waffe", Cloth = "Stoff",
+	Leather = "Leder", Mail = "Schwere Rüstung", Plate = "Platte", Shield = "Schild", Idol = "Götze",
+	Libram = "Buchband", Totem = "Totem", Axe = "Axt", Bow = "Bogen", Crossbow = "Armbrust", Dagger = "Dolch",
+	["Fist Weapon"] = "Faustwaffe", Gun = "Schusswaffe", Mace = "Streitkolben", Polearm = "Stangenwaffe",
+	Staff = "Stab", Sword = "Schwert", Wand = "Zauberstab",
+}
 L.LOOT_FAVORITES = "Favoriten"
 L.LOOT_FAVORITES_ONLY = "Nur Favoriten"
 L.LOOT_FAVORITE = "Zu Favoriten hinzufügen"
@@ -314,9 +405,17 @@ L.LOOT_UNFAVORITE = "Aus Favoriten entfernen"
 L.LOOT_PINNED = "Angeheftet"
 L.LOOT_ALL = "Beute"
 L.LOOT_TRASH = "Dungeon-Trash"
+L.LOOT_BOSSES_AND_RARES = "Alle Bosse und seltenen Gegner"
+L.LOOT_BOSSES_AND_RARES_NOTE = "Beute der Bosse und seltenen Gegner des Dungeons, nicht vom Trash."
+-- A Recipes page's row the bosses drop, and a row not seen dropping yet (2026-11-20; drafted, to be checked).
+L.LOOT_ANY_BOSS = "Alle Bosse"
+L.LOOT_ANY_BOSS_NOTE = "Beute der Bosse des Dungeons, nicht vom Trash."
+L.LOOT_NOT_SEEN_NOTE = "Noch nicht als Beute gesehen."
 L.DROPS_FROM_BOSS = "Beute von %s (%s)"
 L.DROPS_FROM_TRASH = "Beute vom Trash (%s)"
 L.DROPS_FROM_BOSSES = "Beute von %d Bossen (%s)"
+L.DROPS_FROM_BOSSES_AND_RARES = "Beute von Bossen und seltenen Gegnern (%s)"
+L.DROPS_FROM_ANY_BOSS = "Beute von Bossen (%s)"
 L.DROPS_IN = "Beute in: %s"
 L.DROPS_ALSO_IN = "Auch Beute in: %s"
 L.LEGEND_CLICK_HIDE = "Klickt, um diese auf der Karte auszublenden."
@@ -330,7 +429,28 @@ L.PREPARE_PROGRESS = "Ihr habt %d seiner %d Quests erledigt."
 -- The same for a key with one quest (2026-10-30; drafted, to be checked).
 L.PREPARE_PROGRESS_ONE = "Ihr habt seine Quest noch nicht erledigt."
 L.PREPARE_HAVE = "Bereits in Eurem Besitz."
-L.PREPARE_QUEST_HINT = "Klickt, um sie im Reiter Quests zu sehen."
+-- A chain of quests done, Before you go (2026-11-12; drafted, to be checked).
+L.PREPARE_CHAIN_DONE = "Ihr habt seine Quests erledigt."
+-- Before you go's line on a dungeon's overview, pointing to the Quests tab (2026-11-13; drafted, to be checked).
+L.PREPARE_POINTER = "Vor dem Aufbruch: %d Hinweise, im Reiter Quests."
+L.PREPARE_POINTER_ONE = "Vor dem Aufbruch: 1 Hinweis, im Reiter Quests."
+-- The Play button beside the lore, which plays Spoken's recorded story; "Spoken" kept as it is (2026-11-13; drafted, to be checked).
+L.SPOKEN_PLAY = "Geschichte abspielen"
+L.SPOKEN_REPLAY = "Geschichte erneut abspielen"
+L.SPOKEN_STOP = "Anhalten"
+L.SPOKEN_BY = "Vorgelesen von Spoken."
+L.SPOKEN_REQUIRES = "Benötigt Spoken"
+L.SPOKEN_ABOUT_PLACE = "Liest die Geschichte dieses Ortes vor."
+L.SPOKEN_ABOUT_BOSS = "Liest die Geschichte dieses Bosses vor."
+L.SPOKEN_NO_STORY_PLACE = "Spoken hat keine aufgenommene Geschichte zu diesem Ort."
+L.SPOKEN_NO_STORY_BOSS = "Spoken hat keine aufgenommene Geschichte zu diesem Boss."
+-- Spoken's own story API says no, the reason not known (2026-11-14; drafted, to be checked).
+L.SPOKEN_NO_STORY_YET = "Spoken hat hier noch keine Geschichte, die es abspielen kann."
+L.SPOKEN_NEEDS_BOSS_VOICES = "Benötigt die Bossstimmen von Spoken, die nicht installiert sind."
+L.SPOKEN_NEEDS_PLACE_VOICES = "Benötigt die Ortsstimmen von Spoken, die nicht installiert sind."
+L.SPOKEN_OFF = "In den Einstellungen von Spoken ausgeschaltet."
+L.SPOKEN_LOCKED_PLACE = "Spoken erzählt diese Geschichte, sobald du diesen Ort gefunden hast."
+L.SPOKEN_LOCKED_BOSS = "Spoken erzählt diese Geschichte, sobald du diesem Boss begegnet bist."
 L.QUESTS_DUNGEON = "Dungeonquests"
 -- The same on a raid's Quests tab (2026-10-30; drafted, to be checked).
 L.QUESTS_RAID = "Schlachtzugsquests"
@@ -338,6 +458,9 @@ L.QUESTS_RAID = "Schlachtzugsquests"
 L.QUESTS_CLASS = "Klassenquests"
 L.TRASH = "Trash"
 L.TRASH_DESCRIPTION = "Was die übrigen Kreaturen des Dungeons fallen lassen und wissenswert ist: seltene und epische Ausrüstung, Rezepte und Questgegenstände."
+-- The recipes' entry in a dungeon's boss list, and its page (drafted, to be checked).
+L.RECIPES = "Rezepte"
+L.RECIPES_DESCRIPTION = "Die Rezepte, Pläne und Muster, die im Dungeon fallen, von seinen Bossen und seinen übrigen Kreaturen. Das eigene Rezept eines Bosses steht auch auf dessen Seite."
 L.LOOT_BOSS_LINE = BOSS_INFO_STRING or "Boss: %s"
 L.LOOT_FILTER_BAR = "Filter: %s"
 L.LOOT_RETRIEVING = RETRIEVING_ITEM_INFO or "Gegenstandsinformationen werden abgerufen"
@@ -394,6 +517,8 @@ L.QUESTMAP_OBJECTIVE_TAKE_NAMED = "Mitnehmen: %s"
 L.QUESTMAP_TITLE_QUOTED = "„%s“"
 L.QUESTMAP_OBJECTIVE_USE = "Benutzen: %s"
 L.QUESTMAP_OBJECTIVE_EXPLORE = "Diesen Ort erkunden"
+-- At the Drowned City's tablets of I'lalai, a rubbing with the hide and charcoal (2026-11-12; drafted, to be checked).
+L.QUESTMAP_OBJECTIVE_RUBBING = "Mit Fell und Kohle eine Abreibung anfertigen"
 -- A Matrix Punchograph's step, what goes in, then what comes out, in short words ("Yellow > Blue"), and the punch
 -- cards' colors, as the cards' own names in the language have them (2026-11-12, the owner's "Blue > Red"; drafted, to
 -- be checked); where what goes in drops (2026-11-12; drafted, to be checked).
@@ -454,9 +579,32 @@ L.REP_NOT_CAPTURED_TEXT = "Den Rüstmeister dieser Fraktion hat noch niemand erf
 L.REP_LISTED_TIP = "Die Belohnungen stammen aus den Gegenstandsdaten des Spiels und wurden noch nicht bei einem Rüstmeister bestätigt."
 L.REP_LISTED_TEXT = "Diese Belohnungen stammen aus den Gegenstandsdaten des Spiels, noch nicht von einem Rüstmeister. Daher haben sie keine Preise, und einige werden womöglich gar nicht verkauft. Sucht einen Rüstmeister dieser Fraktion auf, öffnet seinen Laden und klickt im Reiter Ruf auf Händler erfassen. Postet dann Eure Aufzeichnung auf unserem Discord. Euer Name kommt zu den Mitwirkenden des Kompendiums."
 L.REP_COMING_SOON_TEXT = "Neu in WoW: Forever und noch nicht erfasst. Sobald die Fraktion im Spiel ist, sucht ihren Rüstmeister auf, öffnet seinen Laden und klickt im Reiter Ruf auf Händler erfassen. Postet dann Eure Aufzeichnung auf unserem Discord."
+-- The Reputation tab's Vendors: a page for each currency a vendor takes for wares that need no standing (2026-11-12; drafted, to be checked).
+L.REP_VENDORS = "Händler"
+L.CURRENCY_YOU_HAVE = "Im Besitz: %s"
+L.CURRENCY_VENDOR = "Händler: %s"
+L.CURRENCY_CARD_CLICK = "Klickt, um die Waren zu sehen."
+L.REP_CAPTURED_CURRENCY = "%s: %d Waren gespeichert, verkauft für %s."
+-- Where Carved Centaur Totems come from, on its Vendors card and page (2026-11-13; drafted, to be checked: %s is the item's name as the client writes it; the quests keep their English names, their names in this language not known).
+L.CURRENCY_NOTE_CENTAUR_TOTEM = "%s: Zentauren jedes Clans in Desolace lassen sie fallen, und die Quest „Khan Hratha“ gibt zehn. Die Quest „Carved Centaur Totems“ verlangt fünf davon, von der Allianz wie von der Horde."
 L.MAP_SHOW = ENCOUNTER_JOURNAL_SHOW_MAP or "Karte anzeigen"
 L.MAP_SHOW_UNEXPLORED = "Unerforschte Gebiete anzeigen"
 L.OPTIONS_UNEXPLORED_TIP = "Schattiert auf der Weltkarte die Teile einer Zone, die Ihr noch nicht erkundet habt."
+-- The map legend's Fog of War switch, the last of Movement's, and its tooltip (2026-11-11; translation drafted, to be checked).
+L.LEGEND_FOG = "Kriegsnebel"
+L.LEGEND_FOG_TOOLTIP = "Verbirgt die Teile einer Zone, die Ihr noch nicht erkundet habt, und die Teile einer Dungeonkarte, die Eure Gruppe noch nicht freigelegt hat."
+L.LEGEND_FOG_ZONE_HIDDEN = "Die Karte zeigt nur die Teile dieser Zone, die Ihr erkundet habt."
+L.LEGEND_FOG_ZONE_SHOWN = "Auch die Teile dieser Zone, die Ihr noch nicht erkundet habt, werden angezeigt, etwas dunkler."
+L.LEGEND_FOG_ZONE_SHOW = "Klickt, um die unerkundeten Teile anzuzeigen."
+L.LEGEND_FOG_ZONE_HIDE = "Klickt, um nur die erkundeten Teile anzuzeigen."
+L.LEGEND_FOG_DUNGEON_ON = "Nebel bedeckt die Teile dieser Karte, die Ihr noch nicht freigelegt habt. Jeder Boss, den Eure Gruppe besiegt, macht seine Räume frei."
+L.LEGEND_FOG_DUNGEON_OFF = "Der Nebel ist aus: Die ganze Karte ist zu sehen."
+L.LEGEND_FOG_DUNGEON_CLEARED = "Der Nebel hat sich gelichtet: Die ganze Karte ist zu sehen."
+L.LEGEND_FOG_DUNGEON_LIFT = "Klickt, um den Nebel auszuschalten."
+L.LEGEND_FOG_DUNGEON_LAY = "Klickt, um den Nebel einzuschalten."
+L.LEGEND_FOG_ADVENTURE = "Im Abenteuermodus nicht abschaltbar."
+L.LEGEND_FOG_NONE = "Kein Kriegsnebel auf dieser Karte."
+L.LEGEND_FOG_ZONE_EXPLORED = "Ihr habt diese ganze Zone erkundet."
 L.MAP_FILTER_QUESTS = "Verfügbare Quests"
 L.MAP_FILTER_DUNGEONS = "Dungeoneingänge"
 L.MAP_FILTER_RAIDS = "Schlachtzugseingänge"
@@ -465,9 +613,17 @@ L.MAP_FILTER_CAVES = "Höhleneingänge"
 L.MAP_FILTER_TRANSPORT = "Schiffe, Zeppeline, Tiefenbahn und Portale"
 L.MAP_PIN_OPEN = "Klickt, um es im Kompendium zu öffnen."
 L.MAP_DEFEATED = DUNGEON_ENCOUNTER_DEFEATED or "Besiegt"
+L.MAP_FOG_HINT = "Besiegt ihn, um den Nebel hier zu lichten."
+L.MAP_UNMET_HINT = "Noch nicht begegnet."
 L.MAP_LEVEL = "Stufe %d"
 L.MAP_FLOOR = "Ebene %d"
 L.MAP_GO_TO = "Gehe zu: %s"
+-- Under a way between floors, where two lead to one floor (the Drowned City's), where it comes out
+-- (2026-11-17; drafted, to be checked).
+L.MAP_WAY_OUT_SOUTHWEST = "Kommt am Südwestende heraus"
+L.MAP_WAY_OUT_NORTHEAST = "Kommt am Nordostende heraus"
+L.MAP_WAY_OUT_DEEP_ARCHIVES = "Kommt in den Tiefenarchiven heraus"
+L.MAP_WAY_OUT_CENTRAL_POOL = "Kommt im zentralen Becken heraus"
 L.MAP_YOU_ARE_HERE = "Ihr seid hier"
 L.ENTRANCE_DUNGEON = LFG_TYPE_DUNGEON or "Dungeon"
 L.ENTRANCE_RAID = LFG_TYPE_RAID or "Schlachtzug"
@@ -514,8 +670,13 @@ L.SEARCH_TYPE_QUEST = "Quest"
 L.SEARCH_TYPE_FACTION = FACTION or "Fraktion"
 L.MAP_PIN_CLEAR = "Klickt, um diese Markierung zu entfernen."
 L.MAP_PIN_COMBAT = "Die Karte kann im Kampf nicht geöffnet werden."
+L.GAMEPAD_HUD_UP = "Verlasst zuerst den HUD-Modus der Gamepad-Oberfläche und versucht es dann erneut."
 L.MAP_PIN_IN_ZONE = "%s ist auf der Karte von %s markiert."
 L.MAP_LEVEL_LINK_CLICK = "Linksklick, um die Karte dieser Ebene zu sehen"
+-- A place worth knowing on a dungeon's map (UI/DungeonMap.lua's MapSpot): its kind's name, and the Drowned City's
+-- hidden chest's line under it (2026-11-17; drafted, to be checked).
+L.MAP_SPOT_CHEST = "Versteckte Truhe"
+L.MAP_SPOT_DROWNED_CHEST = "Auf dem Bootswrack, nach dem Kampf gegen Min'loth die Schlange. Sie ist nicht verschlossen: Jeder kann sie öffnen und findet darin zufällige Gegenstände und Materialien."
 L.DOOR_SPIRE_ONE_INSTANCE = "Die Untere und die Obere Schwarzfelsspitze sind eine Instanz mit einem Eingang."
 L.DOOR_SPIRE_LOWER = "Untere Schwarzfelsspitze: bis zu 10 Spieler, ihre Quests lassen sich aber nur in einer Gruppe von höchstens 5 abschließen."
 L.DOOR_SPIRE_UPPER = "Obere Schwarzfelsspitze: weiter drinnen, hinter einer versiegelten Tür, für die Ihr das Siegel des Aufstiegs braucht. Bis zu 10 Spieler."
@@ -525,6 +686,9 @@ L.AND_MORE = "und %d weitere"
 L.BULLET_AREA = "Anzutreffen in %s."
 L.BULLET_RARE = "Ein seltener Gegner: Nicht jeder Durchlauf trifft auf ihn."
 L.BULLET_SUMMONED = "Ein versteckter Boss, den Ihr selbst beschwört: Die Notiz oben erklärt, wie."
+-- The same where his note names several bosses, not a hidden boss (2026-11-19; "summon" since 2026-11-20;
+-- drafted, to be checked).
+L.BULLET_CALLED_UP = "Ein Boss, den Ihr selbst beschwört: Die Notiz oben erklärt, wie."
 -- A quest's mob, on the map only, on his page (2026-11-11; translation drafted, to be checked).
 L.BULLET_QUEST_TARGET = "Ein Questziel, keiner der Bosse des Dungeons."
 L.BULLET_LEVEL = "Eine Begegnung der Stufe %d."
@@ -597,11 +761,33 @@ L.EQUIP_PATTERNS = {
 -- here" and a wing's areas match these (Core/Areas.lua). Unconfirmed ones are listed in
 -- the translation's to-check list.
 L.AREA_NAMES = {
+	-- The Drowned City's areas (Data/Authored/Upcoming.lua's floors: Abyssal Dais, Altar of the Serpent, Deep
+	-- Archives, Eternal Amphitheater, the Flooded Shrine (the central pool) and Sunken Hollow on the city's map,
+	-- Ataal'Byzal and Atal'Byzal on Atal'byzal), as a player's English recording (2026-11-13) and the client's
+	-- English tables (2026-11-17) name them: drafted, to be checked (GetSubZoneText there)
+	["Abyssal Dais"] = "Abyssisches Podest",
 	["Aku'mai's Lair"] = "Aku'mais Hort",
+	-- Alcaz Prison's two names for its rooms (Data/Authored/Upcoming.lua's floors: Alcaz Prison on the first,
+	-- Maximum Security on the second), as the client's English tables name them (2026-11-17): drafted, to be checked
+	-- (GetSubZoneText there); Alcaz Prison as the dungeon's name in this language
+	["Alcaz Prison"] = "Gefängnis von Alcaz",
+	-- (the Drowned City's, drafted: see Abyssal Dais)
+	["Altar of the Serpent"] = "Altar der Schlange",
 	["Anvilmar's Rest"] = "Ambossars Ruhestätte",
+	-- (the Drowned City's shrine: its rooms' area and the building's own name, drafted: see Abyssal Dais)
+	["Ataal'Byzal"] = "Ataal'Byzal",
+	["Atal'Byzal"] = "Atal'Byzal",
 	["Athenaeum"] = "Athenaeum",
+	-- Blackmaw Hold's areas (Data/Authored/Upcoming.lua's floors: Blackmaw Grove, Blackmaw Stillwater, Bonesnout's
+	-- Thicket, the Festering Grotto and the depths' four levels), by the labels on Santiago Reyes's maps, not read in
+	-- game yet: drafted, to be checked (GetSubZoneText there). The client's tables keep the hold's own names in
+	-- encrypted rows
+	["Blackmaw Grove"] = "Schwarzschlundhain",
+	["Blackmaw Stillwater"] = "Stillwasser des Schwarzschlunds",
 	["Blackrock Stadium"] = "Schwarzfelsstadion",
 	["Blackrock Stronghold"] = "Schwarzfelsfestung",
+	-- (Blackmaw Hold's, drafted: see Blackmaw Grove)
+	["Bonesnout's Thicket"] = "Bonesnouts Dickicht",
 	-- City of Dalaran's rooms (Data/Authored/CityOfDalaran.lua's floors: Cantrips & Crows, City of
 	-- Dalaran, Dalaran, Magus Commerce Exchange, Path of Renewal, Presage Plaza, Runeweaver Square, Sewer,
 	-- The Eventide, The Purple Parlor, The Underbelly, The Violet Citadel, The Violet Hold): the city's
@@ -630,7 +816,14 @@ L.AREA_NAMES = {
 	["Crusaders' Square"] = "Platz der Kreuzfahrer",
 	["Dalaran"] = "Dalaran",
 	["Dark Iron Ingress"] = "Zugang der Dunkeleisen",
+	-- (the Drowned City's, drafted: see Abyssal Dais)
+	["Deep Archives"] = "Tiefenarchive",
 	["Defias Hideout"] = "Versteck der Defias",
+	-- (Blackmaw Hold's, drafted: see Blackmaw Grove)
+	["Depths of Forbidden Magic"] = "Tiefen der Verbotenen Magie",
+	["Depths of the Burrow"] = "Tiefen des Baus",
+	["Depths of the Elders"] = "Tiefen der Ältesten",
+	["Depths of the Fallen Grove"] = "Tiefen des Gefallenen Hains",
 	["Dig One"] = "Grabung Eins",
 	["Dragonspire Hall"] = "Halle der Drachenspitze",
 	["Dreamer's Rock"] = "Fels des Träumers",
@@ -638,9 +831,19 @@ L.AREA_NAMES = {
 	["Eldre' Thalas"] = "Eldre'Thalas",
 	["Eldreth Row"] = "Eldrethgasse",
 	["Engineering Labs"] = "Ingenieurslabore",
+	-- (the Drowned City's, drafted: see Abyssal Dais)
+	["Eternal Amphitheater"] = "Ewiges Amphitheater",
 	["Excavation Center"] = "Ausgrabungszentrum",
+	-- (Blackmaw Hold's, drafted: see Blackmaw Grove)
+	["Festering Grotto"] = "Eiternde Grotte",
 	["Festival Lane"] = "Festgasse",
+	-- (the Drowned City's, drafted: see Abyssal Dais)
+	["Flooded Shrine"] = "Überfluteter Schrein",
 	["Footman's Armory"] = "Waffenkammer der Fußsoldaten",
+	-- City of Dalaran's city rooms a player's recording read (Data/Authored/CityOfDalaran.lua, 2026-11-13: Forge of
+	-- Fate, Talismanic Textiles, Tempered Tomes, The Atrium of Fortune, The Silver Enclave, Violet Plates and
+	-- Framing), with no area id. Drafted, to be checked in game (GetSubZoneText there)
+	["Forge of Fate"] = "Schmiede des Schicksals",
 	["Forgewright's Tomb"] = "Grab des Schmiedemeisters",
 	["Forlorn Cloister"] = "Verlassener Kreuzgang",
 	["Gallery of Treasures"] = "Galerie der Schätze",
@@ -661,6 +864,8 @@ L.AREA_NAMES = {
 	["Loading Room"] = "Laderaum",
 	["Magus Commerce Exchange"] = "Handelsmarkt der Magier",
 	["Market Row"] = "Marktgasse",
+	-- (Alcaz Prison's lower floor, drafted: see Alcaz Prison)
+	["Maximum Security"] = "Hochsicherheitstrakt",
 	["Mast Room"] = "Mastraum",
 	["Mok'Doom"] = "Mok'Doom",
 	["Moonshrine Ruins"] = "Ruinen des Mondschreins",
@@ -677,8 +882,24 @@ L.AREA_NAMES = {
 	["Skitterweb Tunnels"] = "Huschnetztunnel",
 	["Slaughter Square"] = "Schlachthofplatz",
 	["South Common Hall"] = "Südliche Gemeinschaftshalle",
+	-- Razorfen Downs' rooms (Data/Instances/RazorfenDowns.lua: Spiral of Thorns, The Bone Pile, The Caller's Chamber
+	-- and The Murder Pens), as a player's recording read them in English (2026-11-13): the dungeon building's own
+	-- names, with no area id. Drafted, to be checked in game (GetSubZoneText there)
+	["Spiral of Thorns"] = "Dornenspirale",
+	-- (the Drowned City's, drafted: see Abyssal Dais)
+	["Sunken Hollow"] = "Versunkene Senke",
+	-- (City of Dalaran's, drafted: see Forge of Fate)
+	["Talismanic Textiles"] = "Talismanische Textilien",
 	["Tazz'Alaor"] = "Tazz'Alaor",
 	["Tazz'Alor"] = "Tazz'Alor",
+	-- (City of Dalaran's, drafted: see Forge of Fate)
+	["Tempered Tomes"] = "Gehärtete Folianten",
+	-- (City of Dalaran's, drafted: see Forge of Fate)
+	["The Atrium of Fortune"] = "Das Atrium des Glücks",
+	-- (Razorfen Downs', drafted: see Spiral of Thorns)
+	["The Bone Pile"] = "Der Knochenhaufen",
+	-- (Razorfen Downs', drafted: see Spiral of Thorns)
+	["The Caller's Chamber"] = "Kammer des Rufers",
 	-- Gnomeregan's Clean Zone, a room the map follows since 0.39.21 (2026-11-12; drafted, to be checked)
 	["The Clean Zone"] = "Die saubere Zone",
 	["The Clockwerk Run"] = "Der Uhrwerkgang",
@@ -695,12 +916,16 @@ L.AREA_NAMES = {
 	["The Hoard"] = "Der Hort",
 	["The Masonary"] = "Die Steinmetzhalle",
 	["The Molten Span"] = "Die Geschmolzene Spanne",
+	-- (Razorfen Downs', drafted: see Spiral of Thorns)
+	["The Murder Pens"] = "Die Mordpferche",
 	["The Pool of Ask'ar"] = "Der Teich von Ask'ar",
 	["The Purple Parlor"] = "Der Purpursalon",
 	["The Rookery"] = "Die Brutstätte",
 	["The Scarlet Bastion"] = "Die Scharlachrote Bastion",
 	["The Sealed Hall"] = "Die Versiegelte Halle",
 	["The Shrine of Eldretharr"] = "Der Schrein von Eldretharr",
+	-- (City of Dalaran's, drafted: see Forge of Fate)
+	["The Silver Enclave"] = "Die Silberne Enklave",
 	["The Slaughter House"] = "Das Schlachthaus",
 	["The Storehouse"] = "Das Lagerhaus",
 	["The Underbelly"] = "Die Schattenseite",
@@ -711,9 +936,16 @@ L.AREA_NAMES = {
 	-- Gnomeregan's way in, as the Loading Room above
 	["Train Depot"] = "Zugdepot",
 	["Training Grounds"] = "Übungsplatz",
+	-- (City of Dalaran's, drafted: see Forge of Fate)
+	["Violet Plates and Framing"] = "Violette Platten und Rahmen",
 	["Warpwood Quarter"] = "Wucherborkenviertel",
+	-- Wailing Caverns' Winding Chasm (Data/Authored/WailingCaverns.lua, 2026-11-13): the game's name for it in this language, to be checked in game
+	["Winding Chasm"] = "Gewundener Abgrund",
 	-- Gnomeregan's way in, as the Loading Room above
 	["Workshop Entrance"] = "Werkstatteingang",
+	-- (Blackmaw Hold's, drafted: see Blackmaw Grove; Zedrik's Rest a best guess from the label on a newer version
+	-- of Santiago Reyes's whole hold, 2026-11-18)
+	["Zedrik's Rest"] = "Zedriks Ruhestätte",
 	-- The Temple of Atal'Hakkar's way in (Data/Authored/SubMaps.lua, 2026-10-30): its nine rooms have no area id,
 	-- so they are found by these names alone. Pool of Tears, Sorrowmurk and the temple's own name have ids (74,
 	-- 1778, 1477): a scan (/aegis areas, Dev/bake_area_ids.py) can replace those three. LibBabble-SubZone's names,
@@ -743,13 +975,69 @@ L.STYLE_MODERN = "Modern"
 L.STYLE_MODERN_DESC = "Alles, was das Kompendium hat, so wie jetzt: die Ausrüstungssuche, Karten der Wege hinein und seine Markierungen auf der Weltkarte."
 L.STYLE_CUSTOM = "Benutzerdefiniert"
 L.STYLE_CUSTOM_DESC = "Ihr entscheidet. Wählt dies, um die Einstellungen des Kompendiums zu öffnen, wo jede Funktion ihr eigenes Kästchen hat."
+-- Adventure Mode, in the options' list of styles, and what it does (2026-11-05; drafted, to be checked).
+L.STYLE_ADVENTURE = "Abenteuermodus"
+L.STYLE_ADVENTURE_DESC = "Das Kompendium beginnt leer und füllt sich, während Ihr spielt: Dungeons, Bosse, Beute und Quests erscheinen, sobald Ihr sie findet."
+-- Adventure Mode's name on its box in the question at login, one word like Classic and Modern (2026-11-07).
+L.STYLE_ADVENTURE_BOX = "Abenteuer"
+-- Adventure Mode's pages: an unmet boss's line, the closed tabs' tooltips, the loot list with nothing seen
+-- yet, and an item seen with its boss unknown (2026-11-05; drafted, to be checked).
+L.ADVENTURE_BOSS_UNMET = "Ihr seid diesem Gegner noch nicht begegnet."
+L.ADVENTURE_ABILITIES_CLOSED = "Kämpft gegen diesen Boss, um seine Fähigkeiten kennenzulernen."
+L.ADVENTURE_MODEL_CLOSED = "Begegnet diesem Boss, um ihn hier zu sehen."
+L.ADVENTURE_LOOT_NONE = "Hier wurde noch keine Beute gesehen."
+L.ADVENTURE_LOOT_IN_DUNGEON = "Beute aus: %s"
+-- Adventure Mode's Quests tab, a step not offered yet and no quests found yet; the Reputation tab, no
+-- faction met yet, and a faction's rewards not seen yet (2026-11-05; drafted, to be checked).
+L.ADVENTURE_QUEST_UNKNOWN = "Diese Quest wurde Euch noch nicht angeboten."
+L.ADVENTURE_QUESTS_NONE = "Für diesen Dungeon wurden noch keine Quests gefunden."
+L.ADVENTURE_REP_NONE = "Ihr seid noch keiner dieser Fraktionen begegnet."
+L.ADVENTURE_REP_TITLE = "Belohnungen zu finden"
+L.ADVENTURE_REP_SEEN = "Ihre Belohnungen erscheinen hier, sobald Ihr sie bei ihrem Rüstmeister seht."
+L.ADVENTURE_REP_SEEN_AT = "Ihre Belohnungen erscheinen hier, sobald Ihr sie bei ihrem Rüstmeister seht: %s."
+L.ADVENTURE_REP_NONE_SEEN = "Noch keine ihrer Belohnungen gesehen."
+L.ADVENTURE_DOOR_TITLE = "Ein Gerücht"
+L.ADVENTURE_DOOR_LINE = "„%s“"
+L.ADVENTURE_DOOR_UNKNOWN = "Über diesen Ort ist noch wenig bekannt."
+L.ADVENTURE_DOOR_DUNGEON = "Unbekannter Dungeon"
+L.ADVENTURE_DOOR_RAID = "Unbekannter Schlachtzug"
+L.ADVENTURE_DOOR_NTH = "%s %d"
+L.ADVENTURE_DOOR_CHOICE = "%s (%s)"
+L.ADVENTURE_DOOR_VIA = "Das Portal liegt weiter unten: Steigt am Höhleneingang hinab."
+L.ADVENTURE_DOOR_VIA_BUILDING = "Sein Portal liegt drinnen: Geht am Eingang hinein."
+L.ADVENTURE_DOOR_WAYPOINT_SET = "Wegpunkt dorthin gesetzt, wohin das Gerücht führt."
+L.ADVENTURE_CAVE_LEADS_TO = "Der Weg zu einem sagenumwobenen Ort"
+L.ADVENTURE_CAVE_LEFT_CLICK = "Linksklick, um die Karte des Zugangs zu sehen"
+-- Adventure Mode's quest marks on the world map (UI/QuestMap.lua): a quest not offered yet is a faint "!", a
+-- rumor, under "A rumor" (ADVENTURE_DOOR_TITLE) and in ADVENTURE_DOOR_LINE's quotation marks: there may be work
+-- there, from someone or something (inside a dungeon, a tablet or a crest). It names no quest, dungeon or
+-- place (2026-11-11; translation drafted, to be checked).
+L.ADVENTURE_QUEST_RUMOR = "Hier könnte es Arbeit für Euch geben."
+-- Adventure Mode's Gear Finder: an upgrade not seen to drop yet, a rumour's place (zone, level range), the
+-- tooltip's line for one not seen, the click lines, and Show on map for a rumour's door (2026-11-10; translation
+-- drafted, to be checked).
+L.GEAR_ADVENTURE_BETTER = "Etwas Besseres"
+L.GEAR_ADVENTURE_PLACE = "%s · %s"
+L.GEAR_ADVENTURE_UNSEEN = "Ihr habt es noch nicht fallen sehen."
+L.GEAR_ADVENTURE_CELL_CLICK = "Klickt für die besten Verbesserungen; Rechtsklick für den Dungeon."
+L.GEAR_ADVENTURE_PICK_CLICK = "Klickt, um es hier anzuzeigen; Rechtsklick für den Dungeon."
+L.GEAR_ADVENTURE_ROW_CLICK = "Klickt für den Dungeon."
+L.GEAR_ADVENTURE_MAP_CLICK = "Klickt, um den Weg dorthin auf der Weltkarte zu sehen."
+L.GEAR_ADVENTURE_NO_DOOR = "Wo sein Eingang liegt, ist noch nicht bekannt."
+L.GEAR_ADVENTURE_SHOW_MAP = "Auf der Karte zeigen"
+-- The Gear Finder's rumour slot with upgrades to pick: its picture leads to the door, its words to the picks;
+-- and the picks' right-click where the slot has no link (2026-11-10; translation drafted, to be checked).
+L.GEAR_ADVENTURE_MAP_PICK_CLICK = "Klickt auf das Symbol, um den Weg dorthin auf der Weltkarte zu sehen; klickt auf den Text für die Verbesserungen zur Auswahl."
+L.GEAR_ADVENTURE_RUMOUR_PICKS = "Rechtsklick für die Verbesserungen zur Auswahl."
 L.STYLE_STARTING = "Starteinstellungen:"
 L.STYLE_LINE_ON = "%s an"
 L.STYLE_LINE_OFF = "%s aus"
-L.STYLE_LINE_CHOOSE = "%s: Eure Wahl"
-L.STYLE_GEAR = "Ausrüstungssuche und Wertgewichtung"
+L.STYLE_LINE_ADVENTURE_HIDDEN = "Dungeons, Bosse und Beute anfangs verborgen"
+L.STYLE_LINE_ADVENTURE_FOG = "Dungeonkarten im Nebel, bis die Bosse fallen"
+L.STYLE_LINE_ADVENTURE_ON = "Ausrüstungssuche, Wegkarten und Markierungen an"
+L.STYLE_GEAR = "Ausrüstungssuche, Gewichtung"
 L.STYLE_GEAR_TIP = "Der Reiter der Ausrüstungssuche, ihr Reiter im Charakterfenster, die Zeilen der Wertgewichtung in Gegenstands-Tooltips, die grünen Pfeile für Verbesserungen und die Gewichtung des Kompendiums in Pawn. Sie gehen alle von derselben Gewichtung aus und gehören daher zusammen. Nur für diesen Charakter."
-L.STYLE_WAY_IN = "Karten der Wege hinein und Höhlen"
+L.STYLE_WAY_IN = "Karten der Zugänge und Höhlen"
 L.STYLE_WAY_IN_TIP = "Karten des Wegs in einen Dungeon (Höhlen, Gebäude, die Ebenen eines Bergs) über der Weltkarte, und die Höhlen- und Gebäudeeingänge dorthin. Die eigenen Karten der Dungeons bleiben. Nur für diesen Charakter."
 L.STYLE_MARKERS = "Markierungen auf der Weltkarte"
 L.STYLE_MARKERS_TIP = "Die Markierungen des Kompendiums auf der Weltkarte: Dungeon- und Schlachtzugseingänge, Flugmeister, Schiffe, Zeppeline, Bahnen und Portale, seine Questmarkierungen, Gebietsstufen und unerforschte Gebiete. Nur für diesen Charakter."
@@ -759,9 +1047,9 @@ L.STYLE_CLOSE_NOTE = "Beim Schließen bleibt es bei %s."
 L.STYLE_CHOSEN = "Stil des Kompendiums: %s. Ihr könnt ihn jederzeit in den Optionen des Kompendiums ändern (/aegis options)."
 L.STYLE_OPTIONS_AFTER_COMBAT = "Die Optionen des Kompendiums öffnen sich, sobald der Kampf endet."
 L.STYLE_OPTION = "Stil des Kompendiums"
-L.STYLE_OPTION_TIP = "Klassisch, Modern oder Benutzerdefiniert, nur für diesen Charakter. Hakt Ihr unten eine Funktion an oder ab, wird daraus Benutzerdefiniert."
+L.STYLE_OPTION_TIP = "Klassisch, Modern, Abenteuermodus oder Benutzerdefiniert, nur für diesen Charakter. Hakt Ihr unten eine Funktion an oder ab, wird daraus Benutzerdefiniert (der Abenteuermodus bleibt an)."
 -- The Reset button under the style's dropdown, and its question (2026-11-03; drafted, to be checked).
-L.STYLE_RESET = "Dungeonkompendium zurücksetzen"
+L.STYLE_RESET = "Kompendium zurücksetzen"
 L.STYLE_RESET_BUTTON = "Zurücksetzen"
 L.STYLE_CHOOSE_BUTTON = "Wählen"
 L.STYLE_RESET_TIP = "Setzt die Optionen des Kompendiums für alle Eure Charaktere auf den Stand nach der Installation zurück und stellt diesem Charakter die Stilfrage erneut. Aufzeichnungen, Wertgewichtungen und die Stile Eurer anderen Charaktere bleiben erhalten."
@@ -796,23 +1084,44 @@ L.RUN_NOT_INSIDE = "Betretet einen Dungeon, um einen neuen Durchlauf zu beginnen
 L.RUN_HIDDEN = "Die Durchlaufanzeige ist für diesen Durchlauf ausgeblendet. Gebt /ij run ein, um sie wieder zu zeigen."
 L.RUN_NONE = "Noch kein Dungeondurchlauf."
 L.RUN_IS_OFF = "Die Durchlaufanzeige ist ausgeschaltet. Schaltet sie in den Optionen des Kompendiums ein (/aegis options)."
-L.RUN_FREE_ON = "Zieht die Durchlaufanzeige an ihrer Überschrift, um sie zu verschieben. /ij run lock setzt sie wieder an die Questverfolgung."
 L.RUN_FREE_OFF = "Die Durchlaufanzeige sitzt wieder an der Questverfolgung."
-L.RUN_USAGE = "/ij run zeigt oder verbirgt die Durchlaufanzeige (außerhalb eines Dungeons Euren letzten Durchlauf). /ij run new beginnt einen neuen Durchlauf. /ij run unlock lässt Euch sie verschieben; /ij run lock und /ij run reset setzen sie wieder an die Questverfolgung. /ij run debug zeigt, was sie gezählt hat."
+-- The run block's header lock and its chat lines, /ij run lock and unlock now the lock's, and /ij run's usage reworded for them (2026-11-17; drafted, to be checked).
+L.RUN_USAGE = "/ij run zeigt oder verbirgt die Durchlaufanzeige (außerhalb eines Dungeons Euren letzten Durchlauf). /ij run new beginnt einen neuen Durchlauf. /ij run lock und /ij run unlock sperren sie an ihrem Platz oder lassen Euch sie wieder ziehen, wie das Schloss an ihrer Überschrift; /ij run reset setzt sie wieder an die Questverfolgung. /ij run debug zeigt, was sie gezählt hat."
+L.RUN_LOCKED = "Gesperrt"
+L.RUN_LOCKED_TIP = "Klickt, um sie zu entsperren, und zieht die Anzeige dann an ihrer Überschrift."
+L.RUN_UNLOCKED = "Entsperrt"
+L.RUN_UNLOCKED_TIP = "Zieht die Anzeige an ihrer Überschrift, um sie zu verschieben. Klickt, um sie an ihrem Platz zu sperren."
+L.RUN_LOCK_ON = "Die Durchlaufanzeige ist an ihrem Platz gesperrt."
+L.RUN_LOCK_OFF = "Die Durchlaufanzeige ist entsperrt: Zieht sie an ihrer Überschrift, um sie zu verschieben."
+L.RUN_LOCK_NOT_FREE = "Sie bewegt sich nur, solange sie frei platziert wird („%s“ in den Optionen)."
+-- The clock's buttons on the run block, between the time and the count (2026-11-14; drafted, to be checked).
+L.RUN_CLOCK_START = "Uhr jetzt starten"
+L.RUN_CLOCK_WAITING = "Sonst startet sie beim ersten Kampf von selbst."
+L.RUN_CLOCK_PAUSE = "Uhr anhalten"
+L.RUN_CLOCK_RESUME = "Uhr fortsetzen"
+L.RUN_CLOCK_DONE = "Der Durchlauf ist geschafft, seine Uhr steht."
+L.RUN_RESTART = "Neuer Durchlauf"
+L.RUN_RESTART_CONFIRM = "Einen neuen Durchlauf beginnen? Die besiegten Bosse werden zurückgesetzt und die Uhr beginnt von vorn."
+-- The run block's one line inside a Scarlet Monastery wing before the wing is known (2026-11-17; drafted, to be checked).
+L.RUN_WHICH_WING = "Welcher Flügel?"
+-- /ij run new or New run before the wing is known: the new run starts once it is (2026-11-17; drafted, to be checked).
+L.RUN_NEW_WING = "Ein neuer Durchlauf beginnt, sobald der Flügel bekannt ist."
 L.OPTIONS_RUN = "Dungeondurchläufe anzeigen"
 L.OPTIONS_RUN_TIP = "In einem Dungeon zeigt eine Anzeige an der Questverfolgung, wie lange der Durchlauf dauert, seine Bosse und was Ihr gewonnen habt. Ausgeschaltet wird nichts gezählt."
 L.OPTIONS_RUN_NUMBERS = "Erfahrung und Geld anzeigen"
 L.OPTIONS_RUN_NUMBERS_TIP = "Erfahrung und Geld (erbeutetes Geld plus der Händlerpreis Eurer Gegenstände), jeweils mit ihrem Wert pro Stunde, und wie viele Gegenstände Ihr bekommen habt."
 L.OPTIONS_RUN_FREE = "Frei platzieren"
-L.OPTIONS_RUN_FREE_TIP = "Zieht die Anzeige an ihrer Überschrift an einen beliebigen Ort. Ausgeschaltet sitzt sie an der Questverfolgung und bewegt sich mit ihr."
+-- "Place it freely" on by default since 0.39.23: its tip says so, and what unticking it does (2026-11-17; drafted, to be checked).
+L.OPTIONS_RUN_FREE_TIP = "Zieht die Anzeige an ihrer Überschrift an einen beliebigen Ort. Standardmäßig an: Bis Ihr sie verschiebt, wartet sie an der Questverfolgung. Ausgeschaltet sitzt sie an der Questverfolgung und bewegt sich mit ihr. „In der Questverfolgung“ hat Vorrang davor."
 -- The run block's dark mode: its gold art darkened, else the tracker's tint (UI/RunTracker.lua Paint), 2026-11-12; drafted, to be checked.
 L.OPTIONS_RUN_DARK_MODE = "Dunkler Modus"
 L.OPTIONS_RUN_DARK_MODE_TIP = "Dunkelt das Gold der Überschrift und des Rahmens der Durchlaufanzeige ab. Ausgeschaltet sieht die Anzeige aus wie die Überschriften Eurer Questverfolgung, ist also dunkel, wenn Euer Interface sie abdunkelt."
 L.OPTIONS_RUN_SUMMARY = "Zusammenfassung im Chat"
 L.OPTIONS_RUN_SUMMARY_TIP = "Eine Zeile im Chat eine Minute, nachdem die Uhr eines Durchlaufs stoppt (früher, wenn Ihr geht). Ein Durchlauf, den Ihr unbeendet verlasst, bekommt seine Zeile, sobald er vorbei ist: wenn der Dungeon zurückgesetzt wird oder nach einer halben Stunde außerhalb."
--- The run block inside the quest tracker: an experiment, off by default (UI/RunTrackerInside.lua), 2026-11-12; drafted, to be checked.
-L.OPTIONS_RUN_INSIDE = "In der Questverfolgung (experimentell)"
-L.OPTIONS_RUN_INSIDE_TIP = "Die Anzeige kommt in die Questverfolgung, direkt unter „" .. (TRACKER_ALL_OBJECTIVES or "Alle Ziele") .. "“, und deren Abschnitte (" .. (TRACKER_HEADER_QUESTS or "Quests") .. " und die übrigen) rücken unter sie. Eine Questverfolgung, die Ihr im Bearbeitungsmodus verschoben habt, ist nur so hoch wie ihre Höhe dort: Ist das zu kurz für die Anzeige, bleibt sie neben ihr, wie ausgeschaltet, und die Schaltfläche darunter kann sie höher machen. Dies ist ein Test: Meldet das Spiel eine blockierte Aktion, schaltet sie sich selbst aus. Wurde sie schon benutzt, ist sie erst nach einem /reload ganz aus."
+-- The run block inside the quest tracker: off by default (the owner's call of 2026-11-13; on in 0.39.22's tests), its tip warning of blocked actions in combat until a /reload once the block has been inside the tracker (the owner's words, 2026-11-13), its name marked as a test (UI/RunTrackerInside.lua), 2026-11-12; drafted, to be checked.
+L.OPTIONS_RUN_INSIDE = "In der Questverfolgung (Test)"
+-- Its tip: beside the tracker with this off only while "Place it freely" is unticked too, since that is on by default (2026-11-17; drafted, to be checked).
+L.OPTIONS_RUN_INSIDE_TIP = "Die Anzeige kommt in die Questverfolgung, direkt unter „" .. (TRACKER_ALL_OBJECTIVES or "Alle Ziele") .. "“, und deren Abschnitte (" .. (TRACKER_HEADER_QUESTS or "Quests") .. " und die übrigen) rücken unter sie. Standardmäßig aus. Eine Questverfolgung, die Ihr im Bearbeitungsmodus verschoben habt, ist nur so hoch wie ihre Höhe dort: Ist das zu kurz für die Anzeige, erhöht das Kompendium diese Höhe einmal in Eurem Layout des Bearbeitungsmodus und sagt es im Chat (zu sehen nach einem /reload; die Schaltfläche darunter macht es erneut). Bis dahin bleibt die Anzeige neben ihr, wie ausgeschaltet, wenn auch „Frei platzieren“ abgewählt ist. Sobald die Anzeige in der Questverfolgung war, kann sie bis zu einem /reload im Kampf blockierte Aktionen verursachen. Dies ist ein Test: Meldet das Spiel eine blockierte Aktion, schaltet sie sich selbst aus. Wurde sie schon benutzt, ist sie erst nach einem /reload ganz aus."
 L.RUN_INSIDE_BLOCKED = "Das Spiel hat eine Aktion des Kompendiums blockiert (%s), daher ist „In der Questverfolgung“ jetzt aus und die Durchlaufanzeige kehrt neben die Questverfolgung zurück. Bitte meldet diese Zeile. Gebt /reload ein, um sie ganz aus der Questverfolgung zu nehmen."
 L.RUN_INSIDE_RELOAD = "„In der Questverfolgung“ ist jetzt aus und die Durchlaufanzeige kehrt neben die Questverfolgung zurück. Gebt /reload ein, um sie ganz aus der Questverfolgung zu nehmen."
 -- The tracker too short for the block inside: the Height it needs, and the options' Make taller button (UI/RunTrackerInside.lua), 2026-11-12; drafted, to be checked.
@@ -829,6 +1138,11 @@ L.RUN_TALLER_ENOUGH = "Die Questverfolgung ist schon hoch genug für die Durchla
 L.RUN_TALLER_FAILED = "Euer Layout des Bearbeitungsmodus ließ sich von hier aus nicht ändern. Stellt es selbst ein: %s, wählt „%s“, %s %d oder mehr."
 L.RUN_TALLER_DONE = "%s – %s: jetzt %d in Eurem Layout „%s“ des Bearbeitungsmodus. Gebt jetzt /reload ein, um es zu sehen."
 L.RUN_TALLER_MOST = "Mehr erlaubt der Bearbeitungsmodus nicht, die Anzeige passt also vielleicht immer noch nicht."
+-- The tracker's Height raised once by the journal itself when too short, 0.39.22 (UI/RunTrackerInside.lua AutoTaller), 2026-11-12; drafted, to be checked.
+L.RUN_INSIDE_AUTO = "Die Questverfolgung war zu kurz für die Durchlaufanzeige, daher hat das Kompendium ihre %s von %d auf %d gesetzt, in Eurem Layout „%s“ des Bearbeitungsmodus. Gebt /reload ein, um es zu sehen. Zurückstellen könnt Ihr es im %s."
+L.RUN_INSIDE_SAVED_TIP = "Euer Layout des Bearbeitungsmodus gibt der Questverfolgung jetzt eine %s von %d. Gebt /reload ein, um es zu sehen."
+-- Edit Mode opened before the /reload after the journal saved a Height: its old copy (UI/RunTrackerInside.lua EditModeEntered), 2026-11-12; drafted, to be checked.
+L.RUN_INSIDE_EDIT_MODE_OLD = "Der %s zeigt bis zu einem /reload noch die alte %s der Questverfolgung. Speichert Ihr dort jetzt etwas, kehrt die alte zurück."
 
 -- Matched against the client's own text: the client's language's only, previewed or not.
 if client then client.EQUIP_PATTERNS, client.AREA_NAMES = L.EQUIP_PATTERNS, L.AREA_NAMES end

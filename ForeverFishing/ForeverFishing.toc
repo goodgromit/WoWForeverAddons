@@ -1,0 +1,60 @@
+## Interface: 16001
+## Title: Forever Fishing
+## Notes: Smart fishing, gear, lures, stats and a curated journal
+## Author: Forever Addon Family
+## Version: 0.9.224
+## IconTexture: Interface\AddOns\ForeverFishing\Media\Square
+## SavedVariables: ForeverFishingDB
+## AllowLoadGameType: camelot
+
+Libs/LibStub/LibStub.lua
+Libs/CallbackHandler-1.0/CallbackHandler-1.0.lua
+Libs/LibDataBroker-1.1/LibDataBroker-1.1.lua
+Libs/LibDBIcon-1.0/LibDBIcon-1.0.lua
+Core.lua
+Localization.lua
+Locales/Preview.lua
+Locales/Zones.lua
+Locales/JournalNames.lua
+JournalNames.lua
+Minimap.lua
+Fonts.xml
+FishingControls.lua
+GamepadHUD.lua
+FishingFlyouts.lua
+FishingBar.lua
+FishingInformation.lua
+FishingUtilities.lua
+BlizzardUIVisibility.lua
+FishingChat.lua
+FishingView.lua
+DoubleClick.lua
+Statistics.lua
+Audio.lua
+AudioCompatibility.lua
+CameraScanPlan.lua
+SavedFishingView.lua
+CameraAssist.lua
+GuideData.lua
+MasterChefData.lua
+JournalFoodEffects.lua
+UpcomingEvents.lua
+CatchCollection.lua
+JournalReferenceData.lua
+AchievementsData.lua
+Achievements.lua
+GuideLinks.lua
+GuideMap.lua
+GuideMap.xml
+JournalAssets.lua
+JournalStyle.lua
+BugReport.lua
+UI.lua
+CatchRecap.lua
+Settings.lua
+ScanDiagnostics.lua
+Systems.lua
+SessionGoals.lua
+JournalRoute.lua
+Journal.lua
+JournalSearch.lua

@@ -26,6 +26,718 @@ signed "Redrawn by Torchlite" low on the map, or wherever the map has room for i
 
 and every map added to the addon later with the same signature.
 
+The fog of war on the dungeon maps is Torchlite's own art as well, all rights reserved on the same
+terms. Its pictures carry no signature, as none is ever seen: they are masks, which only shape where
+the map and the journal's parchment show. They are:
+
+- `Media/Fog/Frame.tga`, the mask that keeps the parchment off the map sheet's own frame, made from the game's maps
+- `Media/Fog/RagefireChasm/ragefire-chasm/banner.tga`, Ragefire Chasm's mask: the map's name
+- `Media/Fog/RagefireChasm/ragefire-chasm/entrance.tga`, Ragefire Chasm's mask: the way in
+- `Media/Fog/RagefireChasm/ragefire-chasm/east.tga`, Ragefire Chasm's mask: the east column
+- `Media/Fog/RagefireChasm/ragefire-chasm/green.tga`, Ragefire Chasm's mask: the green room
+- `Media/Fog/RagefireChasm/ragefire-chasm/disc.tga`, Ragefire Chasm's mask: Oggleflint's platform
+- `Media/Fog/RagefireChasm/ragefire-chasm/lake.tga`, Ragefire Chasm's mask: Taragaman's lake
+- `Media/Fog/RagefireChasm/ragefire-chasm/lake_to_chamber.tga`, Ragefire Chasm's mask: the way round the lake to the chamber
+- `Media/Fog/RagefireChasm/ragefire-chasm/lake_to_walkway.tga`, Ragefire Chasm's mask: the way round the lake to the walkway
+- `Media/Fog/RagefireChasm/ragefire-chasm/chamber.tga`, Ragefire Chasm's mask: Jergosh's chamber
+- `Media/Fog/RagefireChasm/ragefire-chasm/walkway.tga`, Ragefire Chasm's mask: Bazzalan's walkway
+- `Media/Fog/HallOfThanes/HallOfThanes/entrance.tga`, The Hall of Thanes's mask: the way in
+- `Media/Fog/HallOfThanes/HallOfThanes/south_hall.tga`, The Hall of Thanes's mask: the south hall, the sarcophagus room above the way in
+- `Media/Fog/HallOfThanes/HallOfThanes/faldrim_anvilmar.tga`, The Hall of Thanes's mask: Faldrim Anvilmar's room
+- `Media/Fog/HallOfThanes/HallOfThanes/magmatus.tga`, The Hall of Thanes's mask: Magmatus's room
+- `Media/Fog/HallOfThanes/HallOfThanes/plunder.tga`, The Hall of Thanes's mask: Plunder's room
+- `Media/Fog/HallOfThanes/HallOfThanes/durgen_dirgehammer.tga`, The Hall of Thanes's mask: Durgen Dirgehammer's room
+- `Media/Fog/HallOfThanes/HallOfThanes/banner.tga`, The Hall of Thanes's mask: the map's name
+- `Media/Fog/HallOfThanes/HallOfThanes/extent.tga`, The Hall of Thanes's mask: where the parchment lies, inside Santiago Reyes's own frame and off his credit
+- `Media/Fog/WailingCaverns/wailing-caverns/entrance.tga`, Wailing Caverns's mask: the way in
+- `Media/Fog/WailingCaverns/wailing-caverns/deviate_faerie_dragon_hall.tga`, Wailing Caverns's mask: the Pit of Fangs, where the Deviate Faerie Dragon stands
+- `Media/Fog/WailingCaverns/wailing-caverns/west_passage.tga`, Wailing Caverns's mask: the stream west to the Pit of Fangs
+- `Media/Fog/WailingCaverns/wailing-caverns/kresh_hall.tga`, Wailing Caverns's mask: the river, its north bank and Dreamer's Rock
+- `Media/Fog/WailingCaverns/wailing-caverns/terraces.tga`, Wailing Caverns's mask: the terraces south of the river
+- `Media/Fog/WailingCaverns/wailing-caverns/lord_cobrahn.tga`, Wailing Caverns's mask: Lord Cobrahn's room
+- `Media/Fog/WailingCaverns/wailing-caverns/lady_anacondra.tga`, Wailing Caverns's mask: Lady Anacondra's room
+- `Media/Fog/WailingCaverns/wailing-caverns/kresh.tga`, Wailing Caverns's mask: Kresh's room
+- `Media/Fog/WailingCaverns/wailing-caverns/chasm.tga`, Wailing Caverns's mask: the Winding Chasm's floor
+- `Media/Fog/WailingCaverns/wailing-caverns/lower.tga`, Wailing Caverns's mask: the channel, the Crag of the Everliving and the passages south of it
+- `Media/Fog/WailingCaverns/wailing-caverns/lord_pythas.tga`, Wailing Caverns's mask: Lord Pythas's room
+- `Media/Fog/WailingCaverns/wailing-caverns/skum.tga`, Wailing Caverns's mask: Skum's room
+- `Media/Fog/WailingCaverns/wailing-caverns/lord_serpentis.tga`, Wailing Caverns's mask: Lord Serpentis's room
+- `Media/Fog/WailingCaverns/wailing-caverns/verdan.tga`, Wailing Caverns's mask: Verdan the Everliving's room
+- `Media/Fog/WailingCaverns/wailing-caverns/banner.tga`, Wailing Caverns's mask: the map's name
+- `Media/Fog/CityOfDalaran/CityOfDalaranSewers/entrance.tga`, City of Dalaran's mask: the way in
+- `Media/Fog/CityOfDalaran/CityOfDalaranSewers/underbelly.tga`, City of Dalaran's mask: the Underbelly, the sewers' hall with its pipes, channels and the tavern, and the north-east tunnel and the room where Lyn the Ignored is summoned
+- `Media/Fog/CityOfDalaran/CityOfDalaranSewers/atrexis.tga`, City of Dalaran's mask: Atrexis the Grave Knight's ritual circle
+- `Media/Fog/CityOfDalaran/CityOfDalaranSewers/banner.tga`, City of Dalaran's mask: the map's name
+- `Media/Fog/CityOfDalaran/CityOfDalaranSewers/extent.tga`, City of Dalaran's mask: where the parchment lies, inside Santiago Reyes's own frame and off his credit
+- `Media/Fog/CityOfDalaran/CityOfDalaranCity/way_in.tga`, City of Dalaran's mask: the way in: the round court and the street by the sewers' hatch
+- `Media/Fog/CityOfDalaran/CityOfDalaranCity/landing.tga`, City of Dalaran's mask: Krasus Landing's lawns, its name, the south gate and its stairs
+- `Media/Fog/CityOfDalaran/CityOfDalaranCity/arcane_anomaly.tga`, City of Dalaran's mask: the Arcane Anomaly's terrace on Krasus Landing
+- `Media/Fog/CityOfDalaran/CityOfDalaranCity/arcanic_enigma.tga`, City of Dalaran's mask: Arcanic Enigma's room
+- `Media/Fog/CityOfDalaran/CityOfDalaranCity/square.tga`, City of Dalaran's mask: Runeweaver Square round the Fel Ancient's barrier, its west arm and the streets down to the round court
+- `Media/Fog/CityOfDalaran/CityOfDalaranCity/unstable_sentinel.tga`, City of Dalaran's mask: Unstable Sentinel's room
+- `Media/Fog/CityOfDalaran/CityOfDalaranCity/mana_devourer.tga`, City of Dalaran's mask: Mana Devourer's room
+- `Media/Fog/CityOfDalaran/CityOfDalaranCity/fel_ancient.tga`, City of Dalaran's mask: the Fel Ancient's barrier in the middle of Runeweaver Square, and the square's name
+- `Media/Fog/CityOfDalaran/CityOfDalaranCity/shade.tga`, City of Dalaran's mask: Shade of the Archmage's room
+- `Media/Fog/CityOfDalaran/CityOfDalaranCity/banner.tga`, City of Dalaran's mask: the map's name
+- `Media/Fog/CityOfDalaran/CityOfDalaranCity/extent.tga`, City of Dalaran's mask: where the parchment lies, inside Santiago Reyes's own frame and off his credit
+- `Media/Fog/TheDeadmines/the-deadmines-full/entrance.tga`, The Deadmines's mask: the way in: the swirl, the first chamber and its two branches
+- `Media/Fog/TheDeadmines/the-deadmines-full/tunnels.tga`, The Deadmines's mask: the tunnels from the first chamber down to Rhahk'Zor's room
+- `Media/Fog/TheDeadmines/the-deadmines-full/rhahk_zor.tga`, The Deadmines's mask: Rhahk'Zor's room
+- `Media/Fog/TheDeadmines/the-deadmines-full/junction.tga`, The Deadmines's mask: the junction past Rhahk'Zor's door, Miner Johnson's side passage, its round end and the rock beside it, and the passage down to the Mast Room
+- `Media/Fog/TheDeadmines/the-deadmines-full/sneed.tga`, The Deadmines's mask: Sneed's Shredder and Sneed's room: the Mast Room and its name
+- `Media/Fog/TheDeadmines/the-deadmines-full/foundry_passage.tga`, The Deadmines's mask: the passage from the Mast Room to the Goblin Foundry
+- `Media/Fog/TheDeadmines/the-deadmines-full/gilnid.tga`, The Deadmines's mask: Gilnid's room: the Goblin Foundry, its name and the rock its passages ring
+- `Media/Fog/TheDeadmines/the-deadmines-full/cove.tga`, The Deadmines's mask: Ironclad Cove: its water, docks, bridge and shores
+- `Media/Fog/TheDeadmines/the-deadmines-full/tunnel.tga`, The Deadmines's mask: the shaft and the tunnel from the foundry to Ironclad Cove
+- `Media/Fog/TheDeadmines/the-deadmines-full/mr_smite.tga`, The Deadmines's mask: Mr. Smite's landing at the ship's gangway
+- `Media/Fog/TheDeadmines/the-deadmines-full/ship_deck.tga`, The Deadmines's mask: the ship's decks and ramps
+- `Media/Fog/TheDeadmines/the-deadmines-full/captain_greenskin.tga`, The Deadmines's mask: Captain Greenskin's room: the raised deck's fore half
+- `Media/Fog/TheDeadmines/the-deadmines-full/edwin_vancleef.tga`, The Deadmines's mask: Edwin VanCleef's room: the raised deck's after half and the captain's cabin
+- `Media/Fog/TheDeadmines/the-deadmines-full/cookie.tga`, The Deadmines's mask: Cookie's room: his stretch of the east deck and the plank
+- `Media/Fog/TheDeadmines/the-deadmines-full/banner.tga`, The Deadmines's mask: the map's name
+- `Media/Fog/TheDeadmines/the-deadmines-full/extent.tga`, The Deadmines's mask: where the fog lies: off Torchlite's signature
+- `Media/Fog/TheDeadmines/the-deadmines-1/entrance.tga`, The Deadmines's mask: the way in
+- `Media/Fog/TheDeadmines/the-deadmines-1/tunnels.tga`, The Deadmines's mask: the tunnels from the entrance down to Rhahk'Zor's room
+- `Media/Fog/TheDeadmines/the-deadmines-1/rhahk_zor.tga`, The Deadmines's mask: Rhahk'Zor's room
+- `Media/Fog/TheDeadmines/the-deadmines-1/junction.tga`, The Deadmines's mask: the junction past Rhahk'Zor's door, Miner Johnson's side passage, its round end and the sheet under it, and the passage down to the Mast Room
+- `Media/Fog/TheDeadmines/the-deadmines-1/sneed.tga`, The Deadmines's mask: Sneed's Shredder and Sneed's room: the Mast Room and its name
+- `Media/Fog/TheDeadmines/the-deadmines-1/foundry_passage.tga`, The Deadmines's mask: the passage from the Mast Room to the Goblin Foundry
+- `Media/Fog/TheDeadmines/the-deadmines-1/gilnid.tga`, The Deadmines's mask: Gilnid's room: the Goblin Foundry's gallery, its name and the rock beside it
+- `Media/Fog/TheDeadmines/the-deadmines-1/banner.tga`, The Deadmines's mask: the map's name
+- `Media/Fog/TheDeadmines/the-deadmines-2/way_in.tga`, The Deadmines's mask: the way in: the foundry's floor where the ramp comes down
+- `Media/Fog/TheDeadmines/the-deadmines-2/gilnid.tga`, The Deadmines's mask: Gilnid's room: the Goblin Foundry's floor and its name
+- `Media/Fog/TheDeadmines/the-deadmines-2/cove.tga`, The Deadmines's mask: Ironclad Cove: its water, docks, bridge and shores
+- `Media/Fog/TheDeadmines/the-deadmines-2/tunnel.tga`, The Deadmines's mask: the tunnel from the foundry to Ironclad Cove
+- `Media/Fog/TheDeadmines/the-deadmines-2/mr_smite.tga`, The Deadmines's mask: Mr. Smite's landing at the ship's gangway
+- `Media/Fog/TheDeadmines/the-deadmines-2/ship_deck.tga`, The Deadmines's mask: the ship's decks and ramps
+- `Media/Fog/TheDeadmines/the-deadmines-2/bow.tga`, The Deadmines's mask: the ship's bow and fore deck
+- `Media/Fog/TheDeadmines/the-deadmines-2/captain_greenskin.tga`, The Deadmines's mask: Captain Greenskin's room: the raised deck's fore half
+- `Media/Fog/TheDeadmines/the-deadmines-2/edwin_vancleef.tga`, The Deadmines's mask: Edwin VanCleef's room: the raised deck's after half and the captain's cabin
+- `Media/Fog/TheDeadmines/the-deadmines-2/cookie.tga`, The Deadmines's mask: Cookie's room: his stretch of the east deck, the plank and the water at its foot
+- `Media/Fog/TheDeadmines/the-deadmines-2/banner.tga`, The Deadmines's mask: the map's name
+- `Media/Fog/TheStockade/the-stockade/entrance.tga`, The Stockade's mask: the way in
+- `Media/Fog/TheStockade/the-stockade/west.tga`, The Stockade's mask: the west wing's corridor along its cells, and three of its four cells
+- `Media/Fog/TheStockade/the-stockade/hall.tga`, The Stockade's mask: the central corridor, its crossing, the passage to the blue room and the two empty cells beside the corridor
+- `Media/Fog/TheStockade/the-stockade/targorr_1.tga`, The Stockade's mask: Targorr the Dread's room
+- `Media/Fog/TheStockade/the-stockade/targorr_2.tga`, The Stockade's mask: Targorr the Dread's room
+- `Media/Fog/TheStockade/the-stockade/targorr_3.tga`, The Stockade's mask: Targorr the Dread's room
+- `Media/Fog/TheStockade/the-stockade/targorr_4.tga`, The Stockade's mask: Targorr the Dread's room (the west wing's south-west cell, with its far part where Bruegal Ironknuckle may stand)
+- `Media/Fog/TheStockade/the-stockade/east.tga`, The Stockade's mask: the east wing's corridor along its cells, and three of its four cells
+- `Media/Fog/TheStockade/the-stockade/kam_deepfury.tga`, The Stockade's mask: Kam Deepfury's room
+- `Media/Fog/TheStockade/the-stockade/red_room.tga`, The Stockade's mask: the red room at the east wing's end (round Hamhock's spot) and its two empty cells
+- `Media/Fog/TheStockade/the-stockade/east_end.tga`, The Stockade's mask: the east wing's corridor from its cells to the red room
+- `Media/Fog/TheStockade/the-stockade/hamhock.tga`, The Stockade's mask: Hamhock's room (the middle of the red room)
+- `Media/Fog/TheStockade/the-stockade/green_room.tga`, The Stockade's mask: the green room at the west wing's end
+- `Media/Fog/TheStockade/the-stockade/west_end.tga`, The Stockade's mask: the west wing's corridor from its cells to the green room
+- `Media/Fog/TheStockade/the-stockade/dextren_ward_1.tga`, The Stockade's mask: Dextren Ward's room
+- `Media/Fog/TheStockade/the-stockade/dextren_ward_2.tga`, The Stockade's mask: Dextren Ward's room
+- `Media/Fog/TheStockade/the-stockade/dextren_ward_3.tga`, The Stockade's mask: Dextren Ward's room
+- `Media/Fog/TheStockade/the-stockade/bazil_thredd.tga`, The Stockade's mask: Bazil Thredd's room
+- `Media/Fog/TheStockade/the-stockade/banner.tga`, The Stockade's mask: the map's name
+- `Media/Fog/TheStockade/the-stockade/extent.tga`, The Stockade's mask: where the fog lies at all: off the parts of the map's name kept clear
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-full/entrance.tga`, Shadowfang Keep's mask: the way in: the swirl, the gate and the east band inside it
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-full/gate.tga`, Shadowfang Keep's mask: the gate building
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-full/east_room_west.tga`, Shadowfang Keep's mask: the big east room's west end, by the Wall Walk's door (it clears with Rethilgore and with Odo)
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-full/rethilgore.tga`, Shadowfang Keep's mask: Rethilgore's room: the big east room (his cells under Odo's room), Odo's pocket and its west end apart
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-full/west_wing.tga`, Shadowfang Keep's mask: the Courtyard's west wing round the Dining Hall
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-full/courtyard.tga`, Shadowfang Keep's mask: the courtyard, its north arc, the dark block inside it and the stable (the Fel Steed / Shadow Charger holds no fog)
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-full/commander_springvale.tga`, Shadowfang Keep's mask: Commander Springvale's room: the green hall and its east door's stair
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-full/razorclaw_hall.tga`, Shadowfang Keep's mask: the courtyard's dark block and the north-west building's band round Razorclaw's pocket, to the Dining Hall's tip
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-full/razorclaw.tga`, Shadowfang Keep's mask: Razorclaw the Butcher's room: a pocket round his spot (his kitchen lies under the courtyard's north-west building)
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-full/baron_silverlaine.tga`, Shadowfang Keep's mask: Baron Silverlaine's room: the Dining Hall and its round end
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-full/ramp.tga`, Shadowfang Keep's mask: the Wall Walk's ramp from Springvale's hall to the big east room
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-full/odo.tga`, Shadowfang Keep's mask: Odo the Blindwatcher's room: a pocket round his spot in the big east room
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-full/junction.tga`, Shadowfang Keep's mask: the north tower's stairs and the observatory's hooks
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-full/north_walk.tga`, Shadowfang Keep's mask: the north wall walk, west of the Deathsworn Captain
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-full/north_walk_east.tga`, Shadowfang Keep's mask: the north-east wall walk and its corner tower, with the Deathsworn Captain's spot
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-full/fenrus.tga`, Shadowfang Keep's mask: Fenrus the Devourer's room: the yellow room over his green room (with the Voidwalkers), Nandos's pocket apart
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-full/rings.tga`, Shadowfang Keep's mask: the observatory's rings: the ring ramp up to Arugal's Chamber
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-full/wolf_master_nandos.tga`, Shadowfang Keep's mask: Wolf Master Nandos's room: a pocket round his spot in the yellow room
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-full/archmage_arugal.tga`, Shadowfang Keep's mask: Archmage Arugal's room: his chamber and the passage up to it
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-full/banner.tga`, Shadowfang Keep's mask: the map's name
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-full/extent.tga`, Shadowfang Keep's mask: where the fog lies: off Torchlite's signature
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-1/entrance.tga`, Shadowfang Keep's mask: the way in: the swirl and the gate
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-1/gate_passage.tga`, Shadowfang Keep's mask: the passage down the gate building's west side to the courtyard, and its foot by the cells' door
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-1/entrance_hall_1.tga`, Shadowfang Keep's mask: the gate building
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-1/rethilgore.tga`, Shadowfang Keep's mask: Rethilgore's room: the cells
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-1/west_wing.tga`, Shadowfang Keep's mask: the west wing: the north-west building, the octagon, the west rooms and the long corridor to Springvale's hall
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-1/courtyard.tga`, Shadowfang Keep's mask: the courtyard, its east bay and its north arc, up to the stair to the Dining Hall, and the stable (the Fel Steed / Shadow Charger holds no fog)
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-1/commander_springvale.tga`, Shadowfang Keep's mask: Commander Springvale's room: the green hall and its east door's stair
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-1/banner.tga`, Shadowfang Keep's mask: the map's name
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-2/way_in.tga`, Shadowfang Keep's mask: the way in: the octagon at the top of the north stair
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-2/razorclaw_hall.tga`, Shadowfang Keep's mask: the kitchen round Razorclaw's spot
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-2/razorclaw.tga`, Shadowfang Keep's mask: Razorclaw the Butcher's room: a pocket round his spot in the kitchen
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-2/dining_hall.tga`, Shadowfang Keep's mask: the Dining Hall
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-2/baron_silverlaine.tga`, Shadowfang Keep's mask: Baron Silverlaine's room: the apse, the round end and its stair down
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-2/banner.tga`, Shadowfang Keep's mask: the map's name
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-7/way_in.tga`, Shadowfang Keep's mask: the way in: the top of the ramp from Springvale's hall
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-7/odo_hall_1.tga`, Shadowfang Keep's mask: Odo's purple room round his spot, the old stair down beside it, its roof block and the south-east tower
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-7/passage_1.tga`, Shadowfang Keep's mask: the ramp's foot west of Odo's room
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-7/ramp.tga`, Shadowfang Keep's mask: the ramp
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-7/odo.tga`, Shadowfang Keep's mask: Odo the Blindwatcher's room: a pocket round his spot in his purple room
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-7/round_tower.tga`, Shadowfang Keep's mask: the round tower
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-7/north_walk.tga`, Shadowfang Keep's mask: the north wall walk's west end
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-7/deathsworn_captain_hall.tga`, Shadowfang Keep's mask: the north wall walk round the Deathsworn Captain's spot
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-7/east_walk.tga`, Shadowfang Keep's mask: the east wall walk
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-7/fenrus.tga`, Shadowfang Keep's mask: the north tower, the way up to the Lower Observatory (it clears with Fenrus)
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-7/banner.tga`, Shadowfang Keep's mask: the map's name
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-4/way_in.tga`, Shadowfang Keep's mask: the way in: the hook up from the north tower's stair
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-4/fenrus.tga`, Shadowfang Keep's mask: Fenrus the Devourer's room: the green room (with the Voidwalkers)
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-4/wolf_master_nandos.tga`, Shadowfang Keep's mask: the rings: the ring ramp up to Arugal's Chamber (it clears with Nandos)
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-4/banner.tga`, Shadowfang Keep's mask: the map's name
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-4/extent.tga`, Shadowfang Keep's mask: where the fog lies: off Torchlite's signature
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-6/way_in.tga`, Shadowfang Keep's mask: the way in: the hook at the top of the ring ramp
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-6/wolf_master_nandos_hall.tga`, Shadowfang Keep's mask: Nandos's yellow room round his spot, and the passage up to it
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-6/way_in_hall.tga`, Shadowfang Keep's mask: the hook's corner
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-6/wolf_master_nandos.tga`, Shadowfang Keep's mask: Wolf Master Nandos's room: a pocket round his spot
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-6/archmage_arugal.tga`, Shadowfang Keep's mask: Archmage Arugal's room: his chamber and the passage up to it
+- `Media/Fog/ShadowfangKeep/shadowfang-keep-6/banner.tga`, Shadowfang Keep's mask: the map's name
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-full/entrance.tga`, Blackfathom Deeps's mask: the way in: the swirl and the passage down to the Drowned Sacellum
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-full/pool.tga`, Blackfathom Deeps's mask: the Pool of Ask'ar: its water and shores
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-full/sacellum.tga`, Blackfathom Deeps's mask: the Drowned Sacellum, its name and the passage down to the Pool of Ask'ar
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-full/ghamoo_ra.tga`, Blackfathom Deeps's mask: Ghamoo-ra's room: the island in the pool
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-full/lady_sarevess.tga`, Blackfathom Deeps's mask: Lady Sarevess's room: her side cavern off the pool
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-full/loop.tga`, Blackfathom Deeps's mask: the passage from the pool round to the trident, and the trident's bar
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-full/gelihast.tga`, Blackfathom Deeps's mask: Gelihast's room: his shrine, its neck and the rock the passages ring
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-full/lorgus_jett_1.tga`, Blackfathom Deeps's mask: Lorgus Jett's room: the trident's center tine
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-full/lorgus_jett_2.tga`, Blackfathom Deeps's mask: Lorgus Jett's room: the trident's east tine
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-full/passage.tga`, Blackfathom Deeps's mask: the passage from the trident down to the Moonshrine Ruins
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-full/lorgus_jett_3.tga`, Blackfathom Deeps's mask: Lorgus Jett's room: the alcove on the passage down to the Ruins
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-full/ruins.tga`, Blackfathom Deeps's mask: the Moonshrine Ruins, their basins, their name and the walkway by the Fathom Stone
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-full/lorgus_jett_4.tga`, Blackfathom Deeps's mask: Lorgus Jett's room: the Moonshrine Ruins' west floor
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-full/twilight_lord_kelris.tga`, Blackfathom Deeps's mask: Twilight Lord Kelris's room: the Moonshrine Sanctum and its name
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-full/aku_mai.tga`, Blackfathom Deeps's mask: Aku'mai's room: the way past his door, his lair and its name
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-full/old_serra_kis.tga`, Blackfathom Deeps's mask: Old Serra'kis's room: the Forgotten Pool and its name
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-full/banner.tga`, Blackfathom Deeps's mask: the map's name
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-full/extent.tga`, Blackfathom Deeps's mask: where the fog lies: off Torchlite's signature
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-1/entrance.tga`, Blackfathom Deeps's mask: the way in: the swirl, the passage west of it and the way down
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-1/pool.tga`, Blackfathom Deeps's mask: the Pool of Ask'ar: its water and shores
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-1/sacellum.tga`, Blackfathom Deeps's mask: the Drowned Sacellum, its name and the passage down to the pool
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-1/ghamoo_ra.tga`, Blackfathom Deeps's mask: Ghamoo-ra's room: the island in the pool
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-1/lady_sarevess.tga`, Blackfathom Deeps's mask: Lady Sarevess's room: her green side cavern
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-1/lorgus_jett.tga`, Blackfathom Deeps's mask: Lorgus Jett's room: the trident, where the way goes down
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-1/loop.tga`, Blackfathom Deeps's mask: the passage from the pool round to the trident
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-1/gelihast.tga`, Blackfathom Deeps's mask: Gelihast's room: his shrine, its neck and the rock the passages ring
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-1/banner.tga`, Blackfathom Deeps's mask: the map's name
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-2/way_in.tga`, Blackfathom Deeps's mask: the way in: the trident's junction, where the way down from the pool lands
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-2/lorgus_jett_1.tga`, Blackfathom Deeps's mask: Lorgus Jett's room: the trident's center tine
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-2/lorgus_jett_2.tga`, Blackfathom Deeps's mask: Lorgus Jett's room: the trident's east tine
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-2/passage.tga`, Blackfathom Deeps's mask: the passage from the trident down to the Moonshrine Ruins
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-2/lorgus_jett_3.tga`, Blackfathom Deeps's mask: Lorgus Jett's room: the alcove on the passage
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-2/ruins.tga`, Blackfathom Deeps's mask: the Moonshrine Ruins, their basins and the walkway by the Fathom Stone
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-2/lorgus_jett_4.tga`, Blackfathom Deeps's mask: Lorgus Jett's room: the Ruins' west floor
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-2/twilight_lord_kelris.tga`, Blackfathom Deeps's mask: Twilight Lord Kelris's room: the Moonshrine Sanctum and its name
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-2/aku_mai.tga`, Blackfathom Deeps's mask: Aku'mai's room: the way past his door, his lair and its name
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-2/banner.tga`, Blackfathom Deeps's mask: the map's name
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-3/way_in.tga`, Blackfathom Deeps's mask: the way in: the flooded passage's west end
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-3/old_serra_kis.tga`, Blackfathom Deeps's mask: Old Serra'kis's room: the Forgotten Pool, the passage to it, the ledge in the hook west of it and its name
+- `Media/Fog/BlackfathomDeeps/blackfathom-deeps-3/banner.tga`, Blackfathom Deeps's mask: the map's name
+- `Media/Fog/ScarletMonasteryGraveyard/scarlet-monastery-graveyard/entrance.tga`, Scarlet Monastery: Graveyard's mask: the way in
+- `Media/Fog/ScarletMonasteryGraveyard/scarlet-monastery-graveyard/chamber.tga`, Scarlet Monastery: Graveyard's mask: the Chamber of Atonement round Interrogator Vishas's pocket
+- `Media/Fog/ScarletMonasteryGraveyard/scarlet-monastery-graveyard/long_hall.tga`, Scarlet Monastery: Graveyard's mask: the long hall north of the way in
+- `Media/Fog/ScarletMonasteryGraveyard/scarlet-monastery-graveyard/interrogator_vishas.tga`, Scarlet Monastery: Graveyard's mask: Interrogator Vishas's pocket in the Chamber of Atonement, and its name
+- `Media/Fog/ScarletMonasteryGraveyard/scarlet-monastery-graveyard/tomb.tga`, Scarlet Monastery: Graveyard's mask: Honor's Tomb, but for its north band: with its west column and south-west room (the rares' sixth place) and its name
+- `Media/Fog/ScarletMonasteryGraveyard/scarlet-monastery-graveyard/cloister.tga`, Scarlet Monastery: Graveyard's mask: the Forlorn Cloister, with the five places in its gardens where the rares may stand
+- `Media/Fog/ScarletMonasteryGraveyard/scarlet-monastery-graveyard/west_hall.tga`, Scarlet Monastery: Graveyard's mask: the hall west of the Chamber of Atonement and its corridor to the cloister
+- `Media/Fog/ScarletMonasteryGraveyard/scarlet-monastery-graveyard/bloodmage_thalnos.tga`, Scarlet Monastery: Graveyard's mask: Bloodmage Thalnos's room (Honor's Tomb's north band and the garden by it)
+- `Media/Fog/ScarletMonasteryGraveyard/scarlet-monastery-graveyard/banner.tga`, Scarlet Monastery: Graveyard's mask: the map's name
+- `Media/Fog/ScarletMonasteryLibrary/scarlet-monastery-library/entrance.tga`, Scarlet Monastery: Library's mask: the way in
+- `Media/Fog/ScarletMonasteryLibrary/scarlet-monastery-library/cloister.tga`, Scarlet Monastery: Library's mask: the long hall, the Huntsman's Cloister and the passage to Houndmaster Loksey's door
+- `Media/Fog/ScarletMonasteryLibrary/scarlet-monastery-library/houndmaster_loksey.tga`, Scarlet Monastery: Library's mask: Houndmaster Loksey's room
+- `Media/Fog/ScarletMonasteryLibrary/scarlet-monastery-library/athenaeum.tga`, Scarlet Monastery: Library's mask: the Athenaeum's hall and its pillared room
+- `Media/Fog/ScarletMonasteryLibrary/scarlet-monastery-library/gallery.tga`, Scarlet Monastery: Library's mask: the passage east of the cloister, the corridor north to the Gallery of Treasures, the gallery and the two pillared rooms
+- `Media/Fog/ScarletMonasteryLibrary/scarlet-monastery-library/arcanist_doan.tga`, Scarlet Monastery: Library's mask: Arcanist Doan's room
+- `Media/Fog/ScarletMonasteryLibrary/scarlet-monastery-library/banner.tga`, Scarlet Monastery: Library's mask: the map's name
+- `Media/Fog/ScarletMonasteryArmory/scarlet-monastery-armory/entrance.tga`, Scarlet Monastery: Armory's mask: the way in (the swirl's room and its passage up to the Training Grounds)
+- `Media/Fog/ScarletMonasteryArmory/scarlet-monastery-armory/hallway.tga`, Scarlet Monastery: Armory's mask: the hallway before the Hall of Champions
+- `Media/Fog/ScarletMonasteryArmory/scarlet-monastery-armory/crusaders_armory.tga`, Scarlet Monastery: Armory's mask: the Crusader's Armory and the passage up from it
+- `Media/Fog/ScarletMonasteryArmory/scarlet-monastery-armory/footmans_armory.tga`, Scarlet Monastery: Armory's mask: the Footman's Armory and the passage up from it
+- `Media/Fog/ScarletMonasteryArmory/scarlet-monastery-armory/training_grounds.tga`, Scarlet Monastery: Armory's mask: the Training Grounds, their name and the passage up from them
+- `Media/Fog/ScarletMonasteryArmory/scarlet-monastery-armory/herod.tga`, Scarlet Monastery: Armory's mask: Herod's room (the Hall of Champions)
+- `Media/Fog/ScarletMonasteryArmory/scarlet-monastery-armory/banner.tga`, Scarlet Monastery: Armory's mask: the map's name
+- `Media/Fog/ScarletMonasteryCathedral/scarlet-monastery-cathedral/entrance.tga`, Scarlet Monastery: Cathedral's mask: the way in (the swirl, its passage and the corridor under the garden up to the garden's south door)
+- `Media/Fog/ScarletMonasteryCathedral/scarlet-monastery-cathedral/nave.tga`, Scarlet Monastery: Cathedral's mask: the nave, the crossing round the front of the altar, the transept's west arm and the two cells over it, and the name CRUSADER'S CHAPEL
+- `Media/Fog/ScarletMonasteryCathedral/scarlet-monastery-cathedral/gardens.tga`, Scarlet Monastery: Cathedral's mask: the Chapel Gardens, their stairs up to the cathedral's door and the name CHAPEL GARDENS
+- `Media/Fog/ScarletMonasteryCathedral/scarlet-monastery-cathedral/high_inquisitor_fairbanks.tga`, Scarlet Monastery: Cathedral's mask: High Inquisitor Fairbanks's room (his cell, the sheet by it where his pin is, and the transept's east arm)
+- `Media/Fog/ScarletMonasteryCathedral/scarlet-monastery-cathedral/scarlet_commander_mograine.tga`, Scarlet Monastery: Cathedral's mask: Scarlet Commander Mograine's room (the chancel, its altar and steps, and the middle of the crossing in front of them)
+- `Media/Fog/ScarletMonasteryCathedral/scarlet-monastery-cathedral/high_inquisitor_whitemane.tga`, Scarlet Monastery: Cathedral's mask: High Inquisitor Whitemane's room (the round chapel behind the altar, the passage to it and the sheet up to the map's name)
+- `Media/Fog/ScarletMonasteryCathedral/scarlet-monastery-cathedral/banner.tga`, Scarlet Monastery: Cathedral's mask: the map's name
+- `Media/Fog/Gnomeregan/gnomeregan-full/entrance.tga`, Gnomeregan's mask: the way in: the swirl and the shaft above it
+- `Media/Fog/Gnomeregan/gnomeregan-full/upper.tga`, Gnomeregan's mask: the Clockwerk Run and the Hall of Gears' upper ring
+- `Media/Fog/Gnomeregan/gnomeregan-full/grubbis.tga`, Gnomeregan's mask: Grubbis's room: the trogg cave and its passage
+- `Media/Fog/Gnomeregan/gnomeregan-full/viscous_fallout.tga`, Gnomeregan's mask: Viscous Fallout's room: the Hall of Gears' floor, the Dormitory and the Clean Zone's stair and passages
+- `Media/Fog/Gnomeregan/gnomeregan-full/launch_ring.tga`, Gnomeregan's mask: the Launch Bay's ring
+- `Media/Fog/Gnomeregan/gnomeregan-full/west_corridor.tga`, Gnomeregan's mask: the corridor west from the Hall of Gears and the Clean Zone's hall
+- `Media/Fog/Gnomeregan/gnomeregan-full/electrocutioner_6000.tga`, Gnomeregan's mask: Electrocutioner 6000's room: the Launch Bay inside its ring
+- `Media/Fog/Gnomeregan/gnomeregan-full/labs_pass.tga`, Gnomeregan's mask: the passages from the Launch Bay down to the Engineering Labs
+- `Media/Fog/Gnomeregan/gnomeregan-full/crowd_pummeler_9_60.tga`, Gnomeregan's mask: the Crowd Pummeler 9-60's room: the Engineering Labs and the corridor east to the back door
+- `Media/Fog/Gnomeregan/gnomeregan-full/u_passage.tga`, Gnomeregan's mask: the U-shaped passage (the Dark Iron Ambassador's spot in its west leg), the passage from it to the labs and the sheet they ring
+- `Media/Fog/Gnomeregan/gnomeregan-full/mekgineer_thermaplugg.tga`, Gnomeregan's mask: Mekgineer Thermaplugg's room: Tinkers' Court
+- `Media/Fog/Gnomeregan/gnomeregan-full/banner.tga`, Gnomeregan's mask: the map's name
+- `Media/Fog/Gnomeregan/gnomeregan-1/entrance.tga`, Gnomeregan's mask: the way in: the swirl and the Clockwerk Run north of it
+- `Media/Fog/Gnomeregan/gnomeregan-1/upper.tga`, Gnomeregan's mask: the Clockwerk Run down to the Hall of Gears and the ring's east side
+- `Media/Fog/Gnomeregan/gnomeregan-1/grubbis.tga`, Gnomeregan's mask: Grubbis's room: the trogg cave and its passage
+- `Media/Fog/Gnomeregan/gnomeregan-1/clean_zone.tga`, Gnomeregan's mask: the Clean Zone's passages, the Dormitory's upper rooms and their names
+- `Media/Fog/Gnomeregan/gnomeregan-1/ring_west.tga`, Gnomeregan's mask: the Hall of Gears' upper ring: its north, west and south sides
+- `Media/Fog/Gnomeregan/gnomeregan-1/viscous_fallout.tga`, Gnomeregan's mask: Viscous Fallout's room: the Hall of Gears' pit seen from the ring
+- `Media/Fog/Gnomeregan/gnomeregan-1/banner.tga`, Gnomeregan's mask: the map's name
+- `Media/Fog/Gnomeregan/gnomeregan-2/way_in.tga`, Gnomeregan's mask: the way in: the Hall of Gears' north-east landing
+- `Media/Fog/Gnomeregan/gnomeregan-2/red_hall.tga`, Gnomeregan's mask: the Hall of Gears' floor round Viscous Fallout's room
+- `Media/Fog/Gnomeregan/gnomeregan-2/viscous_fallout.tga`, Gnomeregan's mask: Viscous Fallout's room: the middle of the Hall of Gears' floor and its way south, the Dormitory and the slanted room by it
+- `Media/Fog/Gnomeregan/gnomeregan-2/launch_ring.tga`, Gnomeregan's mask: the Launch Bay's ring and the spur off it
+- `Media/Fog/Gnomeregan/gnomeregan-2/west_corridor.tga`, Gnomeregan's mask: the corridor west from the Hall of Gears to the Launch Bay
+- `Media/Fog/Gnomeregan/gnomeregan-2/electrocutioner_6000.tga`, Gnomeregan's mask: Electrocutioner 6000's room: the Launch Bay inside its ring
+- `Media/Fog/Gnomeregan/gnomeregan-2/banner.tga`, Gnomeregan's mask: the map's name
+- `Media/Fog/Gnomeregan/gnomeregan-3/way_in.tga`, Gnomeregan's mask: the way in: the end of the passages' north-east branch
+- `Media/Fog/Gnomeregan/gnomeregan-3/passages.tga`, Gnomeregan's mask: the passages from the bay down to the Engineering Labs
+- `Media/Fog/Gnomeregan/gnomeregan-3/crowd_pummeler_9_60.tga`, Gnomeregan's mask: the Crowd Pummeler 9-60's room: the Engineering Labs and the corridor east to the back door
+- `Media/Fog/Gnomeregan/gnomeregan-3/electrocutioner_6000.tga`, Gnomeregan's mask: Electrocutioner 6000's room: the Launch Bay's bay and the slab below it
+- `Media/Fog/Gnomeregan/gnomeregan-3/banner.tga`, Gnomeregan's mask: the map's name
+- `Media/Fog/Gnomeregan/gnomeregan-4/way_in.tga`, Gnomeregan's mask: the way in: the U's junction
+- `Media/Fog/Gnomeregan/gnomeregan-4/u_passage.tga`, Gnomeregan's mask: the U-shaped passage, with the Dark Iron Ambassador's spot
+- `Media/Fog/Gnomeregan/gnomeregan-4/mekgineer_thermaplugg.tga`, Gnomeregan's mask: Mekgineer Thermaplugg's room: Tinkers' Court
+- `Media/Fog/Gnomeregan/gnomeregan-4/labs_link.tga`, Gnomeregan's mask: the passage from the U to the Engineering Labs
+- `Media/Fog/Gnomeregan/gnomeregan-4/crowd_pummeler_9_60.tga`, Gnomeregan's mask: the Crowd Pummeler 9-60's room: the Engineering Labs' lower floor
+- `Media/Fog/Gnomeregan/gnomeregan-4/banner.tga`, Gnomeregan's mask: the map's name
+- `Media/Fog/RuinsOfLordaeron/RuinsOfLordaeron/entrance.tga`, Ruins of Lordaeron's mask: the way in, the north-east palace building with the swirl
+- `Media/Fog/RuinsOfLordaeron/RuinsOfLordaeron/alley_w.tga`, Ruins of Lordaeron's mask: the rubble strip between the throne room and King's Alley, from the way in's south door
+- `Media/Fog/RuinsOfLordaeron/RuinsOfLordaeron/the_baron.tga`, Ruins of Lordaeron's mask: The Baron's district, Lordamere Overlook and the south-east, with its name
+- `Media/Fog/RuinsOfLordaeron/RuinsOfLordaeron/witherfang.tga`, Ruins of Lordaeron's mask: Witherfang's district, King's Alley, with its name
+- `Media/Fog/RuinsOfLordaeron/RuinsOfLordaeron/palace.tga`, Ruins of Lordaeron's mask: the palace street: the north-west palace building, the court and the lawn, the rubble arch and the ground west of the throne room
+- `Media/Fog/RuinsOfLordaeron/RuinsOfLordaeron/the_abandoned.tga`, Ruins of Lordaeron's mask: The Abandoned's walled courtyard, its pool and its corner tower
+- `Media/Fog/RuinsOfLordaeron/RuinsOfLordaeron/nw_quarter.tga`, Ruins of Lordaeron's mask: the north-west quarter by the palace, with the Lordaeron Captain's spot
+- `Media/Fog/RuinsOfLordaeron/RuinsOfLordaeron/bjork.tga`, Ruins of Lordaeron's mask: Bjork's district, Market Street, with its name
+- `Media/Fog/RuinsOfLordaeron/RuinsOfLordaeron/rathmael.tga`, Ruins of Lordaeron's mask: Rath'mael's district, the throne room and his ground south-west of it
+- `Media/Fog/RuinsOfLordaeron/RuinsOfLordaeron/viktor.tga`, Ruins of Lordaeron's mask: Viktor the Vile's district, Lordaeron Graveyard, the west lane and the south, with its name
+- `Media/Fog/RuinsOfLordaeron/RuinsOfLordaeron/banner.tga`, Ruins of Lordaeron's mask: the map's name
+- `Media/Fog/RuinsOfLordaeron/RuinsOfLordaeron/extent.tga`, Ruins of Lordaeron's mask: where the parchment lies, inside Santiago Reyes's own frame and off his credit
+- `Media/Fog/ExcavationSiteWetlands/ExcavationSiteWetlands/entrance.tga`, Excavation Site: Wetlands's mask: the way in: the swirl and the road's first stretch
+- `Media/Fog/ExcavationSiteWetlands/ExcavationSiteWetlands/marsh.tga`, Excavation Site: Wetlands's mask: the Lost Marsh, its falls and pond, and their shores
+- `Media/Fog/ExcavationSiteWetlands/ExcavationSiteWetlands/approach.tga`, Excavation Site: Wetlands's mask: the north road from the swirl to the Lost Marsh, the rocky hills, the east slopes
+- `Media/Fog/ExcavationSiteWetlands/ExcavationSiteWetlands/saltspine.tga`, Excavation Site: Wetlands's mask: Saltspine's pocket in the Lost Marsh
+- `Media/Fog/ExcavationSiteWetlands/ExcavationSiteWetlands/thicket.tga`, Excavation Site: Wetlands's mask: Stalker's Thicket, its road and the forest under the north mountains
+- `Media/Fog/ExcavationSiteWetlands/ExcavationSiteWetlands/shadetooth.tga`, Excavation Site: Wetlands's mask: Shadetooth's pocket at the Thicket's east end
+- `Media/Fog/ExcavationSiteWetlands/ExcavationSiteWetlands/dig_site.tga`, Excavation Site: Wetlands's mask: the Lost Dig Site and the road loop north of it to the Highland Horror's glade
+- `Media/Fog/ExcavationSiteWetlands/ExcavationSiteWetlands/relic_guardian.tga`, Excavation Site: Wetlands's mask: the Site of the Guardian, its valley, the road into it and its name
+- `Media/Fog/ExcavationSiteWetlands/ExcavationSiteWetlands/highland_horror.tga`, Excavation Site: Wetlands's mask: the Highland Horror's pocket: the nook north of the Lost Dig Site, its fence and comb
+- `Media/Fog/ExcavationSiteWetlands/ExcavationSiteWetlands/banner.tga`, Excavation Site: Wetlands's mask: the map's name
+- `Media/Fog/ExcavationSiteWetlands/ExcavationSiteWetlands/extent.tga`, Excavation Site: Wetlands's mask: where the parchment lies, inside Santiago Reyes's own frame and off his two credits
+- `Media/Fog/Uldaman/Uldaman/entrance.tga`, Uldaman's mask: the way in: the Hall of the Keepers
+- `Media/Fog/Uldaman/Uldaman/back_door.tga`, Uldaman's mask: the back way in: the swirl under Echomok Cavern
+- `Media/Fog/Uldaman/Uldaman/eric.tga`, Uldaman's mask: Dig Two, the Lost Dwarves' room (Eric "The Swift", Olaf and Baelog)
+- `Media/Fog/Uldaman/Uldaman/map_chamber.tga`, Uldaman's mask: the Map Chamber
+- `Media/Fog/Uldaman/Uldaman/ironaya.tga`, Uldaman's mask: Ironaya's room
+- `Media/Fog/Uldaman/Uldaman/caves.tga`, Uldaman's mask: the caves between the Map Chamber and the rooms
+- `Media/Fog/Uldaman/Uldaman/ancient_stone_keeper.tga`, Uldaman's mask: Ancient Stone Keeper's room
+- `Media/Fog/Uldaman/Uldaman/grimlok.tga`, Uldaman's mask: Grimlok's room
+- `Media/Fog/Uldaman/Uldaman/revelosh.tga`, Uldaman's mask: Revelosh's room
+- `Media/Fog/Uldaman/Uldaman/obsidian_sentinel.tga`, Uldaman's mask: Obsidian Sentinel's room
+- `Media/Fog/Uldaman/Uldaman/galgann_firehammer.tga`, Uldaman's mask: Galgann Firehammer's room
+- `Media/Fog/Uldaman/Uldaman/archaedas.tga`, Uldaman's mask: the Hall of the Crafters (with Archaedas)
+- `Media/Fog/Uldaman/Uldaman/banner.tga`, Uldaman's mask: the map's name
+- `Media/Fog/Uldaman/Uldaman1/way_in.tga`, Uldaman's mask: the way in: the top of the hall down to Khaz'Goroth's Seat
+- `Media/Fog/Uldaman/Uldaman1/ramp.tga`, Uldaman's mask: the hall down to Khaz'Goroth's Seat
+- `Media/Fog/Uldaman/Uldaman1/archaedas.tga`, Uldaman's mask: Archaedas's room: Khaz'Goroth's Seat and the Discs of Norgannon's room
+- `Media/Fog/Uldaman/Uldaman1/banner.tga`, Uldaman's mask: the map's name
+- `Media/Fog/Maraudon/maraudon-full/entrance.tga`, Maraudon's mask: the way in: the Wicked Grotto door's swirl
+- `Media/Fog/Maraudon/maraudon-full/orange_door.tga`, Maraudon's mask: the orange door's swirl
+- `Media/Fog/Maraudon/maraudon-full/foulspore.tga`, Maraudon's mask: Foulspore Cavern's passages
+- `Media/Fog/Maraudon/maraudon-full/noxious_hollow.tga`, Maraudon's mask: the Noxious Hollow and the passages north-east of it
+- `Media/Fog/Maraudon/maraudon-full/razorlash.tga`, Maraudon's mask: Razorlash's room: his round end of Foulspore Cavern and its name
+- `Media/Fog/Maraudon/maraudon-full/lower_caves.tga`, Maraudon's mask: the caves south and east of Landslide, the land bridge and the waters beside it
+- `Media/Fog/Maraudon/maraudon-full/earth_song_falls.tga`, Maraudon's mask: Earth Song Falls: its water, its banks and the cave west of it
+- `Media/Fog/Maraudon/maraudon-full/landslide.tga`, Maraudon's mask: Landslide's room: a pocket round his niche
+- `Media/Fog/Maraudon/maraudon-full/rotgrip.tga`, Maraudon's mask: Rotgrip's room: a pocket round his spot by the land bridge
+- `Media/Fog/Maraudon/maraudon-full/noxxion.tga`, Maraudon's mask: Noxxion's room: his corner at the top of the Noxious Hollow
+- `Media/Fog/Maraudon/maraudon-full/bottom_passage.tga`, Maraudon's mask: the pool under Vyletongue Seat, VILETONGUE SEAT and the passage east to Meshlok's ground
+- `Media/Fog/Maraudon/maraudon-full/west_passage.tga`, Maraudon's mask: the Wicked Grotto's west passage, the pool south of Tinkerer Gizlock, the bridge, and Meshlok's ground south of it with THE WICKED GROTTO
+- `Media/Fog/Maraudon/maraudon-full/wicked_grotto.tga`, Maraudon's mask: the Wicked Grotto
+- `Media/Fog/Maraudon/maraudon-full/lord_vyletongue.tga`, Maraudon's mask: Lord Vyletongue's room: Vyletongue Seat and its hall
+- `Media/Fog/Maraudon/maraudon-full/poison_falls.tga`, Maraudon's mask: Poison Falls, its name, and the rock east of it to Tinkerer Gizlock's chamber
+- `Media/Fog/Maraudon/maraudon-full/celebras.tga`, Maraudon's mask: Celebras the Cursed's room: the green pool where Poison Falls comes down and the chamber round it
+- `Media/Fog/Maraudon/maraudon-full/tinkerer_gizlock.tga`, Maraudon's mask: Tinkerer Gizlock's room: his chamber and its stairs
+- `Media/Fog/Maraudon/maraudon-full/princess_theradras.tga`, Maraudon's mask: Princess Theradras's room: the west lake, her island and ZAETAR'S GRAVE
+- `Media/Fog/Maraudon/maraudon-full/banner.tga`, Maraudon's mask: the map's name
+- `Media/Fog/Maraudon/Maraudon/way_in.tga`, Maraudon's mask: the way in: the Wicked Grotto door's swirl and its passage
+- `Media/Fog/Maraudon/Maraudon/orange_door.tga`, Maraudon's mask: the orange door: its swirl under the stair room and the passage at it
+- `Media/Fog/Maraudon/Maraudon/foulspore.tga`, Maraudon's mask: Foulspore Cavern's passages and its name, Poison Falls, its name, and the rock east of it to Tinkerer Gizlock's chamber
+- `Media/Fog/Maraudon/Maraudon/noxious_hollow.tga`, Maraudon's mask: the Noxious Hollow, its name, the passages north-east of it and the stair room
+- `Media/Fog/Maraudon/Maraudon/razorlash.tga`, Maraudon's mask: Razorlash's room: his round end of Foulspore Cavern
+- `Media/Fog/Maraudon/Maraudon/noxxion.tga`, Maraudon's mask: Noxxion's room: his corner at the top of the Noxious Hollow
+- `Media/Fog/Maraudon/Maraudon/bottom_passage.tga`, Maraudon's mask: the pool under Vyletongue Seat and the passage east to Meshlok's ground
+- `Media/Fog/Maraudon/Maraudon/meshlok_ground.tga`, Maraudon's mask: Meshlok's ground south of the bridge, his spot with it
+- `Media/Fog/Maraudon/Maraudon/west_passage.tga`, Maraudon's mask: the Wicked Grotto's west passage, the south of Tinkerer Gizlock's chamber with its pool, and the bridge down to Meshlok's ground
+- `Media/Fog/Maraudon/Maraudon/wicked_grotto.tga`, Maraudon's mask: the Wicked Grotto: the loop round its island, from the way in to its west passage, the sheet south-west of it and its name
+- `Media/Fog/Maraudon/Maraudon/lord_vyletongue.tga`, Maraudon's mask: Lord Vyletongue's room: Vyletongue Seat, its hall and its name
+- `Media/Fog/Maraudon/Maraudon/tinkerer_gizlock.tga`, Maraudon's mask: Tinkerer Gizlock's room: his blue chamber, its stairs and its island of rock
+- `Media/Fog/Maraudon/Maraudon/banner.tga`, Maraudon's mask: the map's name
+- `Media/Fog/Maraudon/Maraudon1/way_in.tga`, Maraudon's mask: the way in: the top of the chamber, where Poison Falls comes down
+- `Media/Fog/Maraudon/Maraudon1/lower_caves.tga`, Maraudon's mask: the caves south and east of Landslide, the land bridge and the waters beside it
+- `Media/Fog/Maraudon/Maraudon1/earth_song_falls.tga`, Maraudon's mask: Earth Song Falls: its water, its banks and the cave west of it
+- `Media/Fog/Maraudon/Maraudon1/landslide.tga`, Maraudon's mask: Landslide's room: a pocket round his niche
+- `Media/Fog/Maraudon/Maraudon1/rotgrip.tga`, Maraudon's mask: Rotgrip's room: a pocket round his spot by the land bridge
+- `Media/Fog/Maraudon/Maraudon1/celebras.tga`, Maraudon's mask: Celebras the Cursed's room: the green pool and the chamber round it
+- `Media/Fog/Maraudon/Maraudon1/princess_theradras.tga`, Maraudon's mask: Princess Theradras's room: the west lake, her island and ZAETAR'S GRAVE
+- `Media/Fog/Maraudon/Maraudon1/banner.tga`, Maraudon's mask: the map's name
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-full/entrance.tga`, The Temple of Atal'Hakkar's mask: the way in
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-full/pit.tga`, The Temple of Atal'Hakkar's mask: the pit inside the ring
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-full/ring.tga`, The Temple of Atal'Hakkar's mask: the upper ring, its four stair rooms, the dark room off it and the west balcony's ramp
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-full/balcony_minibosses_1.tga`, The Temple of Atal'Hakkar's mask: Balcony Minibosses's room
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-full/balcony_minibosses_2.tga`, The Temple of Atal'Hakkar's mask: Balcony Minibosses's room
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-full/balcony_minibosses_3.tga`, The Temple of Atal'Hakkar's mask: Balcony Minibosses's room
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-full/balcony_minibosses_4.tga`, The Temple of Atal'Hakkar's mask: Balcony Minibosses's room
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-full/balcony_minibosses_5.tga`, The Temple of Atal'Hakkar's mask: Balcony Minibosses's room
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-full/balcony_minibosses_6.tga`, The Temple of Atal'Hakkar's mask: Balcony Minibosses's room
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-full/east.tga`, The Temple of Atal'Hakkar's mask: the east wing's hall, its arm and the yard beside it
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-full/jammal_an.tga`, The Temple of Atal'Hakkar's mask: Jammal'an the Prophet and Ogom the Wretched's room
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-full/weaver.tga`, The Temple of Atal'Hakkar's mask: Weaver and Dreamscythe's room
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-full/morphaz_hall.tga`, The Temple of Atal'Hakkar's mask: the yellow room
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-full/hazzas_hall.tga`, The Temple of Atal'Hakkar's mask: the south corridor and the yard beside it
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-full/morphaz.tga`, The Temple of Atal'Hakkar's mask: Morphaz's room
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-full/atal_alarion.tga`, The Temple of Atal'Hakkar's mask: Atal'alarion's room
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-full/west.tga`, The Temple of Atal'Hakkar's mask: the west wing's north hall, its arm and the yard between the arms
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-full/west_s.tga`, The Temple of Atal'Hakkar's mask: the west wing's south hall and its arm
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-full/avatar_of_hakkar.tga`, The Temple of Atal'Hakkar's mask: Avatar of Hakkar's room
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-full/hazzas.tga`, The Temple of Atal'Hakkar's mask: Hazzas's room
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-full/shade_of_eranikus.tga`, The Temple of Atal'Hakkar's mask: Shade of Eranikus's room
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-full/banner.tga`, The Temple of Atal'Hakkar's mask: the map's name
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-lower/way_in.tga`, The Temple of Atal'Hakkar's mask: the way in
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-lower/ring.tga`, The Temple of Atal'Hakkar's mask: the lowest ring, its six statue rooms and four stair rooms
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-lower/atal_alarion.tga`, The Temple of Atal'Hakkar's mask: Atal'alarion's room
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-lower/spawn_of_hakkar_1.tga`, The Temple of Atal'Hakkar's mask: Spawn of Hakkar's room
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-lower/spawn_of_hakkar_2.tga`, The Temple of Atal'Hakkar's mask: Spawn of Hakkar's room
+- `Media/Fog/TempleOfAtalHakkar/the-temple-of-atal-hakkar-lower/banner.tga`, The Temple of Atal'Hakkar's mask: the map's name
+- `Media/Fog/BlackrockDepths/BlackrockDepths/entrance.tga`, Blackrock Depths's mask: the way in
+- `Media/Fog/BlackrockDepths/BlackrockDepths/cavern.tga`, Blackrock Depths's mask: the cavern round the junction's rocks
+- `Media/Fog/BlackrockDepths/BlackrockDepths/lord_roccor.tga`, Blackrock Depths's mask: Lord Roccor's room
+- `Media/Fog/BlackrockDepths/BlackrockDepths/fineous_darkvire.tga`, Blackrock Depths's mask: Fineous Darkvire's room
+- `Media/Fog/BlackrockDepths/BlackrockDepths/highway.tga`, Blackrock Depths's mask: the Dark Iron Highway
+- `Media/Fog/BlackrockDepths/BlackrockDepths/bael_gar.tga`, Blackrock Depths's mask: Bael'Gar's room
+- `Media/Fog/BlackrockDepths/BlackrockDepths/high_interrogator_gerstahn.tga`, Blackrock Depths's mask: High Interrogator Gerstahn's room
+- `Media/Fog/BlackrockDepths/BlackrockDepths/ramp.tga`, Blackrock Depths's mask: the ramp up to the Black Anvil and the city's roofs round it
+- `Media/Fog/BlackrockDepths/BlackrockDepths/lord_incendius.tga`, Blackrock Depths's mask: Lord Incendius's room
+- `Media/Fog/BlackrockDepths/BlackrockDepths/banner.tga`, Blackrock Depths's mask: the map's name
+- `Media/Fog/BlackrockDepths/BlackrockDepths1/way_in.tga`, Blackrock Depths's mask: the way in
+- `Media/Fog/BlackrockDepths/BlackrockDepths1/arena_ring.tga`, Blackrock Depths's mask: the Ring of Law's gold ring and its east gate, the ground north of it with its name and the band of lava west of it
+- `Media/Fog/BlackrockDepths/BlackrockDepths1/ring_of_law_gorosh.tga`, Blackrock Depths's mask: the Ring of Law's sand (its six challengers' room)
+- `Media/Fog/BlackrockDepths/BlackrockDepths1/manufactory.tga`, Blackrock Depths's mask: the Manufactory and the road east to the Grim Guzzler
+- `Media/Fog/BlackrockDepths/BlackrockDepths1/golem_lord_argelmach.tga`, Blackrock Depths's mask: Golem Lord Argelmach's room
+- `Media/Fog/BlackrockDepths/BlackrockDepths1/guzzler.tga`, Blackrock Depths's mask: Guzzler and Phalanx's room
+- `Media/Fog/BlackrockDepths/BlackrockDepths1/road.tga`, Blackrock Depths's mask: the road from the Chamber of Enchantment to the Mold Foundry and its name
+- `Media/Fog/BlackrockDepths/BlackrockDepths1/the_seven.tga`, Blackrock Depths's mask: The Seven's room
+- `Media/Fog/BlackrockDepths/BlackrockDepths1/emperor_dagran_thaurissan.tga`, Blackrock Depths's mask: Emperor Dagran Thaurissan and Princess Moira Bronzebeard's room
+- `Media/Fog/BlackrockDepths/BlackrockDepths1/houndmaster_grebmar.tga`, Blackrock Depths's mask: Houndmaster Grebmar's room
+- `Media/Fog/BlackrockDepths/BlackrockDepths1/ne_passage.tga`, Blackrock Depths's mask: the Shrine of Thaurissan and the passage up to the Domicile
+- `Media/Fog/BlackrockDepths/BlackrockDepths1/warder_stilgiss.tga`, Blackrock Depths's mask: Warder Stilgiss's room: the Domicile
+- `Media/Fog/BlackrockDepths/BlackrockDepths1/general_angerforge.tga`, Blackrock Depths's mask: General Angerforge's room
+- `Media/Fog/BlackrockDepths/BlackrockDepths1/plaza.tga`, Blackrock Depths's mask: Shadowforge City's plaza and outer rings
+- `Media/Fog/BlackrockDepths/BlackrockDepths1/ambassador_flamelash.tga`, Blackrock Depths's mask: Ambassador Flamelash's room
+- `Media/Fog/BlackrockDepths/BlackrockDepths1/tomb_ne.tga`, Blackrock Depths's mask: the passage from the Summoners' Tomb to the Lyceum
+- `Media/Fog/BlackrockDepths/BlackrockDepths1/lyceum.tga`, Blackrock Depths's mask: the Lyceum
+- `Media/Fog/BlackrockDepths/BlackrockDepths1/magmus.tga`, Blackrock Depths's mask: Magmus's room
+- `Media/Fog/BlackrockDepths/BlackrockDepths1/banner.tga`, Blackrock Depths's mask: the map's name
+- `Media/Fog/UpperBlackrockSpire/UpperBlackrockSpire/entrance.tga`, Upper Blackrock Spire's mask: the way in: Dragonspire Hall's round hall, its side rooms and its stairs
+- `Media/Fog/UpperBlackrockSpire/UpperBlackrockSpire/pyroguard_emberseer.tga`, Upper Blackrock Spire's mask: Pyroguard Emberseer's room on Dragonspire Hall's map: the hall's north block, the room west of it and the hall's name
+- `Media/Fog/UpperBlackrockSpire/UpperBlackrockSpire/banner.tga`, Upper Blackrock Spire's mask: the map's name
+- `Media/Fog/UpperBlackrockSpire/UpperBlackrockSpire1/way_in.tga`, Upper Blackrock Spire's mask: the way in: the top of the corridor north of the Hall of Binding
+- `Media/Fog/UpperBlackrockSpire/UpperBlackrockSpire1/pyroguard_emberseer.tga`, Upper Blackrock Spire's mask: Pyroguard Emberseer's room: the Hall of Binding, the corridor north of it and its name, and the Rookery and the two short passages south of it, where Solakar Flamewreath stands
+- `Media/Fog/UpperBlackrockSpire/UpperBlackrockSpire1/banner.tga`, Upper Blackrock Spire's mask: the map's name
+- `Media/Fog/UpperBlackrockSpire/UpperBlackrockSpire2/way_in.tga`, Upper Blackrock Spire's mask: the way in: the ramp up from the Rookery and the gallery's west side
+- `Media/Fog/UpperBlackrockSpire/UpperBlackrockSpire2/junctions.tga`, Upper Blackrock Spire's mask: the junctions under the stadium, the dark block west of the Furnace and the passage down to the room before the Furnace
+- `Media/Fog/UpperBlackrockSpire/UpperBlackrockSpire2/hall.tga`, Upper Blackrock Spire's mask: the Hall of Blackhand: its corridors (the round where Jed Runewatcher stands too) and the gallery over the Rookery
+- `Media/Fog/UpperBlackrockSpire/UpperBlackrockSpire2/gyth.tga`, Upper Blackrock Spire's mask: Gyth and Warchief Rend Blackhand's room: Blackrock Stadium, the halls either side of it, the Blackwing Lair passage and their names
+- `Media/Fog/UpperBlackrockSpire/UpperBlackrockSpire2/furnace_door.tga`, Upper Blackrock Spire's mask: the room before the Furnace
+- `Media/Fog/UpperBlackrockSpire/UpperBlackrockSpire2/the_beast.tga`, Upper Blackrock Spire's mask: The Beast's room: the Furnace
+- `Media/Fog/UpperBlackrockSpire/UpperBlackrockSpire2/goraluk_anvilcrack.tga`, Upper Blackrock Spire's mask: Goraluk Anvilcrack's room: the west end of the Hall of Blackhand
+- `Media/Fog/UpperBlackrockSpire/UpperBlackrockSpire2/general_drakkisath.tga`, Upper Blackrock Spire's mask: General Drakkisath's room: the Spire Throne, the passage east of it and its name
+- `Media/Fog/UpperBlackrockSpire/UpperBlackrockSpire2/banner.tga`, Upper Blackrock Spire's mask: the map's name
+- `Media/Fog/DireMaulNorth/DireMaulNorth/entrance.tga`, Dire Maul: Gordok Commons's mask: the way in
+- `Media/Fog/DireMaulNorth/DireMaulNorth/guard_mol_dar.tga`, Dire Maul: Gordok Commons's mask: Guard Mol'dar's room
+- `Media/Fog/DireMaulNorth/DireMaulNorth/halls_passage.tga`, Dire Maul: Gordok Commons's mask: the lower Halls of Destruction, the red hall's stair and the passage to the courtyards
+- `Media/Fog/DireMaulNorth/DireMaulNorth/west_court_walks.tga`, Dire Maul: Gordok Commons's mask: the walks round Guard Fengus's garden court
+- `Media/Fog/DireMaulNorth/DireMaulNorth/east_court_walks.tga`, Dire Maul: Gordok Commons's mask: the walks round the first courtyard and between the courts
+- `Media/Fog/DireMaulNorth/DireMaulNorth/guard_slip_kik.tga`, Dire Maul: Gordok Commons's mask: Guard Slip'kik's room
+- `Media/Fog/DireMaulNorth/DireMaulNorth/captain_kromcrush.tga`, Dire Maul: Gordok Commons's mask: Captain Kromcrush's room
+- `Media/Fog/DireMaulNorth/DireMaulNorth/king_gordok.tga`, Dire Maul: Gordok Commons's mask: King Gordok and Cho'Rush the Observer's room
+- `Media/Fog/DireMaulNorth/DireMaulNorth/stomper_kreeg.tga`, Dire Maul: Gordok Commons's mask: Stomper Kreeg's room
+- `Media/Fog/DireMaulNorth/DireMaulNorth/guard_fengus.tga`, Dire Maul: Gordok Commons's mask: Guard Fengus's room
+- `Media/Fog/DireMaulNorth/DireMaulNorth/banner.tga`, Dire Maul: Gordok Commons's mask: the map's name
+- `Media/Fog/DireMaulWest/DireMaulWest/entrance.tga`, Dire Maul: Capital Gardens's mask: the portal bay (the way in)
+- `Media/Fog/DireMaulWest/DireMaulWest/gardens.tga`, Dire Maul: Capital Gardens's mask: the gardens' hall round the pool and the passage beside the gallery
+- `Media/Fog/DireMaulWest/DireMaulWest/tendris_warpwood.tga`, Dire Maul: Capital Gardens's mask: Tendris Warpwood's building (the gallery and his room)
+- `Media/Fog/DireMaulWest/DireMaulWest/illyanna_ravenoak.tga`, Dire Maul: Capital Gardens's mask: Illyanna Ravenoak's court
+- `Media/Fog/DireMaulWest/DireMaulWest/banner.tga`, Dire Maul: Capital Gardens's mask: the map's name
+- `Media/Fog/DireMaulWest/DireMaulWest1/way_in.tga`, Dire Maul: Capital Gardens's mask: the north-east gallery (the way in)
+- `Media/Fog/DireMaulWest/DireMaulWest1/top_hall.tga`, Dire Maul: Capital Gardens's mask: the north gallery and its stairwell, with the corner where Tsu'zee stands
+- `Media/Fog/DireMaulWest/DireMaulWest1/magister_kalendris.tga`, Dire Maul: Capital Gardens's mask: Magister Kalendris's west and south galleries
+- `Media/Fog/DireMaulWest/DireMaulWest1/banner.tga`, Dire Maul: Capital Gardens's mask: the map's name
+- `Media/Fog/DireMaulWest/DireMaulWest2/way_in.tga`, Dire Maul: Capital Gardens's mask: the passage's east end (the way in)
+- `Media/Fog/DireMaulWest/DireMaulWest2/prison_hall.tga`, Dire Maul: Capital Gardens's mask: the prison round the dais
+- `Media/Fog/DireMaulWest/DireMaulWest2/passage.tga`, Dire Maul: Capital Gardens's mask: the passage to the prison and the rock beside it
+- `Media/Fog/DireMaulWest/DireMaulWest2/prince_tortheldrin.tga`, Dire Maul: Capital Gardens's mask: Prince Tortheldrin's Athenaeum and its ramp
+- `Media/Fog/DireMaulWest/DireMaulWest2/immol_thar.tga`, Dire Maul: Capital Gardens's mask: Immol'thar's dais
+- `Media/Fog/DireMaulWest/DireMaulWest2/banner.tga`, Dire Maul: Capital Gardens's mask: the map's name
+- `Media/Fog/Scholomance/Scholomance/entrance.tga`, Scholomance's mask: the way in
+- `Media/Fog/Scholomance/Scholomance/hall.tga`, Scholomance's mask: the hall from the way in to the Reliquary, its dark wings and the dark block west of it
+- `Media/Fog/Scholomance/Scholomance/blood_steward_of_kirtonos.tga`, Scholomance's mask: the Reliquary, the Blood Steward of Kirtonos's room
+- `Media/Fog/Scholomance/Scholomance/banner.tga`, Scholomance's mask: the map's name
+- `Media/Fog/Scholomance/Scholomance/extent.tga`, Scholomance's mask: where the parchment lies: inside the picture's own frame, off the rects kept clear
+- `Media/Fog/Scholomance/Scholomance1/way_in.tga`, Scholomance's mask: the way in
+- `Media/Fog/Scholomance/Scholomance1/marduk_blackpool.tga`, Scholomance's mask: the Viewing Room, Marduk Blackpool's and Vectus's room, its passages and stairs
+- `Media/Fog/Scholomance/Scholomance1/l_hall.tga`, Scholomance's mask: the west hall, its stairs, the stair passage and the alcove under it
+- `Media/Fog/Scholomance/Scholomance1/rattlegore.tga`, Scholomance's mask: the Great Ossuary's balcony and its stair room (Rattlegore's spot is on The Upper Study)
+- `Media/Fog/Scholomance/Scholomance1/chamber.tga`, Scholomance's mask: the Chamber of Summoning, Kirtonos the Herald's porch and the chamber's name
+- `Media/Fog/Scholomance/Scholomance1/jandice_barov.tga`, Scholomance's mask: the Chamber of Summoning's east stair room (Jandice Barov's spot is on The Upper Study)
+- `Media/Fog/Scholomance/Scholomance1/banner.tga`, Scholomance's mask: the map's name
+- `Media/Fog/Scholomance/Scholomance1/extent.tga`, Scholomance's mask: where the parchment lies: inside the picture's own frame, off the rects kept clear
+- `Media/Fog/Scholomance/Scholomance2/way_in.tga`, Scholomance's mask: the way in
+- `Media/Fog/Scholomance/Scholomance2/jandice_barov.tga`, Scholomance's mask: Jandice Barov's hall and its alcove
+- `Media/Fog/Scholomance/Scholomance2/study.tga`, Scholomance's mask: the Headmaster's Study: the ring round its sunken square, its west wing and its name
+- `Media/Fog/Scholomance/Scholomance2/doctor_theolen_krastinov.tga`, Scholomance's mask: Doctor Theolen Krastinov's room
+- `Media/Fog/Scholomance/Scholomance2/rattlegore.tga`, Scholomance's mask: the Great Ossuary's floor and its stair room, Rattlegore's room
+- `Media/Fog/Scholomance/Scholomance2/instructor_malicia.tga`, Scholomance's mask: Instructor Malicia's room
+- `Media/Fog/Scholomance/Scholomance2/lorekeeper_polkelt.tga`, Scholomance's mask: Lorekeeper Polkelt's room
+- `Media/Fog/Scholomance/Scholomance2/banner.tga`, Scholomance's mask: the map's name
+- `Media/Fog/Scholomance/Scholomance2/extent.tga`, Scholomance's mask: where the parchment lies: inside the picture's own frame, off the rects kept clear
+- `Media/Fog/Scholomance/Scholomance3/way_in.tga`, Scholomance's mask: the way in
+- `Media/Fog/Scholomance/Scholomance3/lab_corridor.tga`, Scholomance's mask: the corridor from the Laboratory to the stair
+- `Media/Fog/Scholomance/Scholomance3/ras_frostwhisper.tga`, Scholomance's mask: the Laboratory, Ras Frostwhisper's room
+- `Media/Fog/Scholomance/Scholomance3/darkmaster_gandling_hall.tga`, Scholomance's mask: the middle room of the vaults round Darkmaster Gandling's place
+- `Media/Fog/Scholomance/Scholomance3/the_ravenian.tga`, Scholomance's mask: The Ravenian's room
+- `Media/Fog/Scholomance/Scholomance3/lady_illucia_barov.tga`, Scholomance's mask: Lady Illucia Barov's room
+- `Media/Fog/Scholomance/Scholomance3/lord_alexei_barov.tga`, Scholomance's mask: Lord Alexei Barov's room
+- `Media/Fog/Scholomance/Scholomance3/darkmaster_gandling.tga`, Scholomance's mask: Darkmaster Gandling's place in the middle of the vaults' middle room
+- `Media/Fog/Scholomance/Scholomance3/banner.tga`, Scholomance's mask: the map's name
+- `Media/Fog/Scholomance/Scholomance3/extent.tga`, Scholomance's mask: where the parchment lies: inside the picture's own frame, off the rects kept clear
+- `Media/Fog/Stratholme/stratholme-full/entrance.tga`, Stratholme's mask: the way in: the Main Gate, its two towers and the swirl
+- `Media/Fog/Stratholme/stratholme-full/service_gate.tga`, Stratholme's mask: the second way in: the Service Gate's swirl and lane
+- `Media/Fog/Stratholme/stratholme-full/bastion.tga`, Stratholme's mask: the Scarlet Bastion's hall, Malor's courtyard and the corridors' junction
+- `Media/Fog/Stratholme/stratholme-full/crusaders_square.tga`, Stratholme's mask: Crusader's Square, its name and Market Row west of the junction
+- `Media/Fog/Stratholme/stratholme-full/king_square.tga`, Stratholme's mask: King's Square: its streets, the south-west street, Festival Lane
+- `Media/Fog/Stratholme/stratholme-full/malor.tga`, Stratholme's mask: Malor the Zealous's room: a pocket round his spot
+- `Media/Fog/Stratholme/stratholme-full/cannon_master_willey.tga`, Stratholme's mask: Cannon Master Willey's room: the Hoard, its corridor and its name
+- `Media/Fog/Stratholme/stratholme-full/stratholme_courier.tga`, Stratholme's mask: the Stratholme Courier's room: a pocket round his spot
+- `Media/Fog/Stratholme/stratholme-full/the_unforgiven.tga`, Stratholme's mask: The Unforgiven's room: a pocket round his spot
+- `Media/Fog/Stratholme/stratholme-full/timmy.tga`, Stratholme's mask: Timmy the Cruel's room: a pocket round his spot
+- `Media/Fog/Stratholme/stratholme-full/south_hall.tga`, Stratholme's mask: the Scarlet Bastion's corridor south
+- `Media/Fog/Stratholme/stratholme-full/archivist_galford.tga`, Stratholme's mask: Archivist Galford's room: the end of the Bastion's corridor
+- `Media/Fog/Stratholme/stratholme-full/balnazzar.tga`, Stratholme's mask: Balnazzar's room: the Crimson Throne and its name
+- `Media/Fog/Stratholme/stratholme-full/gauntlet.tga`, Stratholme's mask: the Gauntlet's streets, the lanes to Elders' Square and Slaughter Square and the west of the yard north of King's Square
+- `Media/Fog/Stratholme/stratholme-full/elders_square.tga`, Stratholme's mask: Elders' Square, its name, the east of the yard north of King's Square
+- `Media/Fog/Stratholme/stratholme-full/magistrate_barthilas.tga`, Stratholme's mask: Magistrate Barthilas's room: a pocket round his spot
+- `Media/Fog/Stratholme/stratholme-full/nerub_enkan.tga`, Stratholme's mask: Nerub'enkan's room: his ziggurat and its door
+- `Media/Fog/Stratholme/stratholme-full/slaughter_square.tga`, Stratholme's mask: Slaughter Square, its name and the lane south-west of it
+- `Media/Fog/Stratholme/stratholme-full/ramstein.tga`, Stratholme's mask: Ramstein the Gorger's room: a pocket round his spot
+- `Media/Fog/Stratholme/stratholme-full/baroness_anastari.tga`, Stratholme's mask: Baroness Anastari's room: her ziggurat and its door
+- `Media/Fog/Stratholme/stratholme-full/maleki.tga`, Stratholme's mask: Maleki the Pallid's room: his ziggurat, its door and the path round it
+- `Media/Fog/Stratholme/stratholme-full/baron_rivendare.tga`, Stratholme's mask: Baron Rivendare's room: the Slaughter House
+- `Media/Fog/Stratholme/stratholme-full/banner.tga`, Stratholme's mask: the map's name
+- `Media/Fog/Stratholme/stratholme-full/extent.tga`, Stratholme's mask: where the fog lies: off the signature
+- `Media/Fog/Stratholme/Stratholme/way_in.tga`, Stratholme's mask: the way in: the Main Gate, its two towers and swirls
+- `Media/Fog/Stratholme/Stratholme/bastion.tga`, Stratholme's mask: the Scarlet Bastion's hall, Malor's courtyard and the corridors' junction
+- `Media/Fog/Stratholme/Stratholme/crusaders_square.tga`, Stratholme's mask: Crusader's Square, its name and Market Row west of the junction
+- `Media/Fog/Stratholme/Stratholme/king_square.tga`, Stratholme's mask: King's Square: its streets, the south-west street, Festival Lane and its name
+- `Media/Fog/Stratholme/Stratholme/malor.tga`, Stratholme's mask: Malor the Zealous's room: a pocket round his spot
+- `Media/Fog/Stratholme/Stratholme/cannon_master_willey.tga`, Stratholme's mask: Cannon Master Willey's room: the Hoard, its corridor and its name
+- `Media/Fog/Stratholme/Stratholme/stratholme_courier.tga`, Stratholme's mask: the Stratholme Courier's room: a pocket round his spot
+- `Media/Fog/Stratholme/Stratholme/the_unforgiven.tga`, Stratholme's mask: The Unforgiven's room: a pocket round his spot
+- `Media/Fog/Stratholme/Stratholme/timmy.tga`, Stratholme's mask: Timmy the Cruel's room: a pocket round his spot
+- `Media/Fog/Stratholme/Stratholme/south_hall.tga`, Stratholme's mask: the Scarlet Bastion's corridor south
+- `Media/Fog/Stratholme/Stratholme/archivist_galford.tga`, Stratholme's mask: Archivist Galford's room: the end of the Bastion's corridor
+- `Media/Fog/Stratholme/Stratholme/balnazzar.tga`, Stratholme's mask: Balnazzar's room: the Crimson Throne and its name
+- `Media/Fog/Stratholme/Stratholme/banner.tga`, Stratholme's mask: the map's name
+- `Media/Fog/Stratholme/Stratholme/extent.tga`, Stratholme's mask: where the parchment lies: inside the picture's own frame
+- `Media/Fog/Stratholme/Stratholme1/way_in.tga`, Stratholme's mask: the way in: the Service Gate's swirl and lane
+- `Media/Fog/Stratholme/Stratholme1/gauntlet.tga`, Stratholme's mask: the Gauntlet's streets and the lane to Slaughter Square
+- `Media/Fog/Stratholme/Stratholme1/elders_square.tga`, Stratholme's mask: Elders' Square, its name and the lane up to the Gauntlet
+- `Media/Fog/Stratholme/Stratholme1/magistrate_barthilas.tga`, Stratholme's mask: Magistrate Barthilas's room: a pocket round his spot
+- `Media/Fog/Stratholme/Stratholme1/nerub_enkan.tga`, Stratholme's mask: Nerub'enkan's room: his ziggurat and its door
+- `Media/Fog/Stratholme/Stratholme1/slaughter_square.tga`, Stratholme's mask: Slaughter Square, its name and the lane south-west of it
+- `Media/Fog/Stratholme/Stratholme1/ramstein.tga`, Stratholme's mask: Ramstein the Gorger's room: a pocket round his spot
+- `Media/Fog/Stratholme/Stratholme1/baroness_anastari.tga`, Stratholme's mask: Baroness Anastari's room: her ziggurat and its door
+- `Media/Fog/Stratholme/Stratholme1/maleki.tga`, Stratholme's mask: Maleki the Pallid's room: his ziggurat, its door and the path round it
+- `Media/Fog/Stratholme/Stratholme1/baron_rivendare.tga`, Stratholme's mask: Baron Rivendare's room: the Slaughter House
+- `Media/Fog/Stratholme/Stratholme1/banner.tga`, Stratholme's mask: the map's name
+- `Media/Fog/Stratholme/Stratholme1/extent.tga`, Stratholme's mask: where the parchment lies: inside the picture's own frame
+- `Media/Fog/RazorfenKraul/razorfen-kraul/entrance.tga`, Razorfen Kraul's mask: the way in
+- `Media/Fog/RazorfenKraul/razorfen-kraul/lower_hall.tga`, Razorfen Kraul's mask: the lower hall past Aggem's room and its arm down to the loop
+- `Media/Fog/RazorfenKraul/razorfen-kraul/hub.tga`, Razorfen Kraul's mask: the loop round the first rock island, where the way in comes up
+- `Media/Fog/RazorfenKraul/razorfen-kraul/aggem_thorncurse.tga`, Razorfen Kraul's mask: Aggem Thorncurse's room
+- `Media/Fog/RazorfenKraul/razorfen-kraul/east_hall.tga`, Razorfen Kraul's mask: the great hall east of Ramtusk's room
+- `Media/Fog/RazorfenKraul/razorfen-kraul/death_speaker_jargba.tga`, Razorfen Kraul's mask: Death Speaker Jargba's room
+- `Media/Fog/RazorfenKraul/razorfen-kraul/roogug_hall.tga`, Razorfen Kraul's mask: the C-shaped floor under Roogug's spiral
+- `Media/Fog/RazorfenKraul/razorfen-kraul/roogug.tga`, Razorfen Kraul's mask: Roogug's room
+- `Media/Fog/RazorfenKraul/razorfen-kraul/overlord_ramtusk.tga`, Razorfen Kraul's mask: Overlord Ramtusk's room
+- `Media/Fog/RazorfenKraul/razorfen-kraul/bat_cave.tga`, Razorfen Kraul's mask: the bat cave, with the Blind Hunter's recess
+- `Media/Fog/RazorfenKraul/razorfen-kraul/bridge.tga`, Razorfen Kraul's mask: the first bridge and the R-shaped tunnel under it, with the R's top arm
+- `Media/Fog/RazorfenKraul/razorfen-kraul/spiral.tga`, Razorfen Kraul's mask: the spiral round Halmgar's knoll, with its two bridges and the lobe where Earthcaller Halmgar stands
+- `Media/Fog/RazorfenKraul/razorfen-kraul/agathelos.tga`, Razorfen Kraul's mask: Agathelos the Raging's room
+- `Media/Fog/RazorfenKraul/razorfen-kraul/charlga_razorflank.tga`, Razorfen Kraul's mask: Charlga Razorflank's room
+- `Media/Fog/RazorfenKraul/razorfen-kraul/banner.tga`, Razorfen Kraul's mask: the map's name
+- `Media/Fog/RazorfenDowns/RazorfenDowns/entrance.tga`, Razorfen Downs's mask: the way in
+- `Media/Fog/RazorfenDowns/RazorfenDowns/spiral_green.tga`, Razorfen Downs's mask: the band down to the Spiral of Thorns and its green terrace
+- `Media/Fog/RazorfenDowns/RazorfenDowns/west_passage.tga`, Razorfen Downs's mask: the west passage down to the spiral
+- `Media/Fog/RazorfenDowns/RazorfenDowns/glutton.tga`, Razorfen Downs's mask: Glutton's room
+- `Media/Fog/RazorfenDowns/RazorfenDowns/spiral_ring.tga`, Razorfen Downs's mask: the Spiral of Thorns' yellow ring
+- `Media/Fog/RazorfenDowns/RazorfenDowns/amnennar.tga`, Razorfen Downs's mask: Amnennar the Coldbringer's room
+- `Media/Fog/RazorfenDowns/RazorfenDowns/murder_pens.tga`, Razorfen Downs's mask: the crossing under the Murder Pens and the pens
+- `Media/Fog/RazorfenDowns/RazorfenDowns/long_passage.tga`, Razorfen Downs's mask: the long passage under the Caller's Chamber
+- `Media/Fog/RazorfenDowns/RazorfenDowns/tunnels.tga`, Razorfen Downs's mask: the tunnels east of the way in, down to the crossroads
+- `Media/Fog/RazorfenDowns/RazorfenDowns/mordresh_fire_eye.tga`, Razorfen Downs's mask: Mordresh Fire Eye's room
+- `Media/Fog/RazorfenDowns/RazorfenDowns/plaguemaw.tga`, Razorfen Downs's mask: Plaguemaw the Rotting's room: the Caller's Chamber, its mouth, its name and its tail
+- `Media/Fog/RazorfenDowns/RazorfenDowns/banner.tga`, Razorfen Downs's mask: the map's name
+- `Media/Fog/ZulFarrak/ZulFarrak/entrance.tga`, Zul'Farrak's mask: the way in
+- `Media/Fog/ZulFarrak/ZulFarrak/theka_yard.tga`, Zul'Farrak's mask: the sand between Theka's building and Antu'sul's basin
+- `Media/Fog/ZulFarrak/ZulFarrak/theka_path.tga`, Zul'Farrak's mask: the winding path up from the courtyard to Theka's building
+- `Media/Fog/ZulFarrak/ZulFarrak/court.tga`, Zul'Farrak's mask: the courtyard (Zerillis's spot in it) and its arm east
+- `Media/Fog/ZulFarrak/ZulFarrak/street.tga`, Zul'Farrak's mask: the walled passage north of the way in and the long street up to the courtyard
+- `Media/Fog/ZulFarrak/ZulFarrak/antu_sul.tga`, Zul'Farrak's mask: Antu'sul's room
+- `Media/Fog/ZulFarrak/ZulFarrak/sand.tga`, Zul'Farrak's mask: the sand round Dustwraith's spot, between the yard and the graveyard
+- `Media/Fog/ZulFarrak/ZulFarrak/shadowpriest_sezz_ziz.tga`, Zul'Farrak's mask: Shadowpriest Sezz'ziz and Sandfury Executioner's room
+- `Media/Fog/ZulFarrak/ZulFarrak/theka.tga`, Zul'Farrak's mask: Theka the Martyr's room
+- `Media/Fog/ZulFarrak/ZulFarrak/witch_doctor_zum_rah.tga`, Zul'Farrak's mask: Witch Doctor Zum'rah's room
+- `Media/Fog/ZulFarrak/ZulFarrak/pool.tga`, Zul'Farrak's mask: the sacred pool (Gahz'rilla's spot in it, Hydromancer Velratha's a pocket) and the walled way north from it to the pyramid's yard
+- `Media/Fog/ZulFarrak/ZulFarrak/valley.tga`, Zul'Farrak's mask: the valley west of the courtyard (Sandarr Dunereaver's spot in it)
+- `Media/Fog/ZulFarrak/ZulFarrak/hydromancer_velratha.tga`, Zul'Farrak's mask: Hydromancer Velratha's room
+- `Media/Fog/ZulFarrak/ZulFarrak/diagonal.tga`, Zul'Farrak's mask: the walled way from the pyramid's yard to the yellow building
+- `Media/Fog/ZulFarrak/ZulFarrak/chief_ukorz_sandscalp.tga`, Zul'Farrak's mask: Chief Ukorz Sandscalp's room
+- `Media/Fog/ZulFarrak/ZulFarrak/banner.tga`, Zul'Farrak's mask: the map's name
+- `Media/Fog/DireMaulEast/DireMaulEast/entrance.tga`, Dire Maul: Warpwood Quarter's mask: the way in
+- `Media/Fog/DireMaulEast/DireMaulEast/middle_hall.tga`, Dire Maul: Warpwood Quarter's mask: the middle hall round the dais, its stairs and the passage east
+- `Media/Fog/DireMaulEast/DireMaulEast/north_corridor.tga`, Dire Maul: Warpwood Quarter's mask: the north corridor and the Hidden Reach
+- `Media/Fog/DireMaulEast/DireMaulEast/courtyard.tga`, Dire Maul: Warpwood Quarter's mask: the courtyard
+- `Media/Fog/DireMaulEast/DireMaulEast/pusillin.tga`, Dire Maul: Warpwood Quarter's mask: Pusillin's room
+- `Media/Fog/DireMaulEast/DireMaulEast/lethtendris.tga`, Dire Maul: Warpwood Quarter's mask: Lethtendris's room
+- `Media/Fog/DireMaulEast/DireMaulEast/banner.tga`, Dire Maul: Warpwood Quarter's mask: the map's name
+- `Media/Fog/DireMaulEast/DireMaulEast1/way_in.tga`, Dire Maul: Warpwood Quarter's mask: the way in: the spiral ramp and the east hall's south end
+- `Media/Fog/DireMaulEast/DireMaulEast1/hydrospawn.tga`, Dire Maul: Warpwood Quarter's mask: Hydrospawn's room
+- `Media/Fog/DireMaulEast/DireMaulEast1/pipes.tga`, Dire Maul: Warpwood Quarter's mask: the two passages from the Shrine's gate
+- `Media/Fog/DireMaulEast/DireMaulEast1/conservatory.tga`, Dire Maul: Warpwood Quarter's mask: the Conservatory and the passage to the spiral
+- `Media/Fog/DireMaulEast/DireMaulEast1/alzzin.tga`, Dire Maul: Warpwood Quarter's mask: Alzzin the Wildshaper's room
+- `Media/Fog/DireMaulEast/DireMaulEast1/zevrim_thornhoof.tga`, Dire Maul: Warpwood Quarter's mask: Zevrim Thornhoof's room
+- `Media/Fog/DireMaulEast/DireMaulEast1/banner.tga`, Dire Maul: Warpwood Quarter's mask: the map's name
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire/entrance.tga`, Lower Blackrock Spire's mask: the way in: the band's north-west corner, and the HORDEMAR CITY name over it
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire/burning_felguard_hall.tga`, Lower Blackrock Spire's mask: Tazz'Alor's arena, where the Burning Felguard stands
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire/band.tga`, Lower Blackrock Spire's mask: the band round Tazz'Alor's arena, the corridor south, the SKITTERWEB TUNNELS name and the nook under War Master Voone's room where Bannok Grimaxe stands
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire/war_master_voone.tga`, Lower Blackrock Spire's mask: War Master Voone's purple room
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire/banner.tga`, Lower Blackrock Spire's mask: the map's name
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire/extent.tga`, Lower Blackrock Spire's mask: where the parchment lies: inside the picture's own frame
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire1/way_in.tga`, Lower Blackrock Spire's mask: the way in: the rubble at the tunnel's west end
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire1/tunnel.tga`, Lower Blackrock Spire's mask: the tunnel south of Vosh'gajin's corridor
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire1/mother_smolderweb.tga`, Lower Blackrock Spire's mask: Mother Smolderweb's teal room (Crystal Fang's too) and the SKITTERWEB TUNNELS name
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire1/shadow_hunter_vosh_gajin.tga`, Lower Blackrock Spire's mask: Shadow Hunter Vosh'gajin's purple corridor and the halls up its stair
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire1/banner.tga`, Lower Blackrock Spire's mask: the map's name
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire1/extent.tga`, Lower Blackrock Spire's mask: where the parchment lies: inside the picture's own frame
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire2/way_in.tga`, Lower Blackrock Spire's mask: the way in: the thin bridge from the entrance level
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire2/mokdoom_way.tga`, Lower Blackrock Spire's mask: the corridor between Mok'Doom and the Spirestone Butcher, with Mok'Doom's neck
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire2/hordemar.tga`, Lower Blackrock Spire's mask: Hordemar City: the ramp, the upper room, the stairs, the big hall and its name, and the corridor where the Spirestone Butcher stands
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire2/highlord_omokk.tga`, Lower Blackrock Spire's mask: Mok'Doom whole (where the Spirestone Battle Lord and Lord Magus stand too) and the MOK'DOOM name
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire2/banner.tga`, Lower Blackrock Spire's mask: the map's name
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire2/extent.tga`, Lower Blackrock Spire's mask: where the parchment lies: inside the picture's own frame
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire3/entrance.tga`, Lower Blackrock Spire's mask: the way in: the swirl, the HALL OF BLACKHAND name, the cross, the corridor east, the D-shaped room, the HORDEMAR CITY name, and Urok Doomhowl's orange corridor, the lane south, the way across to it and the SKITTERWEB TUNNELS name
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire3/banner.tga`, Lower Blackrock Spire's mask: the map's name
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire3/extent.tga`, Lower Blackrock Spire's mask: where the parchment lies: inside the picture's own frame
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire4/way_in.tga`, Lower Blackrock Spire's mask: the way in: the top of the east stairs
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire4/corridor.tga`, Lower Blackrock Spire's mask: the corridor between the lair and the Storehouse
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire4/sw_hall.tga`, Lower Blackrock Spire's mask: the south-west room, the west stairs and the lobe over the room where Ghok Bashguud stands
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire4/halycon.tga`, Lower Blackrock Spire's mask: Halycon's lair and its name (Gizrul the Slavener's spot at its mouth)
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire4/quartermaster_zigris.tga`, Lower Blackrock Spire's mask: the Storehouse and its name
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire4/banner.tga`, Lower Blackrock Spire's mask: the map's name
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire4/extent.tga`, Lower Blackrock Spire's mask: where the parchment lies: inside the picture's own frame
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire5/way_in.tga`, Lower Blackrock Spire's mask: the way in: the corridor's west end
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire5/overlord_wyrmthalak.tga`, Lower Blackrock Spire's mask: the corridor and the Chamber of Battle, and its name
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire5/banner.tga`, Lower Blackrock Spire's mask: the map's name
+- `Media/Fog/LowerBlackrockSpire/LowerBlackrockSpire5/extent.tga`, Lower Blackrock Spire's mask: where the parchment lies: inside the picture's own frame
+- `Media/Fog/TheDrownedCity/TheDrownedCity/entrance.tga`, The Drowned City's mask: the way in, Sunken Hollow round the portal swirl
+- `Media/Fog/TheDrownedCity/TheDrownedCity/zul_alai.tga`, The Drowned City's mask: Zul'Alai's room
+- `Media/Fog/TheDrownedCity/TheDrownedCity/var_taka.tga`, The Drowned City's mask: Var'Taka's room
+- `Media/Fog/TheDrownedCity/TheDrownedCity/captain_dreadrise.tga`, The Drowned City's mask: Captain Dreadrise's room
+- `Media/Fog/TheDrownedCity/TheDrownedCity/deathless_marrow.tga`, The Drowned City's mask: Deathless Marrow's room
+- `Media/Fog/TheDrownedCity/TheDrownedCity/min_loth.tga`, The Drowned City's mask: Min'loth the Serpent's room
+- `Media/Fog/TheDrownedCity/TheDrownedCity/primeval_elemental.tga`, The Drowned City's mask: the central pool's water, inside its walkways, which clears with the Primeval Elemental (his room is on Atal'byzal, below) or with the whole map
+- `Media/Fog/TheDrownedCity/TheDrownedCity/banner.tga`, The Drowned City's mask: the map's name
+- `Media/Fog/TheDrownedCity/TheDrownedCity/extent.tga`, The Drowned City's mask: where the parchment lies, inside Santiago Reyes's own frame and off his credit
+- `Media/Fog/TheDrownedCity/TheDrownedCityAtalbyzal/way_in.tga`, The Drowned City's mask: the way in from the central pool, the north-east end of the long passage and the stretch where Gill stands
+- `Media/Fog/TheDrownedCity/TheDrownedCityAtalbyzal/way_in_archives.tga`, The Drowned City's mask: the way in from the Deep Archives, the south-west end of the long passage
+- `Media/Fog/TheDrownedCity/TheDrownedCityAtalbyzal/passage_1.tga`, The Drowned City's mask: the halls between the two ways in, and the rock between the south-west end and the stair hall, which clear with the Primeval Elemental
+- `Media/Fog/TheDrownedCity/TheDrownedCityAtalbyzal/primeval_elemental.tga`, The Drowned City's mask: Primeval Elemental's room
+- `Media/Fog/TheDrownedCity/TheDrownedCityAtalbyzal/banner.tga`, The Drowned City's mask: the map's name
+- `Media/Fog/TheDrownedCity/TheDrownedCityAtalbyzal/extent.tga`, The Drowned City's mask: where the parchment lies, inside Santiago Reyes's own frame and off his credit
+- `Media/Fog/KroldokStronghold/KroldokStronghold/entrance.tga`, Krol'dok Stronghold's mask: the way in, round the portal swirl at the valley's south-west corner
+- `Media/Fog/KroldokStronghold/KroldokStronghold/slavecrusher_grox.tga`, Krol'dok Stronghold's mask: Slavecrusher Grox's part: the open ground just inside the way in
+- `Media/Fog/KroldokStronghold/KroldokStronghold/twilight_commander_zarmok.tga`, Krol'dok Stronghold's mask: Twilight Commander Zarmok's part: the yards along the long wall's south-west side, down to the south gate
+- `Media/Fog/KroldokStronghold/KroldokStronghold/handler_ashka.tga`, Krol'dok Stronghold's mask: Handler Ashka's part: the way east past the gate's buildings, and the east yard
+- `Media/Fog/KroldokStronghold/KroldokStronghold/nar_gurk.tga`, Krol'dok Stronghold's mask: Nar'gurk's part: the long stone walkway and the inner yard behind it
+- `Media/Fog/KroldokStronghold/KroldokStronghold/bossman_toof.tga`, Krol'dok Stronghold's mask: Bossman Toof's part: the two wooden bridges and the green north of them
+- `Media/Fog/KroldokStronghold/KroldokStronghold/overseer_mugg.tga`, Krol'dok Stronghold's mask: Overseer Mugg's part: the great hall, the north complex and the east bank
+- `Media/Fog/KroldokStronghold/KroldokStronghold/banner.tga`, Krol'dok Stronghold's mask: the map's name
+- `Media/Fog/KroldokStronghold/KroldokStronghold/extent.tga`, Krol'dok Stronghold's mask: where the parchment lies, inside Santiago Reyes's own frame and off his credit
+- `Media/Fog/AlcazPrison/AlcazPrison/entrance.tga`, Alcaz Prison's mask: the way in, the swirl, its stairs down and the crossing below them
+- `Media/Fog/AlcazPrison/AlcazPrison/west_stairs.tga`, Alcaz Prison's mask: a way in, the west stairs down to the Maximum Security Unit
+- `Media/Fog/AlcazPrison/AlcazPrison/overseer_wrex.tga`, Alcaz Prison's mask: Overseer Wrex's part: the east wing, the barred gate, the cell block, his hub and the three rooms off it
+- `Media/Fog/AlcazPrison/AlcazPrison/the_questioner.tga`, Alcaz Prison's mask: The Questioner's part: the west wing, the barred gate, the green room and his octagon
+- `Media/Fog/AlcazPrison/AlcazPrison/tidemistress_ca_zass.tga`, Alcaz Prison's mask: Tidemistress Ca'zass's part: the main corridor south, her hub and its three rooms
+- `Media/Fog/AlcazPrison/AlcazPrison/banner.tga`, Alcaz Prison's mask: the map's name
+- `Media/Fog/AlcazPrison/AlcazPrison/extent.tga`, Alcaz Prison's mask: where the parchment lies, inside Santiago Reyes's own frame and off his credit
+- `Media/Fog/AlcazPrison/AlcazPrisonMaximumSecurity/way_in.tga`, Alcaz Prison's mask: the way in, the west crossing where the stairs from the Main Unit come down, and the cell west of it
+- `Media/Fog/AlcazPrison/AlcazPrisonMaximumSecurity/katerina.tga`, Alcaz Prison's mask: Katerina the Cleaner's part: the corridors to her hub, the cell at the long corridor's top, her hub and the two rooms east of it
+- `Media/Fog/AlcazPrison/AlcazPrisonMaximumSecurity/blazeroar.tga`, Alcaz Prison's mask: Blazeroar's part: the big room at the far end
+- `Media/Fog/AlcazPrison/AlcazPrisonMaximumSecurity/banner.tga`, Alcaz Prison's mask: the map's name
+- `Media/Fog/AlcazPrison/AlcazPrisonMaximumSecurity/extent.tga`, Alcaz Prison's mask: where the parchment lies, inside Santiago Reyes's own frame and off his credit
+- `Media/Fog/BlackmawHold/BlackmawHold/entrance.tga`, Blackmaw Hold's mask: the way in, the portal's swirl and the gate beside it
+- `Media/Fog/BlackmawHold/BlackmawHold/impaan.tga`, Blackmaw Hold's mask: Impaan the Imprisoner's part: Blackmaw Grove, the valley east of the gate
+- `Media/Fog/BlackmawHold/BlackmawHold/bonesnout.tga`, Blackmaw Hold's mask: Bonesnout the Unbroken's part: his thicket and its name, the bridge and the furbolg gate down to the depths
+- `Media/Fog/BlackmawHold/BlackmawHold/withermaw.tga`, Blackmaw Hold's mask: Withermaw's part on the hold: the lake and its name, and the slopes north of the grove up to the grotto's two mouths
+- `Media/Fog/BlackmawHold/BlackmawHold/banner.tga`, Blackmaw Hold's mask: the map's name
+- `Media/Fog/BlackmawHold/BlackmawHold/extent.tga`, Blackmaw Hold's mask: where the parchment lies, inside Santiago Reyes's own frame and off his credit
+- `Media/Fog/BlackmawHold/BlackmawHoldFesteringGrotto/south_mouth.tga`, Blackmaw Hold's mask: a way in, the bone pile at the south-west mouth
+- `Media/Fog/BlackmawHold/BlackmawHoldFesteringGrotto/east_mouth.tga`, Blackmaw Hold's mask: a way in, the bone pile at the east mouth
+- `Media/Fog/BlackmawHold/BlackmawHoldFesteringGrotto/passage_1.tga`, Blackmaw Hold's mask: a passage
+- `Media/Fog/BlackmawHold/BlackmawHoldFesteringGrotto/east_mouth_hall.tga`, Blackmaw Hold's mask: a passage
+- `Media/Fog/BlackmawHold/BlackmawHoldFesteringGrotto/withermaw.tga`, Blackmaw Hold's mask: Withermaw's part: the grotto's cave
+- `Media/Fog/BlackmawHold/BlackmawHoldFesteringGrotto/banner.tga`, Blackmaw Hold's mask: the map's name
+- `Media/Fog/BlackmawHold/BlackmawHoldFesteringGrotto/extent.tga`, Blackmaw Hold's mask: where the parchment lies, inside Santiago Reyes's own frame and off his credit
+- `Media/Fog/BlackmawHold/BlackmawHoldFallenGrove/way_in.tga`, Blackmaw Hold's mask: the way in, the furbolg gate and the chamber above it
+- `Media/Fog/BlackmawHold/BlackmawHoldFallenGrove/passage_3.tga`, Blackmaw Hold's mask: a passage
+- `Media/Fog/BlackmawHold/BlackmawHoldFallenGrove/passage_4.tga`, Blackmaw Hold's mask: a passage
+- `Media/Fog/BlackmawHold/BlackmawHoldFallenGrove/way_in_hall.tga`, Blackmaw Hold's mask: a passage
+- `Media/Fog/BlackmawHold/BlackmawHoldFallenGrove/unbound_spirit.tga`, Blackmaw Hold's mask: the Unbound Spirit's part: the passages, the heap of logs and the hollow stump
+- `Media/Fog/BlackmawHold/BlackmawHoldFallenGrove/banner.tga`, Blackmaw Hold's mask: the map's name
+- `Media/Fog/BlackmawHold/BlackmawHoldFallenGrove/extent.tga`, Blackmaw Hold's mask: where the parchment lies, inside Santiago Reyes's own frame and off his credit
+- `Media/Fog/BlackmawHold/BlackmawHoldElders/way_in.tga`, Blackmaw Hold's mask: a way in from Level 1, the north corridor's far east end
+- `Media/Fog/BlackmawHold/BlackmawHoldElders/spur.tga`, Blackmaw Hold's mask: a way in from Level 1, the end of the spur by the north pool
+- `Media/Fog/BlackmawHold/BlackmawHoldElders/log.tga`, Blackmaw Hold's mask: a way in from Level 1, the log at the east corridor's end
+- `Media/Fog/BlackmawHold/BlackmawHoldElders/passage_1.tga`, Blackmaw Hold's mask: a passage
+- `Media/Fog/BlackmawHold/BlackmawHoldElders/spur_hall.tga`, Blackmaw Hold's mask: a passage
+- `Media/Fog/BlackmawHold/BlackmawHoldElders/elder_shaman_bloodmane.tga`, Blackmaw Hold's mask: Elder Shaman Bloodmane's part: his green room and the passages to the pond's room
+- `Media/Fog/BlackmawHold/BlackmawHoldElders/banner.tga`, Blackmaw Hold's mask: the map's name
+- `Media/Fog/BlackmawHold/BlackmawHoldElders/extent.tga`, Blackmaw Hold's mask: where the parchment lies, inside Santiago Reyes's own frame and off his credit
+- `Media/Fog/BlackmawHold/BlackmawHoldBurrow/way_in.tga`, Blackmaw Hold's mask: the way in, the bottom end of the S passage
+- `Media/Fog/BlackmawHold/BlackmawHoldBurrow/top_end.tga`, Blackmaw Hold's mask: a way in, the top end of the S passage
+- `Media/Fog/BlackmawHold/BlackmawHoldBurrow/passage_1.tga`, Blackmaw Hold's mask: a passage
+- `Media/Fog/BlackmawHold/BlackmawHoldBurrow/blackmaw_behemoth.tga`, Blackmaw Hold's mask: the Blackmaw Behemoth's part: the red den, the S passage and the floor's name
+- `Media/Fog/BlackmawHold/BlackmawHoldBurrow/banner.tga`, Blackmaw Hold's mask: the map's name
+- `Media/Fog/BlackmawHold/BlackmawHoldBurrow/extent.tga`, Blackmaw Hold's mask: where the parchment lies, inside Santiago Reyes's own frame and off his credit
+- `Media/Fog/BlackmawHold/BlackmawHoldForbiddenMagic/way_in.tga`, Blackmaw Hold's mask: the way in, the pool where the drop from Level 3 lands
+- `Media/Fog/BlackmawHold/BlackmawHoldForbiddenMagic/way_in_hall.tga`, Blackmaw Hold's mask: a passage
+- `Media/Fog/BlackmawHold/BlackmawHoldForbiddenMagic/varrox_bleakhoof.tga`, Blackmaw Hold's mask: Varrox Bleakhoof's part: the rune circle and the pool's cave
+- `Media/Fog/BlackmawHold/BlackmawHoldForbiddenMagic/banner.tga`, Blackmaw Hold's mask: the map's name
+- `Media/Fog/BlackmawHold/BlackmawHoldForbiddenMagic/extent.tga`, Blackmaw Hold's mask: where the parchment lies, inside Santiago Reyes's own frame and off his credit
+- `Media/Fog/ShapersTerrace/ShapersTerrace/entrance.tga`, Shaper's Terrace's mask: the way in, Terrace Overlook round the portal swirl, and its name
+- `Media/Fog/ShapersTerrace/ShapersTerrace/titanosaur.tga`, Shaper's Terrace's mask: Titanosaur's part: the west, the Verdant Plains, the Highlands Causeway, Ruby Spring and the Hidden Wash
+- `Media/Fog/ShapersTerrace/ShapersTerrace/venomridge.tga`, Shaper's Terrace's mask: Venomridge's part: the Path of the Shaper, the tar pits and the Botanical Grounds
+- `Media/Fog/ShapersTerrace/ShapersTerrace/thunderhoof.tga`, Shaper's Terrace's mask: Thunderhoof's part: the lake's west shore and the Pillar of Assimilation's name
+- `Media/Fog/ShapersTerrace/ShapersTerrace/direhorn_matriarch.tga`, Shaper's Terrace's mask: the Direhorn Matriarch's part: Isiz's Pillar, the south building, the trail down to the cave mark and the cave's name
+- `Media/Fog/ShapersTerrace/ShapersTerrace/ravasaur_hunters.tga`, Shaper's Terrace's mask: Ravasaur Hunters' part: the Regrowth Vestibule and the Walk of Communion
+- `Media/Fog/ShapersTerrace/ShapersTerrace/nanaya.tga`, Shaper's Terrace's mask: Nanaya's part: the lake round the Pillar of Assimilation and its island
+- `Media/Fog/ShapersTerrace/ShapersTerrace/banner.tga`, Shaper's Terrace's mask: the map's name
+- `Media/Fog/ShapersTerrace/ShapersTerrace/extent.tga`, Shaper's Terrace's mask: where the parchment lies, inside Santiago Reyes's own frame and off his credit
+- `Media/Fog/ShapersTerrace/ShapersTerracePrismaticTalus/way_in.tga`, Shaper's Terrace's mask: the way in, the way back up to the terrace at the north-western chamber's narrow end, with the whole cave to King Op's chamber
+- `Media/Fog/ShapersTerrace/ShapersTerracePrismaticTalus/banner.tga`, Shaper's Terrace's mask: the map's name
+- `Media/Fog/ShapersTerrace/ShapersTerracePrismaticTalus/extent.tga`, Shaper's Terrace's mask: where the parchment lies, inside Santiago Reyes's own frame and off his credit
+
+and every fog picture added to the addon later.
+
 You may use them as part of the addon: install it, play with it, and show it in screenshots,
 videos and streams.
 

@@ -3,10 +3,10 @@
 ## Notes: Retail-style instance journal and dungeon maps for WoW: Forever. Shift+J to open. Inspired by Alex Atlas Loot by Alex Brandson and its contributors Niceheal Shadow, Gaia Cloudv, Buddley Wuddley, Beef Party, Thunder Lance, Wakkytabbaky Solstice, Reasonabull Stouthoof, Markofwild Buffer, Joyful Yoda, Mac Bond, Faylastral Ox, Deathjoze Jeijet, Balance Magy, Bulky Wulky, Anowa Stax, Zero Onezero, Perina Bracketfix, Satosha Nakamuara, Annahay Lotusbloom, Furii Vox, Sidja, Mad Skillz, Oogar, Cier, Jolly, Mali, Grama and Eris, whose addon inspired its Record and Reputation tabs; Forever dungeon maps by Santiago Reyes (Atlas de Azeroth: Forever).
 ## Notes-ruRU: Путеводитель по подземельям и карты подземелий в стиле актуального клиента для WoW: Forever. Shift+J — открыть. Вдохновлён аддоном Alex Atlas Loot от Alex Brandson и его соавторов Niceheal Shadow, Gaia Cloudv, Buddley Wuddley, Beef Party, Thunder Lance, Wakkytabbaky Solstice, Reasonabull Stouthoof, Markofwild Buffer, Joyful Yoda, Mac Bond, Faylastral Ox, Deathjoze Jeijet, Balance Magy, Bulky Wulky, Anowa Stax, Zero Onezero, Perina Bracketfix, Satosha Nakamuara, Annahay Lotusbloom, Furii Vox, Sidja, Mad Skillz, Oogar, Cier, Jolly, Mali, Grama и Eris, чей аддон вдохновил вкладки «Запись» и «Репутация»; карты подземелий Forever — Santiago Reyes (Atlas de Azeroth: Forever). Перевод на русский — Staree4ok.
 ## Author: Aegis
-## Version: 0.39.21
+## Version: 0.40.1
 ## X-Credits: Alex Brandson and the Alex Atlas Loot contributors; Santiago Reyes (Atlas de Azeroth: Forever); Staree4ok (Russian translation); made with the help of Claude AI. See CREDITS.md.
 ## X-License: All Rights Reserved
-## OptionalDeps: Pawn, Syndicator, Baganator
+## OptionalDeps: Pawn, Syndicator, Baganator, Spoken, Spoken_Bosses, Spoken_Places
 ## SavedVariables: AegisJournalDB
 ## SavedVariablesPerCharacter: AegisJournalCharDB
 ## LoadSavedVariablesFirst: 1
@@ -39,10 +39,12 @@ Core\Areas.lua
 Core\Items.lua
 Core\Reputation.lua
 Core\Recorder.lua
+Core\Discovery.lua
 Core\Perf.lua
 Core\ItemScore.lua
 Core\GearFinder.lua
 Core\PawnLink.lua
+Core\SpokenLore.lua
 Core\Run.lua
 
 Data\Authored\LevelBrackets.lua
@@ -75,8 +77,7 @@ Data\Instances\DireMaulEast.lua
 Data\Instances\DireMaulNorth.lua
 Data\Instances\DireMaulWest.lua
 Data\Instances\Scholomance.lua
-Data\Instances\StratholmeMainGate.lua
-Data\Instances\StratholmeServiceGate.lua
+Data\Instances\Stratholme.lua
 Data\Instances\Raids.lua
 Data\Reputation\Factions.lua
 Data\Reputation\Listed.lua
@@ -89,6 +90,7 @@ Data\Generated\GearWeights.lua
 Data\Generated\SimsWeights.lua
 Data\Generated\QuestSteps.lua
 Data\Generated\OriginalXP.lua
+Data\Generated\SpokenLore.lua
 Data\Authored\TheDeadmines.lua
 Data\Authored\RagefireChasm.lua
 Data\Authored\WailingCaverns.lua
@@ -107,6 +109,40 @@ Data\Authored\ExcavationSiteWetlands.lua
 Data\Authored\Factions.lua
 Data\Authored\MapAreas.lua
 Data\Authored\ClassicMaps.lua
+Data\Fog\RagefireChasm.lua
+Data\Fog\HallOfThanes.lua
+Data\Fog\WailingCaverns.lua
+Data\Fog\CityOfDalaran.lua
+Data\Fog\TheDeadmines.lua
+Data\Fog\TheStockade.lua
+Data\Fog\ShadowfangKeep.lua
+Data\Fog\BlackfathomDeeps.lua
+Data\Fog\ScarletMonasteryGraveyard.lua
+Data\Fog\ScarletMonasteryLibrary.lua
+Data\Fog\ScarletMonasteryArmory.lua
+Data\Fog\ScarletMonasteryCathedral.lua
+Data\Fog\Gnomeregan.lua
+Data\Fog\RuinsOfLordaeron.lua
+Data\Fog\ExcavationSiteWetlands.lua
+Data\Fog\Uldaman.lua
+Data\Fog\Maraudon.lua
+Data\Fog\TempleOfAtalHakkar.lua
+Data\Fog\BlackrockDepths.lua
+Data\Fog\UpperBlackrockSpire.lua
+Data\Fog\DireMaulNorth.lua
+Data\Fog\DireMaulWest.lua
+Data\Fog\Scholomance.lua
+Data\Fog\Stratholme.lua
+Data\Fog\RazorfenKraul.lua
+Data\Fog\RazorfenDowns.lua
+Data\Fog\ZulFarrak.lua
+Data\Fog\DireMaulEast.lua
+Data\Fog\LowerBlackrockSpire.lua
+Data\Fog\TheDrownedCity.lua
+Data\Fog\KroldokStronghold.lua
+Data\Fog\AlcazPrison.lua
+Data\Fog\BlackmawHold.lua
+Data\Fog\ShapersTerrace.lua
 Data\Authored\FromForeverChanges.lua
 Data\Authored\QuestAudit.lua
 Data\Authored\Scholomance.lua
@@ -131,6 +167,7 @@ Data\Authored\Transports.lua
 Data\Authored\RunTracker.lua
 Data\Authored\InsideQuestSpots.lua
 Data\Generated\QuestLinks.lua
+Data\Authored\Rumours.lua
 
 UI\Art.lua
 UI\Discord.lua
@@ -138,6 +175,8 @@ UI\ForeverMark.lua
 UI\CanvasPins.lua
 UI\MapPin.lua
 UI\DungeonMap.lua
+UI\DungeonFog.lua
+UI\FogTest.lua
 UI\MapPins.xml
 UI\MapLegend.lua
 UI\TravelMap.lua
@@ -150,6 +189,8 @@ UI\ModelPanel.lua
 UI\QuestsPanel.lua
 UI\BeforeYouGo.lua
 UI\QuestMap.lua
+UI\SpokenButton.lua
+UI\SpokenWords.lua
 UI\EncounterPage.lua
 UI\RecordPanel.lua
 UI\WeightsEditor.lua
@@ -162,5 +203,8 @@ UI\Journal.lua
 UI\Options.lua
 UI\StylePopup.lua
 UI\MinimapButton.lua
+UI\News.lua
 UI\RunTracker.lua
 UI\RunTrackerInside.lua
+UI\TestRun.lua
+UI\TestPanel.lua

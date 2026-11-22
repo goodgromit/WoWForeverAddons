@@ -64,16 +64,7 @@ ns.AddInstance({
 					quality = 3,
 				},
 				{
-					itemID = 252513,
-					name = "Trapper's Leather Helm",
-					slot = "Head, Leather",
-					quality = 3,
-				},
-				{
 					itemID = 253976,
-				},
-				{
-					itemID = 252515,
 				},
 				{
 					itemID = 252821,
@@ -137,12 +128,6 @@ ns.AddInstance({
 					itemID = 7689,
 					name = "Morbid Dawn",
 					slot = "Two-Hand, Sword",
-					quality = 3,
-				},
-				{
-					itemID = 252513,
-					name = "Trapper's Leather Helm",
-					slot = "Head, Leather",
 					quality = 3,
 				},
 			},
@@ -236,41 +221,6 @@ ns.AddInstance({
 			name = "Trash Drops",
 			trash = true,
 			loot = {
-				{
-					itemID = 10328,
-					name = "Scarlet Chestpiece",
-					slot = "Chest, Mail",
-					quality = 3,
-					droppedBy = "Scarlet Monastery trash (Chain of the Scarlet Crusade)",
-				},
-				{
-					itemID = 10329,
-					name = "Scarlet Belt",
-					slot = "Waist, Mail",
-					quality = 3,
-					droppedBy = "Scarlet Monastery trash (Chain of the Scarlet Crusade)",
-				},
-				{
-					itemID = 10330,
-					name = "Scarlet Leggings",
-					slot = "Legs, Mail",
-					quality = 3,
-					droppedBy = "Scarlet Monastery trash (Chain of the Scarlet Crusade)",
-				},
-				{
-					itemID = 10331,
-					name = "Scarlet Gauntlets",
-					slot = "Hands, Mail",
-					quality = 3,
-					droppedBy = "Scarlet Monastery trash (Chain of the Scarlet Crusade)",
-				},
-				{
-					itemID = 10333,
-					name = "Scarlet Wristguards",
-					slot = "Wrist, Mail",
-					quality = 3,
-					droppedBy = "Scarlet Monastery trash (Chain of the Scarlet Crusade)",
-				},
 				{
 					itemID = 10332,
 					name = "Scarlet Boots",

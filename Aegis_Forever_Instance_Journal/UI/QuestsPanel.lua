@@ -11,12 +11,35 @@ local L = ns.L
 	in, available, or not yet available. A "+" opens a quest's chain beneath it. Quests
 	recorded on the Record tab add their full text, their exact rewards and where they end.
 
-	The list is in dropdowns, under the Abilities tab's paper headers: a dungeon's key first, as
-	Before you go has it (the Dalaran Sewer Key: the quests to it, for the player's side), then
-	Dungeon Quests, the rest, then Class Quests, those for the player's class alone (classOnly), shown
-	only to that class. Each header shows the mark of its first quest still to do and how many of its
-	quests are done. A key is open until the player has it; Dungeon Quests and Class Quests, always (a
-	raid's are Raid Quests).
+	The list is in dropdowns, under the Abilities tab's paper headers. Before you go comes first, under its
+	bar, where the player's side has notes (UI/BeforeYouGo.lua; the owner's call of 2026-11-13: all of it
+	moved here from the overview), in its own order: a key's dropdown (the Dalaran Sewer Key: the quests to
+	it, for the player's side) holds the note's text and how far along the player is, then its quests; a
+	note no quest of its own fills (a key a boss drops, a hidden boss, a plain note) is a header with its
+	text alone, folded until clicked, and a click on it only opens or folds it. Then Dungeon Quests, the
+	rest, then Class Quests, those for the player's class alone (classOnly), shown only to that class. Each
+	dropdown's header shows the mark of its first quest still to do and how many of its quests are done.
+	When a dungeon is shown, all of Before you go starts folded, keys and chains too (the owner's call of
+	2026-11-14), and Dungeon Quests and Class Quests open (a raid's are Raid Quests), Dungeon Quests' first
+	quest still to do chosen; what the player opens stays open while the dungeon stays shown.
+	A quest that comes after a road of Before you go (a key's dropdown whose last quest it needs: The road from
+	Rog'mar, Onyxia attunement, the Dalaran Sewer Key) doesn't list the road's quests again under its +: it opens on
+	one line for the road, its title, how many of its quests are done and the mark of the step the quest waits on (a
+	check once it has all it needs of the road), whose click opens the road on that step; then the quest's own steps,
+	where its way branches off (the owner's direction of 2026-11-19).
+
+	In Adventure Mode (Core/Discovery.lua) a quest shows once the character has been offered it, taken it
+	or done it, with its chain: a row of the dropdowns once its quest, or a step of its chain that is
+	this dungeon's, is known (a key's dropdown stays, as Before you go keeps it, its quests those known).
+	A step not offered yet is "???", its level, mark and parts' count kept, so the reader sees the chain
+	goes on without being told where; chosen, its page says only that. A row of several quests (a one-of
+	step's versions, a row of same-named parts) is known once one of them is; a part listed as a row of its
+	own, "<name> (Part n)", is "??? (Part n)" until offered, but under that name where the row of same-named
+	parts it is numbered in is known (its name already on the tab). What the game
+	told the player of a known quest shows as it is; a lock line, and the journal's own notes, name a quest not offered yet
+	as "???" (Discovery:MaskQuests, Discovery:MaskAll). A road's quests are no "???" steps under a +: its line's count
+	stands for them; where the only quest a dungeon's rows show for is a road's, the road is unfolded in Before you go
+	on it (the owner's answer of 2026-11-19).
 ]]
 
 local QuestsPanel = {}
@@ -28,6 +51,10 @@ local TOP_PADDING, HEADER_GAP, ROW_INDENT = 6, 6, 8
 -- An open dropdown's quests sit in a box, as an ability's text sits under its header: the room
 -- above and below them in it, and how far its top tucks under the header.
 local BOX_PADDING, BOX_TUCK, BOX_SIDE = 6, 3, 1
+-- Before you go's bar (the overview's had it: Header-Overview), its height; a note's text box (the header's
+-- own, AbilityTextBG): how far below the box's text the header's height runs (SetHeader counts 20: the box's
+-- 11, then 9 under it), how far below the text the box ends, and the room above and below a key's quests in it.
+local BAR_HEIGHT, TEXT_BELOW, BOX_BELOW_TEXT, KEY_ROW_PADDING = 30, 20, 11, 4
 local REWARD_BOX_WIDTH, REWARD_BOX_HEIGHT = 147, 41
 
 local STATUS_DONE, STATUS_READY, STATUS_ACTIVE, STATUS_AVAILABLE, STATUS_LOCKED =
@@ -67,6 +94,34 @@ local function IsDone(questID) return QuestCall("IsQuestFlaggedCompleted", quest
 local function InLog(questID)
 	local index = QuestCall("GetLogIndexForQuestID", questID)
 	return index ~= nil and index ~= 0
+end
+
+------------------------------------------------------------------------------------------
+-- Adventure Mode
+------------------------------------------------------------------------------------------
+
+-- What the character knows, kept for each find (Discovery:Version) and record: rows are asked many times a redraw.
+local known, knownFor, knownStore = {}, nil, nil
+
+-- Whether the character has been offered a quest, or any quest a row stands for. Always, outside Adventure Mode.
+local function Known(quest)
+	if not ns.Style:Adventure() then return true end
+	local version, store = ns.Discovery:Version(), ns.charDB and ns.charDB.discovered
+	if knownFor ~= version or knownStore ~= store then known, knownFor, knownStore = {}, version, store end
+	local answer = known[quest]
+	if answer == nil then
+		answer = ns.Discovery:Knows("quest", quest.questID)
+		for _, inner in ipairs(quest.oneOf or {}) do answer = answer or Known(inner) end
+		for _, part in ipairs(quest.parts or {}) do answer = answer or Known(part) end
+		known[quest] = answer
+	end
+	return answer
+end
+
+-- A step's name as a line gives it: "???" for one not offered yet (Adventure Mode).
+local function Named(step, name)
+	if Known(step) then return name end
+	return ns.Discovery.UNKNOWN
 end
 
 local function PlayerLevel()
@@ -184,22 +239,43 @@ end
 -- What a quest still needs: a quest, one of several versions of one, or one of several quests.
 local function NeedsText(prerequisite, quest)
 	if not prerequisite.oneOf then
-		return string.format(L.QUEST_STATUS_NEEDS, StepName(prerequisite, prerequisite.name, quest, prerequisite))
+		return string.format(L.QUEST_STATUS_NEEDS, StepName(prerequisite, Named(prerequisite, prerequisite.name), quest, prerequisite))
 	end
 	local versions = Versions(prerequisite)
 	if #versions == 1 then
-		return string.format(L.QUEST_STATUS_NEEDS, StepName(versions[1], versions[1].name or prerequisite.name, quest, prerequisite))
+		return string.format(L.QUEST_STATUS_NEEDS,
+			StepName(versions[1], Named(versions[1], versions[1].name or prerequisite.name), quest, prerequisite))
 	end
 	local shared = SharedName(versions)
 	-- Versions of a numbered part of the quest's own name (A Taste of Flame's Part 1), or of a numbered run of
 	-- another: that part. (Not the tab's number for a one-of step alone of its name: More Sparklematic Action
-	-- keeps "Requires one of the 3 versions of The Sparklematic 5200!".)
+	-- keeps "Requires one of the 3 versions of The Sparklematic 5200!".) In Adventure Mode a step not offered
+	-- yet is "???" with its part's number, as its row is.
 	local part = shared and quest and (shared == quest.name and PartNumber(prerequisite, quest) or RunPart(prerequisite, quest))
-	if part then return string.format(L.QUEST_STATUS_NEEDS, string.format(L.QUEST_PART_NAME, shared, part)) end
-	if shared then return string.format(L.QUEST_STATUS_NEEDS_VERSION, #versions, shared) end
+	if part then return string.format(L.QUEST_STATUS_NEEDS, string.format(L.QUEST_PART_NAME, Named(prerequisite, shared), part)) end
+	if shared then return string.format(L.QUEST_STATUS_NEEDS_VERSION, #versions, Named(prerequisite, shared)) end
 	local names = {}
-	for _, version in ipairs(versions) do names[#names + 1] = version.name or "?" end
+	for _, version in ipairs(versions) do names[#names + 1] = Named(version, version.name or "?") end
 	return string.format(L.QUEST_STATUS_NEEDS_ONE_OF, OrList(names))
+end
+
+--[[
+	A row's name as the lists give it: in Adventure Mode "???" for one not offered yet, with its parts'
+	count where it has parts ("??? (3 parts)"); a one-of row's versions named "A or B" have those not
+	offered yet as "???".
+]]
+local function ShownName(quest)
+	if not Known(quest) then
+		local count = quest.parts and #quest.parts
+		if count then return string.format(L.QUEST_PARTS, ns.Discovery.UNKNOWN, count) end
+		return ns.Discovery.UNKNOWN
+	end
+	if quest.oneOf and ns.Style:Adventure() and not SharedName(quest.oneOf) then
+		local names = {}
+		for _, version in ipairs(quest.oneOf) do names[#names + 1] = Named(version, version.name or "?") end
+		return OrList(names)
+	end
+	return quest.name
 end
 
 -- A row for the quests of one chain that share a name (QuestsPanel:Fold): the part the player is on, the first
@@ -283,7 +359,7 @@ function QuestsPanel:LockedReason(quest)
 		if not PrerequisiteDone(prerequisite) then return NeedsText(prerequisite, quest) end
 	end
 	if quest.parentQuest and not InLog(quest.parentQuest.questID) then
-		return string.format(L.QUEST_STATUS_NEEDS_IN_LOG, quest.parentQuest.name or "?")
+		return string.format(L.QUEST_STATUS_NEEDS_IN_LOG, Named(quest.parentQuest, quest.parentQuest.name or "?"))
 	end
 	return string.format(L.QUEST_STATUS_LEVEL, quest.requiredLevel or 0)
 end
@@ -331,11 +407,12 @@ end
 	What a quest still needs before the player can take it, a line each, for the quest marks' tooltips
 	(UI/QuestMap.lua; the owner's call of 2026-11-11: "requires level X and/or Requires: X quest"): the steps of
 	its chain the player can do next (DoableNext: one in a chain, a few where its branches run side by side; the
-	first step still to do where none says), as the lock line names them, the quest it is given only while in the
-	log, and the level it needs. Not every step still to do: a long chain's would run to dozens of lines (the
-	review of 3cc3416: 25 on Saving the Best for Last). Of the parts of one name still to do, the first only: a
-	later part waits for it, though a part's page may not say so (A Recipe For Death's three, before The New
-	Plague). Each line once; none for a quest open to the player.
+	first step still to do where none says), as the lock line names them ("???" for one not offered yet, in
+	Adventure Mode), the quest it is given only while in the log, and the level it needs. Not every step still to
+	do: a long chain's would run to dozens of lines (the review of 3cc3416: 25 on Saving the Best for Last). Of the
+	parts of one name still to do, the first only: a later part waits for it, though a part's page may not say so
+	(A Recipe For Death's three, before The New Plague). Each line once (several steps not offered yet are one
+	"Requires: ???"); none for a quest open to the player.
 ]]
 function QuestsPanel:Requirements(quest)
 	quest = LockPage(quest)
@@ -361,7 +438,7 @@ function QuestsPanel:Requirements(quest)
 	end
 	if first and not any then Add(NeedsText(first, quest)) end
 	if quest.parentQuest and not InLog(quest.parentQuest.questID) then
-		Add(string.format(L.QUEST_STATUS_NEEDS_IN_LOG, quest.parentQuest.name or "?"))
+		Add(string.format(L.QUEST_STATUS_NEEDS_IN_LOG, Named(quest.parentQuest, quest.parentQuest.name or "?")))
 	end
 	if quest.requiredLevel and PlayerLevel() < quest.requiredLevel then
 		Add(string.format(L.QUEST_STATUS_LEVEL, quest.requiredLevel))
@@ -425,13 +502,26 @@ local function HighlightFile()
 	return highlightFile
 end
 
--- The chosen row and the one under the mouse light up, their text turning white.
+-- The chosen row and the one under the mouse light up, their text turning white (a road's line's note too).
 local function UpdateRowHighlight(row)
 	local lit = row.selected or row.hovered
 	row.Highlight:SetShown(lit)
 	if lit then row.Highlight:SetAlpha(row.selected and HIGHLIGHT_ALPHA_CHOSEN or HIGHLIGHT_ALPHA_HOVER) end
 	local color = lit and ROW_CHOSEN_COLOR or row.color or ROW_COLOR
 	row.Text:SetTextColor(color[1], color[2], color[3])
+	row.Note:SetTextColor(color[1], color[2], color[3])
+end
+
+-- A row's text runs to its right edge, or up to its note (noted: a road's line, SetRoadRow).
+local function AnchorText(row, noted)
+	row.Text:ClearAllPoints()
+	row.Text:SetPoint("LEFT", row.Status, "RIGHT", 4, 0)
+	if noted then
+		row.Text:SetPoint("RIGHT", row.Note, "LEFT", -6, 0)
+	else
+		row.Text:SetPoint("RIGHT", -4, 0)
+	end
+	row.noted = noted or nil
 end
 
 -- onClick: what a click on the row does with it (else it is chosen on the Quests tab).
@@ -459,9 +549,12 @@ local function CreateRow(parent, onClick)
 	row.Status:SetSize(16, 16)
 	row.Status:SetPoint("LEFT", row.Expand, "RIGHT", 4, 0)
 
+	-- (a road's line: how many of its quests are done, on the right, as the road's header has it)
+	row.Note = row:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+	row.Note:SetPoint("RIGHT", -4, 0)
+	row.Note:Hide()
 	row.Text = row:CreateFontString(nil, "OVERLAY", ns.Font("GameFontNormalMed3", "GameFontNormal"))
-	row.Text:SetPoint("LEFT", row.Status, "RIGHT", 4, 0)
-	row.Text:SetPoint("RIGHT", -4, 0)
+	AnchorText(row, false)
 	row.Text:SetJustifyH("LEFT")
 	row.Text:SetWordWrap(false)
 
@@ -475,6 +568,11 @@ local function CreateRow(parent, onClick)
 	end)
 	row:SetScript("OnClick", function(self)
 		ns.PlaySoundKit("IG_QUEST_LIST_SELECT")
+		-- (a road's line opens the road in Before you go: QuestsPanel:OpenRoad)
+		if self.road then
+			QuestsPanel:OpenRoad(self.road)
+			return
+		end
 		-- (a step of a chain, one in, is chosen as a step, under its row: QuestsPanel:Select)
 		if onClick then onClick(self) else QuestsPanel:Select(self.quest, (self.depth or 0) > 0, self.under) end
 	end)
@@ -482,8 +580,13 @@ local function CreateRow(parent, onClick)
 end
 
 -- part: { n, count } for a step shown as one of the parts of a name (ChainRows), named "<name> (Part n)".
+-- (Rows are reused: a road's line, SetRoadRow, made a quest's row again.)
 local function SetRow(row, quest, depth, hasChain, expanded, selected, part)
-	row.quest, row.depth, row.part = quest, depth, part
+	row.quest, row.depth, row.part, row.road = quest, depth, part, nil
+	if row.noted then
+		row.Note:Hide()
+		AnchorText(row, false)
+	end
 	row:ClearAllPoints()
 	row:SetWidth(LIST_WIDTH - depth * INDENT)
 
@@ -497,8 +600,13 @@ local function SetRow(row, quest, depth, hasChain, expanded, selected, part)
 	-- (a row of same-named quests at the level of the part the player is on)
 	local shown = quest.parts and ShownPart(quest) or quest
 	local level = shown.level and ("[" .. shown.level .. "] ") or ""
-	local name = quest.name or ""
-	if part then name = string.format(L.QUEST_PART_NAME, name, part[1]) end
+	-- (Adventure Mode: "???" for a quest not offered yet, ShownName. A part of a name is "<name> (Part n)":
+	-- named where the character knows the row of same-named quests it is numbered in, which the tab names.)
+	local name = ShownName(quest) or ""
+	if part then
+		if part[3] and Known(part[3]) then name = quest.name or "" end
+		name = string.format(L.QUEST_PART_NAME, name, part[1])
+	end
 	row.Text:SetText(level .. name)
 	row.color = status == STATUS_DONE and ROW_DONE_COLOR or ROW_COLOR
 	row.Highlight:SetVertexColor(row.color[1], row.color[2], row.color[3])
@@ -507,9 +615,41 @@ local function SetRow(row, quest, depth, hasChain, expanded, selected, part)
 	UpdateRowHighlight(row)
 end
 
+--[[
+	A road's line under a quest's + (QuestsPanel:Refresh, RoadLine): road = { key (the road's dropdown's), title (as its
+	header shows it), status or icon (its mark), note (how many of its quests are done, or the check), done (green), quest
+	(what a click chooses there, or nil) }. Never chosen itself; a click opens the road (QuestsPanel:OpenRoad). (Rows are
+	reused: nothing of a quest's row stays on it.)
+]]
+local function SetRoadRow(row, road, depth)
+	row.quest, row.depth, row.part, row.under, row.road = nil, depth, nil, nil, road
+	row:ClearAllPoints()
+	row:SetWidth(LIST_WIDTH - depth * INDENT)
+	row.Expand:Hide()
+	if road.status then
+		SetStatusIcon(row.Status, road.status)
+	else
+		row.Status:SetTexture(road.icon)
+		row.Status:SetTexCoord(0, 1, 0, 1)
+		row.Status:SetDesaturated(false)
+		row.Status:SetVertexColor(1, 1, 1)
+	end
+	row.Text:SetText(road.title or "")
+	row.Note:SetText(road.note or "")
+	row.Note:Show()
+	AnchorText(row, true)
+	row.color = road.done and ROW_DONE_COLOR or ROW_COLOR
+	row.Highlight:SetVertexColor(row.color[1], row.color[2], row.color[3])
+	row.selected = false
+	UpdateRowHighlight(row)
+end
+
 -- The list's rows and marks, for other pages that list quests the same way (Before you go).
 QuestsPanel.CreateRow, QuestsPanel.SetRow, QuestsPanel.SetStatusIcon = CreateRow, SetRow, SetStatusIcon
 QuestsPanel.STATUS_DONE, QuestsPanel.STATUS_LOCKED = STATUS_DONE, STATUS_LOCKED
+-- Adventure Mode: whether a row is known, and its name as the lists give it (Before you go too).
+function QuestsPanel:Known(quest) return Known(quest) end
+function QuestsPanel:ShownName(quest) return ShownName(quest) end
 
 ------------------------------------------------------------------------------------------
 -- Right page: the quest
@@ -556,7 +696,7 @@ local function CreateRewardBox(parent)
 	box:SetScript("OnLeave", function() GameTooltip:Hide() end)
 	box:SetScript("OnClick", function(self)
 		local info = ns.Items:Get(self.itemID)
-		if info.link and type(HandleModifiedItemClick) == "function" then HandleModifiedItemClick(info.link) end
+		ns.Gamepad:ItemClick(info.link)
 	end)
 	return box
 end
@@ -587,8 +727,8 @@ end
 -- attunement's steps, on the raid's page or the Spire's) is done inside that one, not this: its
 -- "inside the dungeon" names it, "inside Blackrock Depths" (ns.InsideNamed), in the language's
 -- words where it has them (Core/Registry.lua's ns.ApplyLocale). A quest more than one wing of a
--- dungeon keeps (Dead Man's Plea in both of Stratholme's, Falrin's quests in all of Dire Maul's)
--- names the dungeon, "inside Stratholme", not the wing that happens to come first. So does a wing's
+-- dungeon keeps (Falrin's quests in all of Dire Maul's) names the dungeon, "inside Dire Maul", not
+-- the wing that happens to come first. So does a wing's
 -- quest on the pages its wingUnsaidOn lists, where which wing it is done in is not known (West's
 -- Athenaeum quests on Dire Maul North's page, the data filing the Athenaeum under both).
 local function WingUnsaid(quest, instance)
@@ -665,6 +805,9 @@ local function EndPoint(quest)
 	if quest.endMap then
 		return { mapID = quest.endMap.mapID, x = quest.endMap.x, y = quest.endMap.y, label = quest.turnin or quest.endMap.label }
 	end
+	-- endMap = false: its end spot is not known, though the same person takes it somewhere else (Watch Yer Back's
+	-- Sully, behind Theramore's graveyard, not at the inn where he gave it).
+	if quest.endMap == false then return nil end
 	-- Handed back to whoever gave it: the same spot.
 	if quest.startMap and quest.turnin and FirstName(quest.turnin) == FirstName(quest.pickup) then
 		return { mapID = quest.startMap.mapID, x = quest.startMap.x, y = quest.startMap.y, label = quest.turnin }
@@ -827,7 +970,9 @@ local function FaceStart(face)
 		ns.DungeonMap:HoldOffer(face, true)
 	end
 	button:LockHighlight()
-	ShowButtonTip(button)
+	-- (a button of the journal's other faces may show its own tooltip: ShowFaceTip)
+	local showTip = rawget(button, "ShowFaceTip") or ShowButtonTip
+	showTip(button)
 end
 
 -- The face's OnLeave (and OnHyperlinkLeave): the hover goes on, for its own look to end it; only a face
@@ -871,12 +1016,13 @@ local function CreateLinkFace(button)
 	return face
 end
 
--- The face for the button's place, or none.
+-- The face for the button's place, or none. It is as big as the button, or as the part of it the face is laid
+-- over (button.faceRegion: the Gear Finder's rumour slots, UI/GearPanel.lua).
 local function SetLinkFace(button)
 	local face, point = button.LinkFace, button.point
 	local link
 	if face and point and ns.FileExists(CLEAR) then
-		local width, height = button:GetSize()
+		local width, height = (rawget(button, "faceRegion") or button):GetSize()
 		link = ns.DungeonMap:WaypointLinkText(point.mapID, point.x or 0.5, point.y or 0.5,
 			string.format("|T%s:%d:%d|t", CLEAR, math.ceil(height or 0), math.ceil(width or 0)))
 	end
@@ -895,10 +1041,125 @@ local function SetMapButton(button, point, title, place)
 	SetLinkFace(button)
 end
 
+--[[
+	A map button's width: the quest page's 112, or wider where its label needs it: the label's own width on one line
+	(GetUnboundedStringWidth, the words' width whatever the room) and 40, the template's own allowance for its label
+	(fitTextWidthPadding, Blizzard_SharedXML/SecureUIPanelTemplates.xml:41-42; the client's own FitToText widens this
+	template to GetTextWidth() + 40 just after SetText, so Button:GetTextWidth is most likely the same one-line width,
+	a best guess).
+
+	Its words on one line. The vendor's Show Map has the client's own words, ENCOUNTER_JOURNAL_SHOW_MAP (L.MAP_SHOW),
+	which Forever's English client has as "Show\nMap" (its GlobalStrings.db2, read 2026-11-14): two lines, for the
+	retail journal's Show Map beside its map icon, as the journal's own overview shows it (UI/EncounterPage.lua). On one
+	line the client draws a label with a line break as its first line and "...": build 5's "Show..." (the owner's
+	screenshot of 2026-11-14), whatever the room; build 3's "Sho..." where the label was only as wide as "Show"; build
+	2's two lines spilling out of the button where it could wrap. Show Start and Show End, the journal's own words, have
+	no line break, and so came out whole. So a map button's line breaks are joined (MapLabelText): a space, or nothing
+	on a Chinese client, whose words have no spaces between them (a line break comes from the client's own strings, in
+	its own language).
+
+	The label's room. UIPanelButtonTemplate's label (its ButtonText) has no width or anchors of its own
+	(SecureUIPanelTemplates.xml:81), and the client does not widen it with the button. So the journal sets the room
+	itself, whatever the client did: the label is anchored to both sides of its button, MAP_LABEL_INSET in (the
+	template's end pieces, 12 wide), and given that width too each time the button's width is set, changes or it is
+	shown (as Blizzard's own TruncatedButtonTemplate sets its text's width on OnSizeChanged, SharedUIPanelTemplates.lua).
+	On one line: a label longer than its room would end in "..." rather than run out of the button, and MapButtonNeed
+	keeps the button wide enough that it never is.
+]]
+local MAP_BUTTON_WIDTH, MAP_BUTTON_HEIGHT, MAP_BUTTON_PADDING, MAP_LABEL_INSET = 112, 22, 40, 12
+-- Every map button made, for /aegis buttons.
+local madeMapButtons = {}
+
+-- The button's label (the template's Text, else the client's own font string for it).
+local function MapButtonLabel(button)
+	return rawget(button, "Text") or (button.GetFontString and button:GetFontString()) or nil
+end
+
+-- A label's words on one line (above): each line break ("\n", or the client's "|n") a space, or nothing in Chinese.
+local function MapLabelText(text)
+	if type(text) ~= "string" then return text end
+	local locale = GetLocale and GetLocale()
+	local join = (locale == "zhCN" or locale == "zhTW") and "" or " "
+	return (text:gsub("%s*|n%s*", join):gsub("%s*\n%s*", join))
+end
+
+-- The label's room: the button's width less its ends, on one line, centered (above), anchored at both sides every
+-- time. Only while the button is held down are its anchors left as they are: the client moves a pressed label by
+-- its pushed text offset and back as it is let up, and how is not known (a best guess: by its anchors, the mock's
+-- SetButtonState), so anchoring it then could leave it off by that much. Its width is set all the same.
+local function FitMapLabel(button)
+	local label = MapButtonLabel(button)
+	if not label then return end
+	if label.SetWordWrap then label:SetWordWrap(false) end
+	if not (button.GetButtonState and button:GetButtonState() == "PUSHED") then
+		label:ClearAllPoints()
+		label:SetPoint("LEFT", button, "LEFT", MAP_LABEL_INSET, 0)
+		label:SetPoint("RIGHT", button, "RIGHT", -MAP_LABEL_INSET, 0)
+	end
+	label:SetWidth(math.max(1, (tonumber(button:GetWidth()) or 0) - 2 * MAP_LABEL_INSET))
+end
+
+-- The button's width, and its label's room with it.
+local function SetMapButtonWidth(button, width)
+	button:SetWidth(width)
+	FitMapLabel(button)
+end
+
+-- One font string to measure other words in a map button's font (MapButtonNeed's text), made on the first button that
+-- asks; it holds no words between measures, so it draws nothing.
+local measurer
+
+-- How wide the button must be for its label on one line, the template's allowance with it; or, given a text, for
+-- that text in its label's font (the quest page's Show End, for the vendors' Show Map: MapButtonWidth).
+local function MapButtonNeed(button, text)
+	local label = MapButtonLabel(button)
+	local width
+	if text and label and label.GetFont then
+		measurer = measurer or button:CreateFontString(nil, "ARTWORK")
+		local font, size, flags = label:GetFont()
+		if font then measurer:SetFont(font, size, flags) else measurer:SetFontObject(label:GetFontObject()) end
+		measurer:SetText(MapLabelText(text))
+		width = measurer.GetUnboundedStringWidth and measurer:GetUnboundedStringWidth() or measurer:GetStringWidth()
+		measurer:SetText("")
+	elseif label and label.GetUnboundedStringWidth then
+		width = label:GetUnboundedStringWidth()
+	elseif button.GetTextWidth then
+		width = button:GetTextWidth()
+	end
+	return math.ceil(tonumber(width) or 0) + MAP_BUTTON_PADDING
+end
+
+-- Its width: the quest page's 112, or what its label needs.
+local function FitMapButton(button)
+	SetMapButtonWidth(button, math.max(MAP_BUTTON_WIDTH, MapButtonNeed(button)))
+end
+
+-- A vendor's Show Map beside the quest page's buttons (the owner, 2026-11-14: "they should be the same size and
+-- font"): Show End's width in the client's language, the quest page's 112 or what its words need in the same font,
+-- and wider only where its own label needs more (never cut). German's "Karte anzeigen" needs 126, Show End 112.
+local function MapButtonWidth(button)
+	return math.max(MAP_BUTTON_WIDTH, MapButtonNeed(button), MapButtonNeed(button, L.QUEST_SHOW_END))
+end
+
 local function CreateMapButton(parent, text)
 	local button = ns.CreateFrameWithTemplate("Button", nil, parent, "UIPanelButtonTemplate")
-	button:SetSize(112, 22)
+	button:SetSize(MAP_BUTTON_WIDTH, MAP_BUTTON_HEIGHT)
+	text = MapLabelText(text)
 	button:SetText(text)
+	local label = MapButtonLabel(button)
+	-- How the client made the label, before the journal sets its room (/aegis buttons): whether the button was made
+	-- where it shows, the label's width and its anchors.
+	button.labelAsMade = {
+		shown = parent and parent.IsVisible and parent:IsVisible() or false,
+		width = label and label.GetWidth and tonumber(label:GetWidth()) or nil,
+		points = label and label.GetNumPoints and label:GetNumPoints() or nil,
+	}
+	if label and label.SetJustifyH then label:SetJustifyH("CENTER") end
+	FitMapButton(button)
+	-- (its label's room again whenever its size changes, or it is shown: FitMapLabel)
+	button:HookScript("OnSizeChanged", FitMapLabel)
+	button:HookScript("OnShow", FitMapLabel)
+	madeMapButtons[#madeMapButtons + 1] = button
 	button.label = text
 	button:SetMotionScriptsWhileDisabled(true)
 	-- Where it has no face (above).
@@ -915,18 +1176,154 @@ local function CreateMapButton(parent, text)
 	return button
 end
 
+--[[
+	The same faces for the journal's other map pin links (the Gear Finder's rumours, UI/GearPanel.lua): a face
+	over any button of the journal's (CreateLinkFace, nil where the client has no template), its link written
+	for button.point or hidden where it has none (SetLinkFace); a button that has a face shows its own
+	tooltip over it where it has a ShowFaceTip(button). A Show Start of their own is QuestsPanel:CreateMapButton and
+	QuestsPanel:SetMapButton below (point, its title for a button with no face, its place for the tooltip).
+]]
+QuestsPanel.CreateLinkFace, QuestsPanel.SetLinkFace = CreateLinkFace, SetLinkFace
+
+-- What the detail page may show, hidden for a page with no quest chosen and for a quest not offered yet.
+local DETAIL_PARTS = { "Title", "Part", "Status", "Objective", "Note", "DescriptionHeader", "Description", "ShowStart",
+	"ShowEnd", "Giver", "RewardsHeader", "Receive", "Money", "Experience", "ExperienceNote", "ExperienceHover", "Reputation",
+	"Choose", "Also" }
+local function HideDetail(child)
+	for _, key in ipairs(DETAIL_PARTS) do child[key]:Hide() end
+	for _, box in ipairs(child.RewardBoxes) do box:Hide() end
+end
+
+-- The same map button, link face and all, for a currency vendor's place on their page (UI/EncounterPage.lua): made
+-- with its text, then set to a point { mapID, x, y } (nil: disabled), a title for the journal's pin and the chat, and
+-- the place its tooltip names. MapButtonWidth: its width beside the quest page's Show End; SetMapButtonWidth: its
+-- width, its label's room with it. MapLabelText: a label's words on one line.
+QuestsPanel.MAP_BUTTON_WIDTH = MAP_BUTTON_WIDTH
+function QuestsPanel:CreateMapButton(parent, text) return CreateMapButton(parent, text) end
+function QuestsPanel:SetMapButton(button, point, title, place) SetMapButton(button, point, title, place) end
+function QuestsPanel:MapButtonNeed(button, text) return MapButtonNeed(button, text) end
+function QuestsPanel:MapButtonWidth(button) return MapButtonWidth(button) end
+function QuestsPanel:SetMapButtonWidth(button, width) SetMapButtonWidth(button, width) end
+function QuestsPanel:MapLabelText(text) return MapLabelText(text) end
+
+--[[
+	/aegis buttons: the client's own words for Show Map, then each map button made so far (Show Start, Show End, each
+	vendor's Show Map), for checking in the game that its label is whole, and if not, why: its words (a line break
+	shown as \n), how many lines and whether the client cut it short (IsTruncated) or may wrap it (CanWordWrap); its font
+	(file, size, font object) and the button's effective scale; the button's width, what its label needs, and Show End's
+	width in that font; the label's own width (its room: the button's less 24), its width on one line and as drawn; each
+	of its anchors (point, offsets; another frame's or point's named); and how the client made it, before the journal set
+	its room. What each cause of a cut label would print:
+	  a line break in its words (build 5's "Show...", the cause found): \n in its words, 2 lines or cut short, though its
+	    one-line width is less than its room;
+	  too little room (build 3's best guess): a label narrower than its one-line width, or anchors other than LEFT 12,0
+	    and RIGHT -12,0;
+	  another font or size: a font unlike Show End's line; a scale on the card: a scale unlike Show End's line (the same
+	    font drawn smaller or larger);
+	  a measure made while hidden, or before its font was in: "needs" less than its one-line width and 40.
+	In English, like /aegis run debug.
+]]
+function QuestsPanel:DebugMapButtons()
+	local function Read(object, method)
+		local fn = object and object[method]
+		if type(fn) ~= "function" then return nil end
+		local ok, value = pcall(fn, object)
+		if ok then return value end
+		return nil
+	end
+	local function Width(value) return tonumber(value) and string.format("%.1f", value) or "?" end
+	local function YesNo(value)
+		if value == nil then return "?" end
+		return value and "yes" or "no"
+	end
+	-- (its words as written: a line break as \n, and a |n shown, not drawn as one)
+	local function Words(text)
+		if type(text) ~= "string" then return tostring(text) end
+		return "\"" .. text:gsub("|", "||"):gsub("\n", "\\n") .. "\""
+	end
+	local function Font(label)
+		local ok, font, size, flags = pcall(label.GetFont, label)
+		local object = Read(label, "GetFontObject")
+		local name = type(object) == "table" and Read(object, "GetName") or (type(object) == "string" and object) or "?"
+		if not (ok and font) then return "? (" .. tostring(name) .. ")" end
+		return string.format("%s %s%s (%s)", tostring(font), Width(size), (flags and flags ~= "") and (" " .. flags) or "",
+			tostring(name))
+	end
+	local function Anchors(button, label)
+		local points = {}
+		for index = 1, tonumber(Read(label, "GetNumPoints")) or 0 do
+			local ok, point, relative, relativePoint, x, y = pcall(label.GetPoint, label, index)
+			if ok then
+				local to = ""
+				if relative ~= button or relativePoint ~= point then
+					local name = relative == button and "button" or (type(relative) == "table" and Read(relative, "GetName"))
+					to = ">" .. tostring(name or "another frame") .. ":" .. tostring(relativePoint)
+				end
+				points[#points + 1] = string.format("%s%s %s,%s", tostring(point), to, tostring(x), tostring(y))
+			end
+		end
+		return #points > 0 and table.concat(points, " ") or "none"
+	end
+	ns.Print("the client's Show Map words (ENCOUNTER_JOURNAL_SHOW_MAP): " .. Words(ENCOUNTER_JOURNAL_SHOW_MAP))
+	if #madeMapButtons == 0 then
+		ns.Print("no map buttons yet: open a quest's or a vendor's page first")
+		return
+	end
+	for _, button in ipairs(madeMapButtons) do
+		local label = MapButtonLabel(button)
+		local made = rawget(button, "labelAsMade") or {}
+		local scale = tonumber(Read(button, "GetEffectiveScale"))
+		ns.Print(string.format("%s: lines %s, cut short: %s, may wrap: %s; font %s, scale %s; button %s, needs %d, Show End"
+			.. " %d; label %s wide, one line %s, drawn %s; anchors %s%s; made %s, label %s wide, %s anchors%s",
+			Words(Read(button, "GetText")), tostring(Read(label, "GetNumLines") or "?"), YesNo(Read(label, "IsTruncated")),
+			YesNo(Read(label, "CanWordWrap")), Font(label), scale and string.format("%.2f", scale) or "?",
+			Width(Read(button, "GetWidth")), MapButtonNeed(button),
+			math.max(MAP_BUTTON_WIDTH, MapButtonNeed(button, L.QUEST_SHOW_END)), Width(Read(label, "GetWidth")),
+			Width(Read(label, "GetUnboundedStringWidth")), Width(Read(label, "GetStringWidth")), Anchors(button, label),
+			Read(button, "GetButtonState") == "PUSHED" and " (pushed)" or "",
+			made.shown and "shown" or "hidden", Width(made.width), tostring(made.points or "?"),
+			button:IsVisible() and "" or " (hidden)"))
+	end
+end
+
 -- The detail page, laid out top to bottom for the chosen quest (asStep: chosen as a step of a chain; part:
 -- { n, count }, chosen as one of the parts of a name, ChainRows).
 local function FillDetail(detail, quest, instance, asStep, part)
 	local child = detail.Child
 	-- A row of same-named quests shows the page of the part the player is on (the last, once all are
 	-- done), under its own name, with which part it is; a part chosen as its own row says which it is too.
-	local partIndex, partCount
+	local partIndex, partCount, rowKnown
 	if quest.parts then
-		partCount = #quest.parts
+		partCount, rowKnown = #quest.parts, Known(quest)
 		quest, partIndex = ShownPart(quest)
 	elseif part then
 		partIndex, partCount = part[1], part[2]
+		rowKnown = part[3] ~= nil and Known(part[3])
+	end
+	-- Adventure Mode: a quest not offered yet has its name (a part of a row known by its name, that name;
+	-- else "???"), which part it is, and a line saying it is not offered yet; nothing of its own.
+	if not Known(quest) then
+		HideDetail(child)
+		local y = 6
+		child.Title:SetText(rowKnown and quest.name or ShownName(quest))
+		child.Title:ClearAllPoints()
+		child.Title:SetPoint("TOPLEFT", 2, -y)
+		child.Title:Show()
+		y = y + child.Title:GetStringHeight()
+		if partIndex then
+			child.Part:SetText(string.format(L.QUEST_PART_OF, partIndex, partCount))
+			child.Part:ClearAllPoints()
+			child.Part:SetPoint("TOPLEFT", 2, -(y + 2))
+			child.Part:Show()
+			y = y + 2 + child.Part:GetStringHeight()
+		end
+		child.Objective:SetText(L.ADVENTURE_QUEST_UNKNOWN)
+		child.Objective:ClearAllPoints()
+		child.Objective:SetPoint("TOPLEFT", 2, -(y + 8))
+		child.Objective:Show()
+		y = y + 8 + child.Objective:GetStringHeight()
+		child:SetHeight(y + 12)
+		return
 	end
 	local status = QuestsPanel:Status(quest)
 	-- A one-of row is no one quest: nothing recorded is its.
@@ -940,7 +1337,7 @@ local function FillDetail(detail, quest, instance, asStep, part)
 		y = y + (gap or 0) + (height or (region.GetStringHeight and region:GetStringHeight()) or region:GetHeight())
 	end
 
-	child.Title:SetText(quest.name or "")
+	child.Title:SetText(ShownName(quest) or "")
 	place(child.Title)
 
 	child.Part:SetShown(partIndex ~= nil)
@@ -966,13 +1363,23 @@ local function FillDetail(detail, quest, instance, asStep, part)
 		place(child.Objective, 8)
 	end
 	local notes = {}
+	-- Adventure Mode: the journal's own notes, and who gives and takes the quest, name nothing not found
+	-- yet (Discovery:MaskAll), as Before you go's do: they are our words, not the game's (the quest's
+	-- objective and text, which the game told, stay as they are; so does the item it begins with, which
+	-- the character holds to be offered it). A quest not offered yet that a note names is "???", as its
+	-- row is.
+	local untold = ns.Discovery:Untold(instance)
+	-- (named: the quests named after someone its note names as quests, namesQuests)
+	local function Ours(text, named)
+		return ns.Discovery:MaskAll(instance, text, untold, named)
+	end
 	-- What it begins with, and beneath it the start's own note: where the item drops or the object
 	-- stands ("From A Dusty Tome inside Dire Maul.").
 	local start = (quest.startItem and quest.startItem.name and quest.startItem)
 		or (quest.startObject and quest.startObject.name and quest.startObject)
 	if start then
-		notes[#notes + 1] = L.QUEST_START_ITEM .. " " .. start.name
-		if start.note then notes[#notes + 1] = start.note end
+		notes[#notes + 1] = ns.Discovery:MaskQuests(L.QUEST_START_ITEM .. " " .. start.name)
+		if start.note then notes[#notes + 1] = Ours(start.note) end
 	end
 	-- (on a page where the quest's wing is not said, its note that names none, if it has one)
 	local questNote = WingUnsaid(quest, instance) and quest.wingUnsaidNote or quest.note
@@ -984,10 +1391,14 @@ local function FillDetail(detail, quest, instance, asStep, part)
 		-- (after the note, in its paragraph; a note in Chinese ends with its own full stop, no space)
 		questNote = questNote and (questNote .. (questNote:find("。$") and "" or " ") .. quest.followUp) or quest.followUp
 	end
-	if questNote then notes[#notes + 1] = questNote end
+	if questNote then notes[#notes + 1] = Ours(questNote, quest.namesQuests) end
 	child.Note:SetShown(#notes > 0)
 	if #notes > 0 then
-		child.Note:SetText(table.concat(notes, "\n"))
+		-- (an item a note names is a link, as in Before you go: State Secrets' Fractured Insignia and the toy they make)
+		local noteText = ns.Items:LinkText(table.concat(notes, "\n"))
+		child.Note:SetText(noteText)
+		-- (a common item's link is white, as in the game, and the note then takes the game's text shadow)
+		ns.Items:ShadowLinks(child.Note, noteText)
 		place(child.Note, 6)
 	end
 
@@ -1011,6 +1422,10 @@ local function FillDetail(detail, quest, instance, asStep, part)
 		child.Giver:Hide()
 	else
 		local pickup, turnin = Where(source, "pickup", instance), Where(source, "turnin", instance)
+		-- (fitted again before their faces are made: a label measured as the page was made, its font not yet in, may
+		-- have come out short)
+		FitMapButton(child.ShowStart)
+		FitMapButton(child.ShowEnd)
 		SetMapButton(child.ShowStart, StartPoint(source), quest.name, pickup)
 		SetMapButton(child.ShowEnd, EndPoint(source), quest.name, turnin)
 		place(child.ShowStart, 12, 22)
@@ -1021,14 +1436,20 @@ local function FillDetail(detail, quest, instance, asStep, part)
 		-- (a player's request): the taker only where it is someone else.
 		-- A quest that starts from an item says where the item is ("Damp Note, dropped by ..."), on its
 		-- own line: no one offers it.
+		-- (Adventure Mode: the item it begins with named, as above; the rest as the notes are)
 		local givers = {}
 		if pickup and PickupIsItem(source) then
-			givers[#givers + 1] = pickup
+			local item = start and start.name
+			if item and pickup:sub(1, #item) == item then
+				givers[#givers + 1] = item .. Ours(pickup:sub(#item + 1))
+			else
+				givers[#givers + 1] = Ours(pickup)
+			end
 		elseif pickup then
-			givers[#givers + 1] = string.format(L.QUEST_OFFERED_BY, pickup)
+			givers[#givers + 1] = Ours(string.format(L.QUEST_OFFERED_BY, pickup))
 		end
 		if turnin and turnin ~= pickup then
-			givers[#givers + 1] = string.format(L.QUEST_HAND_IN_TO, turnin)
+			givers[#givers + 1] = Ours(string.format(L.QUEST_HAND_IN_TO, turnin))
 		end
 		if #givers > 0 then
 			child.Giver:SetText(table.concat(givers, "\n"))
@@ -1043,10 +1464,14 @@ local function FillDetail(detail, quest, instance, asStep, part)
 	local turnedIn = recorded and recorded.turnedIn
 	-- What the player was given, as recorded; else the data's, which may be only the original game's
 	-- number (ns.QuestXP), shown with a note. A hand-in recorded at the level cap gives no XP, which
-	-- says nothing about the quest's, so the data's number stays.
+	-- says nothing about the quest's, so the data's number stays. Of a recorded hand-in, the number its
+	-- quest window showed comes first (the reward window's, else the offer's, as the Record tab's text
+	-- has it): what the turn-in gave counts any XP buff (a sleeping bag's +3%).
 	local xp, originalXP = nil, false
+	local seen = recorded and (recorded.rewards or recorded.offered)
+	local window = seen and seen.xp
 	if turnedIn and turnedIn.xp and turnedIn.xp > 0 then
-		xp = turnedIn.xp
+		xp = (type(window) == "number" and window > 0) and window or turnedIn.xp
 	else
 		xp, originalXP = ns.QuestXP(source and source.questID, rewards)
 	end
@@ -1063,8 +1488,7 @@ local function FillDetail(detail, quest, instance, asStep, part)
 	end
 	-- rewards.items, one of which is chosen when rewards.choice is set; rewards.also, given with it.
 	local items, choice, also = rewards.items or {}, rewards.choice, rewards.also or {}
-	-- Rewards seen on the quest frame fill in for a quest the data lists none for.
-	local seen = recorded and (recorded.rewards or recorded.offered)
+	-- Rewards seen on the quest frame (seen, above) fill in for a quest the data lists none for.
 	if #items == 0 and seen then
 		local ids = seen.choices or seen.items or {}
 		choice = seen.choices ~= nil
@@ -1180,7 +1604,22 @@ function QuestsPanel:Create(page, info)
 	list:SetPoint("BOTTOMLEFT", 25, 1)
 	list:SetFrameLevel(info:GetFrameLevel() + 5)
 	list.Child:SetWidth(LIST_WIDTH)
-	list.Rows, list.Headers, list.Boxes = {}, {}, {}
+	-- Notes: Before you go's headers with no quests of their own (the dropdowns stay list.Headers).
+	list.Rows, list.Headers, list.Boxes, list.Notes = {}, {}, {}, {}
+	-- Before you go's bar, with its label as a boss page's "Overview" has it.
+	local bar = list.Child:CreateTexture(nil, "ARTWORK")
+	ns.Art(bar, "Header-Overview")
+	bar:SetWidth(LIST_WIDTH + 6)
+	bar:Hide()
+	local label = list.Child:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+	label:SetPoint("BOTTOMLEFT", bar, "BOTTOMLEFT", 8, 6)
+	label:SetText(L.PREPARE_TITLE)
+	local color = ns.HEADER_LABEL_COLOR
+	label:SetTextColor(color[1], color[2], color[3])
+	label:Hide()
+	-- What Before you go shows, as last drawn (QuestsPanel:Refresh): its bar and label, its headers in order
+	-- (keys' dropdowns and notes alike) and the quests in its keys' boxes.
+	list.beforeYouGo = { bar = bar, label = label, headers = {}, rows = {} }
 	list:Hide()
 
 	-- Right page: the chosen quest.
@@ -1198,6 +1637,16 @@ function QuestsPanel:Create(page, info)
 	child.Part = Text(child, "GameFontNormalSmall")
 	child.Objective = Text(child)
 	child.Note = Text(child)
+	-- Items a note names are links (ns.Items:LinkText), as on Before you go's notes (UI/AbilitiesPanel.lua): pointing at
+	-- one shows the item. No click handler: this page holds Show Start's and Show End's map pin links, whose clicks are
+	-- the client's alone (the smoke test's link-setter check), so a click on an item here does nothing.
+	pcall(child.SetHyperlinksEnabled, child, true)
+	pcall(child.SetScript, child, "OnHyperlinkEnter", function(self, link)
+		GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
+		pcall(GameTooltip.SetHyperlink, GameTooltip, link)
+		GameTooltip:Show()
+	end)
+	pcall(child.SetScript, child, "OnHyperlinkLeave", function() GameTooltip:Hide() end)
 	child.DescriptionHeader = Text(child, headerFont, TITLE_COLOR)
 	child.DescriptionHeader:SetText(L.QUEST_DESCRIPTION)
 	child.Description = Text(child)
@@ -1264,7 +1713,7 @@ end
 
 -- asStep: chosen as a step of a chain (its row one in), not as its own row; under: the row it is listed
 -- under (a quest two chains list may have a part's number in one alone). A quest opened from elsewhere
--- (search, the map, Before you go) is chosen as its row, or as its part's row (Refresh).
+-- (search, the map) is chosen as its row, or as its part's row (Refresh).
 function QuestsPanel:Select(quest, asStep, under)
 	local page = self.page
 	page.selectedQuest, page.selectedAsStep, page.selectedUnder = quest, asStep == true or nil, asStep and under or nil
@@ -1272,14 +1721,32 @@ function QuestsPanel:Select(quest, asStep, under)
 end
 
 -- Opens the journal on a dungeon's Quests tab with the quest chosen (search, the map's quest
--- marks, Before you go), the dropdown and the chain that hold it open.
+-- marks), the dropdown and the chain that hold it open.
 function QuestsPanel:Open(instance, quest)
 	local journal = ns.Journal
 	journal:Show()
+	-- (the tab's Refresh as it shows chooses its first quest still to do, but opens no chain for it: ChooseFirst)
+	self.page.opening = true
 	journal:OpenInstance(instance)
 	ns.EncounterPage:SetTab(journal:Page(), ns.EncounterPage.TAB_QUESTS)
+	self.page.opening = nil
 	self.page.reveal = quest
 	self:Select(quest)
+end
+
+-- A click on a road's line (RoadLine): the road's dropdown in Before you go opened, the quest the line names chosen
+-- there and scrolled to, as a quest opened from elsewhere is (a part of a row of same-named quests as its part's row
+-- under it); with none to choose, the road's header scrolled to (in Adventure Mode, a road none of whose quests is known).
+function QuestsPanel:OpenRoad(road)
+	local page = self.page
+	page.expandedChains[road.key] = true
+	if road.quest then
+		page.selectedQuest, page.selectedAsStep, page.selectedUnder = road.quest, nil, nil
+		page.reveal = road.quest
+	else
+		page.revealKey = road.key
+	end
+	self:Refresh(page)
 end
 
 local function Holds(quests, quest)
@@ -1289,7 +1756,6 @@ local function Holds(quests, quest)
 	return false
 end
 
--- The first of these quests still to do (the first, once all are done).
 -- The parchment box an open dropdown's quests sit in, as an ability's text does on the Abilities tab.
 local function CreateBox(child)
 	local box = child:CreateTexture(nil, "BACKGROUND")
@@ -1302,22 +1768,113 @@ local function CreateBox(child)
 	return box
 end
 
-local function FirstToDo(quests)
+-- Where a dropdown's chain branches, the quests that follow each branch's first quest, by that quest: its chain's next
+-- steps (QuestsPanel:Rows's BranchesOn, for ChainRows). Built again with the rows.
+local nextSteps = setmetatable({}, { __mode = "k" })
+
+-- A dropdown's quests in order, each quest its chain branches into followed by the quests after it on its branch
+-- (nextSteps: steps under its +, no rows of their own, yet the dropdown's quests all the same); under: by position,
+-- the row such a step is listed under.
+local function DropdownQuests(quests)
+	local all, under = {}, {}
 	for _, quest in ipairs(quests) do
-		if QuestsPanel:Status(quest) ~= STATUS_DONE then return quest end
+		all[#all + 1] = quest
+		for _, step in ipairs(nextSteps[quest] or {}) do
+			all[#all + 1] = step
+			under[#all] = quest
+		end
 	end
-	return quests[1]
+	return all, under
 end
 
--- A dropdown's header: the mark of its first quest still to do, and how many of its quests are done.
-local function GroupSection(key, title, quests)
-	local done = 0
+--[[
+	The first of these quests still to do (the first, once all are done), the quests after a branch included; and,
+	for one of those, the row it is listed under (it is chosen there, as a step). In Adventure Mode one the
+	character knows first, still to do, else done (a "???" row tells nothing).
+]]
+local function FirstToDo(quests)
+	local all, under = DropdownQuests(quests)
+	if ns.Style:Adventure() then
+		local known
+		for index, quest in ipairs(all) do
+			if Known(quest) then
+				if QuestsPanel:Status(quest) ~= STATUS_DONE then return quest, under[index] end
+				known = known or index
+			end
+		end
+		if known then return all[known], under[known] end
+	end
+	for index, quest in ipairs(all) do
+		if QuestsPanel:Status(quest) ~= STATUS_DONE then return quest, under[index] end
+	end
+	return all[1]
+end
+
+--[[
+	The quest a dropdown starts on (FirstToDo) and, where it is chosen as a step of a chain, the row it is chosen
+	under (QuestsPanel:Select's under). In Adventure Mode, where the character knows none of its rows, a step of a
+	row's chain it knows (chainOf), the first still to do, else the first: a prerequisite or a later step is often
+	the first quest a character is offered, and a "???" row tells nothing. Where none of those is known either, a
+	quest it knows of a road a row comes after (roads: QuestsPanel:Rows's, whose quests its + doesn't repeat; the road's
+	dropdown, roadGroups), chosen there, not as a step, and returned with that dropdown (the owner's answer of
+	2026-11-19: "open the road in Before you go on it", where today's Warlord's Command was chosen under Victory for the
+	Horde's +).
+]]
+local function FirstShown(quests, chainOf, roads, roadGroups)
+	local first, head = FirstToDo(quests)
+	if not (first and ns.Style:Adventure() and chainOf) or Known(first) then return first, head end
+	local known, knownRow
 	for _, quest in ipairs(quests) do
+		for _, step in ipairs(chainOf[quest] or {}) do
+			if Known(step) then
+				if QuestsPanel:Status(step) ~= STATUS_DONE then return step, quest end
+				known, knownRow = known or step, knownRow or quest
+			end
+		end
+	end
+	local roadDone, roadDoneGroup
+	for _, quest in ipairs(roads and quests or {}) do
+		for _, key in ipairs(roads[quest] or {}) do
+			local group = roadGroups and roadGroups[key]
+			local road = group and FirstToDo(group.quests)
+			if road and Known(road) then
+				if QuestsPanel:Status(road) ~= STATUS_DONE then return road, nil, group end
+				roadDone, roadDoneGroup = roadDone or road, roadDoneGroup or group
+			end
+		end
+	end
+	if known then return known, knownRow end
+	if roadDone then return roadDone, nil, roadDoneGroup end
+	return first, head
+end
+
+-- Chooses a dropdown's first quest still to do (FirstShown): one chosen as a step under its row, that row's +
+-- opened; one of a road, the road's dropdown in Before you go unfolded so it is seen (as the owner's call of
+-- 2026-11-18 unfolds a key's). Neither while QuestsPanel:Open shows the tab, as the quest opened from elsewhere is
+-- chosen next, its chain alone open.
+local function ChooseFirst(page, quests, chainOf, roads, roadGroups)
+	local quest, head, roadGroup = FirstShown(quests, chainOf, roads, roadGroups)
+	page.selectedQuest, page.selectedAsStep, page.selectedUnder = quest, head and true or nil, head
+	if head and not page.opening then page.expandedChains[head.questID] = true end
+	if roadGroup and not page.opening then
+		page.expandedChains[roadGroup.section.key] = true
+		roadGroup.section.expanded = true
+	end
+	return quest
+end
+
+-- A dropdown's header: the mark of its first quest still to do, and how many of its quests are done (the quests
+-- after a branch counted too, as they were when they had rows of their own).
+local function GroupSection(key, title, quests)
+	local all = DropdownQuests(quests)
+	local done = 0
+	for _, quest in ipairs(all) do
 		if QuestsPanel:Status(quest) == STATUS_DONE then done = done + 1 end
 	end
+	-- (in Adventure Mode the mark of one the character knows: FirstToDo)
 	local first = FirstToDo(quests)
 	return { key = key, title = title, status = first and QuestsPanel:Status(first) or STATUS_DONE,
-		note = string.format("%d/%d", done, #quests), flags = {} }
+		note = string.format("%d/%d", done, #all), flags = {} }
 end
 
 -- A click on a dropdown's header opens or folds it; as it opens, its first quest still to do is
@@ -1327,8 +1884,15 @@ function QuestsPanel:Clicked(section)
 	local opening = not section.expanded
 	page.expandedChains[section.key] = opening
 	if opening and not section.members[page.selectedQuest] then
-		page.selectedQuest, page.selectedAsStep, page.selectedUnder = FirstToDo(section.quests), nil, nil
+		ChooseFirst(page, section.quests, section.chainOf, section.roads, section.roadGroups)
 	end
+	self:Refresh(page)
+end
+
+-- A click on a note of Before you go no quest of its own fills only opens or folds it: the quest chosen stays.
+function QuestsPanel:ToggleNote(section)
+	local page = self.page
+	page.expandedChains[section.key] = not section.expanded
 	self:Refresh(page)
 end
 
@@ -1338,11 +1902,23 @@ function QuestsPanel:ToggleChain(quest)
 	self:Refresh(page)
 end
 
+-- A dungeon's own quest by its id (the first of the id it lists), looked up in a map made once for each
+-- version of the data: the chains ask for every step in every dungeon.
+local questsByID, questsByIDFor = setmetatable({}, { __mode = "k" }), nil
 local function QuestByID(instance, questID)
-	for _, quest in ipairs(instance.quests or {}) do
-		if quest.questID == questID then return quest end
+	local quests = instance.quests
+	if not quests then return nil end
+	local dataVersion = ns.DataVersion and ns.DataVersion() or 0
+	if questsByIDFor ~= dataVersion then questsByID, questsByIDFor = setmetatable({}, { __mode = "k" }), dataVersion end
+	local byID = questsByID[quests]
+	if not byID then
+		byID = {}
+		for _, quest in ipairs(quests) do
+			if quest.questID ~= nil and byID[quest.questID] == nil then byID[quest.questID] = quest end
+		end
+		questsByID[quests] = byID
 	end
-	return nil
+	return byID[questID]
 end
 
 -- The page the journal keeps for a quest: this dungeon's, a step's, else another dungeon's. Where
@@ -1470,6 +2046,29 @@ local function StepQuest(instance, step)
 	return StepRow(instance, step.questID, step.name, nil, step.enName)
 end
 
+-- A chain's step as the tab lists it: the piece that is it (the row the tab lists it as, rowOf; the part of a row of
+-- same-named quests that is it; a one-of step's row; else its step's row), and the tab's row holding that piece, if one
+-- does. (A one-of step is the tab's row only where that row is its one-of row itself or has it as a part.)
+local function StepPiece(instance, step, rowOf)
+	if step.oneOf then
+		local piece, holder = OneOfRow(instance, step), nil
+		local row = rowOf and rowOf[piece.questID]
+		if row == piece then holder = row end
+		for _, part in ipairs(row and row.parts or {}) do
+			if part == piece then holder = row end
+		end
+		return piece, holder
+	end
+	local holder = rowOf and rowOf[step.questID]
+	local piece = holder
+	for _, part in ipairs(holder and holder.parts or {}) do
+		for _, questID in ipairs(HeldIDs(part)) do
+			if questID == step.questID then piece = part end
+		end
+	end
+	return piece or StepRow(instance, step.questID, step.name, nil, step.enName), holder
+end
+
 -- A row of same-named quests (QuestsPanel:Fold), one object for the same parts, so it stays chosen.
 local foldRows = {}
 local function FoldRow(parts, named)
@@ -1499,31 +2098,17 @@ end
 	them). A step alone of its name that is a part of such a row has that row's number too.
 
 	given[index]: a step that is a piece already (a row of same-named quests' part: ChainRows), the row
-	holding it. shown: the rows of the chain's own dropdown, by row (see below). Returns the rows, and each
-	one's { n, m } or nil.
+	holding it. shown: the rows of the chain's own dropdown, by row; road: the rows of the roads in Before you go
+	the chain's row comes after, by row (see below). Returns the rows, and each one's { n, m } or nil.
 ]]
-local function StepRows(instance, prerequisites, rowOf, skip, given, shown)
+local function StepRows(instance, prerequisites, rowOf, skip, given, shown, road)
 	local rows, holders, listed = {}, {}, {}
 	for index, step in ipairs(prerequisites) do
 		local piece, holder
 		if given and given[index] then
 			piece, holder = step, given[index]
-		elseif step.oneOf then
-			piece = OneOfRow(instance, step)
-			local row = rowOf and rowOf[piece.questID]
-			if row == piece then holder = row end
-			for _, part in ipairs(row and row.parts or {}) do
-				if part == piece then holder = row end
-			end
 		else
-			holder = rowOf and rowOf[step.questID]
-			piece = holder
-			for _, part in ipairs(holder and holder.parts or {}) do
-				for _, questID in ipairs(HeldIDs(part)) do
-					if questID == step.questID then piece = part end
-				end
-			end
-			piece = piece or StepRow(instance, step.questID, step.name, nil, step.enName)
+			piece, holder = StepPiece(instance, step, rowOf)
 		end
 		if piece ~= skip and not listed[piece] then
 			listed[piece] = true
@@ -1546,7 +2131,7 @@ local function StepRows(instance, prerequisites, rowOf, skip, given, shown)
 		end
 		for count, position in ipairs(same) do
 			if holder then
-				numbers[position] = { at[rows[position]], #holder.parts }
+				numbers[position] = { at[rows[position]], #holder.parts, holder }
 			elseif #same > 1 then
 				numbers[position] = { count, #same }
 			end
@@ -1559,12 +2144,20 @@ local function StepRows(instance, prerequisites, rowOf, skip, given, shown)
 	-- such a row is left out too (The Left Piece of Lord Valthalak's Amulet under The Right Piece, where the
 	-- dungeon lists its own version); its lock line says any version will do. (Left out after the numbering,
 	-- so a step left keeps the number it had.)
+	-- The owner's direction of 2026-11-19 takes it to Before you go ("if the road is the same for many, we keep that
+	-- road in the breadcrumbs / attunement line, then we branch off where the quests start to differ"): a + never
+	-- repeats the road it comes after either (road: a dropdown of Before you go whose last quest the row needs,
+	-- QuestsPanel:Rows), whose own line stands for it there (RoadLine); only the row's own steps follow. A step of a
+	-- dropdown the row doesn't come after stays (Somber News's The Man in the Iron Chains, the first of the toy's
+	-- quests: a road's line would say it needs them all), and so do steps another row of the tab lists (Class Quests'
+	-- Anthion's Parting Words keeps the Dungeon Quests rows of its chain).
 	local function Repeats(position)
+		local function Here(row) return row ~= skip and (shown[row] or (road ~= nil and road[row] == true)) end
 		local holder = holders[position]
-		if holder then return holder ~= skip and shown[holder] end
+		if holder then return Here(holder) end
 		for _, questID in ipairs(HeldIDs(rows[position])) do
 			local row = rowOf and rowOf[questID]
-			if row and row ~= skip and shown[row] then return true end
+			if row and Here(row) then return true end
 		end
 		return false
 	end
@@ -1583,12 +2176,13 @@ end
 --[[
 	A row's chain: the steps before it, as rows, and their numbers (StepRows; rowOf, as it takes it: the tab's
 	own rows by the quest ids they hold; without it, every step as a step; shown: the rows of its dropdown,
-	which its chain doesn't repeat). A row of same-named quests
+	and road: the rows of the roads in Before you go it comes after, which its chain doesn't repeat either); then,
+	where its chain branches at it, the quests after it on its branch (nextSteps). A row of same-named quests
 	(QuestsPanel:Fold) opens on the whole chain as it runs (the owner's call of 2026-11-06): part by part, the
 	steps the part needs that are not listed yet, then the part (partsOnly: its parts alone, for a key's
 	dropdown, which lists the key's other quests itself).
 ]]
-local function ChainRows(instance, quest, rowOf, partsOnly, shown)
+local function ChainRows(instance, quest, rowOf, partsOnly, shown, road)
 	-- A quest whose steps are another quest's chain lists none (noChain: Red Silk Bandanas, after The Defias
 	-- Brotherhood's part 6); its lock line still names the step.
 	if quest.noChain then return {}, {} end
@@ -1599,6 +2193,8 @@ local function ChainRows(instance, quest, rowOf, partsOnly, shown)
 		for _, step in ipairs(quest.prerequisites or {}) do
 			if not skip[step.questID] then prerequisites[#prerequisites + 1] = step end
 		end
+		-- (the quests after it on its branch, where its chain branches: BranchesOn)
+		for _, after in ipairs(nextSteps[quest] or {}) do prerequisites[#prerequisites + 1] = after end
 	else
 		local seen = {}
 		for _, part in ipairs(quest.parts) do
@@ -1619,7 +2215,7 @@ local function ChainRows(instance, quest, rowOf, partsOnly, shown)
 			given[#prerequisites] = quest
 		end
 	end
-	return StepRows(instance, prerequisites, rowOf, quest, given, shown)
+	return StepRows(instance, prerequisites, rowOf, quest, given, shown, road)
 end
 
 --[[
@@ -1651,19 +2247,20 @@ end
 
 -- Whether quest needs the one whose ids are given: its prerequisites name it, or a one-of row's versions'
 -- pages' do, directly or as one version of a step.
-local function Needs(quest, ids)
-	local lists = {}
-	if quest.prerequisites then lists[1] = quest.prerequisites end
-	for _, page in ipairs(quest.pages or {}) do
-		if page.prerequisites then lists[#lists + 1] = page.prerequisites end
-	end
-	for _, list in ipairs(lists) do
-		for _, step in ipairs(list) do
-			if ids[step.questID] then return true end
-			for _, version in ipairs(step.oneOf or {}) do
-				if ids[version.questID] then return true end
-			end
+local NONE_LIST = {}
+local function NeedsIn(list, ids)
+	for _, step in ipairs(list or NONE_LIST) do
+		if ids[step.questID] then return true end
+		for _, version in ipairs(step.oneOf or NONE_LIST) do
+			if ids[version.questID] then return true end
 		end
+	end
+	return false
+end
+local function Needs(quest, ids)
+	if NeedsIn(quest.prerequisites, ids) then return true end
+	for _, page in ipairs(quest.pages or NONE_LIST) do
+		if NeedsIn(page.prerequisites, ids) then return true end
 	end
 	return false
 end
@@ -1810,11 +2407,130 @@ local function UnderWholeChains(list)
 end
 
 --[[
+	A chain that branches (the owner's report of 2026-11-17: in the Drowned City, An Acquaintance in Southshore gives
+	both Take Two With Water and Magics of the Drowned City, and each leads on to its own last quest, Findings for the
+	Explorer's League and The Web of Magic, which were rows of their own beside them). Where two or more quests of a
+	dropdown need one quest of it and need none of the others that do, the chain branches there, and the list's order
+	alone can no longer show which quest goes on from which. Only whether a quest needs one of the others counts: a
+	quest after a branch often lists its whole chain, so it needs the quest before the branch too. So each quest the
+	chain branches into keeps its row, and the quests that follow it on its branch (needing it, or a quest already
+	after it) are its chain's next steps: under its +, after the steps before it, each a step row with its page and
+	status, rows of their own no more (nextSteps, for ChainRows). A quest that comes after two branches (where they
+	meet again) stays a row, and so does a quest the chain branches into again. A chain that runs straight is as
+	before: its quests rows in its order, a + never repeating one (the owner's rule of 2026-11-07, StepRows), unless
+	the data marks the quest it is shown on (quest.chainHead, the owner's call of 2026-11-17 on Krol'dok's Twilight
+	Mementos, "make the main dungeon quest the visible one"): that quest keeps its row as a branch's quest does, and
+	the quests after it (its follow-ups outside) are its chain's next steps the same way. wholeChain is the other way
+	round: the last quest the row, the ones before it its steps. A dropdown's list, those quests left out.
+]]
+local function BranchesOn(list)
+	local rows = {}
+	for _, quest in ipairs(list) do
+		nextSteps[quest] = nil
+		if not quest.parts then rows[#rows + 1] = quest end
+	end
+	local idsOf = {}
+	local function NeedsRow(quest, row)
+		if quest == row then return false end
+		local ids = idsOf[row]
+		if not ids then ids = RowIDs(row) idsOf[row] = ids end
+		return Needs(quest, ids)
+	end
+	-- The quests the chain branches into, each with the others of its branching.
+	local heads, branching = {}, {}
+	for _, root in ipairs(rows) do
+		local needing = {}
+		for _, quest in ipairs(rows) do
+			if NeedsRow(quest, root) then needing[#needing + 1] = quest end
+		end
+		local apart = {}
+		for _, quest in ipairs(needing) do
+			local alone = true
+			for _, other in ipairs(needing) do
+				if NeedsRow(quest, other) then alone = false end
+			end
+			if alone then apart[#apart + 1] = quest end
+		end
+		if #apart > 1 then
+			for _, head in ipairs(apart) do
+				if not branching[head] then
+					heads[#heads + 1] = head
+					branching[head] = true
+				end
+			end
+		end
+	end
+	-- (and a quest the data shows its straight chain on: chainHead)
+	for _, quest in ipairs(rows) do
+		if quest.chainHead and not branching[quest] then
+			heads[#heads + 1] = quest
+			branching[quest] = true
+		end
+	end
+	if #heads == 0 then return list end
+	-- What follows each, in the list's order but each after the ones it needs.
+	local after, times = {}, {}
+	for _, head in ipairs(heads) do
+		local reached, chain, grew = { [head] = true }, {}, true
+		while grew do
+			grew = false
+			for _, quest in ipairs(rows) do
+				if not reached[quest] and not branching[quest] then
+					local follows = false
+					for member in pairs(reached) do
+						if NeedsRow(quest, member) then follows = true end
+					end
+					if follows then
+						reached[quest], grew = true, true
+						chain[#chain + 1] = quest
+						times[quest] = (times[quest] or 0) + 1
+					end
+				end
+			end
+		end
+		after[head] = chain
+	end
+	local under = {}
+	for _, head in ipairs(heads) do
+		local left, chain = {}, {}
+		for _, quest in ipairs(after[head]) do
+			-- (after two branches: where they meet again, a row)
+			if times[quest] == 1 then left[#left + 1], under[quest] = quest, true end
+		end
+		while #left > 0 do
+			local pick = 1
+			for index, quest in ipairs(left) do
+				local ready = true
+				for _, other in ipairs(left) do
+					if other ~= quest and NeedsRow(quest, other) then ready = false end
+				end
+				if ready then pick = index break end
+			end
+			-- (a loop in the data, should one ever be: the first left)
+			chain[#chain + 1] = table.remove(left, pick)
+		end
+		if #chain > 0 then nextSteps[head] = chain end
+	end
+	local kept = {}
+	for _, quest in ipairs(list) do
+		if not under[quest] then kept[#kept + 1] = quest end
+	end
+	return kept
+end
+
+--[[
 	A dungeon's dropdowns on the Quests tab, for this character: { key, title, quests, chains, keyEntry, shown
-	(its rows, by row: what its chains don't repeat, StepRows) }, in
+	(its rows, by row: what its chains don't repeat, StepRows), and for Dungeon, Raid and Class Quests roads and
+	roadRows (below) }, in
 	order (its keys, as Before you go has them: BeforeYouGo:Keys; then Dungeon Quests, then Class Quests, whose
 	rows open their chains), and rowOf: each quest id the dropdowns hold, the row that holds it (a key's first,
 	then Dungeon Quests', then Class Quests'). Search lists a dungeon's quests as these rows do.
+	The roads (the owner's direction of 2026-11-19, StepRows): by row of Dungeon, Raid and Class Quests, the keys of
+	Before you go (BeforeYouGo:Keys's) whose dropdown's last quest the row needs (Needs: its prerequisites, a one-of row's
+	pages', a row of same-named quests' parts'), in Before you go's order, each a line under its + (RoadLine); and
+	roadRows, by row, those dropdowns' rows, which its chain leaves out. Where a road ends is its dropdown's list, the data's
+	(a road ends where the quests after it part ways: Krol'dok's Horde road at Bring Me His Head, as the smoke test keeps
+	every road).
 ]]
 function QuestsPanel:Rows(instance)
 	local groups, inKey, rowOf = {}, {}, {}
@@ -1822,7 +2538,8 @@ function QuestsPanel:Rows(instance)
 		for _, questID in ipairs(HeldIDs(row)) do rowOf[questID] = rowOf[questID] or row end
 	end
 	-- (a key's quests of one chain sharing a name are one row there already: BeforeYouGo:Keys)
-	for _, key in ipairs(ns.BeforeYouGo:Keys(instance)) do
+	local keys = ns.BeforeYouGo:Keys(instance)
+	for _, key in ipairs(keys) do
 		for _, quest in ipairs(key.quests) do
 			inKey[quest] = true
 			for _, part in ipairs(quest.parts or {}) do inKey[part] = true end
@@ -1857,6 +2574,8 @@ function QuestsPanel:Rows(instance)
 	others, classQuests = self:Fold(others, instance, dungeonOutside), self:Fold(classQuests, instance, classOutside)
 	-- (a chain shown whole: the quests before its last under its +, not rows of their own)
 	others, classQuests = UnderWholeChains(others), UnderWholeChains(classQuests)
+	-- (a chain that branches: the quests after each branch under its first quest's +)
+	others, classQuests = BranchesOn(others), BranchesOn(classQuests)
 	for _, quest in ipairs(others) do Hold(quest) end
 	for _, quest in ipairs(classQuests) do Hold(quest) end
 	if #others > 0 then
@@ -1870,22 +2589,44 @@ function QuestsPanel:Rows(instance)
 	for _, group in ipairs(groups) do
 		group.shown = {}
 		for _, quest in ipairs(group.quests) do group.shown[quest] = true end
+		-- (the roads each row comes after)
+		if group.chains then
+			group.roads, group.roadRows = {}, {}
+			for _, row in ipairs(group.quests) do
+				for _, key in ipairs(keys) do
+					local quests = key.entry.quests
+					local last = { [quests[#quests]] = true }
+					local after = Needs(row, last)
+					for _, part in ipairs(row.parts or NONE_LIST) do after = after or Needs(part, last) end
+					if after then
+						local roads, roadRows = group.roads[row] or {}, group.roadRows[row] or {}
+						roads[#roads + 1] = key
+						for _, held in ipairs(key.quests) do roadRows[held] = true end
+						group.roads[row], group.roadRows[row] = roads, roadRows
+					end
+				end
+			end
+		end
 	end
 	return groups, rowOf
 end
 
 -- A row's chain as the tab lists it (for the tests): its steps, a step the tab lists as a row being that row
 -- (rowOf, QuestsPanel:Rows's, if the caller has it), and their numbers (partsOnly: a key's row's; shown: its
--- dropdown's rows, which it doesn't repeat; without rowOf, both as the tab has them).
-function QuestsPanel:Chain(instance, quest, rowOf, partsOnly, shown)
+-- dropdown's rows, and road: the rows of the roads it comes after, which it doesn't repeat; without rowOf, all
+-- three as the tab has them).
+function QuestsPanel:Chain(instance, quest, rowOf, partsOnly, shown, road)
 	if not rowOf then
 		local groups
 		groups, rowOf = self:Rows(instance)
 		for _, group in ipairs(groups) do
-			if group.shown[quest] then shown = shown or group.shown end
+			if group.shown[quest] then
+				shown = shown or group.shown
+				road = road or (group.roadRows and group.roadRows[quest])
+			end
 		end
 	end
-	return ChainRows(instance, quest, rowOf, partsOnly, shown)
+	return ChainRows(instance, quest, rowOf, partsOnly, shown, road)
 end
 
 --[[
@@ -1920,7 +2661,8 @@ local function TabParts()
 					Show(row)
 					for index, part in ipairs(row.parts or {}) do Show(part, index) end
 					if group.chains or row.parts then
-						local rows, given = ChainRows(instance, row, rowOf, not group.chains, group.shown)
+						local rows, given = ChainRows(instance, row, rowOf, not group.chains, group.shown,
+							group.roadRows and group.roadRows[row])
 						for at, piece in ipairs(rows) do Show(piece, given[at] and given[at][1]) end
 					end
 				end
@@ -1978,11 +2720,95 @@ function QuestsPanel:Find(instance, questID)
 	return nil
 end
 
+--[[
+	Adventure Mode: whether a step of a quest's chain is one the character knows that belongs to this
+	dungeon: a row of its tab (rowOf), or a step of this dungeon's chains alone. A step many dungeons'
+	chains share (A Shifty Merchant, of the dungeon sets' chain) does not show their quests, so a known
+	step tells nothing of where its chain goes.
+]]
+local chainsHolding
+local function ChainStepHere(step, rowOf)
+	if not chainsHolding then
+		chainsHolding = {}
+		for _, kind in ipairs({ "dungeon", "raid" }) do
+			for _, instance in ipairs(ns.GetInstances(kind)) do
+				local seen = {}
+				for _, quest in ipairs(instance.quests or {}) do
+					seen[quest.questID or 0] = true
+					for _, prerequisite in ipairs(quest.prerequisites or {}) do
+						for _, questID in pairs(StepIDs(prerequisite)) do seen[questID] = true end
+					end
+				end
+				for questID in pairs(seen) do chainsHolding[questID] = (chainsHolding[questID] or 0) + 1 end
+			end
+		end
+	end
+	for _, questID in ipairs(HeldIDs(step)) do
+		if ns.Discovery:Knows("quest", questID) and (rowOf[questID] or (chainsHolding[questID] or 0) <= 1) then
+			return true
+		end
+	end
+	return false
+end
+-- (the chat line's rule for a step: UI/News.lua tells one only where the tab shows it)
+function QuestsPanel:ChainStepHere(step, rowOf) return ChainStepHere(step, rowOf) end
+
+--[[
+	The line a road gets under the + of a quest that comes after it (QuestsPanel:Rows's roads; SetRoadRow): the road's
+	title as its header shows it, and what the quest itself needs of it (the review of 2026-11-19): its steps on the
+	road, as its lock line reads them (LockPage). Done (the check, in green) once all of those are, which may be after
+	the road's header has its check (the Dalaran Sewer Key's, once Heart of Disruption is only taken, while Shrewd
+	Negotiations waits for it to be handed in); else the mark of the first of them still to do, the step its lock line
+	names, and how many of the road's quests are done, as the header counts them. A click chooses that step in the
+	road's dropdown, never a quest the lock skips (Food for the Taking); once the quest waits on none of it, the road's
+	last quest, where its way branches off (not the dropdown's first still to do, which may be one the lock skips);
+	else, the step not shown there (in Adventure Mode, one not offered yet, which keeps the header's mark, a key's while
+	it would be a check), the dropdown's first quest still to do; none where the dropdown shows none. group: the road's
+	dropdown (its section, quests and members).
+]]
+local function RoadLine(instance, key, quest, rowOf, group)
+	local onRoad, lastID = {}, key.entry.quests[#key.entry.quests]
+	for _, questID in ipairs(key.entry.quests) do onRoad[questID] = true end
+	local needed, waiting, ending = false, nil, nil
+	for _, prerequisite in ipairs(LockPage(quest).prerequisites or NONE_LIST) do
+		for _, questID in ipairs(StepIDs(prerequisite)) do
+			if questID == lastID then ending = prerequisite end
+		end
+		for _, questID in ipairs(StepIDs(prerequisite)) do
+			if onRoad[questID] then
+				needed = true
+				if not waiting and not PrerequisiteDone(prerequisite) then waiting = prerequisite end
+				break
+			end
+		end
+	end
+	local done = waiting == nil and (needed or key.have == true)
+	local section = group.section
+	local line = { key = key.key, title = section.title, done = done,
+		note = done and ns.BeforeYouGo.HAVE_MARK or string.format("%d/%d", key.done, key.total) }
+	local step = waiting and StepPiece(instance, waiting, rowOf)
+	if done then
+		line.status = STATUS_DONE
+	elseif step and Known(step) then
+		line.status = QuestsPanel:Status(step)
+	else
+		line.status = section.status ~= STATUS_DONE and section.status or nil
+		if not line.status then line.icon = ns.BeforeYouGo.KEY_ICON end
+	end
+	local chosen = step or (done and ending and StepPiece(instance, ending, rowOf))
+	if chosen and section.members[chosen] and Known(chosen) then
+		line.quest = chosen
+	else
+		line.quest = (FirstToDo(group.quests))
+	end
+	return line
+end
+
 function QuestsPanel:Refresh(page)
 	local instance = page.instance
 	local list, child = page.QuestList, page.QuestList.Child
-	local reveal = page.reveal
-	page.reveal = nil
+	local reveal, revealKey = page.reveal, page.revealKey
+	page.reveal, page.revealKey = nil, nil
 	-- What is open and chosen holds while the dungeon stays shown, as on the Abilities tab. A
 	-- dungeon shown anew starts afresh, at the list's top, nothing open or chosen yet (a step two
 	-- dungeons share would stay chosen, folded out of sight). A quest opened there from elsewhere is
@@ -1994,33 +2820,82 @@ function QuestsPanel:Refresh(page)
 	end
 	local open = page.expandedChains
 
-	-- The dropdowns (QuestsPanel:Rows). Each starts as it should once the dungeon is shown, so a quest taken
-	-- while the tab is open doesn't fold one under the player.
+	-- The dropdowns (QuestsPanel:Rows), each quest's chain with it (a step the tab lists as a row of its own
+	-- being that row).
 	local groups, rowOf = self:Rows(instance)
+	local adventure, anyQuests = ns.Style:Adventure(), #groups > 0
+	-- Their numbers too: a key's rows have none, but for a row of same-named quests, its parts. A chain
+	-- doesn't repeat a quest its dropdown shows as a row (shown, StepRows), nor the road it comes after (roadRows).
+	local function Chains(group, shown)
+		group.chainOf, group.numbersOf = {}, {}
+		for _, quest in ipairs(group.quests) do
+			if group.chains or quest.parts then
+				group.chainOf[quest], group.numbersOf[quest] = ChainRows(instance, quest, rowOf, not group.chains, shown,
+					group.roadRows and group.roadRows[quest])
+			else
+				group.chainOf[quest], group.numbersOf[quest] = {}, {}
+			end
+		end
+	end
+	for _, group in ipairs(groups) do Chains(group, not adventure and group.shown or nil) end
+	-- Adventure Mode: each lists its quests known, and those with a step of their chain known that is this
+	-- dungeon's (ChainStepHere: its whole chain, as the data has it, a step that is a row too); Dungeon and
+	-- Class Quests with none are left out, a key's stays. Then the chains as shown: none repeats a row its
+	-- dropdown shows, and a step that is a row the mode leaves out stays in them ("???" until offered).
+	if adventure then
+		local kept = {}
+		for _, group in ipairs(groups) do
+			local quests, shownRows = {}, {}
+			for _, quest in ipairs(group.quests) do
+				local shown = Known(quest)
+				for _, step in ipairs(group.chainOf[quest]) do shown = shown or ChainStepHere(step, rowOf) end
+				if shown then quests[#quests + 1], shownRows[quest] = quest, true end
+			end
+			group.quests, group.shown = quests, shownRows
+			Chains(group, shownRows)
+			if #quests > 0 or group.keyEntry then kept[#kept + 1] = group end
+		end
+		groups = kept
+	end
+	-- Each starts as it should once the dungeon is shown, so a quest taken while the tab is open doesn't open or
+	-- fold one under the player: Before you go's all folded, its keys and chains too (had or not, done or not), so
+	-- the dungeon's own quests come first (the owner's call of 2026-11-14); Dungeon Quests and Class Quests open.
+	-- (Where the dungeon lists no other quest, the key whose quest is chosen is unfolded below, as the tab starts or as
+	-- that quest is first found.)
+	local keys, groupOf = {}, {}
 	for _, group in ipairs(groups) do
 		local key = group.keyEntry
 		if key then
-			if open[key.key] == nil then open[key.key] = not key.have end
-			group.section = GroupSection(key.key, key.title, key.quests)
+			if open[key.key] == nil then open[key.key] = false end
+			-- (its title naming nothing not found yet, in Adventure Mode, as on Before you go; nor its mark a
+			-- quest the character doesn't know: a key's, while it knows none of them)
+			local title = ns.Discovery:MaskAll(instance, key.title, ns.Discovery:Untold(instance))
+			group.section = GroupSection(key.key, title, key.quests)
 			group.section.status, group.section.note = key.status, key.note
+			if not key.status then group.section.icon = ns.BeforeYouGo.KEY_ICON end
+			keys[#keys + 1], groupOf[key] = key, group
 		else
 			if open[group.key] == nil then open[group.key] = true end
 			group.section = GroupSection(group.key, group.title, group.quests)
 		end
 	end
+	-- Before you go's notes, in its order: a key's dropdown takes the note's text (and how far along the player
+	-- is); a note no quest of its own fills starts folded too.
+	local notes = ns.BeforeYouGo:Notes(instance, keys)
+	for _, note in ipairs(notes) do
+		if note.key then
+			groupOf[note.key].section.description = note.section.description
+		else
+			if open[note.section.key] == nil then open[note.section.key] = false end
+			note.section.expanded = open[note.section.key] == true
+		end
+	end
 
-	-- What each holds, chains included (a step the tab lists as a row of its own being that row), and their
-	-- numbers. A key's rows have none, but for a row of same-named quests: its parts.
+	-- What each holds, chains included.
 	local listed, own = {}, {}
 	for _, group in ipairs(groups) do
-		group.chainOf, group.numbersOf = {}, {}
 		for _, quest in ipairs(group.quests) do
 			own[quest], listed[quest] = true, true
-			if group.chains or quest.parts then
-				group.chainOf[quest], group.numbersOf[quest] = ChainRows(instance, quest, rowOf, not group.chains, group.shown)
-			else
-				group.chainOf[quest], group.numbersOf[quest] = {}, {}
-			end
 			for _, step in ipairs(group.chainOf[quest]) do listed[step] = true end
 		end
 	end
@@ -2060,7 +2935,9 @@ function QuestsPanel:Refresh(page)
 	-- quest that has one is chosen there, and the chains that name it as a step stay as they are).
 	for _, group in ipairs(groups) do
 		local section = group.section
-		section.quests, section.members = group.quests, {}
+		section.quests, section.members, section.chainOf = group.quests, {}, group.chainOf
+		-- (the roads its rows come after, and their dropdowns: ChooseFirst, as QuestsPanel:Clicked opens it too)
+		section.roads, section.roadGroups = group.roads, groupOf
 		for _, quest in ipairs(group.quests) do
 			local chain = group.chainOf[quest]
 			section.members[quest] = true
@@ -2077,22 +2954,45 @@ function QuestsPanel:Refresh(page)
 		section.expanded = open[section.key] == true
 	end
 
-	-- Keep the choice while the dungeon lists it, shown or folded away; otherwise start on the
-	-- first open dropdown's first quest still to do.
+	-- Keep the choice while the dungeon lists it, shown or folded away; otherwise start on Dungeon
+	-- Quests' first quest still to do (one after a branch as a step under its row; in Adventure Mode one the
+	-- character knows, or a step of a row's chain it knows: ChooseFirst), else Class Quests' (Before you go's
+	-- dropdowns start folded: one of their quests is chosen as the player opens it, QuestsPanel:Clicked). Where
+	-- neither has a quest and a key of Before you go does (in Adventure Mode, where the only quests found are a key's:
+	-- Dungeon Quests and Class Quests with none known are left out), that key's first quest still to do, the first
+	-- key in Before you go's order that has one, its dropdown unfolded so the quest chosen is seen (the owner's call
+	-- of 2026-11-18, "open the key's quest instead", for Krol'dok's moulding and every dungeon alike). Else none.
 	local selected = page.selectedQuest
 	if not (selected and listed[selected]) then
+		-- (the first dropdown not a key's: Dungeon Quests comes before Class Quests, QuestsPanel:Rows)
 		selected = nil
+		page.selectedQuest, page.selectedAsStep, page.selectedUnder = nil, nil, nil
 		for _, group in ipairs(groups) do
-			if group.section.expanded then
-				selected = FirstToDo(group.quests)
+			if not group.keyEntry and #group.quests > 0 then
+				selected = ChooseFirst(page, group.quests, group.chainOf, group.roads, groupOf)
 				break
 			end
 		end
-		selected = selected or (groups[1] and FirstToDo(groups[1].quests))
-		page.selectedQuest, page.selectedAsStep, page.selectedUnder = selected, nil, nil
+		if not selected then
+			for _, note in ipairs(notes) do
+				local group = note.key and groupOf[note.key]
+				if group and #group.quests > 0 then
+					selected = ChooseFirst(page, group.quests, group.chainOf)
+					-- (not while QuestsPanel:Open shows the tab: the quest opened from elsewhere is chosen next, and opens
+					-- the dropdown that holds it)
+					if not page.opening then
+						open[group.section.key] = true
+						group.section.expanded = true
+					end
+					break
+				end
+			end
+		end
 	end
 
 	local y, headers, rows, boxes, chosenY, chosenAsStep, chosenUnder, chosenPart = TOP_PADDING, 0, 0, 0, nil, false, nil, nil
+	-- (a road opened from its line with no quest to choose there: its header's place, QuestsPanel:OpenRoad)
+	local revealY
 	-- under: the row a step is listed under; part: its number there (ChainRows).
 	local function Place(quest, depth, hasChain, expanded, part, under)
 		if quest == selected then
@@ -2114,8 +3014,48 @@ function QuestsPanel:Refresh(page)
 		row:SetPoint("TOPLEFT", ROW_INDENT + depth * INDENT, -y)
 		row:Show()
 		y = y + ROW_HEIGHT
+		return row
 	end
-	for _, group in ipairs(groups) do
+	-- A road's line under a quest's + (RoadLine), one in, as its steps are.
+	local function PlaceRoad(key, quest)
+		rows = rows + 1
+		local row = list.Rows[rows]
+		if not row then
+			row = CreateRow(child)
+			list.Rows[rows] = row
+		end
+		SetRoadRow(row, RoadLine(instance, key, quest, rowOf, groupOf[key]), 1)
+		row:SetWidth(LIST_WIDTH - ROW_INDENT - INDENT - ROW_INDENT)
+		row:SetPoint("TOPLEFT", ROW_INDENT + INDENT, -y)
+		row:Show()
+		y = y + ROW_HEIGHT
+	end
+	local prepare = list.beforeYouGo
+	prepare.headers, prepare.rows = {}, {}
+	-- A dropdown's quests, their chains' steps beneath those opened: first a line for each road the quest comes after
+	-- (a + with nothing else under it still opens on that, so it says what the quest waits on: the owner's answer of
+	-- 2026-11-19), then its own steps.
+	local function PlaceQuests(group, inKey)
+		for _, quest in ipairs(group.quests) do
+			local chain = group.chainOf[quest]
+			local roads = group.roads and group.roads[quest] or NONE_LIST
+			local hasChain = #chain > 0 or #roads > 0
+			local chainOpen = hasChain and open[quest.questID] == true
+			local row = Place(quest, 0, hasChain, chainOpen)
+			if inKey then prepare.rows[#prepare.rows + 1] = row end
+			if chainOpen then
+				for _, key in ipairs(roads) do PlaceRoad(key, quest) end
+				for index, step in ipairs(chain) do Place(step, 1, false, false, group.numbersOf[quest][index], quest) end
+			end
+		end
+	end
+	-- A header's text box, as SetHeader leaves it, else reaching `below` under the text (a key's quests in it).
+	local function SetTextBox(header, below)
+		header.DescriptionBG:ClearAllPoints()
+		header.DescriptionBG:SetPoint("TOPLEFT", header.Description, "TOPLEFT", -9, 12)
+		header.DescriptionBG:SetPoint("BOTTOMRIGHT", header.Description, "BOTTOMRIGHT", 9, -(below or BOX_BELOW_TEXT))
+	end
+	local function PlaceGroup(group)
 		headers = headers + 1
 		local header = list.Headers[headers]
 		if not header then
@@ -2125,34 +3065,82 @@ function QuestsPanel:Refresh(page)
 		header:ClearAllPoints()
 		header:SetPoint("TOPLEFT", 0, -y)
 		header:SetWidth(LIST_WIDTH)
-		y = y + ns.PaperHeader.Set(header, group.section, 0, group.section.expanded)
+		local top = y
+		if revealKey and group.section.key == revealKey then revealY = top end
+		local height = ns.PaperHeader.Set(header, group.section, 0, group.section.expanded)
 		header:Show()
-		if group.section.expanded and #group.quests > 0 then
-			local boxTop = y - BOX_TUCK
-			y = y + BOX_PADDING
-			for _, quest in ipairs(group.quests) do
-				local chain = group.chainOf[quest]
-				local chainOpen = #chain > 0 and open[quest.questID] == true
-				Place(quest, 0, #chain > 0, chainOpen)
-				if chainOpen then
-					for index, step in ipairs(chain) do Place(step, 1, false, false, group.numbersOf[quest][index], quest) end
+		SetTextBox(header)
+		if group.keyEntry then prepare.headers[#prepare.headers + 1] = header end
+		local hasText = header.Description:IsShown()
+		if hasText then
+			-- A key of Before you go: its quests in its text's box, under the text, as the overview had them.
+			local textBottom = top + height - TEXT_BELOW
+			y = textBottom + BOX_BELOW_TEXT
+			if #group.quests > 0 then
+				y = textBottom + KEY_ROW_PADDING
+				PlaceQuests(group, true)
+				SetTextBox(header, y - textBottom + KEY_ROW_PADDING)
+				y = y + KEY_ROW_PADDING
+			end
+		else
+			y = top + height
+			if group.section.expanded and #group.quests > 0 then
+				local boxTop = y - BOX_TUCK
+				y = y + BOX_PADDING
+				PlaceQuests(group, group.keyEntry ~= nil)
+				y = y + BOX_PADDING
+				boxes = boxes + 1
+				local box = list.Boxes[boxes]
+				if not box then
+					box = CreateBox(child)
+					list.Boxes[boxes] = box
 				end
+				box:ClearAllPoints()
+				box:SetPoint("TOPLEFT", child, "TOPLEFT", BOX_SIDE, -boxTop)
+				box:SetPoint("BOTTOMRIGHT", child, "TOPLEFT", LIST_WIDTH - BOX_SIDE, -y)
+				box:Show()
+				box.Bottom:Show()
 			end
-			y = y + BOX_PADDING
-			boxes = boxes + 1
-			local box = list.Boxes[boxes]
-			if not box then
-				box = CreateBox(child)
-				list.Boxes[boxes] = box
-			end
-			box:ClearAllPoints()
-			box:SetPoint("TOPLEFT", child, "TOPLEFT", BOX_SIDE, -boxTop)
-			box:SetPoint("BOTTOMRIGHT", child, "TOPLEFT", LIST_WIDTH - BOX_SIDE, -y)
-			box:Show()
-			box.Bottom:Show()
 		end
 		y = y + HEADER_GAP * 2
 	end
+
+	-- Before you go first, under its bar: the notes in its order, a key as its dropdown.
+	prepare.bar:SetShown(#notes > 0)
+	prepare.label:SetShown(#notes > 0)
+	local placed, noteHeaders = {}, 0
+	if #notes > 0 then
+		prepare.bar:ClearAllPoints()
+		prepare.bar:SetPoint("TOPLEFT", -4, -y)
+		y = y + BAR_HEIGHT + 4
+	end
+	for _, note in ipairs(notes) do
+		local group = note.key and groupOf[note.key]
+		if group then
+			PlaceGroup(group)
+			placed[group] = true
+		else
+			noteHeaders = noteHeaders + 1
+			local header = list.Notes[noteHeaders]
+			if not header then
+				header = ns.PaperHeader.Create(child, function(section) QuestsPanel:ToggleNote(section) end)
+				list.Notes[noteHeaders] = header
+			end
+			header:ClearAllPoints()
+			header:SetPoint("TOPLEFT", 0, -y)
+			header:SetWidth(LIST_WIDTH)
+			local height = ns.PaperHeader.Set(header, note.section, 0, note.section.expanded)
+			header:Show()
+			prepare.headers[#prepare.headers + 1] = header
+			-- (to the foot of its text's box, as a dropdown's box ends)
+			y = y + (header.Description:IsShown() and height - (TEXT_BELOW - BOX_BELOW_TEXT) or height) + HEADER_GAP * 2
+		end
+	end
+	-- Then the dropdowns: Dungeon Quests, then Class Quests.
+	for _, group in ipairs(groups) do
+		if not placed[group] then PlaceGroup(group) end
+	end
+	for index = noteHeaders + 1, #list.Notes do list.Notes[index]:Hide() end
 	for index = headers + 1, #list.Headers do list.Headers[index]:Hide() end
 	for index = boxes + 1, #list.Boxes do
 		list.Boxes[index]:Hide()
@@ -2162,12 +3150,13 @@ function QuestsPanel:Refresh(page)
 	child:SetHeight(math.max(1, y + 4))
 
 	-- A quest opened from elsewhere is scrolled into view, once the client knows the list's
-	-- scroll range (as the loot list does).
-	if reveal and chosenY then
+	-- scroll range (as the loot list does); a road opened with none to choose, its header.
+	local revealAt = reveal and chosenY or revealKey and revealY
+	if revealAt then
 		C_Timer.After(0, function()
 			local top, height = list:GetVerticalScroll() or 0, list:GetHeight() or 0
-			if chosenY < top or chosenY + ROW_HEIGHT > top + height then
-				list:SetVerticalScroll(math.max(0, math.min(list:GetVerticalScrollRange() or 0, chosenY - TOP_PADDING)))
+			if revealAt < top or revealAt + ROW_HEIGHT > top + height then
+				list:SetVerticalScroll(math.max(0, math.min(list:GetVerticalScrollRange() or 0, revealAt - TOP_PADDING)))
 			end
 		end)
 	end
@@ -2181,14 +3170,11 @@ function QuestsPanel:Refresh(page)
 	local asStep = chosenAsStep and not (chosenUnder and Holds(chosenUnder.parts, selected))
 	local detailChild = page.QuestDetail.Child
 	detailChild.Empty:SetShown(selected == nil)
+	-- (Adventure Mode: a dungeon with quests for the player, none of them found yet)
+	detailChild.Empty:SetText(adventure and anyQuests and L.ADVENTURE_QUESTS_NONE or L.QUEST_NONE)
 	if selected then
 		FillDetail(page.QuestDetail, selected, instance, asStep, part)
 	else
-		for _, key in ipairs({ "Title", "Part", "Status", "Objective", "Note", "DescriptionHeader", "Description", "ShowStart",
-			"ShowEnd", "Giver", "RewardsHeader", "Receive", "Money", "Experience", "ExperienceNote", "ExperienceHover", "Reputation",
-			"Choose", "Also" }) do
-			detailChild[key]:Hide()
-		end
-		for _, box in ipairs(detailChild.RewardBoxes) do box:Hide() end
+		HideDetail(detailChild)
 	end
 end

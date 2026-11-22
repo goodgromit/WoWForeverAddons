@@ -1,3 +1,53 @@
+* 11.4.9
+    - Add more sources for some Forever recipes that didn't have enough data
+    - Fix Rogue Shank ranks (Thanks to cubicroots on GitHub!)
+
+* 11.4.8
+    - Update Lacerate to need a talent
+    - Updated Simplified Chinese (zhCN) localization (Thanks to Loukky on GitHub!)
+
+* 11.4.7
+    - Update more recipes
+
+* 11.4.6
+    - Fix secret values attempting to be read
+
+* 11.4.5
+    - Fix some recipes that were mixed up with some older versions from Era/SoD
+    - Fix clashing of Professions tab when SkillupForever is installed
+
+* 11.4.4
+    - Fix Lacerate ranks showing up as "Available but missing requirements"
+    - Add option to disable profession tabs in Era/Anniversary
+
+* 11.4.3
+    - Fix Auctionator prices showing up on professions tab
+    - Fix Classic Era/Anniversary professions with expanded profession frames
+
+* 11.4.2
+    - Fix minimap icon showing back up in some "minimap button frame" or minimap mods
+    - Fix Bear Form showing up as available after learning Dire Bear Form
+        - Also fix Lacerate rank 2 showing up as available
+
+* 11.4.1
+    - Add "hide minimap" to Era and Anniversary
+
+* 11.4.0
+    - Fix Priest race spells being mis-priced for non-Humans
+    - Fix taint in gamepad mode when using the "Train All" button
+
+* 11.3.1
+    - Make "Train All" opt-in. Enable it from the options window (`/wt options`)
+    - "Train All" asks for confirmation before Training All
+
+* 11.3.0
+    - Add "Train All" button at Forever Class Trainers
+        - This button will NOT train spells you have ignored
+    - Add new options window (`/wt options` or `/wt settings`)
+    - Add minimap icon
+    - Fix old profession ranks showing up as Available Now
+    - Updated Simplified Chinese (zhCN) localization (Thanks to Loukky on GitHub!)
+
 * 11.2.0
     - Add Icon selection for Spellbook and Profession tabs (Thanks to Firnael on GitHub!)
         - In Era/Anniversary, too!

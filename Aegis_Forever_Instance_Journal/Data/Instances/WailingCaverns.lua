@@ -569,6 +569,9 @@ ns.AddInstance({
 			turnin = "Follow the quest directions beginning in Ratchet",
 			note = "The quest itself gives no item; its follow-up, In Nightmares, does.",
 			rewards = {
+				-- 5,150 on Forever, confirmed: the owner read it in the quest window in game (2026-11-13). The recording of
+				-- 2026-11-10 read 5,202 at the turn-in, 5,150 with a 1% bonus. Never marked as the original game's
+				-- (CONFIRMED in Dev/build_original_xp.py).
 				xp = 5150,
 			},
 			startItem = {

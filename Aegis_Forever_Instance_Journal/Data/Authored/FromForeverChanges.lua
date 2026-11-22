@@ -49,10 +49,8 @@ local function Update(key, spec)
 		AddLoot(boss, patch.loot)
 	end
 	if spec.trash then
-		if not trash then
-			trash = { name = "Trash Drops", trash = true, loot = {} }
-			instance.bosses[#instance.bosses + 1] = trash
-		end
+		-- (after the bosses, before a Recipes entry: ns.PlaceBoss)
+		if not trash then trash = ns.PlaceBoss(instance, { name = "Trash Drops", trash = true, loot = {} }) end
 		AddLoot(trash, spec.trash)
 	end
 	if spec.questPatches or spec.addQuests then
@@ -104,18 +102,17 @@ Update("WailingCaverns", {
 	bosses = {
 		["Lord Cobrahn"] = {
 			notes = { "Interrupt his Lightning Bolt and Healing Touch. Below 30% health his serpent form hits harder and puts players to sleep." },
-			loot = { 253908, 252778 },
+			loot = { 252778 },
 		},
 		["Lady Anacondra"] = {
 			notes = { "She appears at one of four places. Interrupt her Healing Touch; damage or a magic dispel wakes a sleeping player, and her Thorns Aura hurts melee." },
 		},
 		["Kresh"] = { notes = { "Shell Shield: for 12 seconds he takes much less damage, and hits slower but harder." } },
-		["Lord Pythas"] = { notes = { "Interrupt his Healing Touch. Thunderclap slows everyone near him." }, loot = { 253938 } },
-		["Skum"] = { notes = { "Interrupt his Chained Bolt, which jumps to a second player." }, loot = { 253944 } },
+		["Lord Pythas"] = { notes = { "Interrupt his Healing Touch. Thunderclap slows everyone near him." } },
+		["Skum"] = { notes = { "Interrupt his Chained Bolt, which jumps to a second player." } },
 		["Lord Serpentis"] = { notes = { "Interrupt his slow Healing Touch and his Lightning Bolt." } },
 		["Verdan the Everliving"] = {
 			notes = { "When his target is close he knocks down and roots everyone near him: ranged players, keep your distance." },
-			loot = { 253938 },
 		},
 		["Mutanus the Devourer"] = { notes = { "Thundercrack stuns everyone near him; he also puts players to sleep and fears them." } },
 	},
@@ -164,7 +161,7 @@ Update("TheDeadmines", {
 	bosses = {
 		["Rhahk'Zor"] = { notes = { "His Slam stuns the tank for 3 seconds." }, loot = { 251363 } },
 		["Miner Johnson"] = {
-			notes = { "A rare. He cuts the tank's armour by three quarters, and at 15% health runs for help: finish him first." },
+			notes = { "A rare. He cuts the tank's armor by three quarters, and at 15% health runs for help: finish him first." },
 		},
 		["Sneed"] = { notes = { "He disarms the tank." } },
 		["Sneed's Shredder"] = { notes = { "It fears a player and slows another's casting." } },
@@ -247,10 +244,10 @@ Update("BlackfathomDeeps", {
 	bosses = {
 		["Ghamoo-ra"] = { notes = { "He tramples everyone standing close." } },
 		["Lady Sarevess"] = { notes = { "Stay out of her Forked Lightning cone. Frost Nova freezes everyone near her, and she slows a player." } },
-		["Gelihast"] = { notes = { "He nets a player in place." }, loot = { 252512, 252515, 252456, 252513, 252514 } },
+		["Gelihast"] = { notes = { "He nets a player in place." } },
 		["Lorgus Jett"] = {
 			notes = { "He can be at one of four places. A priest or a shaman can remove his Lightning Shield; interrupt his Lightning Bolt." },
-			loot = { 252455, 252513, 252820, 252512 },
+			loot = { 252820 },
 		},
 		["Baron Aquanis"] = {
 			notes = { "Click the Fathom Stone in the water and he rises from it. He casts Frostbolt from range, and Frost Nova roots those near him." },
@@ -258,18 +255,17 @@ Update("BlackfathomDeeps", {
 		},
 		["Twilight Lord Kelris"] = {
 			notes = { "He puts everyone near him to sleep (damage wakes a sleeper), and casts Mind Blast." },
-			loot = { 252456, 252513, 252455, 252515 },
 		},
 		["Old Serra'kis"] = {
 			notes = { "He waits in an underwater cave below Twilight Lord Kelris's temple: swim under the temple to find him." },
-			loot = { 252455, 252820, 252456 },
+			loot = { 252820 },
 		},
 		["Aku'mai"] = {
 			notes = {
 				"Once Kelris is dead, light the four Fires of Aku'mai one after another; each brings a wave, and the door opens when all are dead.",
 				"Poison Cloud hurts everyone nearby, and below 30% health he attacks much faster.",
 			},
-			loot = { 252455, 252512, 252515, 252820, 252456, 252514 },
+			loot = { 252820 },
 		},
 	},
 	questPatches = {
@@ -285,18 +281,14 @@ Update("TheStockade", {
 		},
 		["Kam Deepfury"] = {
 			notes = { "Shield Slam stuns the tank; at 15% health he runs for help." },
-			loot = { 252515, 252455, 252512, 252513 },
 		},
 		["Hamhock"] = {
 			notes = { "Interrupt his Chain Lightning. A priest or a shaman can remove his Bloodlust." },
-			loot = { 252513, 252822 },
-		},
-		["Dextren Ward"] = {
-			loot = { 252514, 252515, 252512, 252456 },
+			loot = { 252822 },
 		},
 		["Bazil Thredd"] = {
 			notes = { "His Smoke Bomb stuns everyone near him; at 15% health he runs for help." },
-			loot = { 252822, 252455, 252456, 252515 },
+			loot = { 252822 },
 		},
 		["Bruegal Ironknuckle"] = {
 			replaceNotes = true,
@@ -340,35 +332,34 @@ Update("RazorfenKraul", {
 	bosses = {
 		["Aggem Thorncurse"] = {
 			notes = { "He summons a Boar Spirit every 30 to 45 seconds: kill each before the next comes. Below 75% health, interrupt his Chain Heal." },
-			loot = { 252512, 252455, 252822 },
+			loot = { 252822 },
 		},
 		["Death Speaker Jargba"] = {
 			notes = { "Interrupt or dispel his Dominate Mind, which takes over a player; interrupt his Shadow Bolt." },
-			loot = { 252822, 252512, 252515 },
+			loot = { 252822 },
 		},
-		["Roogug"] = { notes = { "A Stone Rumbler fights at his side; interrupt his Lightning Bolt." }, loot = { 252512 } },
+		["Roogug"] = { notes = { "A Stone Rumbler fights at his side; interrupt his Lightning Bolt." } },
 		["Overlord Ramtusk"] = {
-			notes = { "He calls everything within 15 yards, his two Razorfen Spearhides among them: crowd-control one. Thunderclap every 8 to 14 seconds slows those near him." },
-			loot = { 252512, 252822, 252513, 252515 },
-		},
-		["Razorfen Spearhide"] = {
-			notes = { "It whirls at everyone close, and its thorns hurt whoever strikes it or an ally nearby, Ramtusk included." },
+			-- The second note was Razorfen Spearhide's own until it became his guards, his adds (2026-11-13).
+			notes = {
+				"He calls everything within 15 yards, his two Razorfen Spearhides among them: crowd-control one. Thunderclap every 8 to 14 seconds slows those near him.",
+				"His two guards whirl at everyone close, and their thorns hurt whoever strikes them or an ally nearby, Ramtusk included.",
+			},
+			loot = { 252822 },
 		},
 		["Agathelos the Raging"] = {
 			notes = {
 				"A ward seals his cave: kill the two Death's Head Ward Keepers in front of it to bring it down.",
 				"He leaves a player for dead (moving ends it), stuns everyone near him, and enrages at 60% and again at 40% health.",
 			},
-			loot = { 252455, 252820, 252512, 252513 },
+			loot = { 252820 },
 		},
 		["Blind Hunter"] = { notes = { "A rare bat in a small recess of the bat cave near Charlga Razorflank: not every run meets it." } },
 		["Charlga Razorflank"] = {
 			notes = { "Interrupt her Chain Bolt. Every so often she is immune for 2 seconds, and a priest or a shaman can remove her Renew." },
-			loot = { 252515, 252455, 252456, 252512 },
 		},
 		["Earthcaller Halmgar"] = {
 			notes = { "A rare. A Stone Rumbler fights with him; interrupt his Lightning Bolt, and finish him before he runs for help at 15% health." },
-			loot = { 252455, 252514 },
 		},
 	},
 	trash = { 3569 },
@@ -382,10 +373,9 @@ local GRAVEYARD_RARES = "About one run in three, one of the graveyard's three ra
 
 Update("ScarletMonasteryGraveyard", {
 	bosses = {
-		["Interrogator Vishas"] = { notes = { "A magic dispel removes his Shadow Word: Pain." }, loot = { 252822, 252455 } },
+		["Interrogator Vishas"] = { notes = { "A magic dispel removes his Shadow Word: Pain." }, loot = { 252822 } },
 		["Azshir the Sleepless"] = {
 			notes = { GRAVEYARD_RARES, "A mage or a druid can remove his Call of the Grave before it goes off. He fears, and drains two players below half health." },
-			loot = { 252512 },
 		},
 		["Fallen Champion"] = {
 			notes = { GRAVEYARD_RARES, "He cleaves, and strikes hard at a target below 20% health: keep the tank above it." },
@@ -397,10 +387,9 @@ Update("ScarletMonasteryGraveyard", {
 		},
 		["Bloodmage Thalnos"] = {
 			notes = { "Step out of his Flame Spike. A magic dispel removes Flame Shock; interrupt his Shadow Bolt. Fire Nova burns those close to him." },
-			loot = { 252455, 252513 },
 		},
 	},
-	trash = { 1992, 5756, 7736, 7755, 7757, 7758, 7759, 7760, 8225 },
+	trash = { 8225 },
 	questPatches = {
 		[1051] = { endMap = { mapID = 1424, x = 0.627, y = 0.189 } },
 	},
@@ -414,7 +403,6 @@ Update("ScarletMonasteryLibrary", {
 			loot = { 274294 },
 		},
 	},
-	trash = { 10328, 10329, 10330, 10331, 10333 },
 	questPatches = {
 		[1394] = { startMap = { mapID = 1458, x = 0.578, y = 0.654 }, endMap = { mapID = 1441, x = 0.539, y = 0.415 } },
 	},
@@ -488,7 +476,9 @@ Update("Uldaman", {
 			-- What follows: Badlands Reagent Run II (2203), for alchemists (QuestieDB's Forever data; 2026-11-03)
 			followUp = "For alchemists (skill 210), Jarkal Mossmeld then gives Badlands Reagent Run II, done in the "
 				.. "Badlands.",
-			rewards = { xp = 3450, money = 5500, items = { { itemID = 9030, name = "Restorative Potion", quality = 1, count = 5 } }, reputation = { { faction = "Darkspear Trolls", amount = 100 } } },
+			-- (its potions: Greater Mender's Potions, no longer the original game's Restorative Potions: Forever's quest
+			-- data, 2026-11-18, the item in the client's item data)
+			rewards = { xp = 3450, money = 5500, items = { { itemID = 250947, name = "Greater Mender's Potion", quality = 1, count = 5 } }, reputation = { { faction = "Darkspear Trolls", amount = 100 } } },
 		},
 	},
 })
@@ -636,8 +626,8 @@ Update("TheDrownedCity", {
 	  addQuests     the quests on the site's list for the dungeon that ours lacked: chain steps
 	                given far from it, Forever's new ones, and the quests started inside it
 
-	A quest of more than one wing (Dire Maul's librams and Elven Legends, Stratholme's Medallion
-	of Faith) is listed in each wing it touches, as the others are.
+	A quest of more than one wing (Dire Maul's librams and Elven Legends) is listed in each wing it
+	touches, as the others are.
 ]]
 
 Update("WailingCaverns", {
@@ -790,7 +780,9 @@ Update("Uldaman", {
 			questID = 2398, name = "The Lost Dwarves", level = 40, requiredLevel = 35, faction = "Alliance",
 			pickup = "Prospector Stormpike, Ironforge",
 			turnin = "Baelog, inside Uldaman",
-			startMap = { mapID = 1455, x = 0.747, y = 0.103 },
+			-- (Prospector Stormpike where Forever's quest data has him, 74.6 11.7, as The Hidden Chamber's taker: 2026-11-18;
+			-- before, 74.7 10.3)
+			startMap = { mapID = 1455, x = 0.746, y = 0.117, label = "Prospector Stormpike" },
 			objective = "Find Baelog inside Uldaman.",
 			rewards = { xp = 320, money = 500 },
 		},
@@ -801,6 +793,8 @@ Update("Uldaman", {
 			startMap = { mapID = 1455, x = 0.357, y = 0.040 }, endMap = { mapID = 1455, x = 0.357, y = 0.040 },
 			objective = "Bring Talvash a Mana Potion, Coal and Sweet Nectar to get a new Phial of Scrying.",
 			note = "Repeatable: for when the phial is lost.",
+			-- (the new phial: Forever's quest data, 2026-11-18)
+			rewards = { items = { { itemID = 7667, name = "Talvash's Phial of Scrying" } } },
 		},
 	},
 })
@@ -1217,19 +1211,7 @@ Update("Scholomance", {
 	},
 })
 
-Update("StratholmeMainGate", {
-	addQuests = {
-		{
-			questID = 5122, name = "The Medallion of Faith", level = 60, requiredLevel = 55, faction = "Both",
-			pickup = "Aurius, inside Stratholme",
-			turnin = "Aurius, inside Stratholme",
-			objective = "Get the Medallion of Faith from Malor's Strongbox and bring it to Aurius.",
-			note = "Repeatable. Malor's Strongbox is on the Scarlet side of Stratholme.",
-		},
-	},
-})
-
-Update("StratholmeServiceGate", {
+Update("Stratholme", {
 	addQuests = {
 		{
 			questID = 5122, name = "The Medallion of Faith", level = 60, requiredLevel = 55, faction = "Both",

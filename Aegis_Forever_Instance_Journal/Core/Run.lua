@@ -10,22 +10,34 @@ local L = ns.L
 	outside, not a ghost, not a login or /reload, away longer than SAME_RUN_SECONDS, or after a reset), clears its
 	kills and tells this file (Run:Entered). Its kills are the map's too: every kill the map marks comes here
 	(Run:Killed), so the block's circles, its lines and the map's crosses agree. A run is tied to one copy of the
-	dungeon (Run.SameCopy): the parts walked between inside (Stratholme's halves, Blackrock Spire's, Dire Maul's:
-	oneCopy in Data/Authored/RunTracker.lua) are one, so a wing change there keeps the run and a new run clears the
-	kills of every part (DungeonMap:ClearRun); Scarlet Monastery's wings, each behind its own door, are each their
-	own, though the client gives them one instance id.
+	dungeon (Run.SameCopy): the parts walked between inside (Blackrock Spire's, Dire Maul's: oneCopy in Data/Authored/
+	RunTracker.lua) are one, so a wing change there keeps the run and a new run clears the kills of every part
+	(DungeonMap:ClearRun); Scarlet Monastery's wings, each behind its own door, are each their own, though the client
+	gives them one instance id: so the run there is decided once the wing is known, at its first named area or its
+	first fight (Run:WaitForWing; a new run in another wing than the run's, since 0.39.23). Stratholme, two pages until
+	0.39.22, is one dungeon with two doors: one run, whichever door it is entered by.
 
-	The clock: from the moment the run is decided new, to the kill of the dungeon's final boss (Data/Authored/
-	RunTracker.lua, best guesses), else to the kill of the last boss counted. Its one line in chat comes
+	The clock: from the first pull (the owner's call of 2026-11-14, from a player's wish not to have it tick at the door
+	while the group gathers), to the kill of the dungeon's final boss (Data/Authored/RunTracker.lua, best guesses), else
+	to the kill of the last boss counted. Until the first pull it waits at 0:00 (startedAt nil). The first pull is the
+	first of (Run:Pull, Run:WatchPull): the player entering combat inside (PLAYER_REGEN_DISABLED), a groupmate in sight
+	entering combat (UNIT_FLAGS on a party or raid unit, UnitAffectingCombat and UnitIsVisible: in sight, so in the same
+	dungeon), the start of a boss fight (ENCOUNTER_START, also for a groupmate's pull far ahead), or a kill the map marks;
+	a player or groupmate already in a fight when the run is decided counts as a pull then. A run joined late with kills
+	already (the map's) starts its clock at once. The two pull events are listened to only inside, while the clock
+	waits (or, in a Scarlet Monastery wing not known yet, until a pull is noted: Run:WaitForWing). The player can also
+	start it before the first pull, pause it and resume it (Run:ToggleClock, the block's button: UI/RunTracker.lua); a
+	paused clock stays paused across a /reload or a logout (pausedAt is kept with the run) until the player resumes it,
+	and the time it was paused is not counted (pausedSeconds). Its one line in chat comes
 	SUMMARY_DELAY seconds after the clock stops, so that the final boss's loot is in it, or as the player leaves the
 	dungeon, whichever is first (the owner's call at the 0.39.20 release): its time is kept with the run (summaryAt),
 	so a /reload or a logout in between neither loses it nor gives it twice (run.told). Time logged out is not counted (the
-	gap from PLAYER_LOGOUT to the next login is added to pausedSeconds; the part of it after the player was last
-	inside is kept apart as pausedAway, and given back if the run is left behind, as its clock ends at
-	lastInsideAt, before that gap); deaths, corpse runs and stepping out are.
+	gap from PLAYER_LOGOUT to the next login is added to pausedSeconds, while the clock runs: waiting or paused, it is
+	not running anyway; the part of it after the player was last inside is kept apart as pausedAway, and given back if
+	the run is left behind, as its clock ends at lastInsideAt, before that gap); deaths, corpse runs and stepping out are.
 
-	The numbers count only while inside the run's dungeon, with the block on (its events are registered there and
-	nowhere else):
+	The numbers count only while inside the run's dungeon (or a Scarlet Monastery wing still waited for, counted
+	apart: Counts), with the block on (its events are registered there and nowhere else):
 	- Experience: each rise of UnitXP; a fall is a level gained (the old level's rest, then the new XP).
 	- Coin looted: a rise of GetMoney paired one to one, within MONEY_WINDOW seconds either way, with the client's
 	  line for coin the player loots (YOU_LOOT_MONEY, LOOT_MONEY_SPLIT: a party's split is the share received).
@@ -54,18 +66,33 @@ Run.SUMMARY_DELAY = SUMMARY_DELAY
 
 --[[
 	Whether "Inside the quest tracker" (UI/RunTrackerInside.lua) is on for a player who never ticked or unticked it:
-	off while it is an experiment. Turning it on by default is this one line (the options' box takes its default from
-	here). A choice the player made, or the safety net's off, is kept as it is either way (KEPT).
+	off, as in 0.39.21 (the owner, 2026-11-13: "keep experimental in for now"; 0.39.22's tests had it on, after the
+	owner's ask of 2026-11-12, until the owner saw map pins refused in combat after clicking a quest title in the
+	tracker: once the block has gone inside, the tracker's own code carries the journal's taint until a /reload). The
+	options' box takes its default from here. A choice the player made, or the safety net's off, is kept as it is
+	either way (KEPT): saved as made since 0.39.21, so a player who ticked it keeps it on.
 ]]
 Run.INSIDE_DEFAULT = false
 
+--[[
+	Whether "Place it freely" is on for a player who never ticked or unticked it: on since 0.39.23 (the owner,
+	2026-11-17: beside the game's quest tracker, the block got in the way of other quest tracker addons; placed freely,
+	nothing of the tracker's is ever asked or changed, UI/RunTracker.lua Anchor). Before 0.39.23 off was the default
+	and not saved, so a player who had unticked it then cannot be told from one who never chose: both get it on. One
+	who had dragged the block before unticking it still has that spot (charDB.runSpot, kept per character), so the block
+	goes straight back to the spot dropped then, instead of waiting by the tracker (not moved over: a player new to
+	0.39.23 who drags it saves the same, and the spot is the character's while this is the account's). A choice made
+	from 0.39.23 on is saved as made (KEPT), so unticking it puts the block back beside the tracker for good.
+]]
+Run.FREE_DEFAULT = true
+
 -- The block's options, for the whole account (UI/Options.lua): on, with its numbers and its chat summary; placed
--- freely; the experiment of placing it inside the game's quest tracker; dark mode for its gold art (UI/RunTracker.lua
--- Paint), off by default.
-local OPTION_DEFAULTS = { on = true, numbers = true, free = false, summary = true, inside = Run.INSIDE_DEFAULT,
-	darkMode = false }
+-- freely (on by default: Run.FREE_DEFAULT); placing it inside the game's quest tracker (off by default:
+-- Run.INSIDE_DEFAULT); dark mode for its gold art (UI/RunTracker.lua Paint), off by default.
+local OPTION_DEFAULTS = { on = true, numbers = true, free = Run.FREE_DEFAULT, summary = true,
+	inside = Run.INSIDE_DEFAULT, darkMode = false }
 -- Saved as chosen even when that is the default, so that a later change of the default leaves the choice be.
-local KEPT = { inside = true }
+local KEPT = { inside = true, free = true }
 
 function Run:Option(name)
 	local saved = ns.db and ns.db.runOptions
@@ -110,10 +137,10 @@ function Run.InRun(run, instance)
 	return instance.oneCopy == true and instance.instanceID ~= nil and instance.instanceID == run.instanceID
 end
 
--- This session's state: the client instance id the player is inside (nil outside), the baselines the numbers
--- count from (read again on every entering and login, never saved), which windows are open, the
--- coin pairing, the rolls chosen on Greed, and the last few readings for /ij run debug.
-local session = { windows = {}, greed = {}, won = {}, log = { money = {}, loot = {}, xp = {} } }
+-- This session's state: the client instance id the player is inside (nil outside, and while the wing is not known:
+-- wingWait, below), the baselines the numbers count from (read again on every entering and login, never saved), which
+-- windows are open, the coin pairing, the rolls chosen on Greed, and the last few readings for /ij run debug.
+local session = { windows = {}, greed = {}, won = {}, log = { money = {}, loot = {}, xp = {}, clock = {} } }
 Run.session = session
 
 local function Log(kind, text)
@@ -127,17 +154,24 @@ end
 ------------------------------------------------------------------------------------------
 
 local function Counted(boss)
-	return not (boss.trash or boss.rare or boss.maybe or boss.questTarget or boss.outsideRun or boss.comingSoon
+	return not (ns.IsLootSection(boss) or boss.rare or boss.maybe or boss.questTarget or boss.uncounted or boss.outsideRun
+		or boss.comingSoon
 		or (ns.Items and ns.Items:HidesBoss(boss)))
 end
 
 --[[
 	The dungeon's (or wing's) bosses as the block shows them, in the journal's order: one entry per fight, so two
 	bosses of one encounter (Sneed's Shredder, then Sneed: encounter 2742) are one circle and one line, with the
-	last one's name and face. Not counted: trash, rares, the Ring of Law's maybes, quest targets (the Excavation Site's
-	Highland Horror, a quest's mob more than a boss: Data/Authored/ExcavationSiteWetlands.lua), bosses who stand
-	outside the instance (outsideRun: Gnomeregan's Techbot, Data/Authored/RunTracker.lua), bosses coming soon and
-	those the journal hides. Each entry: { boss = the face, parts = { boss, ... } }.
+	last one's name and face. Not counted: trash, rares (no line either), the Ring of Law's maybes, quest targets (the
+	Excavation Site's Highland Horror, a quest's mob more than a boss: Data/Authored/ExcavationSiteWetlands.lua), a
+	creature on the list that is no fight of the run's own (uncounted, set in Data/Authored/RunTracker.lua's
+	OUT_OF_COUNT: Blackfathom Deeps' Baron Aquanis, a boss only the Horde calls up, by a quest; Shadowfang Keep's steeds
+	and Arugal's Voidwalkers; the City of Dalaran's Lyn the Ignored, whom the players summon; the Drowned City's shark,
+	Zin'aka, which players swim around, had it while it was on the list: Data/Authored/Upcoming.lua says how to bring it
+	back), bosses who stand outside the instance (outsideRun: Gnomeregan's Techbot, Data/Authored/RunTracker.lua),
+	bosses coming soon and those the journal hides. Each entry: { boss = the face, parts = { boss, ... } }. A boss who
+	only joins another's fight (joinsFight: Scarlet Commander Mograine in Whitemane's, Data/Authored/RunTracker.lua)
+	keeps his own entry, and the fight's end crosses out both all the same (UI/DungeonMap.lua, by the fight's id).
 
 	An entry's name and face come from Run.EntryName and the block's ShowCircle (UI/RunTracker.lua), one place each.
 ]]
@@ -145,35 +179,41 @@ function Run.Bosses(instance)
 	local list, byEncounter = {}, {}
 	for _, boss in ipairs(instance and instance.bosses or {}) do
 		if Counted(boss) then
-			local entry = boss.encounterID and byEncounter[boss.encounterID]
+			local shared = boss.encounterID and not boss.joinsFight and boss.encounterID or nil
+			local entry = shared and byEncounter[shared]
 			if entry then
 				entry.parts[#entry.parts + 1] = boss
 				entry.boss = boss
 			else
 				entry = { boss = boss, parts = { boss } }
 				list[#list + 1] = entry
-				if boss.encounterID then byEncounter[boss.encounterID] = entry end
+				if shared then byEncounter[shared] = entry end
 			end
 		end
 	end
 	return list
 end
 
--- The bosses that get no circle and no place in the count, but a done line once killed: rares, maybes, quest
--- targets (one done by his quest is done here too: UI/DungeonMap.lua's IsDefeated). Not those outside the instance
+-- The bosses that get no circle and no place in the count, but a done line once killed: maybes, quest targets (one
+-- done by his quest is done here too: UI/DungeonMap.lua's IsDefeated) and the uncounted (Baron Aquanis, Shadowfang
+-- Keep's steeds and Voidwalkers, Lyn the Ignored). Not rare spawns (the owner, 2026-11-13: they leave the block; a
+-- rare's kill is still kept with the run, run.kills, for the map and /ij run debug), nor those outside the instance
 -- (outsideRun): the journal sees no kill outside one, so their line could never come (0.39.21's review).
 function Run.Others(instance)
 	local list = {}
 	for _, boss in ipairs(instance and instance.bosses or {}) do
-		if (boss.rare or boss.maybe or boss.questTarget) and not boss.outsideRun and not boss.trash
-			and not (ns.Items and ns.Items:HidesBoss(boss)) then
+		if (boss.maybe or boss.questTarget or boss.uncounted) and not boss.rare
+			and not boss.outsideRun and not ns.IsLootSection(boss) and not (ns.Items and ns.Items:HidesBoss(boss)) then
 			list[#list + 1] = boss
 		end
 	end
 	return list
 end
 
-function Run.EntryName(entry)
+-- instance: the dungeon the entry is of, for Adventure Mode, where a boss not met yet is "???" (Core/Discovery.lua's
+-- BossTitle, as on his pin and in the boss list: the owner's call of 2026-11-11, the same mystery faces).
+function Run.EntryName(entry, instance)
+	if instance and ns.Discovery and ns.Discovery:Unmet(instance, entry.boss) then return ns.Discovery.UNKNOWN end
 	return entry.boss.name
 end
 
@@ -308,11 +348,57 @@ function Run:Inside()
 	return session.inside
 end
 
--- Seconds on the run's clock: to its stop, else (left behind) to when the player was last inside, else to now.
+-- Inside one of Scarlet Monastery's wings, which one not known yet (UI/DungeonMap.lua's WaitForWing): the client
+-- instance id, else nil. The run before stays as it was left until the wing says whether it goes on.
+function Run:WaitingForWing()
+	return session.wingWait and session.wingWait.instanceID or nil
+end
+
+-- A new run asked for while the wing was not known (Run:NewRun): the wing, once known, starts one (UI/DungeonMap.lua's
+-- PlaceWing).
+function Run:NewRunAsked()
+	return session.wingWait ~= nil and session.wingWait.fresh == true
+end
+
+-- Where the numbers go: the run, else (the wing not known yet) what is counted meanwhile, for the run the wing
+-- decides (Run:Entered).
+local function Counts()
+	local wait = session.wingWait
+	return wait and wait.counts or Run:Current()
+end
+
+-- Seconds on the run's clock: from the first pull (0 while it waits for it) to its stop, else (left behind) to when
+-- the player was last inside, else to now; paused, to the pause (pausedAt), its earlier pauses and the time logged
+-- out while it ran left out (pausedSeconds).
 function Run.Elapsed(run)
-	if not run then return 0 end
+	if not (run and run.startedAt) then return 0 end
 	local stop = run.endedAt or (run.frozen and run.lastInsideAt) or time()
-	return math.max(0, stop - (run.startedAt or stop) - (run.pausedSeconds or 0))
+	if run.pausedAt and run.pausedAt < stop then stop = run.pausedAt end
+	return math.max(0, stop - run.startedAt - (run.pausedSeconds or 0))
+end
+
+-- How the run's clock stands: "waiting" for the first pull, "running", "paused" by the player, or "stopped" (the
+-- final boss down, or the run left behind); "none" without a run.
+function Run.ClockState(run)
+	if not run then return "none" end
+	if run.endedAt then return "stopped" end
+	if not run.startedAt then return "waiting" end
+	if run.pausedAt then return "paused" end
+	return "running"
+end
+
+-- A pause ended at `at`: its time added to the time not counted.
+local function SettlePause(run, at)
+	if not run.pausedAt then return end
+	run.pausedSeconds = (run.pausedSeconds or 0) + math.max(0, at - run.pausedAt)
+	run.pausedAt = nil
+end
+
+-- The clock stopped at `at` (the final boss, a run joined late found finished): a pause then ends there.
+local function StopClock(run, at)
+	SettlePause(run, at)
+	run.startedAt = run.startedAt or at
+	run.endedAt = at
 end
 
 -- Any boss this run killed, as the run kept them.
@@ -356,34 +442,115 @@ function Run:Freeze()
 		run.pausedSeconds = math.max(0, (run.pausedSeconds or 0) - run.pausedAway)
 	end
 	run.pausedAway = nil
+	-- Paused by the player when left: the pause ends where the clock ends.
+	if run.pausedAt then SettlePause(run, run.endedAt or run.lastInsideAt or time()) end
 	run.endedAt = run.endedAt or run.lastInsideAt or time()
 	run.pending = nil
 	db.lastRun, db.run = run, nil
 	if run.summaryAt or (not run.finished and AnyKill(run)) then self:PrintSummary(run) end
 end
 
+-- A new run, its clock waiting for the first pull (enteredAt: when it was decided). One joined late with kills
+-- already (the map's: it was going on) starts its clock at once.
 function Run:Start(instance, late)
 	local db = ns.charDB
 	if not (db and instance) then return end
 	if db.run then self:Freeze() end
 	local now = time()
 	db.run = {
-		instanceID = instance.instanceID, key = instance.key, wing = instance.key, startedAt = now, pausedSeconds = 0,
+		instanceID = instance.instanceID, key = instance.key, wing = instance.key, enteredAt = now, pausedSeconds = 0,
 		lastSeen = now, late = late or nil, xp = 0, copper = 0, itemValue = 0, items = 0, itemList = {}, greed = 0,
 		pending = {}, kills = {},
 	}
 	session.greed, session.won = {}, {}
 	if late then SeedKills(db.run, instance) end
+	if late and AnyKill(db.run) then db.run.startedAt, db.run.startedBy = now, "joined late" end
 	Log("xp", "run started" .. (late and " (joined late)" or ""))
+	Log("clock", db.run.startedAt and "started (joined late, with kills)" or "waiting for the first pull")
 end
 
--- A /ij run new: the map's kills cleared for every wing of this dungeon, and a new run from now.
+-- The run's clock started (Run:Pull, the block's button): at its first pull, or by the player. How, for /ij run debug.
+function Run:StartClock(how)
+	local run = self:Current()
+	if Run.ClockState(run) ~= "waiting" then return false end
+	run.startedAt, run.startedBy = time(), how
+	Log("clock", "started: " .. tostring(how))
+	self:WatchPull()
+	self:Changed()
+	return true
+end
+
+-- A sign of the first pull (see the top of this file): the clock started if it still waits, inside its dungeon. With
+-- the wing not known yet, the first one is noted (its time and how), for the run the wing decides (Run:Entered).
+function Run:Pull(how)
+	local wait = session.wingWait
+	if wait then
+		if wait.pull then return false end
+		wait.pull = { at = time(), how = how }
+		Log("clock", "a pull before the wing was known: " .. tostring(how))
+		self:WatchPull()
+		return false
+	end
+	if not session.inside then return false end
+	return self:StartClock(how)
+end
+
+-- The player's pause, and their resume: only of a clock running (or paused) inside.
+function Run:Pause()
+	local run = self:Current()
+	if not session.inside or Run.ClockState(run) ~= "running" then return false end
+	run.pausedAt = time()
+	Log("clock", "paused")
+	self:Changed()
+	return true
+end
+
+function Run:Resume()
+	local run = self:Current()
+	if not session.inside or Run.ClockState(run) ~= "paused" then return false end
+	SettlePause(run, time())
+	Log("clock", "resumed")
+	self:Changed()
+	return true
+end
+
+-- The block's clock button (UI/RunTracker.lua): starts a clock still waiting for the first pull, pauses a running
+-- one, resumes a paused one. What it did ("started", "paused", "resumed"), or nil.
+function Run:ToggleClock()
+	local state = Run.ClockState(self:Current())
+	if state == "waiting" then return session.inside and self:StartClock("the player") and "started" or nil end
+	if state == "running" then return self:Pause() and "paused" or nil end
+	if state == "paused" then return self:Resume() and "resumed" or nil end
+	return nil
+end
+
+--[[
+	A /ij run new, or the block's New run button: the map's kills cleared for every wing of this dungeon, and a new
+	run, its clock waiting for the first pull as on coming in (started at once if the player or a groupmate in sight
+	is in a fight). A new copy seen at a fight's start (the watcher, below) starts it at once. With the wing not known
+	yet (Run:WaitForWing), the request is kept for it (Run:NewRunAsked): the pull and numbers so far dropped, as a new
+	run's start would, and a new run of the wing once it is known, whichever it is.
+]]
+local NoCounts
+
 function Run:NewRun()
+	local wait = session.wingWait
+	if wait then
+		wait.fresh, wait.pull, wait.away, wait.counts = true, nil, nil, NoCounts()
+		Log("xp", "a new run asked for, the wing not known yet")
+		if Baselines then Baselines() end
+		self:WatchPull()
+		self:PullNow()
+		self:Changed()
+		return true
+	end
 	local instance = session.instance
 	if not instance then return false end
 	if ns.DungeonMap and ns.DungeonMap.ClearRun then ns.DungeonMap:ClearRun(instance) end
 	self:Start(instance)
 	if Baselines then Baselines() end
+	self:WatchPull()
+	self:PullNow()
 	if ns.DungeonMap then ns.DungeonMap:Refresh() end
 	self:Changed()
 	return true
@@ -393,27 +560,80 @@ local function Dead(boss)
 	return ns.DungeonMap ~= nil and ns.DungeonMap:IsDefeated(session.instance, boss)
 end
 
+-- Time logged out is not the run's (from a logout anywhere, inside or out). Only a running clock's: waiting for the
+-- first pull it has not started, and paused it is not counting (the pause, kept, goes on).
+local function SettleLogout(run, now, login, reload)
+	if not (run and (login or reload) and run.loggedOutAt) then return end
+	if Run.ClockState(run) == "running" then
+		local gap = math.max(0, now - run.loggedOutAt)
+		run.pausedSeconds = (run.pausedSeconds or 0) + gap
+		-- Logged out once out of the dungeon (or logged out inside: lastInsideAt is the logout): past the end of
+		-- a run left behind, so kept apart until the player is back in and the run goes on (Freeze gives it back).
+		if run.lastInsideAt then run.pausedAway = (run.pausedAway or 0) + gap end
+	end
+	run.loggedOutAt = nil
+end
+
 --[[
-	The player came into the world (UI/DungeonMap.lua's PLAYER_ENTERING_WORLD, once it has decided the run):
-	`instance` is the dungeon they are in (nil outside), `cleared` whether the map just started a new run there.
+	Inside one of several wings that are each their own copy (Scarlet Monastery's), the wing not known yet (UI/
+	DungeonMap.lua's WaitForWing: it is known at the wing's first named area or its first fight). No run is shown or
+	counted meanwhile (the run block's "Which wing?"): the run before stays as it was left, for the wing to say whether it
+	goes on (a corpse run back into its wing) or a new one starts (any other wing). The first pull meanwhile is noted
+	(Run:Pull), and starts the clock of the run the wing decides, at its time; the numbers are counted apart (Counts),
+	and go to that run (the trash before a wing's first named room, the Library's long hall). The wait is kept with the
+	character (AegisJournalCharDB.wingWait), so a /reload or a login while waiting picks it up again, its pull and
+	numbers with it, where it is for the same instance and was last seen within SAME_RUN_SECONDS (the time logged out
+	after its pull kept apart as away, not the run's, as for a run's clock: SettleLogout). Run:Entered ends it.
+]]
+function NoCounts()
+	return { xp = 0, copper = 0, itemValue = 0, items = 0, itemList = {}, greed = 0, pending = {} }
+end
+
+function Run:WaitForWing(instanceID, login, reload)
+	local db = ns.charDB
+	if not db then return end
+	local now = time()
+	login, reload = ns.Readable(login) == true, ns.Readable(reload) == true
+	SettleLogout(db.run, now, login, reload)
+	if db.run and session.inside then db.run.lastInsideAt, db.run.lastSeen = now, now end
+	session.inside, session.instance = nil, nil
+	local kept = db.wingWait
+	if (login or reload) and type(kept) == "table" and kept.instanceID == instanceID and type(kept.counts) == "table"
+		and now - (kept.seenAt or kept.since or 0) <= SameRunSeconds() then
+		if kept.pull and kept.seenAt then kept.away = (kept.away or 0) + math.max(0, now - kept.seenAt) end
+		kept.seenAt = nil
+		session.wingWait = kept
+		Log("clock", "waiting for the wing again, after a " .. (reload and "/reload" or "login"))
+	else
+		-- (the run before hidden with /ij run and still one the wing can go on with, a corpse run back in: the wait
+		-- hidden too, so the block does not come back at the door)
+		local run = db.run
+		local hidden = run and run.hidden and run.instanceID == instanceID
+			and now - (run.lastInsideAt or run.lastSeen or 0) <= SameRunSeconds() or nil
+		session.wingWait = { instanceID = instanceID, since = now, counts = NoCounts(), hidden = hidden }
+		Log("clock", "waiting for the wing")
+	end
+	db.wingWait = session.wingWait
+	self:Counting()
+	self:WatchPull()
+	self:PullNow()
+	self:Changed()
+end
+
+--[[
+	The player came into the world (UI/DungeonMap.lua's PLAYER_ENTERING_WORLD, once it has decided the run), or a wing
+	waited for is known (UI/DungeonMap.lua's PlaceWing): `instance` is the dungeon they are in (nil outside), `cleared`
+	whether the map just started a new run there.
 ]]
 function Run:Entered(instance, cleared, login, reload)
 	local db = ns.charDB
 	if not db then return end
 	local now = time()
 	login, reload = ns.Readable(login) == true, ns.Readable(reload) == true
+	local wait = session.wingWait
+	session.wingWait, db.wingWait = nil, nil
 	local run = db.run
-	-- Time logged out is not the run's (from a logout anywhere, inside or out).
-	if run and (login or reload) and run.loggedOutAt then
-		if not run.endedAt then
-			local gap = math.max(0, now - run.loggedOutAt)
-			run.pausedSeconds = (run.pausedSeconds or 0) + gap
-			-- Logged out once out of the dungeon (or logged out inside: lastInsideAt is the logout): past the end of
-			-- a run left behind, so kept apart until the player is back in and the run goes on (Freeze gives it back).
-			if run.lastInsideAt then run.pausedAway = (run.pausedAway or 0) + gap end
-		end
-		run.loggedOutAt = nil
-	end
+	SettleLogout(run, now, login, reload)
 	local dungeon = instance and instance.kind ~= "raid" and instance or nil
 	if not dungeon then
 		if run and session.inside then run.lastInsideAt, run.lastSeen = now, now end
@@ -423,6 +643,7 @@ function Run:Entered(instance, cleared, login, reload)
 		-- Away longer than the map keeps a run: it is left behind.
 		if run and run.lastInsideAt and now - run.lastInsideAt > SameRunSeconds() then self:Freeze() end
 		self:Counting()
+		self:WatchPull()
 		self:Changed()
 		return
 	end
@@ -441,12 +662,39 @@ function Run:Entered(instance, cleared, login, reload)
 	run.lastSeen, run.lastInsideAt, run.pausedAway = now, nil, nil
 	session.inside = dungeon.instanceID
 	if not run.endedAt and run.late and Run.Finished(dungeon, Dead) then
-		run.endedAt, run.finished, run.finishedWing = now, true, dungeon.key
+		StopClock(run, now)
+		run.finished, run.finishedWing = true, dungeon.key
+	end
+	-- What was counted while the wing was not known yet: this run's.
+	local counts = wait and wait.counts
+	if counts then
+		run.xp, run.copper = (run.xp or 0) + counts.xp, (run.copper or 0) + counts.copper
+		run.itemValue, run.items = (run.itemValue or 0) + counts.itemValue, (run.items or 0) + counts.items
+		run.greed = (run.greed or 0) + counts.greed
+		run.itemList, run.pending = run.itemList or {}, run.pending or {}
+		for itemID, count in pairs(counts.itemList) do run.itemList[itemID] = (run.itemList[itemID] or 0) + count end
+		for itemID, waiting in pairs(counts.pending) do
+			local mine = run.pending[itemID]
+			if mine then mine.count = mine.count + waiting.count else run.pending[itemID] = waiting end
+		end
+	end
+	-- The block hidden or shown with /ij run while the wing was not known yet (wait.toggled): so is this run. Else a run
+	-- that goes on keeps its own choice, and a new one is shown.
+	if wait and wait.toggled then run.hidden = wait.hidden or nil end
+	-- A pull while the wing was not known yet: the first pull of this run, at its time.
+	if wait and wait.pull and Run.ClockState(run) == "waiting" then
+		run.startedAt, run.startedBy = math.min(wait.pull.at, now), tostring(wait.pull.how) .. ", before the wing was known"
+		-- (time logged out since, across a /reload or a login while waiting: not the run's)
+		if (wait.away or 0) > 0 then run.pausedSeconds = (run.pausedSeconds or 0) + wait.away end
+		Log("clock", "started: " .. run.startedBy)
 	end
 	-- A summary still waiting (a /reload or a login inside since the clock stopped): its timer again, for what is left.
 	if run.summaryAt then self:ScheduleSummary(run) end
 	if Baselines then Baselines() end
 	self:Counting()
+	-- The clock still waiting: the pull events heard from now, and a fight already going on counted as the pull.
+	self:WatchPull()
+	self:PullNow()
 	self:Changed()
 end
 
@@ -459,11 +707,19 @@ function Run:Killed(instance, boss)
 	local now = time()
 	run.kills[instance.key][boss.name] = now
 	run.wing = instance.key
+	-- A kill with the clock still waiting (no fight of the player's or a groupmate's in sight seen before it): the
+	-- first pull, at the kill.
+	if Run.ClockState(run) == "waiting" then
+		run.startedAt, run.startedBy = now, "a kill"
+		Log("clock", "started: a kill")
+		self:WatchPull()
+	end
 	if not run.endedAt and Run.Finished(instance, function(other)
 		return ns.DungeonMap:IsDefeated(instance, other)
 	end) then
-		-- The part it finished in: another part walked into afterwards (Stratholme, Blackrock Spire) is not done.
-		run.endedAt, run.finished, run.finishedWing = now, true, instance.key
+		-- The part it finished in: another part walked into afterwards (Blackrock Spire's, Dire Maul's) is not done.
+		StopClock(run, now)
+		run.finished, run.finishedWing = true, instance.key
 		run.summaryAt = now + SUMMARY_DELAY
 		self:ScheduleSummary(run)
 	end
@@ -514,7 +770,7 @@ function Baselines()
 end
 
 local function CountXP()
-	local run = Run:Current()
+	local run = Counts()
 	local value, max = Number(UnitXP("player")), Number(UnitXPMax("player"))
 	local was = session.xp or {}
 	if not (run and value and was.value) then
@@ -541,7 +797,7 @@ local function WindowOpen()
 end
 
 local function CountCoin(amount, how)
-	local run = Run:Current()
+	local run = Counts()
 	if not run or amount <= 0 then return end
 	run.copper = (run.copper or 0) + amount
 	Log("money", how .. " +" .. amount .. " counted")
@@ -637,7 +893,7 @@ end
 
 -- The items still waiting: priced once the client describes them, given up on after PENDING_SECONDS.
 function Run:Settle(itemID)
-	local run = self:Current()
+	local run = Counts()
 	if not (run and run.pending) then return end
 	local changed = false
 	for id, waiting in pairs(run.pending) do
@@ -656,7 +912,7 @@ function Run:Settle(itemID)
 end
 
 local function OnLootLine(text)
-	local run = Run:Current()
+	local run = Counts()
 	if not run then return end
 	text = ns.Readable(text)
 	if type(text) ~= "string" then
@@ -716,10 +972,10 @@ local CLOSED = { MERCHANT_CLOSED = "merchant", MAIL_CLOSED = "mail", TRADE_CLOSE
 local counter = CreateFrame("Frame")
 Run.counter = counter
 
--- The numbers' events: only inside the run's dungeon with the block on, else none.
+-- The numbers' events: only inside the run's dungeon (or a wing not known yet) with the block on, else none.
 -- Counting from the purse and experience as they are when it starts (not as a time it was off left them).
 function Run:Counting()
-	if session.inside and self:Current() and self:Option("on") then
+	if (session.inside and self:Current() or session.wingWait) and self:Option("on") then
 		if not session.counting and Baselines then Baselines() end
 		session.counting = true
 		ns.RegisterEvents(counter, unpack(COUNT_EVENTS))
@@ -757,28 +1013,112 @@ ns.RegisterEvents(watcher, "PLAYER_LOGOUT", "ENCOUNTER_START")
 watcher:SetScript("OnEvent", function(_, event, ...)
 	local run = Run:Current()
 	if event == "PLAYER_LOGOUT" then
+		local now = time()
 		if run then
-			local now = time()
 			run.loggedOutAt, run.lastSeen = now, now
 			-- Logged out inside: the server may log them in outside, and the run's time away counts from here.
 			if session.inside then run.lastInsideAt = now end
 		end
+		-- Waiting for the wing: when it was last seen, for a /reload or a login to pick it up (Run:WaitForWing).
+		if session.wingWait then session.wingWait.seenAt = now end
 		return
 	end
-	-- The part the player stands in, where it is this run's (a fight in Stratholme's other half is kept as that
-	-- half's), else the one entered by.
+	-- The wing not known yet: the fight names it first (UI/DungeonMap.lua), so a fight against a boss this run already
+	-- killed is a new copy as at a named room (whichever frame hears the fight first).
+	if session.wingWait and ns.DungeonMap and ns.DungeonMap.PlaceWingOfFight then
+		ns.DungeonMap:PlaceWingOfFight(Number(select(1, ...)), ns.Readable(select(2, ...)))
+		run = Run:Current()
+	end
+	-- Still not known (a fight of no wing's): the fight's start noted as the first pull.
+	if session.wingWait then
+		Run:Pull("a boss fight")
+		return
+	end
+	-- The part the player stands in, where it is this run's (a fight in Upper Blackrock Spire after Lower is kept
+	-- as Upper's), else the one entered by.
 	local here = session.inside and ns.CurrentInstance(true)
 	local instance = here and Run.InRun(run, here) and here or session.instance
 	if not (run and instance and session.inside) then return end
 	local encounterID, name = ...
 	local killed = run.kills[instance.key] or {}
-	for _, boss in ipairs(ns.BossesForFight(instance, Number(encounterID), ns.Readable(name))) do
+	-- A fight for several bosses (Sneed's Shredder and Sneed; Uldaman's three Lost Dwarves) is a new copy only once
+	-- every one of them was killed: with one still standing, it is the same fight again after a wipe.
+	local bosses, latest = ns.BossesForFight(instance, Number(encounterID), ns.Readable(name)), nil
+	for _, boss in ipairs(bosses) do
 		local at = killed[boss.name]
-		if at and ns.DungeonMap:IsDefeated(instance, boss) and time() - at >= NEW_COPY_AFTER then
-			Log("xp", "a fight started for " .. boss.name .. ", killed this run: a new run")
-			Run:NewRun()
-			return
+		if not (at and ns.DungeonMap:IsDefeated(instance, boss)) then
+			latest = nil
+			break
 		end
+		latest = math.max(latest or at, at)
+	end
+	if latest and time() - latest >= NEW_COPY_AFTER then
+		Log("xp", "a fight started for " .. bosses[#bosses].name .. ", killed this run: a new run")
+		Run:NewRun()
+	end
+	-- A boss fight started: the first pull, if the clock still waits (the new copy's too).
+	Run:Pull("a boss fight")
+end)
+
+------------------------------------------------------------------------------------------
+-- The first pull (see the top of this file)
+------------------------------------------------------------------------------------------
+
+-- A party or raid member's unit (UNIT_FLAGS also comes for the target, nameplates and the like).
+local function GroupUnit(unit)
+	return type(unit) == "string" and (unit:find("^party%d$") ~= nil or unit:find("^raid%d+$") ~= nil)
+end
+
+-- In a fight: the player, or a groupmate in sight (so in the same dungeon: not one fighting out in the world). Each
+-- answer only where the client gives it readable (Forever keeps some unit values secret in dungeons): nil reads as no.
+local function InFight(unit)
+	if type(UnitAffectingCombat) ~= "function" then return false end
+	local ok, fighting = pcall(UnitAffectingCombat, unit)
+	if not (ok and ns.Readable(fighting) == true) then return false end
+	if unit == "player" then return true end
+	if type(UnitIsVisible) ~= "function" then return false end
+	local okSeen, seen = pcall(UnitIsVisible, unit)
+	return okSeen and ns.Readable(seen) == true
+end
+
+local pull = CreateFrame("Frame")
+Run.pull = pull
+local PULL_EVENTS = { "PLAYER_REGEN_DISABLED", "UNIT_FLAGS" }
+
+-- Whether the first pull is still to come: inside, the run's clock waiting for it; or, the wing not known yet, none
+-- noted yet.
+local function PullToCome()
+	local wait = session.wingWait
+	if wait then return wait.pull == nil end
+	return session.inside ~= nil and Run.ClockState(Run:Current()) == "waiting"
+end
+
+-- The pull events, heard only inside while the run's clock waits for the first pull (or the wing does: PullToCome);
+-- dropped once it starts.
+function Run:WatchPull()
+	local waiting = PullToCome()
+	if waiting == (session.watchingPull == true) then return end
+	session.watchingPull = waiting or nil
+	if waiting then ns.RegisterEvents(pull, unpack(PULL_EVENTS)) else ns.UnregisterEvents(pull, unpack(PULL_EVENTS)) end
+end
+
+-- A fight already going on as the clock starts to wait (coming in, a /reload, a new run): the player's, or a
+-- groupmate's in sight. Once, then the events.
+function Run:PullNow()
+	if not PullToCome() then return false end
+	if InFight("player") then return self:Pull("already in a fight") end
+	local raid = type(IsInRaid) == "function" and IsInRaid() == true
+	for index = 1, raid and 40 or 4 do
+		if InFight((raid and "raid" or "party") .. index) then return self:Pull("a groupmate already in a fight") end
+	end
+	return false
+end
+
+pull:SetScript("OnEvent", function(_, event, unit)
+	if event == "PLAYER_REGEN_DISABLED" then
+		Run:Pull("the player's fight")
+	elseif GroupUnit(unit) and InFight(unit) then
+		Run:Pull("a groupmate's fight")
 	end
 end)
 
@@ -858,16 +1198,49 @@ function Run:Debug(...)
 	local run = self:Current() or self:Last()
 	local lines = {}
 	local function Add(text) lines[#lines + 1] = text end
+	local wait = session.wingWait
+	if wait then
+		local function At(stamp) return date and date("%H:%M:%S", stamp) or tostring(stamp) end
+		local counts = wait.counts
+		Add(string.format("waiting for the wing (instance %s) since %s%s%s; counted meanwhile: xp %d, coin %d, items %d",
+			tostring(wait.instanceID), At(wait.since),
+			wait.pull and (", a pull at " .. At(wait.pull.at) .. " by " .. tostring(wait.pull.how)) or ", no pull yet",
+			wait.fresh and ", a new run asked for" or "", counts.xp, counts.copper, counts.items))
+	end
 	if not run then
 		Add("no run")
 	else
-		Add(string.format("run %s (id %s, wing %s)%s%s: started %s, paused %ds, clock %s%s", tostring(run.key),
+		local function At(stamp) return date and date("%H:%M:%S", stamp) or tostring(stamp) end
+		local state = Run.ClockState(run)
+		Add(string.format("run %s (id %s, wing %s)%s%s: in at %s, %s, paused %ds, clock %s (%s)", tostring(run.key),
 			tostring(run.instanceID), tostring(run.wing), run.late and " joined late" or "", run.frozen and " kept" or "",
-			date and date("%H:%M:%S", run.startedAt or 0) or tostring(run.startedAt), run.pausedSeconds or 0,
-			Run.Clock(Run.Elapsed(run)), run.endedAt and " (stopped)" or ""))
+			run.enteredAt and At(run.enteredAt) or "?",
+			run.startedAt and ("started " .. At(run.startedAt) .. " by " .. tostring(run.startedBy or "?"))
+				or "waiting for the first pull",
+			run.pausedSeconds or 0, Run.Clock(Run.Elapsed(run)),
+			state == "paused" and ("paused since " .. At(run.pausedAt)) or state))
 		for wing, killed in pairs(run.kills or {}) do
 			for name, at in pairs(killed) do
 				Add(string.format("  %s: %s at %s", wing, name, at == 0 and "?" or (date and date("%H:%M:%S", at) or at)))
+			end
+		end
+		-- What Adventure Mode's record (Core/Discovery.lua) holds for each boss of the run's dungeon, in every style:
+		-- none, met, fought or killed. A boss killed above but not here is how the block's "???" beside a cross shows.
+		-- One line a part, for every part walked between inside (Run.SameCopy: Blackrock Spire's, Dire Maul's), as the
+		-- kills above are; not the bosses the journal hides (not in the game yet: no record to have).
+		local record = ns.Discovery and ns.Discovery:Record()
+		if record then
+			local levels = {}
+			for name, rank in pairs(ns.Discovery.BOSS_LEVELS) do levels[rank] = name end
+			for _, part in ipairs(Run.SameCopy(ns.GetInstance(run.wing or run.key))) do
+				local held, said = record.bosses[part.key], {}
+				for _, boss in ipairs(part.bosses or {}) do
+					if not ns.IsLootSection(boss) and not (ns.Items and ns.Items:HidesBoss(boss)) then
+						local rank = type(held) == "table" and held[ns.Discovery.BossKey(boss)]
+						said[#said + 1] = boss.name .. " " .. (levels[rank] or "none")
+					end
+				end
+				if #said > 0 then Add(string.format("  record, %s: %s", part.key, table.concat(said, ", "))) end
 			end
 		end
 		Add(string.format("xp %d, coin %d, items %d worth %d, greed %d", run.xp or 0, run.copper or 0, run.items or 0,
@@ -875,7 +1248,7 @@ function Run:Debug(...)
 	end
 	Add(string.format("inside %s; xp shown %s (level %s, cap %s)", tostring(session.inside), tostring(Run.XPShown()),
 		tostring(UnitLevel and UnitLevel("player")), tostring(type(GetMaxPlayerLevel) == "function" and GetMaxPlayerLevel())))
-	for _, kind in ipairs({ "money", "loot", "xp" }) do
+	for _, kind in ipairs({ "clock", "money", "loot", "xp" }) do
 		for _, text in ipairs(session.log[kind]) do Add(kind .. ": " .. text) end
 	end
 	for index = 1, select("#", ...) do

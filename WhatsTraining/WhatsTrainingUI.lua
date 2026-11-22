@@ -366,127 +366,9 @@ function wt.CreateCompactFrame(mainFrame)
     groupingButton:SetScript("OnLeave", function() GameTooltip:Hide() end)
     mainFrame.groupingButton = groupingButton
 
-    local basePopupHeight = 156
-    local sectionTitleHeight, sectionSpacing, providerRowHeight = 24, 8, 22
-    local popup = CreateFrame("Frame", "$parentGroupingPopup", mainFrame, "BackdropTemplate")
-    popup:SetSize(200, basePopupHeight)
+    local popup = wt.CreateOptionsPopup(mainFrame)
     popup:SetPoint("TOPLEFT", groupingButton, "BOTTOMLEFT", 0, -2)
-    popup:SetFrameStrata("DIALOG")
-    popup:SetBackdrop(BACKDROP_DIALOG_32_32)
-    popup:EnableMouse(true)
-    popup:Hide()
     mainFrame.groupingPopup = popup
-
-    local title = popup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    title:SetPoint("TOPLEFT", popup, "TOPLEFT", 16, -14)
-    title:SetText(wt.L.GROUPING_OPTIONS_TITLE)
-
-    local function addRadio(group, name, groupTitle, onSelect)
-        local radio = CreateFrame("CheckButton", name, popup, "UIRadioButtonTemplate")
-        local prev = group[#group]
-        if prev then
-            radio:SetPoint("TOPLEFT", prev, "BOTTOMLEFT", 0, -6)
-        else
-            radio:SetPoint("TOPLEFT", groupTitle, "BOTTOMLEFT", 0, -8)
-        end
-        radio:SetScript("OnClick", function(self)
-            for _, r in ipairs(group) do
-                r:SetChecked(r == self)
-            end
-            PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-            onSelect(self.value)
-        end)
-        tinsert(group, radio)
-        return radio
-    end
-    local function labelRadio(radio, label)
-        local text = radio.text or radio.Text or _G[radio:GetName() .. "Text"]
-        if text then
-            text:SetFontObject("GameFontNormalSmall")
-            text:SetText(label)
-            text:SetPoint("LEFT", radio, "RIGHT", 2, 0)
-            radio:SetHitRectInsets(0, -(text:GetStringWidth() + 2), 0, 0)
-        end
-    end
-
-    local radioDefs = {
-        { mode = "zone",        label = wt.L.GROUP_BY_ZONE },
-        { mode = "weaponskill", label = wt.L.GROUP_BY_WEAPON_SKILL },
-        { mode = "list",        label = wt.L.GROUP_LIST },
-    }
-    local function setGrouping(mode)
-        WT_WeaponGrouping = mode
-        wt:ApplyFilter()
-    end
-    popup.radios = {}
-    for i, def in ipairs(radioDefs) do
-        local radio = addRadio(popup.radios, "$parentRadio" .. i, title, setGrouping)
-        radio.value = def.mode
-        labelRadio(radio, def.label)
-    end
-    local prev = popup.radios[#popup.radios]
-
-    local showKnown = CreateFrame("CheckButton", "$parentShowKnown", popup, "UICheckButtonTemplate")
-    showKnown:SetSize(22, 22)
-    showKnown:SetPoint("TOPLEFT", prev, "BOTTOMLEFT", -3, -4)
-    local showKnownText = showKnown.text or showKnown.Text
-    showKnownText:SetFontObject("GameFontNormalSmall")
-    showKnownText:SetText(wt.L.LEDGER_SHOW_KNOWN)
-    showKnownText:ClearAllPoints()
-    showKnownText:SetPoint("LEFT", showKnown, "RIGHT", 0, 0)
-    showKnown:SetHitRectInsets(0, -(showKnownText:GetStringWidth() + 2), 0, 0)
-    showKnown:SetScript("OnClick", function(self)
-        WT_ShowKnownWeaponSkills = self:GetChecked()
-        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-        wt:ApplyFilter()
-    end)
-
-    local iconTitle = popup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    iconTitle:SetPoint("TOPLEFT", showKnown, "BOTTOMLEFT", 3, -8)
-    iconTitle:SetText(wt.L.ADDON_ICON_TITLE)
-    local iconPicker = wt.createIconPicker(popup)
-    iconPicker:SetPoint("TOPLEFT", iconTitle, "BOTTOMLEFT", 0, -6)
-    iconPicker:Setup(wt.SpellbookIcon)
-    wt.SpellbookIcon.onChanged(function() iconPicker:Refresh() end)
-
-    local providerTitle = popup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    providerTitle:SetPoint("TOPLEFT", iconPicker, "BOTTOMLEFT", 0, -8)
-    providerTitle:SetText(wt.L.WAYPOINT_PROVIDER_TITLE)
-    popup.providerRadios = {}
-
-    local doneButton = CreateFrame("Button", "$parentDone", popup, "UIPanelButtonTemplate")
-    doneButton:SetSize(80, 22)
-    doneButton:SetPoint("BOTTOMRIGHT", popup, "BOTTOMRIGHT", -12, 10)
-    doneButton:SetText(DONE)
-    doneButton:SetScript("OnClick", function() popup:Hide() end)
-
-    popup:SetScript("OnShow", function(self)
-        local mode = WT_WeaponGrouping
-        for _, r in ipairs(self.radios) do
-            r:SetChecked(r.value == mode)
-        end
-        showKnown:SetChecked(WT_ShowKnownWeaponSkills)
-
-        -- plugins can register providers after this popup was built, so refresh on every show
-        local providers = wt.waypointProviders()
-        local count = #providers > 1 and #providers or 0
-        local active = wt.activeWaypointProvider()
-        for i = 1, count do
-            local radio = self.providerRadios[i]
-                or addRadio(self.providerRadios, "$parentProviderRadio" .. i, providerTitle, wt.setWaypointProvider)
-            radio.value = providers[i].id
-            labelRadio(radio, providers[i].name)
-            radio:SetChecked(providers[i] == active)
-        end
-        for i, radio in ipairs(self.providerRadios) do
-            radio:SetShown(i <= count)
-        end
-        providerTitle:SetShown(count > 0)
-        iconPicker:Refresh()
-        local height = basePopupHeight + sectionTitleHeight + iconPicker:GetHeight() + sectionSpacing
-        if count > 0 then height = height + sectionTitleHeight + providerRowHeight * count end
-        self:SetHeight(height)
-    end)
 
     groupingButton:SetScript("OnClick", function()
         if popup:IsShown() then popup:Hide() else popup:Show() end
@@ -639,4 +521,169 @@ function wt.CreateFrame()
 
     attachClassicSpellBook(mainFrame)
     createWeaponSkillsButton()
+end
+
+-- Shared by the compact list and the standalone Era/TBC minimap menu.
+function wt.CreateOptionsPopup(parent)
+    local basePopupHeight = 156
+    local sectionTitleHeight, sectionSpacing, providerRowHeight = 24, 8, 22
+    local popup = CreateFrame("Frame", "$parentGroupingPopup", parent, "BackdropTemplate")
+    popup:SetSize(200, basePopupHeight)
+    popup:SetClampedToScreen(true)
+    popup:SetFrameStrata("DIALOG")
+    popup:SetBackdrop(BACKDROP_DIALOG_32_32)
+    popup:EnableMouse(true)
+    popup:Hide()
+
+    local title = popup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    title:SetPoint("TOPLEFT", popup, "TOPLEFT", 16, -14)
+    title:SetText(wt.L.GROUPING_OPTIONS_TITLE)
+
+    local function addRadio(group, name, groupTitle, onSelect)
+        local radio = CreateFrame("CheckButton", name, popup, "UIRadioButtonTemplate")
+        local prev = group[#group]
+        if prev then
+            radio:SetPoint("TOPLEFT", prev, "BOTTOMLEFT", 0, -6)
+        else
+            radio:SetPoint("TOPLEFT", groupTitle, "BOTTOMLEFT", 0, -8)
+        end
+        radio:SetScript("OnClick", function(self)
+            for _, r in ipairs(group) do
+                r:SetChecked(r == self)
+            end
+            PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+            onSelect(self.value)
+        end)
+        tinsert(group, radio)
+        return radio
+    end
+    local function labelRadio(radio, label)
+        local text = radio.text or radio.Text or _G[radio:GetName() .. "Text"]
+        if text then
+            text:SetFontObject("GameFontNormalSmall")
+            text:SetText(label)
+            text:SetPoint("LEFT", radio, "RIGHT", 2, 0)
+            radio:SetHitRectInsets(0, -(text:GetStringWidth() + 2), 0, 0)
+        end
+    end
+
+    local radioDefs = {
+        { mode = "zone",        label = wt.L.GROUP_BY_ZONE },
+        { mode = "weaponskill", label = wt.L.GROUP_BY_WEAPON_SKILL },
+        { mode = "list",        label = wt.L.GROUP_LIST },
+    }
+    local function setGrouping(mode)
+        WT_WeaponGrouping = mode
+        wt:ApplyFilter()
+    end
+    popup.radios = {}
+    for i, def in ipairs(radioDefs) do
+        local radio = addRadio(popup.radios, "$parentRadio" .. i, title, setGrouping)
+        radio.value = def.mode
+        labelRadio(radio, def.label)
+    end
+    local prev = popup.radios[#popup.radios]
+
+    local showKnown = CreateFrame("CheckButton", "$parentShowKnown", popup, "UICheckButtonTemplate")
+    showKnown:SetSize(22, 22)
+    showKnown:SetPoint("TOPLEFT", prev, "BOTTOMLEFT", -3, -4)
+    local showKnownText = showKnown.text or showKnown.Text
+    showKnownText:SetFontObject("GameFontNormalSmall")
+    showKnownText:SetText(wt.L.LEDGER_SHOW_KNOWN)
+    showKnownText:ClearAllPoints()
+    showKnownText:SetPoint("LEFT", showKnown, "RIGHT", 0, 0)
+    showKnown:SetHitRectInsets(0, -(showKnownText:GetStringWidth() + 2), 0, 0)
+    showKnown:SetScript("OnClick", function(self)
+        WT_ShowKnownWeaponSkills = self:GetChecked()
+        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+        wt:ApplyFilter()
+    end)
+
+    -- forever has this in its settings window
+    local hideMinimap, enableProfessions
+    if wt.gameVersion ~= "forever" then
+        hideMinimap = CreateFrame("CheckButton", "$parentHideMinimap", popup, "UICheckButtonTemplate")
+        hideMinimap:SetSize(22, 22)
+        hideMinimap:SetPoint("TOPLEFT", showKnown, "BOTTOMLEFT", 0, -4)
+        local hideMinimapText = hideMinimap.text or hideMinimap.Text
+        hideMinimapText:SetFontObject("GameFontNormalSmall")
+        hideMinimapText:SetText(wt.L.HIDE_MINIMAP_ICON)
+        hideMinimapText:ClearAllPoints()
+        hideMinimapText:SetPoint("LEFT", hideMinimap, "RIGHT", 0, 0)
+        hideMinimap:SetHitRectInsets(0, -(hideMinimapText:GetStringWidth() + 2), 0, 0)
+        hideMinimap:SetScript("OnClick", function(self)
+            PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+            wt.SetMinimapHidden(self:GetChecked())
+            -- the minimap button's own popup would otherwise reopen with the button
+            if not popup:IsVisible() then popup:Hide() end
+        end)
+        basePopupHeight = basePopupHeight + 26
+        enableProfessions = CreateFrame("CheckButton", "$parentEnableProfessions", popup, "UICheckButtonTemplate")
+        enableProfessions:SetSize(22, 22)
+        enableProfessions:SetPoint("TOPLEFT", hideMinimap, "BOTTOMLEFT", 0, -4)
+        local text = enableProfessions.text or enableProfessions.Text
+        text:SetFontObject("GameFontNormalSmall")
+        text:SetText(wt.L.ENABLE_PROFESSIONS)
+        text:ClearAllPoints()
+        text:SetPoint("LEFT", enableProfessions, "RIGHT", 0, 0)
+        enableProfessions:SetHitRectInsets(0, -(text:GetStringWidth() + 2), 0, 0)
+        enableProfessions:SetScript("OnClick", function(self)
+            PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+            wt.SetProfessionsEnabled(self:GetChecked())
+        end)
+        basePopupHeight = basePopupHeight + 26
+        popup:SetHeight(basePopupHeight)
+    end
+    popup.hideMinimap = hideMinimap
+    popup.enableProfessions = enableProfessions
+
+    local iconTitle = popup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    iconTitle:SetPoint("TOPLEFT", enableProfessions or hideMinimap or showKnown, "BOTTOMLEFT", 3, -8)
+    iconTitle:SetText(wt.L.ADDON_ICON_TITLE)
+    local iconPicker = wt.createIconPicker(popup)
+    iconPicker:SetPoint("TOPLEFT", iconTitle, "BOTTOMLEFT", 0, -6)
+    iconPicker:Setup(wt.SpellbookIcon)
+    wt.SpellbookIcon.onChanged(function() iconPicker:Refresh() end)
+
+    local providerTitle = popup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    providerTitle:SetPoint("TOPLEFT", iconPicker, "BOTTOMLEFT", 0, -8)
+    providerTitle:SetText(wt.L.WAYPOINT_PROVIDER_TITLE)
+    popup.providerRadios = {}
+
+    local doneButton = CreateFrame("Button", "$parentDone", popup, "UIPanelButtonTemplate")
+    doneButton:SetSize(80, 22)
+    doneButton:SetPoint("BOTTOMRIGHT", popup, "BOTTOMRIGHT", -12, 10)
+    doneButton:SetText(DONE)
+    doneButton:SetScript("OnClick", function() popup:Hide() end)
+
+    popup:SetScript("OnShow", function(self)
+        local mode = WT_WeaponGrouping
+        for _, r in ipairs(self.radios) do
+            r:SetChecked(r.value == mode)
+        end
+        showKnown:SetChecked(WT_ShowKnownWeaponSkills)
+        if hideMinimap then hideMinimap:SetChecked(WT_Minimap and WT_Minimap.hide == true) end
+        if enableProfessions then enableProfessions:SetChecked(WT_EnableProfessions ~= false) end
+
+        -- plugins can register providers after this popup was built, so refresh on every show
+        local providers = wt.waypointProviders()
+        local count = #providers > 1 and #providers or 0
+        local active = wt.activeWaypointProvider()
+        for i = 1, count do
+            local radio = self.providerRadios[i]
+                or addRadio(self.providerRadios, "$parentProviderRadio" .. i, providerTitle, wt.setWaypointProvider)
+            radio.value = providers[i].id
+            labelRadio(radio, providers[i].name)
+            radio:SetChecked(providers[i] == active)
+        end
+        for i, radio in ipairs(self.providerRadios) do
+            radio:SetShown(i <= count)
+        end
+        providerTitle:SetShown(count > 0)
+        iconPicker:Refresh()
+        local height = basePopupHeight + sectionTitleHeight + iconPicker:GetHeight() + sectionSpacing
+        if count > 0 then height = height + sectionTitleHeight + providerRowHeight * count end
+        self:SetHeight(height)
+    end)
+    return popup
 end

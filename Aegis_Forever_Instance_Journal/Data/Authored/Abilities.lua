@@ -491,14 +491,7 @@ ns.AmendInstance("RazorfenKraul", { bosses = {
 				description = "When pulled, he calls the creatures within 15 yards to join him, the two Razorfen Spearhides at his side among them. Crowd-control one of them." },
 		},
 	},
-	["Razorfen Spearhide"] = {
-		abilities = {
-			{ spellID = 8259, name = "Whirling Barrage", flags = { "Tank" },
-				text = "Hits everyone standing close." },
-			{ spellID = 8148, name = "Thorns Aura", flags = { "Tank", "Damage" },
-				text = "Whoever strikes him or an ally near him, Overlord Ramtusk included, takes Nature damage." },
-		},
-	},
+	-- Razorfen Spearhide: Ramtusk's two guards, among his adds (Data/Authored/RazorfenKraul.lua), not a boss here.
 	["Agathelos the Raging"] = {
 		abilities = {
 			{ spellID = 8555, name = "Left for Dead", flags = { "Important" },
@@ -537,6 +530,11 @@ ns.AmendInstance("RazorfenKraul", { bosses = {
 	},
 } })
 
+-- The Scarlet Monastery: what the owner's recording of 2026-11-16 saw cast (each spell id checked against the client's
+-- spell table) is all here; five of its spells were not, and are added with it: Arcanist Doan's Arcane Bubble, High
+-- Inquisitor Fairbanks's Dispel Magic, Scarlet Commander Mograine's Crusader Strike and Lay on Hands, and High
+-- Inquisitor Whitemane's Deep Sleep. Its numbers are Data/Generated/Abilities.lua's. Nothing written here disagreed
+-- with it. Houndmaster Loksey's Battle Shout was not seen in its one fight with him, and stays.
 ns.AmendInstance("ScarletMonasteryGraveyard", { bosses = {
 	["Interrogator Vishas"] = {
 		abilities = {
@@ -604,6 +602,8 @@ ns.AmendInstance("ScarletMonasteryLibrary", { bosses = {
 		abilities = {
 			{ spellID = 9435, name = "Detonation", flags = { "Deadly", "Important" },
 				text = "At half health he shuts himself in an Arcane Bubble for 8 seconds and casts it (5-second cast): heavy Fire damage to everyone within 30 yards. Get out of range before it goes off, then come back." },
+			{ spellID = 9438, name = "Arcane Bubble", flags = { "Important" },
+				text = "At half health he becomes immune to all attacks and spells for 8 seconds, while he casts Detonation." },
 			{ spellID = 13323, name = "Polymorph", flags = { "Interruptible", "Magic" },
 				text = "Turns a player other than his target into a sheep for up to 20 seconds (1.5-second cast). Interrupt it, or dispel it from the player." },
 			{ spellID = 8988, name = "Silence", flags = { "Healer", "Interruptible" },
@@ -642,15 +642,21 @@ ns.AmendInstance("ScarletMonasteryCathedral", { bosses = {
 				text = "A player takes more Physical damage for 10 minutes (2-second cast). A mage or a druid can remove it." },
 			{ spellID = 12039, name = "Heal", flags = { "Interruptible" },
 				text = "At 30% health he heals himself (3-second cast). Interrupt it." },
+			{ spellID = 15090, name = "Dispel Magic",
+				text = "Removes a helpful magic effect from a player, or a harmful one from himself or an ally." },
 		},
 		fightNote = "He lies on the floor of the small room beside the altar, as if dead, and gets up when attacked.",
 	},
 	["Scarlet Commander Mograine"] = {
 		abilities = {
+			{ spellID = 14518, name = "Crusader Strike", flags = { "Tank" },
+				text = "Hits his target, which then takes more Holy damage; it stacks up to 5 times." },
 			{ spellID = 5589, name = "Hammer of Justice", flags = { "Magic" },
 				text = "Stuns a player for 5 seconds." },
 			{ spellID = 1020, name = "Divine Shield", flags = { "Important" },
 				text = "At half health he becomes immune to all damage and spells for 12 seconds." },
+			{ spellID = 9257, name = "Lay on Hands", flags = { "Important" },
+				text = "Once Whitemane raises him, he heals her fully." },
 			{ spellID = 8990, name = "Retribution Aura", flags = { "Damage" },
 				text = "Holy damage to whoever strikes him in melee." },
 		},
@@ -658,11 +664,15 @@ ns.AmendInstance("ScarletMonasteryCathedral", { bosses = {
 			{ title = "Calls for help", icon = ICONS .. "ability_warrior_rallyingcry", flags = { "Important" },
 				description = "When pulled, he calls every Scarlet defender within 80 yards to join him. Clear the cathedral before you pull him." },
 		},
+		-- One fight with Whitemane (450): each has a page and abilities of their own, so neither is the other's add.
+		notAdds = { [3977] = true },
 	},
 	["High Inquisitor Whitemane"] = {
 		abilities = {
 			{ spellID = 9232, name = "Scarlet Resurrection", flags = { "Deadly", "Important" },
 				text = "At half health she puts everyone in the room to sleep for up to 10 seconds, runs to Mograine and raises him. He heals her fully with Lay on Hands, and the two fight you together." },
+			{ spellID = 9256, name = "Deep Sleep", flags = { "Important" },
+				text = "Puts everyone near her to sleep for up to 10 seconds, just before she raises Mograine. Damage wakes a sleeper." },
 			{ spellID = 9481, name = "Holy Smite", flags = { "Interruptible" },
 				text = "Holy damage to her target (2.5-second cast). Interrupt it." },
 			{ spellID = 12039, name = "Heal", flags = { "Interruptible" },
@@ -671,6 +681,7 @@ ns.AmendInstance("ScarletMonasteryCathedral", { bosses = {
 				text = "Shields her against damage for up to 30 seconds. A priest or a shaman can remove it." },
 		},
 		fightNote = "When Mograine falls he is only playing dead: she runs out of the room behind the altar and attacks.",
+		notAdds = { [3976] = true },
 	},
 } })
 

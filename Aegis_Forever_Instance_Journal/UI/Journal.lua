@@ -194,7 +194,7 @@ end
 
 --[[
 	Docked (the journal's options, or /aegis dock; until the player chooses, as the character's style
-	has it: Classic and Custom docked, Modern free), the journal is one of the game's
+	has it: Classic, Custom and Adventure Mode docked, Modern free), the journal is one of the game's
 	own windows to its window manager (Blizzard_UIParentPanelManager): it opens at the top left,
 	moves aside when one of the game's windows opens there and back when that one closes, and is
 	put away when there is no room for both, as the game's windows are for each other. Dragged, it
@@ -553,9 +553,14 @@ local function CreateJournalFrame()
 	end)
 	f:SetScript("OnShow", function(self)
 		if not quiet then ns.PlaySoundKit("IG_SPELLBOOK_OPEN") end
+		-- With the Gamepad UI on, it lets go of the pad when a fight starts (Core/Compat.lua's ns.Gamepad:Watch).
+		ns.Gamepad:Watch(self)
 		OnDockedShow(self)
+		-- Test mode's panel, shown in the game's left window slot while the journal was shut, goes beside it.
+		if ns.TestPanel then ns.TestPanel:JournalShown() end
 	end)
 	f:SetScript("OnHide", function(self)
+		ns.Gamepad:Unwatch(self)
 		if moving then EndMove(self) end
 		if not quiet then
 			ns.PlaySoundKit("IG_SPELLBOOK_CLOSE")
@@ -564,6 +569,8 @@ local function CreateJournalFrame()
 				loose, releaseAfterCombat = nil, nil
 				SetDockAttributes(self, docked)
 			end
+			-- Finds not seen yet, kept by test mode's opening (OpenForTest): the minimap button glows again.
+			if ns.MinimapButton then ns.MinimapButton:UpdateGlow() end
 		end
 		managed = nil
 		self.DockWatch:Hide()
@@ -619,25 +626,29 @@ end
 -- Breadcrumbs
 ------------------------------------------------------------------------------------------
 
--- The dropdown arrow on an instance's breadcrumb: the other instances of its kind.
+-- The dropdown arrow on an instance's breadcrumb: the other instances of its kind (in Adventure Mode,
+-- the factions the character knows: Discovery:FactionKnown).
 local function InstanceList(kind)
 	return function()
 		local list = {}
-		for index, instance in ipairs(ns.GetInstances(kind)) do
-			list[index] = { text = instance.name, id = index, func = function() Journal:OpenInstance(instance) end }
+		for _, instance in ipairs(ns.GetInstances(kind)) do
+			if kind ~= "faction" or ns.Discovery:FactionKnown(instance) then
+				list[#list + 1] = { text = instance.name, id = #list + 1, func = function() Journal:OpenInstance(instance) end }
+			end
 		end
 		return list
 	end
 end
 
 -- The dropdown arrow on a boss's breadcrumb: the instance's other bosses, as its boss list has them (no quest target:
--- UI/EncounterPage.lua's BossesOf).
+-- UI/EncounterPage.lua's BossesOf; "???" for one not met yet, in Adventure Mode).
 local function BossList(instance)
 	return function()
 		local list = {}
 		for _, boss in ipairs(instance.bosses) do
-			if not boss.trash and not ns.Items:HidesBoss(boss) and not boss.questTarget then
-				list[#list + 1] = { text = boss.name, id = #list + 1, func = function() Journal:OpenBoss(instance, boss) end }
+			if not ns.IsLootSection(boss) and not ns.Items:HidesBoss(boss) and not boss.questTarget then
+				local name = ns.Discovery:Unmet(instance, boss) and ns.Discovery.UNKNOWN or boss.name
+				list[#list + 1] = { text = name, id = #list + 1, func = function() Journal:OpenBoss(instance, boss) end }
 			end
 		end
 		return list
@@ -717,14 +728,15 @@ function Journal:Toggle()
 end
 
 -- Docked and out of combat, through the game's window manager, which places it and makes room.
--- In combat, or when the manager takes no window (its menu, its options, Edit Mode, the shop), it is
--- shown as a plain frame and placed by hand (OnDockedShow).
+-- In combat, while the Gamepad UI's HUD mode is up (Core/Compat.lua's ns.Gamepad:ShowPanel), or when
+-- the manager takes no window (its menu, its options, Edit Mode, the shop), it is shown as a plain
+-- frame and placed by hand (OnDockedShow).
 function Journal:Show()
 	local f = GetFrame()
 	if f:IsShown() then return end
-	if docked and not InCombatLockdown() and type(ShowUIPanel) == "function" then
+	if docked and not InCombatLockdown() then
 		viaManager = true
-		pcall(ShowUIPanel, f)
+		ns.Gamepad:ShowPanel(f)
 		viaManager = nil
 		if f:IsShown() then return end
 	end
@@ -793,6 +805,31 @@ function Journal:IsShown()
 	return frame ~= nil and frame:IsShown()
 end
 
+-- The window, once built (nil before its first opening): test mode's panel stands beside it (UI/TestPanel.lua).
+function Journal:Window()
+	return frame
+end
+
+-- The dungeon or raid whose page the book shows, nil for none (a faction's page, a list, the journal shut).
+function Journal:ShownInstance()
+	local book = frame and frame:IsShown() and rawget(frame, "EncounterPage")
+	local instance = book and book:IsShown() and book.instance
+	if type(instance) == "table" and (instance.kind == "dungeon" or instance.kind == "raid") then return instance end
+	return nil
+end
+
+-- Test mode's panel (UI/TestPanel.lua): the journal shown (show) and the dungeon's page opened as any other way in
+-- opens them, through the gate; as test mode saves nothing, the tab it brings forward is not kept for the next
+-- session, nor are the character's finds not seen yet taken as seen (UI/News.lua's newFinds: the minimap button's
+-- glow, back once the journal is shut).
+function Journal:OpenForTest(instance, show)
+	local kept = ns.charDB and ns.charDB.lastTab
+	local news = ns.charDB and ns.charDB.newFinds
+	if show then self:Show() end
+	if instance then self:OpenInstance(instance) end
+	if ns.charDB then ns.charDB.lastTab, ns.charDB.newFinds = kept, news end
+end
+
 function Journal:SelectedTab()
 	return GetFrame().selectedTab
 end
@@ -835,7 +872,7 @@ end
 
 local function ShowEncounterPage(f, instance)
 	-- An instance opened from elsewhere (a map pin, a search) brings its own list tab forward.
-	local key = (instance.kind == "raid" and "raids") or (instance.kind == "faction" and "reputation") or "dungeons"
+	local key = (instance.kind == "raid" and "raids") or (ns.IsRewardsPage(instance) and "reputation") or "dungeons"
 	local tabIndex = TabIndex(key)
 	if f.selectedTab ~= tabIndex then
 		if type(PanelTemplates_SetTab) == "function" then pcall(PanelTemplates_SetTab, f, tabIndex) end
@@ -845,20 +882,50 @@ local function ShowEncounterPage(f, instance)
 	for _, panel in ipairs(f.Panels) do panel:Hide() end
 end
 
+--[[
+	The gate. Every way into the book comes through OpenInstance and OpenBoss: the lists, the
+	breadcrumbs, the boss list, the dungeon map's doors and pins, the search, the Gear Finder, the
+	Quests tab and Before you go. In Adventure Mode (Core/Discovery.lua) a dungeon the character has not
+	entered opens as a rumour, its overview alone, and a boss of it lands there too; a faction it does not
+	know has no page, and the Reputation tab shows instead. /aegis perf times the pages themselves and
+	skips it (Journal.ungated, Core/Perf.lua).
+]]
+local function Rumour(instance)
+	return not Journal.ungated and ns.Discovery:Rumour(instance)
+end
+local function Stranger(instance)
+	return not Journal.ungated and instance.kind == "faction" and not ns.Discovery:FactionKnown(instance)
+end
+
 -- Opens an instance's pages. fromNavBar is set when its own breadcrumb was clicked, which
 -- already leaves the bar as it should be.
 function Journal:OpenInstance(instance, fromNavBar)
+	if Stranger(instance) then
+		self:SelectTab(TabIndex("reputation"))
+		return
+	end
 	local f = GetFrame()
 	ShowEncounterPage(f, instance)
-	ns.EncounterPage:ShowInstance(Book(f), instance)
+	Book(f).rumourBoss = nil
+	ns.EncounterPage:ShowInstance(Book(f), instance, Rumour(instance))
 	if not fromNavBar then
 		NavReset(f.NavBar)
 		AddInstanceCrumb(f.NavBar, instance)
 	end
 end
 
--- Opens a boss's page within its instance, with Home > instance > boss breadcrumbs.
+-- Opens a boss's page within its instance, with Home > instance > boss breadcrumbs. A dungeon's Recipes entry kept
+-- from the character (Adventure Mode, none of its recipes seen: Discovery:RecipesHidden) opens the dungeon instead:
+-- no page, crumb or redraw (Redraw, below) shows it.
 function Journal:OpenBoss(instance, boss, fromNavBar)
+	if Stranger(instance) then return self:OpenInstance(instance) end
+	if ns.Discovery:RecipesHidden(instance, boss) then return self:OpenInstance(instance) end
+	if Rumour(instance) then
+		self:OpenInstance(instance)
+		-- The boss asked for, for when the gate opens (Journal:Redraw).
+		Book(GetFrame()).rumourBoss = boss
+		return
+	end
 	local f = GetFrame()
 	ShowEncounterPage(f, instance)
 	ns.EncounterPage:ShowBoss(Book(f), instance, boss)
@@ -867,7 +934,7 @@ function Journal:OpenBoss(instance, boss, fromNavBar)
 		AddInstanceCrumb(f.NavBar, instance)
 		NavAdd(f.NavBar, {
 			id = "boss:" .. boss.name,
-			name = ns.BossTitle(boss),
+			name = ns.Discovery:BossTitle(instance, boss),
 			OnClick = function() Journal:OpenBoss(instance, boss, true) end,
 			listFunc = BossList(instance),
 		})
@@ -903,7 +970,25 @@ function Journal:ResetPosition()
 	end
 end
 
+--[[
+	In Adventure Mode what the character finds shows at once: the lists, the Reputation tab's cards, and
+	the book's open page, drawn again where the reader is (the same dungeon, boss or faction, the same
+	tab: its Quests tab, Before you go and rewards too), through the gate. So does the mode being turned
+	on or off. Shut, the book is drawn again too, for its next opening. A boss asked for while its
+	dungeon was a rumour is opened once the gate lets it through.
+]]
+function Journal:Redraw()
+	ns.InstanceSelect:RefreshAll(true)
+	ns.FactionSelect:RefreshShown()
+	local book = frame and rawget(frame, "EncounterPage")
+	local instance = book and book:IsShown() and book.instance
+	if not instance then return end
+	local boss = book.boss or book.rumourBoss
+	if boss then self:OpenBoss(instance, boss) else self:OpenInstance(instance) end
+end
+
 ns.Style:OnChange(function() Journal:ApplyStyle() end)
+ns.Discovery:OnChange(function() Journal:Redraw() end)
 
 -- A new style with no docking chosen: the window docked or free as that style has it, at once (or once
 -- combat ends), laid out again as SetDocked does; the options' box follows.

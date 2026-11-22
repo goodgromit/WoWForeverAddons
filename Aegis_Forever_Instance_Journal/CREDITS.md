@@ -4,13 +4,15 @@ This addon is published with the agreement of the people below, who were asked a
 its public release (2026-10-11).
 
 The addon is all rights reserved: see [LICENSE](LICENSE). The maps below that are other
-people's keep their own terms.
+people's keep their own terms, and so do the stories from Spoken: see
+[LICENSE-LORE.md](LICENSE-LORE.md).
 
 The journal's code is its own, written for it. Its data (dungeons, bosses, loot, quests, maps'
 boss spots, flight paths and travel routes, models and images) is the journal's own files,
 checked against what is public on many sites, foreverchanges.pro first, and against what
 the testers record in game. The world map's unexplored areas come from the client's own map
-tables, as wago.tools exports them.
+tables, as wago.tools exports them. The dungeon and boss stories wherever Spoken tells one are
+Spoken's own text (below).
 
 ## Alex Atlas Loot
 
@@ -22,12 +24,14 @@ used.
 ## Santiago Reyes's maps
 
 The maps of the Forever dungeons (The Hall of Thanes, Ruins of Lordaeron, Excavation Site:
-Wetlands, City of Dalaran, The Drowned City, Krol'dok Stronghold, Shaper's Terrace and Alcaz Prison) are
-Santiago Reyes's own reinterpretations, made for his project Atlas de Azeroth: Forever
+Wetlands, City of Dalaran, The Drowned City, Krol'dok Stronghold, Shaper's Terrace, Alcaz Prison and
+Blackmaw Hold) are Santiago Reyes's own reinterpretations, made for his project Atlas de Azeroth: Forever
 (`Media/Maps/HallOfThanes.tga`, `RuinsOfLordaeron.tga`, `ExcavationSiteWetlands.tga`,
 `CityOfDalaranCity.tga`, `CityOfDalaranSewers.tga`, `TheDrownedCity.tga`,
 `TheDrownedCityAtalbyzal.tga`, `KroldokStronghold.tga`, `ShapersTerrace.tga`,
-`ShapersTerracePrismaticTalus.tga`, `AlcazPrison.tga` and `AlcazPrisonMaximumSecurity.tga`). They
+`ShapersTerracePrismaticTalus.tga`, `AlcazPrison.tga`, `AlcazPrisonMaximumSecurity.tga`,
+`BlackmawHold.tga`, `BlackmawHoldFesteringGrotto.tga`, `BlackmawHoldFallenGrove.tga`,
+`BlackmawHoldElders.tga`, `BlackmawHoldBurrow.tga` and `BlackmawHoldForbiddenMagic.tga`). They
 are not official World of Warcraft artwork, and he is not commercially or professionally
 affiliated with Blizzard. He lets them be used free of charge, on these terms, which the
 journal keeps:
@@ -78,6 +82,22 @@ been checked by native speakers. Corrections are welcome, and so is anyone who
 would like to take one of them on. The Russian translation is a native speaker's, but a few later
 lines in `Locales/ruRU.lua` were drafted the same way and are marked "drafted, to be checked".
 
+## Spoken's stories
+
+Wherever Spoken tells the story of one of the journal's dungeons or bosses, the journal's lore is
+Spoken's own text, word for word, so that it matches what Spoken reads aloud. That is 27 dungeons,
+Onyxia's Lair and 190 bosses so far, in English and in each of the journal's other languages that
+Spoken has the story in. It is used with the permission of Spoken's author (2026-11-14). The text
+is in `Data/Generated/SpokenLore.lua`, and where the player has Spoken installed, the journal reads
+the same stories from it.
+
+Spoken adapted most of these stories from warcraft.wiki.gg, and wrote its boss stories from the game's
+Adventure Guide and the wiki. As adapted from the wiki, the text is shared under CC BY-SA 4.0, with
+credit to the contributors of warcraft.wiki.gg: see [LICENSE-LORE.md](LICENSE-LORE.md). A few
+dungeon stories are Spoken's own writing, used with its author's permission. None of Spoken's code,
+audio or art is in the journal: its Play button asks the player's own Spoken to play Spoken's
+recordings.
+
 ## Claude AI
 
 This addon was created with the help of Claude AI, Anthropic's assistant.
@@ -86,8 +106,8 @@ This addon was created with the help of Claude AI, Anthropic's assistant.
 
 World of Warcraft, its art and its game data are Blizzard Entertainment's. This addon is not
 made or endorsed by Blizzard. The addon's icon is made from Blizzard's own art in the Forever
-client (the Adventure Guide's book and the WoW: Forever emblem), recoloured. Its swirl comes in
-each class's colour, from the game's own class colours.
+client (the Adventure Guide's book and the WoW: Forever emblem), recolored. Its swirl comes in
+each class's color, from the game's own class colors.
 
 ## WoWSims
 

@@ -7,10 +7,9 @@ local L = ns.L
 	level, the quest it needs in the log still to come: its tooltip says which), and that only while
 	the level it can be taken at is at most two above theirs (LOCKED_LEVELS: none further off, the
 	owner's call of 2026-11-07), on the zone and continent maps; inside a dungeon at any level (the
-	owner's call of 2026-11-11: "the exception to that rule is dungeons", Mark's inside); none once
-	it is grey for their level, as the client hides those by default; a "?" where it is handed in,
-	once it is ready to; nothing while it is under way, or once it is done. The Quests tab still
-	lists them all.
+	owner's call of 2026-11-11: "the exception to that rule is dungeons", Mark's inside); none once it is grey for their level, as the client hides those by
+	default; a "?" where it is handed in, once it is ready to; nothing while it is under way, or once
+	it is done. The Quests tab still lists them all.
 
 	The "!" follows the journal's own rules and its own switch, the map legend's Quest entry
 	(UI/MapLegend.lua, ns.db.mapHidden.quest), never a game setting: the game's switch for quests on
@@ -22,11 +21,31 @@ local L = ns.L
 	On Blizzard's world map the marks stand where each quest's giver does (the quest's start,
 	as the Quests tab's Show Start has it); quests that start inside a dungeon have their mark
 	on the journal's map of it (startInside: x, y and floor on its picture). Their state is the
-	Quests tab's, from the player's own quest log and history, and follows it as it changes.
+	Quests tab's, from the player's own quest log and history, and follows it as it changes. A chain's step that
+	starts from an item on the ground has its mark too, where the item lies (Index: Lonebrow's Journal). A dungeon's way
+	in done elsewhere first, where Before you go asks for its marks (mapMarks), has them too (LeadInMarks: Alcaz Prison's
+	from Mathias Shaw in Stormwind), and so does a step that asks for them itself (mapMarks: Items of Power, before Mage's
+	Wand). A quest several people give (alsoStarts: Journey to the Marsh, from a mage trainer in each capital) has its "!"
+	at each of them, those of the player's side.
 
 	A left click opens the quest in the journal; a right click sets a waypoint (on the world
 	map) or puts the dungeon's map away (on it), as the journal's other marks do. Where the
 	client already marks a quest itself, it is left to the client's mark.
+
+	In Adventure Mode (Core/Discovery.lua, the owner's call: "a faint mark, so players still find quest
+	givers") a "!" of a quest the character has not been offered yet (the Quests tab's Known) is a rumor:
+	the same mark, faint (RUMOR_ALPHA), its tooltip "A rumor" and that there may be work there (and on how
+	many spots, for a start found in one of several), naming no quest, no dungeon, no place and no level;
+	any click on it sets the waypoint, by no name either (there is nothing to open: the Quests tab shows it
+	once offered). One the character cannot take yet has no mark at all: it would send them to a giver with
+	nothing for them, and its lock line would name the steps before it. Of a giver's grey and faint marks
+	the faint one stands (MarksOn). Inside a dungeon a faint mark shows only in one entered, and only where
+	the fog is clear (UI/DungeonFog.lua's Covers). Once offered it is the full mark, as in every style, its
+	dungeon by name (the quest's own words name it, and so does the journal's list, as a rumor); only its
+	giver line, in its tooltip and as its right click's waypoint, names no boss not met (Discovery:MaskAll),
+	as the Quests tab's does. The "?" is as in every style (a quest in the log was offered), its giver line
+	the same. Drawn again when an offer is found (Discovery:OnChange). Every other style as before: Known
+	says yes there.
 
 	Inside a dungeon (the owner's go of 2026-11-11, on the dungeons' floor pictures; on a dungeon's whole map too, the
 	owner's of 2026-11-12, each at its place there: InsideMarks), its givers' and takers' "!" and "?" (startInside,
@@ -34,8 +53,9 @@ local L = ns.L
 	a quest (objectivesInside: Data/Authored/InsideQuestSpots.lua) with the game's own In Progress mark, the dark
 	disc with three yellow dots (OBJECTIVE_ART): never "?", which means hand in. It follows the quest log
 	(ObjectiveMark): full while the quest is in the log and not done, faded before it is taken (by the "!"'s own
-	rules: where the "!" would show, greyed while locked), and gone once done, once ready to hand in (its "?" takes
-	over), or once that thing's item is in the bags or the log counts it found. Its tooltip names the thing (white), the quest (gold) and what to do there after the game's dash, then
+	rules: where the "!" would show, greyed while locked, faint and nameless as a rumor in Adventure Mode), and gone
+	once done, once ready to hand in (its "?" takes over), or once that thing's item is in the bags or the log counts
+	it found. Its tooltip names the thing (white), the quest (gold) and what to do there after the game's dash, then
 	the click line. One mark for each person or thing, the first of its quests' (Rank); different ones on one spot
 	stand side by side (INSIDE_SPACING), and beside a boss's pin rather than over it (ClearOfPins).
 
@@ -51,7 +71,8 @@ local L = ns.L
 
 	A quest the player can't take yet says why in each mark's tooltip, the world map's grey "!" too (the owner's
 	call of 2026-11-11): "Requires level X" and "Requires: <quest>", a line for each step the player can do next
-	(QuestsPanel:Requirements, worked out as the tooltip shows).
+	(QuestsPanel:Requirements, worked out as the tooltip shows; a step not offered yet is "???" in Adventure Mode,
+	as the Quests tab names it).
 
 	A boss a quest needs (to kill, for his drop, for a drop that starts it, or giving or taking it there) wears the
 	game's quest badge on his pins and in the boss list, by the same rules: "The quest badge on a boss", below.
@@ -69,6 +90,9 @@ local START_ATLAS, TURN_IN_ATLAS = "QuestNormal", "QuestTurnin"
 -- not yet seen in a running game): RepeatMark's, the "?" where the client lacks it.
 local REPEAT_ATLAS = "QuestRepeatableTurnin"
 local LOCKED_ALPHA = 0.8
+-- Adventure Mode: a "!" of a quest not offered yet, a rumor: the full mark at this alpha, not grayed (the
+-- gray "!" of a quest not open yet is LOCKED_ALPHA and desaturated). Faint, yet found on the map.
+local RUMOR_ALPHA = 0.4
 local RED, GREEN = { 1, 0.3, 0.3 }, { 0.1, 1, 0.1 }
 local HIGHLIGHT_ALPHA = 0.4
 local REFRESH_DELAY = 0.2
@@ -152,9 +176,10 @@ end
 	A quest's mark now, or nil: { kind = "start" or "turnin", point = its place on the world
 	map (or nil), inside = its spot on the dungeon's map (or nil), locked = why the player cannot
 	take it yet (or nil: its tooltip's lines are QuestsPanel:Requirements', worked out only as it shows,
-	AddRequirements) }. A start for a quest not grey for the player: greyed while locked, and none
-	while locked and its level is more than LOCKED_LEVELS above theirs (QuestMap.IsFarOff), whatever
-	else it still needs.
+	AddRequirements), rumour = true for a rumor (Adventure Mode, not offered yet) }. A start for
+	a quest not grey for the player: greyed while locked, and none while locked and its level is more
+	than LOCKED_LEVELS above theirs (QuestMap.IsFarOff), whatever else it still needs. In Adventure
+	Mode, a start not offered yet: faint while the player can take it, none while locked.
 	inside: true for a mark inside a dungeon (its map's "!", "?" and objective marks, its bosses' badges on their
 	pins and in the boss list): there a quest not open yet shows at any level, greyed, its tooltip saying
 	"Requires level X" (the owner's call of 2026-11-11: the two-level rule is the zone and continent maps' only).
@@ -170,12 +195,18 @@ function QuestMap:Mark(quest, inside)
 	if (status ~= "available" and status ~= "locked") or QuestMap.IsGrey(quest) then return nil end
 	-- The legend's Quest entry, the journal's own switch for its "!" marks, everywhere.
 	if not ns.MapLegend.Shows("quest") then return nil end
+	-- Adventure Mode: not offered yet and not open to the player either, none (its lock line would name the
+	-- steps before it). Known is true for every quest in the other styles.
+	local offered = panel:Known(quest)
+	if status == "locked" and not offered then return nil end
 	-- Given only while another quest is in the log, and that one is done: it cannot open any more.
 	if status == "locked" and quest.parentQuest and panel:IsDone(quest.parentQuest.questID) then return nil end
 	-- Not open yet and its level still more than two away: no grey "!" until the player is nearer; inside a dungeon, one.
 	if status == "locked" and not inside and QuestMap.IsFarOff(quest) then return nil end
 	local mark = { kind = "start", point = panel:StartPoint(quest), inside = quest.startInside }
 	if status == "locked" then mark.locked = panel:LockedReason(quest) end
+	-- (open to the player, not offered yet: a rumor, Adventure Mode)
+	if not offered then mark.rumour = true end
 	return mark
 end
 
@@ -236,8 +267,8 @@ end
 	spot }, full while the quest is in the log, not done and not ready, as the game's own In Progress marks show it
 	(the game's Quest Objectives filter, MapLegend's In Progress); none once this thing's part is counted done
 	(ObjectiveDone). Before the quest is taken: faded = true, where its "!" inside would show and as it would (Mark:
-	the legend's Quest entry, its level, greyed with locked while it can't be taken, at any level). None once done or
-	ready to hand in: its "?" takes over.
+	the legend's Quest entry, its level, greyed with locked while it can't be taken, at any level; a rumor in Adventure
+	Mode while not offered). None once done or ready to hand in: its "?" takes over.
 ]]
 function QuestMap:ObjectiveMark(quest, spot)
 	local status = ns.QuestsPanel:Status(quest)
@@ -248,7 +279,7 @@ function QuestMap:ObjectiveMark(quest, spot)
 	if status ~= "available" and status ~= "locked" then return nil end
 	local start = self:Mark(quest, true)
 	if not (start and start.kind == "start") then return nil end
-	return { kind = "objective", spot = spot, faded = true, locked = start.locked }
+	return { kind = "objective", spot = spot, faded = true, locked = start.locked, rumour = start.rumour }
 end
 
 --[[
@@ -269,11 +300,12 @@ function QuestMap:RepeatMark(quest)
 end
 
 -- Which of two marks of one spot stands for it: a "?" or an objective under way first, then a quest that can be
--- taken now, then a machine to use again, then a quest not open yet.
+-- taken now, then a rumor of one (Adventure Mode), then a machine to use again, then a quest not open yet.
 local function Rank(mark)
 	if mark.kind == "repeat" then return 0.5 end
-	if mark.kind == "turnin" or (mark.kind == "objective" and not mark.faded) then return 2 end
-	return mark.locked and 0 or 1
+	if mark.kind == "turnin" or (mark.kind == "objective" and not mark.faded) then return 3 end
+	if mark.locked then return 0 end
+	return mark.rumour and 1 or 2
 end
 
 local function Outranks(mark, other)
@@ -317,6 +349,59 @@ local function AddOn(byMap, mapID, entry)
 	if list[#list] ~= entry then list[#list + 1] = entry end
 end
 
+--[[
+	A dungeon's way in done elsewhere first, whose quests Before you go lists with mapMarks (Alcaz Prison's from Stormwind:
+	Our Man in Theramore from Master Mathias Shaw, then Sully McCleary's two in Theramore; the owner's report of
+	2026-11-12): each of those steps has its marks too, by the same rules as a dungeon quest's ("!" where it can be taken,
+	grey while locked, "?" once ready to hand in), opening it on that dungeon's Quests tab. A quest a dungeon lists
+	itself keeps its own entry.
+]]
+local function LeadInMarks(dungeons, byMap, byQuestID)
+	for _, instance in ipairs(dungeons) do
+		for _, entry in ipairs(instance.prepare or {}) do
+			if entry.mapMarks then
+				for _, questID in ipairs(entry.quests or {}) do
+					local step = ns.GetQuestStep(questID)
+					if step and not byQuestID[questID] then
+						local mark = { instance = instance, quest = step }
+						byQuestID[questID] = mark
+						if step.startMap and step.startMap.mapID then AddOn(byMap, step.startMap.mapID, mark) end
+						if step.endMap and step.endMap.mapID then AddOn(byMap, step.endMap.mapID, mark) end
+					end
+				end
+			end
+		end
+	end
+end
+
+--[[
+	A step whose givers differ by side (Journey to the Marsh: ns.GetQuestStep) is marked by the player's side's givers,
+	as the Quests tab shows it: the maps both sides' givers stand on, each of a side's several givers too (alsoStarts), so
+	its entry is found on each, and the step read for the player's side as the marks are worked out (sided: MarksOn).
+	A quest several people give (alsoStarts) is found on each one's map too.
+]]
+local function OtherStarts(byMap, byQuestID)
+	-- (once on a map, wherever else the map's list has it)
+	local function AddOnce(mapID, entry)
+		for _, listed in ipairs(byMap[mapID] or {}) do
+			if listed == entry then return end
+		end
+		AddOn(byMap, mapID, entry)
+	end
+	for questID, entry in pairs(byQuestID) do
+		local step = entry.quest.horde and ns.GetQuestStepBothSides(questID)
+		for _, side in ipairs(step and { step, step.horde } or { entry.quest }) do
+			if step then
+				entry.sided = true
+				if side.startMap and side.startMap.mapID then AddOnce(side.startMap.mapID, entry) end
+			end
+			for _, spot in ipairs(side.alsoStarts or {}) do
+				if spot.mapID then AddOnce(spot.mapID, entry) end
+			end
+		end
+	end
+end
+
 local function Index()
 	local dungeons, raids = ns.GetInstances("dungeon"), ns.GetInstances("raid")
 	if index.byMap and index.dungeons == dungeons and index.raids == raids then return index end
@@ -335,9 +420,70 @@ local function Index()
 			end
 		end
 	end
+	LeadInMarks(dungeons, byMap, byQuestID)
+	-- A chain's step that starts from an item lying on the ground (Henrig Lonebrow's Journal on Darkcloud Pinnacle:
+	-- its startItem and startMap, Data/Generated/QuestSteps.lua), which the game's own map marks with nothing: a
+	-- mark of the journal's at the item, by the same rules, opening the step on the Quests tab of the first dungeon
+	-- whose chain needs it (the owner's call of 2026-11-12). A step whose givers differ by side has givers, not an item.
+	local walked = {}
+	local function Walk(instance, prerequisites)
+		for _, prerequisite in ipairs(prerequisites or {}) do
+			for _, version in ipairs(prerequisite.oneOf or { prerequisite }) do
+				local questID = version.questID
+				if questID and not walked[questID] then
+					walked[questID] = true
+					local step = ns.GetQuestStep(questID)
+					if step then
+						if not byQuestID[questID] and step.startItem and step.startMap and step.startMap.mapID
+							and not step.horde then
+							local entry = { instance = instance, quest = step, itemSpot = true }
+							byQuestID[questID] = entry
+							AddOn(byMap, step.startMap.mapID, entry)
+							if step.endMap and step.endMap.mapID then AddOn(byMap, step.endMap.mapID, entry) end
+						end
+						-- A step that asks for its marks itself (mapMarks: Items of Power, Tabetha's, which Mage's Wand
+						-- needs; the owner's chain of 2026-11-13), by the same rules, opening it where its chain is.
+						if not byQuestID[questID] and step.mapMarks then
+							local entry = { instance = instance, quest = step }
+							byQuestID[questID] = entry
+							if step.startMap and step.startMap.mapID then AddOn(byMap, step.startMap.mapID, entry) end
+							if step.endMap and step.endMap.mapID then AddOn(byMap, step.endMap.mapID, entry) end
+						end
+						Walk(instance, step.prerequisites)
+					end
+				end
+			end
+		end
+	end
+	for _, list in ipairs({ dungeons, raids }) do
+		for _, instance in ipairs(list) do
+			for _, quest in ipairs(instance.quests or {}) do Walk(instance, quest.prerequisites) end
+		end
+	end
+	OtherStarts(byMap, byQuestID)
+	-- The items those steps start from (a step's "!" goes once its item is in the bags: MarksOn). Not a dungeon quest's
+	-- item: its mark stands at a giver too (Warlord's Command's at Warlord Goretooth), still there to take it from.
+	local startItems, listed = {}, {}
+	for _, entry in pairs(byQuestID) do
+		local itemID = entry.itemSpot and entry.quest.startItem.itemID
+		if itemID and not listed[itemID] then startItems[#startItems + 1], listed[itemID] = itemID, true end
+	end
+	table.sort(startItems)
 	index.dungeons, index.raids, index.byMap, index.byQuestID = dungeons, raids, byMap, byQuestID
+	index.startItems = startItems
 	return index
 end
+
+-- Which of those items the bags hold now ("5791"), and what they held as the world map's marks were last worked out:
+-- the bags redraw those marks only when one of them comes or goes (the events below).
+local function HeldStartItems()
+	local held = {}
+	for _, itemID in ipairs(index.startItems or {}) do
+		if InBags(itemID) then held[#held + 1] = itemID end
+	end
+	return table.concat(held, ",")
+end
+local markedHeld
 
 -- The dungeon and raid quests of this character's with a mark on this map: { instance, quest, mark, x, y }.
 -- None while the journal's world-map markers are off in its style (Core/Style.lua); the marks on a
@@ -345,6 +491,7 @@ end
 function QuestMap:MarksOn(mapID)
 	if not ns.Style:On("mapMarkers") then return {} end
 	local known = Index()
+	markedHeld = HeldStartItems()
 	local candidates, seen = {}, {}
 	for _, entry in ipairs(known.byMap[mapID] or {}) do
 		candidates[#candidates + 1], seen[entry] = entry, true
@@ -366,17 +513,34 @@ function QuestMap:MarksOn(mapID)
 	-- (also: the others).
 	local spots, order = {}, {}
 	for _, entry in ipairs(candidates) do
-		if ns.QuestsPanel:IsForPlayer(entry.quest) then
-			local mark = self:Mark(entry.quest)
+		-- (a step whose givers differ by side, as the player's side has it: OtherStarts)
+		local quest = entry.sided and ns.GetQuestStep(entry.quest.questID) or entry.quest
+		if ns.QuestsPanel:IsForPlayer(quest) then
+			local mark = self:Mark(quest)
+			-- A step's item, looted and not read yet: nothing more to find at its spot (as a boss's badge for it goes,
+			-- BossMark)
+			if mark and mark.kind == "start" and entry.itemSpot and InBags(quest.startItem.itemID) then
+				mark = nil
+			end
+			-- Another of its givers, on this map (alsoStarts): its "!" there too, by the same rules.
+			if mark and mark.kind == "start" and not (mark.point and mark.point.mapID == mapID) then
+				for _, other in ipairs(quest.alsoStarts or {}) do
+					if other.mapID == mapID then
+						mark = { kind = mark.kind, inside = mark.inside, locked = mark.locked,
+							point = { mapID = other.mapID, x = other.x, y = other.y, label = other.label } }
+						break
+					end
+				end
+			end
 			local point = mark and mark.point
 			if point and point.mapID == mapID and point.x then
-				local spot = (entry.quest.enName or entry.quest.name or "") .. "|" .. point.x .. "|" .. tostring(point.y)
+				local spot = (quest.enName or quest.name or "") .. "|" .. point.x .. "|" .. tostring(point.y)
 				if not spots[spot] then
 					spots[spot] = {}
 					order[#order + 1] = spot
 				end
 				local same = spots[spot]
-				same[#same + 1] = { instance = entry.instance, quest = entry.quest, mark = mark, x = point.x, y = point.y }
+				same[#same + 1] = { instance = entry.instance, quest = quest, mark = mark, x = point.x, y = point.y }
 			end
 		end
 	end
@@ -389,30 +553,50 @@ function QuestMap:MarksOn(mapID)
 		end
 		if #same > 1 then
 			shown.also = {}
+			-- (a rumor's dungeon is not named: Adventure Mode)
 			for _, entry in ipairs(same) do
-				if entry ~= shown then shown.also[#shown.also + 1] = entry end
+				if entry ~= shown and not entry.mark.rumour then shown.also[#shown.also + 1] = entry end
 			end
 		end
 		merged[#merged + 1] = shown
-		if not shown.mark.locked then kept[#kept + 1] = shown end
+		if not (shown.mark.locked or shown.mark.rumour) then kept[#kept + 1] = shown end
 	end
-	-- One grey "!" to a spot at most, and none where a quest that can be taken or handed in now has its mark
-	-- (a giver of several steps of a chain): the open one is the giver's mark, not hidden under a grey one, and
-	-- of several grey ones the first, the step the dungeon lists first. One spot: marks within SAME_SPOT of each
-	-- other across and down. The Quests tab lists the others.
+	-- One grey or faint "!" to a spot at most, and none where a quest that can be taken or handed in now has its
+	-- full mark (a giver of several steps of a chain): the open one is the giver's mark, not hidden under a grey
+	-- or faint one, and of several the first, the step the dungeon lists first; a faint one (Adventure Mode: a
+	-- quest the player can take, not offered yet) before a grey one, whichever the dungeon lists first, so that a
+	-- giver with work for the player does not look as if they had none for now; and a grey one that waits only on
+	-- the player's level before one that waits on other quests (Our Man in Theramore at Shaw's, at level 46, over State
+	-- Secrets at Renzik's beside him, which waits on Mason Connery's quests in Alcaz Prison). One spot: marks within
+	-- SAME_SPOT of each other across and down. The Quests tab lists the others. The list keeps the order of merged.
+	local function LevelOnly(entry)
+		return entry.mark.locked == string.format(L.QUEST_STATUS_LEVEL, entry.quest.requiredLevel or 0)
+	end
+	local claims, placed = {}, {}
+	for _, entry in ipairs(merged) do
+		if entry.mark.rumour then claims[#claims + 1] = entry end
+	end
+	for _, levelOnly in ipairs({ true, false }) do
+		for _, entry in ipairs(merged) do
+			if entry.mark.locked and LevelOnly(entry) == levelOnly then claims[#claims + 1] = entry end
+		end
+	end
+	for _, entry in ipairs(claims) do
+		local free = true
+		for _, other in ipairs(kept) do
+			if math.abs(other.x - entry.x) < SAME_SPOT and math.abs((other.y or 0) - (entry.y or 0)) < SAME_SPOT then
+				free = false
+				break
+			end
+		end
+		if free then
+			kept[#kept + 1] = entry
+			placed[entry] = true
+		end
+	end
 	local list = {}
 	for _, entry in ipairs(merged) do
-		local free = true
-		if entry.mark.locked then
-			for _, other in ipairs(kept) do
-				if math.abs(other.x - entry.x) < SAME_SPOT and math.abs((other.y or 0) - (entry.y or 0)) < SAME_SPOT then
-					free = false
-					break
-				end
-			end
-			if free then kept[#kept + 1] = entry end
-		end
-		if free then list[#list + 1] = entry end
+		if placed[entry] or not (entry.mark.locked or entry.mark.rumour) then list[#list + 1] = entry end
 	end
 	return list
 end
@@ -422,7 +606,9 @@ end
 	start lies in one of several places (an item that is not always in the same spot) gives
 	startInside as a list of spots, and has a mark on each, its tooltip saying how many. What is
 	looted, used or explored for a quest has its objective mark (ObjectiveMark); a machine used again once its quest is
-	done, its repeatable mark (RepeatMark).
+	done, its repeatable mark (RepeatMark). In Adventure Mode a rumor (a quest not offered yet) has none in a dungeon not
+	entered, nor on a spot the fog still lies over (UI/DungeonFog.lua's Covers): the mark would give away what the rumor
+	rule or the fog keeps back.
 
 	One mark for each person or thing (a spot's table: Data/Authored/InsideQuestSpots.lua gives the quests of one
 	the same table), the first of its quests' by Rank, as the game puts one mark over a person with several quests;
@@ -455,6 +641,26 @@ function QuestMap:InsideMarks(instance, floorIndex, wayIn)
 			same.quest, same.mark = quest, mark
 		end
 	end
+	--[[
+		Adventure Mode: a rumor's mark (a quest not offered yet) shows only in a dungeon entered, and only where the fog
+		is clear; so do a quest's "!" once offered and its objective marks (the owner's call of 2026-11-11), on the
+		dungeon's own maps (a way in's picture has no fog, and its marks are outside the dungeon: there only a rumor
+		waits for the dungeon to be entered). The fog is read at the mark's place on the floor drawn (on a whole map,
+		its place there: UI/DungeonFog.lua's Covers reads the floor drawn). A "?" (a quest in the log), and every mark
+		in the other styles, as before.
+	]]
+	local adventure = ns.Style:Adventure()
+	local unentered = ns.Discovery:DoorRumoured(instance)
+	local function Covered(place)
+		return not wayIn and ns.DungeonFog ~= nil and ns.DungeonFog:Covers(instance, floorIndex, place.x, place.y)
+	end
+	local function Shown(mark, place)
+		if mark.rumour then return not unentered and not Covered(place) end
+		if adventure and not wayIn and (mark.kind == "start" or mark.kind == "objective") then
+			return not unentered and not Covered(place)
+		end
+		return true
+	end
 	for _, quest in ipairs(instance.quests or {}) do
 		if ns.QuestsPanel:IsForPlayer(quest) then
 			local mark = self:Mark(quest, true)
@@ -463,16 +669,16 @@ function QuestMap:InsideMarks(instance, floorIndex, wayIn)
 			if #spots > 1 then mark.places = #spots end
 			for _, spot in ipairs(spots) do
 				local place = Place(spot)
-				if place then Add(quest, mark, spot, place) end
+				if place and Shown(mark, place) then Add(quest, mark, spot, place) end
 			end
 			for _, spot in ipairs(quest.objectivesInside or {}) do
 				local place = Place(spot)
 				local objective = place and self:ObjectiveMark(quest, spot)
-				if objective then Add(quest, objective, spot, place) end
+				if objective and Shown(objective, place) then Add(quest, objective, spot, place) end
 			end
 			local again = self:RepeatMark(quest)
 			local place = again and Place(again.inside)
-			if place then Add(quest, again, again.inside, place) end
+			if place and Shown(again, place) then Add(quest, again, again.inside, place) end
 		end
 	end
 	for index, entry in ipairs(list) do
@@ -498,7 +704,7 @@ function QuestMap:InsideMarks(instance, floorIndex, wayIn)
 end
 
 --[[
-	Inside marks clear of the boss pins (the review of 3cc3416): a spot set beside a boss's portrait
+	Inside marks clear of the boss pins and the fog's hints (the review of 3cc3416): a spot set beside a boss's portrait
 	(the Fathom Stone at Baron Aquanis's) drew its mark over his portrait, above his pin, and took his pointer, his
 	badge's lines with it. A mark within a pin's round frame (its centre nearer the pin's than the pin's half width and
 	its own half size) moves across, with the marks at its side (InsideMarks' group), to the side the group leans to,
@@ -574,14 +780,16 @@ function QuestMap:ClearOfPins(marks, pins, width, height, scale)
 	end
 end
 
--- A quest not open yet: its "!" desaturated and a little faded, as the Quests tab's lock icon is. alpha: the
--- texture's own (a highlight's), 1 if not given. A machine to use again: the game's repeatable turn-in mark.
+-- A quest not open yet: its "!" desaturated and a little faded, as the Quests tab's lock icon is; a rumor
+-- (Adventure Mode) faint. alpha: the texture's own (a highlight's), 1 if not given; a rumor's highlight is a
+-- full mark's, so that a faint mark still lights up under the mouse. A machine to use again: the game's repeatable
+-- turn-in mark.
 function QuestMap:SetMarkTexture(texture, mark, alpha)
 	local atlas = mark.kind == "turnin" and TURN_IN_ATLAS or START_ATLAS
 	if mark.kind == "repeat" then atlas = ns.AtlasExists(REPEAT_ATLAS) and REPEAT_ATLAS or TURN_IN_ATLAS end
 	texture:SetAtlas(atlas)
 	texture:SetDesaturated(mark.locked ~= nil)
-	texture:SetAlpha((alpha or 1) * (mark.locked and LOCKED_ALPHA or 1))
+	texture:SetAlpha((alpha or (mark.rumour and RUMOR_ALPHA) or 1) * (mark.locked and LOCKED_ALPHA or 1))
 end
 
 -- An inside mark's art, on the journal's own button (UI/DungeonMap.lua's QuestSpot): the "!" or "?" (Texture), and the
@@ -640,7 +848,7 @@ end
 
 -- An inside mark drawn for its mark: a "!" or "?" as on the world map (SetMarkTexture), at GIVER_SIZE; an objective
 -- the game's In Progress mark at OBJECTIVE_SIZE, or its own icon in the ring at RINGED_SIZE, faded before its quest is
--- taken, desaturated and a little more faded while it can't be taken, as a grey "!".
+-- taken (a rumor's faint, Adventure Mode), desaturated and a little more faded while it can't be taken, as a grey "!".
 function QuestMap:StyleInsideSpot(spot, mark)
 	local objective = mark.kind == "objective"
 	local icon = objective and SpotIcon(mark.spot) or nil
@@ -656,7 +864,7 @@ function QuestMap:StyleInsideSpot(spot, mark)
 		self:SetMarkTexture(spot.Texture, mark)
 		return
 	end
-	local alpha = (mark.faded and OBJECTIVE_FADED_ALPHA or 1) * (mark.locked and LOCKED_ALPHA or 1)
+	local alpha = (mark.rumour and RUMOR_ALPHA or mark.faded and OBJECTIVE_FADED_ALPHA or 1) * (mark.locked and LOCKED_ALPHA or 1)
 	if icon then
 		spot:SetSize(RINGED_SIZE, RINGED_SIZE)
 		if type(icon) == "number" then
@@ -709,6 +917,19 @@ local function DungeonLine(instance)
 	return string.format(kind, instance.name)
 end
 
+-- A name of a place, a giver or a thing, as a mark's tooltip gives it: in Adventure Mode naming no boss or quest not
+-- found yet, as the Quests tab's giver line does (Discovery:MaskAll).
+local function Masked(instance, text)
+	if text and ns.Style:Adventure() then text = ns.Discovery:MaskAll(instance, text, ns.Discovery:Untold(instance)) end
+	return text
+end
+
+-- Who gives or takes a mark's quest there (its point's label), as its tooltip and its right click's waypoint
+-- name them, masked (Masked). nil where the point has none.
+local function Place(instance, mark)
+	return Masked(instance, mark.point and mark.point.label)
+end
+
 -- Why a quest can't be taken yet, in red: each line of QuestsPanel:Requirements (worked out here, as the tooltip shows,
 -- not for every mark drawn), else its lock line.
 local function AddRequirements(quest, mark)
@@ -724,21 +945,25 @@ end
 
 -- What to do at an objective's spot, after the game's dash: "- Take the Lorgalis Manuscript" (its item, "Take The
 -- Book of Ur" where the name takes no "the", "Take “Of Love and Family”" for a title, quoted: in the language's
--- quotation marks, QUESTMAP_TITLE_QUOTED), "- Use the Scarlet Archive", "- Explore this place". A machine's, what goes
--- in, then what comes out, in their short words and no dash: "Yellow > Blue" (each one's short, a key of the strings:
--- the owner's words of 2026-11-12, "make the tooltip say blue > red").
+-- quotation marks, QUESTMAP_TITLE_QUOTED, no Adventure Mode string), "- Use the Scarlet Archive", "- Explore this place".
+-- A machine's, what goes in, then what comes out, in their short words and no dash: "Yellow > Blue" (each one's short,
+-- a key of the strings: the owner's words of 2026-11-12, "make the tooltip say blue > red"). A spot with words of its
+-- own for it (line, a key of the strings): those, after the dash ("- Make a rubbing with the hide and charcoal", the
+-- Drowned City's tablets).
 local function ObjectiveLine(instance, spot)
 	local text
 	local into = spot.input and spot.input.short and L[spot.input.short]
 	local out = spot.output and spot.output.short and L[spot.output.short]
-	if spot.act == "use" and into and out then
+	if spot.line and L[spot.line] then
+		text = L[spot.line]
+	elseif spot.act == "use" and into and out then
 		return string.format(L.QUESTMAP_OBJECTIVE_STEP, into, out)
 	elseif spot.act == "explore" then
 		text = L.QUESTMAP_OBJECTIVE_EXPLORE
 	elseif spot.act == "use" then
-		text = string.format(L.QUESTMAP_OBJECTIVE_USE, spot.name or "")
+		text = string.format(L.QUESTMAP_OBJECTIVE_USE, Masked(instance, spot.name) or "")
 	else
-		local name = ItemName(spot) or spot.name or ""
+		local name = ItemName(spot) or Masked(instance, spot.name) or ""
 		if spot.quoted then name = string.format(L.QUESTMAP_TITLE_QUOTED, name) end
 		local take = (spot.article == false or spot.quoted) and L.QUESTMAP_OBJECTIVE_TAKE_NAMED or L.QUESTMAP_OBJECTIVE_TAKE
 		text = string.format(take, name)
@@ -749,7 +974,7 @@ end
 -- An objective's mark: what stands there (white), its quest (gold), what to do there, what the player still needs to
 -- take the quest (red), then the click lines. A place to explore has no name of its own: the quest heads it.
 local function ShowObjectiveTooltip(instance, quest, mark, clickLines)
-	local name = mark.spot.name
+	local name = Masked(instance, mark.spot.name)
 	if name then
 		GameTooltip:SetText(name, 1, 1, 1)
 		GameTooltip:AddLine(quest.name, 1, 0.82, 0)
@@ -760,6 +985,17 @@ local function ShowObjectiveTooltip(instance, quest, mark, clickLines)
 	local note = mark.spot.note and L[mark.spot.note]
 	if note then GameTooltip:AddLine(string.format(note, mark.spot.input and CardName(mark.spot.input) or ""), 0.8, 0.8, 0.8, true) end
 	if mark.locked then AddRequirements(quest, mark) end
+	for _, line in ipairs(clickLines) do GameTooltip:AddLine(line, 0.1, 1, 0.1) end
+	GameTooltip:Show()
+end
+
+-- A rumor (Adventure Mode, a quest not offered yet): "A rumor" and that there may be work there, in the door
+-- rumors' quotation marks, and on how many spots for a start found in one of several (QuestMap:InsideMarks),
+-- then the click lines; no quest, dungeon, place or level.
+local function ShowRumorTooltip(mark, clickLines)
+	GameTooltip:SetText(L.ADVENTURE_DOOR_TITLE, 1, 1, 1)
+	GameTooltip:AddLine(string.format(L.ADVENTURE_DOOR_LINE, L.ADVENTURE_QUEST_RUMOR), 1, 1, 1, true)
+	if mark.places then GameTooltip:AddLine(string.format(L.QUESTMAP_ONE_OF, mark.places), 0.8, 0.8, 0.8, true) end
 	for _, line in ipairs(clickLines) do GameTooltip:AddLine(line, 0.1, 1, 0.1) end
 	GameTooltip:Show()
 end
@@ -780,6 +1016,7 @@ end
 -- line there, in place of its world-map point's.
 function QuestMap:ShowTooltip(owner, instance, quest, mark, clickLines, also, where)
 	GameTooltip:SetOwner(owner, "ANCHOR_RIGHT")
+	if mark.rumour then return ShowRumorTooltip(mark, clickLines) end
 	if mark.kind == "objective" then return ShowObjectiveTooltip(instance, quest, mark, clickLines) end
 	if mark.kind == "repeat" then return ShowRepeatTooltip(quest, mark, clickLines) end
 	GameTooltip:SetText(quest.name, 1, 0.82, 0)
@@ -797,7 +1034,7 @@ function QuestMap:ShowTooltip(owner, instance, quest, mark, clickLines, also, wh
 			GameTooltip:AddLine(DungeonLine(entry.instance), 0.8, 0.8, 0.8)
 		end
 	end
-	local place = where and where.name or mark.point and mark.point.label
+	local place = where and Masked(instance, where.name) or Place(instance, mark)
 	if place then GameTooltip:AddLine(place, 0.8, 0.8, 0.8, true) end
 	if mark.places then GameTooltip:AddLine(string.format(L.QUESTMAP_ONE_OF, mark.places), 0.8, 0.8, 0.8, true) end
 	for _, line in ipairs(clickLines) do GameTooltip:AddLine(line, 0.1, 1, 0.1) end
@@ -805,11 +1042,11 @@ function QuestMap:ShowTooltip(owner, instance, quest, mark, clickLines, also, wh
 end
 
 -- An inside mark pointed at (UI/DungeonMap.lua's QuestSpot): the objective mark's inner glow, as the game's own lights
--- up; its tooltip, with the click line that opens the quest; its legend entry lit.
+-- up; its tooltip, with the click line where a click opens the quest (not a rumor's); its legend entry lit.
 function QuestMap:InsideEnter(spot)
 	local mark = spot.mark
 	if mark.kind == "objective" then (SpotIcon(mark.spot) and spot.Highlight or spot.Glow):Show() end
-	self:ShowTooltip(spot, spot.instance, spot.quest, mark, { L.QUESTMAP_LEFT_CLICK }, nil, spot.where)
+	self:ShowTooltip(spot, spot.instance, spot.quest, mark, mark.rumour and {} or { L.QUESTMAP_LEFT_CLICK }, nil, spot.where)
 	self:LegendEnter(mark)
 end
 
@@ -847,10 +1084,14 @@ end
 	  faded   one he is needed for, gives, or that starts from his drop, not taken yet, where its "!" inside would show
 	          (Mark: the legend's Quest entry, not grey for the player's level), grey while it can't be taken yet, at
 	          any level ("Requires level X")
+	  faint   in Adventure Mode, one not offered yet (a rumor: its line names no quest); none for one that can't be taken
+	          yet, as for the "!"
 	  none    done; ready to hand in elsewhere (its "?" takes over); his part done; a start whose item is in the bags,
 	          not taken yet (his part done)
 	The badge is as bright as the brightest of his quests (StyleBadge). His tooltip adds each, in the dungeon's quest
-	order: the quest (gold), what he is to it (BadgeLine), why it can't be taken yet (red: AddRequirements).
+	order: the quest (gold), what he is to it (BadgeLine), why it can't be taken yet (red: AddRequirements). In Adventure
+	Mode a boss not met has a hint for a pin and "???" in the boss list, and the fog's hints stand in for the pins under
+	it: none of those wears the badge.
 ]]
 local BADGE_ATLAS = "UI-HUD-UnitFrame-Target-PortraitOn-Boss-Quest"
 -- Where the client lacks it: the "!" the map's quest givers wear, else the gossip window's own "!".
@@ -886,7 +1127,7 @@ local function PartDone(quest, boss, link)
 end
 
 --[[
-	What a boss's badge shows for one of his quests now (the rules above), or nil: { faded, locked }, as
+	What a boss's badge shows for one of his quests now (the rules above), or nil: { faded, locked, rumour }, as
 	an objective's mark has them (ObjectiveMark). link: one of his questLinks.
 ]]
 function QuestMap:BossMark(quest, boss, link)
@@ -901,7 +1142,7 @@ function QuestMap:BossMark(quest, boss, link)
 		if status ~= "available" and status ~= "locked" then return nil end
 		local start = self:Mark(quest, true)
 		if not (start and start.kind == "start") then return nil end
-		return { faded = true, locked = start.locked }
+		return { faded = true, locked = start.locked, rumour = start.rumour }
 	end
 	local mark = self:Mark(quest, true)
 	if act == "takes" then return mark and mark.kind == "turnin" and {} or nil end
@@ -910,7 +1151,7 @@ function QuestMap:BossMark(quest, boss, link)
 	-- would. A start whose item is in the bags already has nothing more to give.
 	if ns.QuestsPanel:Status(quest) == "active" then return ns.MapLegend.Shows("inprogress") and {} or nil end
 	if not (mark and mark.kind == "start") or (act == "start" and InBags(link.item)) then return nil end
-	return { faded = true, locked = mark.locked }
+	return { faded = true, locked = mark.locked, rumour = mark.rumour }
 end
 
 --[[
@@ -923,11 +1164,11 @@ end
 local QUIET = { faded = true, quiet = true }
 
 -- A boss's quests with something to show now, in the dungeon's quest order: { quest, link, mark }; a quest target's
--- quests to kill or loot him too, quiet where they have nothing to show (above). None for trash, a faction's standing,
--- or quests not of the player's side and class.
+-- quests to kill or loot him too, quiet where they have nothing to show (above). None for the trash or the recipes
+-- (ns.IsLootSection), a faction's standing, or quests not of the player's side and class.
 function QuestMap:BossQuests(instance, boss)
 	local entries = {}
-	if not (instance and type(boss) == "table") or boss.trash or boss.standing then return entries end
+	if not (instance and type(boss) == "table") or ns.IsLootSection(boss) or boss.standing then return entries end
 	for _, link in ipairs(boss.questLinks or {}) do
 		local quest = InstanceQuest(instance, link.questID)
 		if quest and ns.QuestsPanel:IsForPlayer(quest) then
@@ -981,9 +1222,9 @@ function QuestMap:BuildBadge(parent, size, anchor, x, y)
 	return badge
 end
 
--- A badge drawn for a boss now: shown as bright as the brightest of his quests (a full one, a faded one), grey
--- while every one of them can't be taken yet or is quiet (QUIET); hidden with none, but on a quest target, whose badge
--- is grey and faded then. Returns his quests (BossQuests).
+-- A badge drawn for a boss now: shown as bright as the brightest of his quests (a full one, a faded, a faint one: a
+-- rumor, Adventure Mode), grey while every one of them can't be taken yet or is quiet (QUIET); hidden with none, but on
+-- a quest target, whose badge is grey and faded then. Returns his quests (BossQuests).
 function QuestMap:StyleBadge(badge, instance, boss)
 	local entries = self:BossQuests(instance, boss)
 	if #entries == 0 and not (type(boss) == "table" and boss.questTarget) then
@@ -994,7 +1235,7 @@ function QuestMap:StyleBadge(badge, instance, boss)
 	for _, entry in ipairs(entries) do
 		local mark = entry.mark
 		local dim = (mark.locked or mark.quiet) and LOCKED_ALPHA or 1
-		alpha = math.max(alpha, (mark.faded and OBJECTIVE_FADED_ALPHA or 1) * dim)
+		alpha = math.max(alpha, (mark.rumour and RUMOR_ALPHA or mark.faded and OBJECTIVE_FADED_ALPHA or 1) * dim)
 		locked = locked and (mark.locked ~= nil or mark.quiet == true)
 	end
 	if #entries == 0 then alpha = OBJECTIVE_FADED_ALPHA * LOCKED_ALPHA end
@@ -1022,7 +1263,7 @@ end
 --[[
 	What a boss is to a quest, in his tooltip (the owner's lines of 2026-11-11): "Kill for this quest", "Drops the Horrible
 	Rootcore", "Drops the Titan Relic: it starts a quest"; one who gives or takes it there, "Gives this quest" and "Hand it
-	in here", or by name for someone else at his spot ("Zaetar's Spirit gives this quest here").
+	in here", or by name for someone else at his spot ("Zaetar's Spirit gives this quest here", Masked in Adventure Mode).
 ]]
 local function BadgeLine(instance, link)
 	local act = link.act
@@ -1035,19 +1276,29 @@ local function BadgeLine(instance, link)
 		end
 		return string.format(named and L.QUEST_BADGE_DROPS_NAMED or L.QUEST_BADGE_DROPS, name)
 	end
-	local who = link.who
+	local who = link.who and Masked(instance, link.who)
 	if act == "gives" then return who and string.format(L.QUEST_BADGE_GIVES_WHO, who) or L.QUEST_BADGE_GIVES end
 	return who and string.format(L.QUEST_BADGE_TAKES_WHO, who) or L.QUEST_BADGE_TAKES
 end
 
--- A boss's quests in his tooltip (entries: BossQuests'). Returns whether it added any.
+-- A boss's quests in his tooltip (entries: BossQuests'), the rumors among them as one line in the door rumors' quotation
+-- marks, naming no quest (Adventure Mode). Returns whether it added any.
 function QuestMap:AddBadgeLines(instance, boss, entries)
 	entries = entries or self:BossQuests(instance, boss)
+	local rumoured = false
 	for _, entry in ipairs(entries) do
-		-- (with its part where the Quests tab numbers it: two parts of one name may stand here)
-		GameTooltip:AddLine(ns.QuestsPanel:PartName(entry.quest), 1, 0.82, 0)
-		GameTooltip:AddLine(BadgeLine(instance, entry.link), 1, 1, 1, true)
-		if entry.mark.locked then AddRequirements(entry.quest, entry.mark) end
+		local mark = entry.mark
+		if mark.rumour then
+			if not rumoured then
+				rumoured = true
+				GameTooltip:AddLine(string.format(L.ADVENTURE_DOOR_LINE, L.ADVENTURE_QUEST_RUMOR), 1, 1, 1, true)
+			end
+		else
+			-- (with its part where the Quests tab numbers it: two parts of one name may stand here)
+			GameTooltip:AddLine(ns.QuestsPanel:PartName(entry.quest), 1, 0.82, 0)
+			GameTooltip:AddLine(BadgeLine(instance, entry.link), 1, 1, 1, true)
+			if mark.locked then AddRequirements(entry.quest, mark) end
+		end
 	end
 	return #entries > 0
 end
@@ -1083,10 +1334,16 @@ function PinMethods:OnAcquired(instance, quest, mark, x, y, also)
 	self:SetPosition(x, y)
 end
 
+-- A rumor (Adventure Mode) by no name, its one click line; a full mark by its quest and dungeon.
 function PinMethods:OnMouseEnter()
-	ns.DungeonMap:SetAreaLabel(self, self.quest.name, self.instance.name)
-	QuestMap:ShowTooltip(self, self.instance, self.quest, self.mark, { L.QUESTMAP_LEFT_CLICK, L.ENTRANCE_RIGHT_CLICK },
-		self.also)
+	if self.mark.rumour then
+		ns.DungeonMap:SetAreaLabel(self, L.ADVENTURE_DOOR_TITLE)
+		QuestMap:ShowTooltip(self, self.instance, self.quest, self.mark, { L.CLICK_FOR_WAYPOINT })
+	else
+		ns.DungeonMap:SetAreaLabel(self, self.quest.name, self.instance.name)
+		QuestMap:ShowTooltip(self, self.instance, self.quest, self.mark, { L.QUESTMAP_LEFT_CLICK, L.ENTRANCE_RIGHT_CLICK },
+			self.also)
+	end
 	QuestMap:LegendEnter(self.mark)
 end
 
@@ -1096,10 +1353,18 @@ function PinMethods:OnMouseLeave()
 	QuestMap:LegendLeave()
 end
 
+-- A rumor (Adventure Mode): any click sets the waypoint, by no name: the Quests tab has nothing of it to open
+-- until it is offered, and a click that did nothing would only puzzle.
 function PinMethods:OnMouseClickAction(button)
+	if self.mark.rumour then
+		local point = self.mark.point
+		ns.DungeonMap:SetWaypointAt(point.mapID, point.x, point.y, L.ADVENTURE_DOOR_TITLE, L.ADVENTURE_DOOR_WAYPOINT_SET)
+		return
+	end
 	if button == "RightButton" then
 		local point = self.mark.point
-		local title = point.label or self.quest.name
+		-- (named as its tooltip names its giver: Place)
+		local title = Place(self.instance, self.mark) or self.quest.name
 		ns.DungeonMap:SetWaypointAt(point.mapID, point.x, point.y, title, string.format(L.QUESTMAP_WAYPOINT_SET, self.quest.name))
 		return
 	end
@@ -1149,8 +1414,8 @@ end
 -- bags too (what a boss drops for a quest, or a chest holds, looted: BAG_UPDATE_DELAYED, once a burst of bag changes is
 -- over): redrawn once a moment after any changes, if a map is open; the boss list's badges, if the journal is. The bags
 -- alone redraw only those (bagsOnly): the dungeon's map and the boss list, not the world map's quest marks, which no
--- bag changes (the review of 3cc3416). PLAYER_LEVEL_UP comes before the client has the new level; PLAYER_LEVEL_CHANGED,
--- after.
+-- bag changes (the review of 3cc3416) but an item that starts a quest coming or going (HeldStartItems). PLAYER_LEVEL_UP
+-- comes before the client has the new level; PLAYER_LEVEL_CHANGED, after.
 local queued, bagsOnly = false, true
 local function Redraw()
 	local all = not bagsOnly
@@ -1168,6 +1433,17 @@ function QuestMap:Refresh()
 	Redraw()
 end
 
+-- Adventure Mode: a quest offered turns its faint "!" full at once, on the world map and a dungeon's, if a map is
+-- open. Told after each burst of finds (Core/Discovery.lua); drawn again only when a quest was found in it, not for
+-- a boss or its loot (a kill under fog redraws the dungeon's map itself: UI/DungeonFog.lua).
+local questsDrawn
+ns.Discovery:OnChange(function()
+	local count = ns.Discovery:Finds("quest")
+	if count == questsDrawn then return end
+	questsDrawn = count
+	QuestMap:Refresh()
+end)
+
 local events = CreateFrame("Frame")
 ns.RegisterEvents(events, "PLAYER_LOGIN", "QUEST_LOG_UPDATE", "QUEST_ACCEPTED", "QUEST_TURNED_IN", "QUEST_REMOVED",
 	"PLAYER_LEVEL_UP", "PLAYER_LEVEL_CHANGED", "BAG_UPDATE_DELAYED")
@@ -1176,7 +1452,7 @@ events:SetScript("OnEvent", function(_, event)
 		QuestMap:SetUp()
 		return
 	end
-	if event ~= "BAG_UPDATE_DELAYED" then bagsOnly = false end
+	if event ~= "BAG_UPDATE_DELAYED" or (markedHeld and markedHeld ~= HeldStartItems()) then bagsOnly = false end
 	if not queued then
 		queued = true
 		C_Timer.After(REFRESH_DELAY, Redraw)

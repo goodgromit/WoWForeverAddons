@@ -271,7 +271,11 @@ ns.AddInstance({
 			objective = "Retrieve The Lost Magic of the Runemasters from the Scarlet Monastery.",
 			pickup = "Magus Olvek, Dalaran, Alterac Mountains",
 			turnin = "Magus Olvek, Dalaran, Alterac Mountains",
-			note = "New in Forever: Arcanist Doan has the book.",
+			-- The owner's recording of 2026-11-16 has the book looted from an object (650929), not from Doan, whose
+			-- two recorded kills dropped none. Which wing the object stands in is a best guess: the Library, the wing of
+			-- books (Mythology of the Titans is picked up there too, object 19284); the recording's loot lines, sorted by
+			-- where each came from, do not say. Where in the wing it stands is not known, so no spot on the map.
+			note = "New in Forever. The book is picked up in the monastery, most likely in the Library, not dropped by Arcanist Doan.",
 			rewards = {
 				xp = 6750,
 				money = 4500,

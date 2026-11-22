@@ -14,9 +14,37 @@ ns.Options = Options
 -- Settings.VarType.Boolean and .String, on a client that names its types.
 local BOOLEAN, STRING = "boolean", "string"
 
--- The journal's style (Core/Style.lua): a choice of Modern, Classic or Custom, and a box for each feature.
--- They are this character's; every other box on the page is for the whole account.
+-- The journal's style (Core/Style.lua): a choice of Modern, Classic, Custom or Adventure Mode, and a box
+-- for each feature.
+-- They are this character's, and so is the fog box (below); every other box on the page is for the whole account.
 local STYLE_VARIABLE = "AEGIS_JOURNAL_STYLE"
+
+-- Fog of war on the dungeon maps (UI/DungeonFog.lua): always on in Adventure Mode, where the box reads ticked
+-- and is greyed; in any other style off unless ticked, for this character, as its kills are. No feature of
+-- the style: ticking it leaves Modern or Classic as it is.
+local FOG_BOX = { variable = "AEGIS_JOURNAL_DUNGEON_FOG", name = "OPTIONS_DUNGEON_FOG", tip = "OPTIONS_DUNGEON_FOG_TIP",
+	default = false,
+	-- (ns.DungeonFog nil: a /reload after an update that added its file, which only a restart loads.)
+	get = function() return ns.DungeonFog ~= nil and ns.DungeonFog:On() end,
+	set = function(on)
+		if ns.DungeonFog then
+			ns.DungeonFog:SetChosen(on)
+		else
+			ns.charDB.dungeonFog = on and true or nil
+		end
+	end }
+
+-- Adventure Mode's news (UI/News.lua): its line in the chat for what is found, and the minimap button's glow
+-- until the journal is opened. Each the account's, ticked by default; greyed outside Adventure Mode, where they
+-- do nothing. (ns.News nil: a /reload after the update that added its file, as for the fog's box.)
+local NEWS_BOXES = {
+	{ variable = "AEGIS_JOURNAL_ADVENTURE_CHAT", name = "OPTIONS_ADVENTURE_CHAT", tip = "OPTIONS_ADVENTURE_CHAT_TIP",
+		get = function() return ns.News ~= nil and ns.News.ChatOn() end,
+		set = function(on) if ns.News then ns.News.SetChatOn(on) end end },
+	{ variable = "AEGIS_JOURNAL_ADVENTURE_GLOW", name = "OPTIONS_ADVENTURE_GLOW", tip = "OPTIONS_ADVENTURE_GLOW_TIP",
+		get = function() return ns.News ~= nil and ns.News.GlowOn() end,
+		set = function(on) if ns.News then ns.News.SetGlowOn(on) end end },
+}
 
 local CHECKBOXES = {
 	{ variable = "AEGIS_JOURNAL_BOSS_LEVELS", name = "OPTIONS_BOSS_LEVELS", tip = "OPTIONS_BOSS_LEVELS_TIP",
@@ -36,7 +64,8 @@ local CHECKBOXES = {
 		get = function() return ns.PawnLink:Source() == "pawn" end,
 		set = function(on) ns.PawnLink:SetSource(on and "pawn" or "journal") end, default = false },
 	-- The unexplored parts of a zone on the world map, shaded: under the map markers' box, as it goes by them. In the
-	-- world map's own filter menu until 2026-11-08 (UI/ZoneMap.lua).
+	-- world map's own filter menu until 2026-11-08 (UI/ZoneMap.lua); the map legend's Fog of War switch switches it
+	-- too (UI/MapLegend.lua).
 	{ variable = "AEGIS_JOURNAL_UNEXPLORED", name = "MAP_SHOW_UNEXPLORED", tip = "OPTIONS_UNEXPLORED_TIP", under = "mapMarkers",
 		get = function() return ns.ZoneMap:ShowsUnexplored() end,
 		set = function(shown) ns.ZoneMap:SetShowUnexplored(shown) end, default = false },
@@ -58,7 +87,7 @@ local CHECKBOXES = {
 		set = function(on) ns.Run:SetOption("numbers", on) end },
 	{ variable = "AEGIS_JOURNAL_RUN_FREE", name = "OPTIONS_RUN_FREE", tip = "OPTIONS_RUN_FREE_TIP", under = "runTracker",
 		get = function() return ns.Run:Option("free") end,
-		set = function(on) ns.Run:SetOption("free", on) end, default = false },
+		set = function(on) ns.Run:SetOption("free", on) end, default = ns.Run.FREE_DEFAULT },
 	-- Its gold art darkened as a dark-mode UI darkens the tracker's; off, it takes the tracker's own tint, if any
 	-- (UI/RunTracker.lua Paint).
 	{ variable = "AEGIS_JOURNAL_RUN_DARK_MODE", name = "OPTIONS_RUN_DARK_MODE", tip = "OPTIONS_RUN_DARK_MODE_TIP",
@@ -68,10 +97,10 @@ local CHECKBOXES = {
 	{ variable = "AEGIS_JOURNAL_RUN_SUMMARY", name = "OPTIONS_RUN_SUMMARY", tip = "OPTIONS_RUN_SUMMARY_TIP", under = "runTracker",
 		get = function() return ns.Run:Option("summary") end,
 		set = function(on) ns.Run:SetOption("summary", on) end },
-	-- The experiment of placing the block inside the game's quest tracker (UI/RunTrackerInside.lua): off by default
-	-- (Run.INSIDE_DEFAULT), for the whole account like the boxes above it, so a blocked action seen on one character
-	-- turns it off for all. Under it, a button: the tracker's Edit Mode Height made enough for the block, when the
-	-- player asks (RunTrackerInside:MakeTaller).
+	-- Placing the block inside the game's quest tracker (UI/RunTrackerInside.lua), still named a test: off by
+	-- default (Run.INSIDE_DEFAULT), for the whole account like the boxes above it, so a blocked action
+	-- seen on one character turns it off for all. Under it, a button: the tracker's Edit Mode Height made enough for
+	-- the block when the player asks (RunTrackerInside:MakeTaller), as the journal does once by itself (AutoTaller).
 	{ variable = "AEGIS_JOURNAL_RUN_INSIDE", name = "OPTIONS_RUN_INSIDE", tip = "OPTIONS_RUN_INSIDE_TIP", under = "runTracker",
 		get = function() return ns.Run:Option("inside") end,
 		set = function(on) ns.RunTrackerInside:SetByHand(on) end, default = ns.Run.INSIDE_DEFAULT },
@@ -80,13 +109,34 @@ local CHECKBOXES = {
 	{ variable = "AEGIS_JOURNAL_MINIMAP", name = "OPTIONS_MINIMAP", tip = "OPTIONS_MINIMAP_TIP",
 		get = function() return ns.MinimapButton.Shows() end,
 		set = function(shown) ns.MinimapButton.SetShows(shown) end },
+	-- The journal's line in the minimap's addon menu (UI/MinimapButton.lua), on its own beside the button's box: the
+	-- button, the line, both or neither (the owner, 2026-11-20). Unticked, the line goes at the next /reload, as the
+	-- client can't take one out of that menu.
+	{ variable = "AEGIS_JOURNAL_ADDON_MENU", name = "OPTIONS_ADDON_MENU", tip = "OPTIONS_ADDON_MENU_TIP",
+		get = function() return ns.MinimapButton.InMenu() end,
+		set = function(shown) ns.MinimapButton.SetInMenu(shown) end },
 	-- Shows the window as it is: the player's choice, else the style's (UI/Journal.lua IsDocked). Its
 	-- default is the default style's, Modern's; Reset forgets the choice, so the style's holds again.
 	{ variable = "AEGIS_JOURNAL_DOCK", name = "OPTIONS_DOCK", tip = "OPTIONS_DOCK_TIP",
 		get = function() return ns.Journal:IsDocked() end,
 		set = function(on) ns.Journal:SetDocked(on, true) end,
 		default = ns.Style.DOCKS[ns.Style.DEFAULT] ~= false, reset = function() ns.Journal:ForgetDocked() end },
+	-- Test mode (UI/TestPanel.lua, /aegis test), last: a button, the settings window shut first (as the style question
+	-- does it, Options:CloseSettings; left open in a fight), then its panel. No setting, so Reset leaves it be.
+	{ button = "OPTIONS_TEST", buttonText = "OPTIONS_TEST_BUTTON", tip = "OPTIONS_TEST_TIP",
+		click = function()
+			Options:CloseSettings()
+			ns.TestPanel:Open()
+		end },
 }
+
+-- The two boxes the map legend's Fog of War switch turns over as well (UI/MapLegend.lua): told when it does.
+Options.UNEXPLORED_VARIABLE, Options.FOG_VARIABLE = "AEGIS_JOURNAL_UNEXPLORED", FOG_BOX.variable
+
+-- A box's setting changed from outside the page: the page shows it, if it is open, as for a change of style.
+function Options:Notify(variable)
+	if Settings and Settings.NotifyUpdate then pcall(Settings.NotifyUpdate, variable) end
+end
 
 -- Every setting on the page, top to bottom, with its default: what Reset puts back.
 local pageSettings = {}
@@ -111,6 +161,40 @@ StaticPopupDialogs[RESET_POPUP] = {
 }
 
 --[[
+	Nothing on the page is written where the game's options search reads. The search (Blizzard_Settings_Shared's
+	Blizzard_SettingsPanel.lua, SettingsPanelMixin:FindInitializersMatchingSearchText and OnSearchTextChanged;
+	Forever's client 1.60.1, read 2026-11-20) goes over every page's rows each time the player types, and reads
+	each row's search words and, for a row it finds, the row it goes under, straight from the row: not inside the
+	client's securecallfunction, as a row's drawing is. Read where the journal's code wrote them, they ran the rest
+	of the search on the journal's taint, the game's own rows it found after with it: for "name", as the client's
+	code reads, the Social page's rows for a linked chat account, whose drawing asks the client what only the
+	game's own code may (a function the client restricts), so the game said the journal was blocked (a player's
+	report of 0.40.0, 2026-11-20). So the page's buttons take no search words (NO_SEARCH_WORDS: the client would
+	add them in the journal's run), and no row is tied under another with the client's SetParentInitializer
+	(Under, below). A box's search words are its name, which the client adds in its own code as it makes the
+	box, so a box is still found by its name. The boxes' getters and greying run as the client draws their rows,
+	inside its securecallfunction, as on any page.
+]]
+local NO_SEARCH_WORDS = false
+
+--[[
+	A row under another (the boxes under a style feature, the run block's under its box): greyed while what it
+	goes by is off (on), drawn again when that box (its setting's variable) is ticked or unticked, and on this
+	page drawn indented in the small font, as the client draws a part of the box above it
+	(SettingsListElementMixin:Init, SettingsListElementInitializer:GetIndent). The client reads each only as the
+	row is drawn; the variable is a setting's, though the client's name for it says CVar (evaluateStateCVars).
+	In the search's list, without the box it goes under, the row stands level.
+]]
+local function Under(initializer, layout, variable, on)
+	if initializer.AddModifyPredicate then initializer:AddModifyPredicate(on) end
+	if initializer.AddEvaluateStateCVar then initializer:AddEvaluateStateCVar(variable) end
+	initializer.IsParentInitializerInLayout = function()
+		local panel = SettingsPanel
+		return type(panel) == "table" and type(panel.GetCurrentLayout) == "function" and panel:GetCurrentLayout() == layout
+	end
+end
+
+--[[
 	The page, top to bottom: the style and the Reset button, then each of its features with what goes
 	by it under it (the Gear Finder's weights in tooltips, its arrows and Pawn's weights under the
 	Gear Finder), then the rest. A feature ticked or unticked makes the style Custom (Core/Style.lua).
@@ -133,24 +217,26 @@ function Options:Register()
 	pageSettings[#pageSettings + 1] = { setting = setting, default = ns.Style.DEFAULT }
 	if layout and layout.AddInitializer and CreateSettingsButtonInitializer then
 		local choose = CreateSettingsButtonInitializer(L.STYLE_OPTION, L.STYLE_CHOOSE_BUTTON,
-			function() ns.StylePopup:Ask() end, L.STYLE_OPTION_TIP, true)
+			function() ns.StylePopup:Ask() end, L.STYLE_OPTION_TIP, NO_SEARCH_WORDS)
 		if choose then layout:AddInitializer(choose) end
 	end
 	-- Under it, Reset: asked first, then the page as on a fresh install (Options:Reset).
 	if layout and layout.AddInitializer and CreateSettingsButtonInitializer then
 		local button = CreateSettingsButtonInitializer(L.STYLE_RESET, L.STYLE_RESET_BUTTON,
-			function() StaticPopup_Show(RESET_POPUP) end, L.STYLE_RESET_TIP, true)
+			function() StaticPopup_Show(RESET_POPUP) end, L.STYLE_RESET_TIP, NO_SEARCH_WORDS)
 		if button then layout:AddInitializer(button) end
 	end
-	-- on: whether what the box goes by is on (a style feature by default, else the box above it).
+	-- parent: the variable of the box it goes under, if any (Under, above); on: whether what the box goes by is on
+	-- (a style feature by default, else the box above it).
 	local function AddBox(box, parent, feature, on)
 		-- A button among the boxes (the run block's Make taller): under the box it goes by, greyed with it where the
 		-- client can show that; no setting of its own, so Reset leaves it be.
 		if box.button then
 			if not (layout and layout.AddInitializer and CreateSettingsButtonInitializer) then return nil end
-			local button = CreateSettingsButtonInitializer(L[box.button], L[box.buttonText], box.click, L[box.tip], true)
+			local button = CreateSettingsButtonInitializer(L[box.button], L[box.buttonText], box.click, L[box.tip],
+				NO_SEARCH_WORDS)
 			if not button then return nil end
-			if parent and button.SetParentInitializer then button:SetParentInitializer(parent, on) end
+			if parent then Under(button, layout, parent, on) end
 			layout:AddInitializer(button)
 			return button
 		end
@@ -158,25 +244,41 @@ function Options:Register()
 		local initializer = AddCheckbox(category, box.variable, L[box.name], L[box.tip], default, box.get, box.set)
 		pageSettings[#pageSettings].reset = box.reset
 		-- Greyed while the feature it goes by is off, where the client can show that.
-		if parent and initializer and initializer.SetParentInitializer then
-			initializer:SetParentInitializer(parent, on or function() return ns.Style:On(feature) end)
+		if parent and initializer then
+			Under(initializer, layout, parent, on or function() return ns.Style:On(feature) end)
 		end
 		return initializer
 	end
 	for _, feature in ipairs(ns.Style.FEATURES) do
-		local initializer = AddCheckbox(category, feature.variable, L[feature.name], L[feature.tip], true,
+		AddCheckbox(category, feature.variable, L[feature.name], L[feature.tip], true,
 			function() return ns.Style:On(feature.key) end,
 			function(on) ns.Style:SetFeature(feature.key, on, feature.variable) end)
 		for _, box in ipairs(CHECKBOXES) do
-			if box.under == feature.key then AddBox(box, initializer, feature.key) end
+			if box.under == feature.key then AddBox(box, feature.variable, feature.key) end
+		end
+	end
+	-- After the style's features, the fog's box: greyed in Adventure Mode, where it is always on. The page asks
+	-- whether it is greyed each time it draws the box; a change of style tells the box (Style:OnChange, below),
+	-- and the style question shuts the page before it shows. Under no other box, it stands level with the
+	-- features above it.
+	local fog = AddCheckbox(category, FOG_BOX.variable, L[FOG_BOX.name], L[FOG_BOX.tip], FOG_BOX.default, FOG_BOX.get, FOG_BOX.set)
+	if fog and fog.AddModifyPredicate then
+		fog:AddModifyPredicate(function() return not ns.Style:Adventure() end)
+	end
+	-- Under it, Adventure Mode's news boxes: greyed outside Adventure Mode, the fog box's way round, and level
+	-- with it.
+	for _, box in ipairs(NEWS_BOXES) do
+		local news = AddCheckbox(category, box.variable, L[box.name], L[box.tip], true, box.get, box.set)
+		if news and news.AddModifyPredicate then
+			news:AddModifyPredicate(function() return ns.Style:Adventure() end)
 		end
 	end
 	for _, box in ipairs(CHECKBOXES) do
 		if not box.under then
-			local initializer = AddBox(box)
+			AddBox(box)
 			-- A box with boxes of its own under it (the run block's).
 			for _, child in ipairs(box.key and CHECKBOXES or {}) do
-				if child.under == box.key then AddBox(child, initializer, nil, box.get) end
+				if child.under == box.key then AddBox(child, box.variable, nil, box.get) end
 			end
 		end
 	end
@@ -190,6 +292,9 @@ ns.Style:OnChange(function(from)
 	if not (Settings and Settings.NotifyUpdate) then return end
 	local variables = { STYLE_VARIABLE }
 	for _, feature in ipairs(ns.Style.FEATURES) do variables[#variables + 1] = feature.variable end
+	-- The fog's box follows Adventure Mode on and off, and so do the news boxes.
+	variables[#variables + 1] = FOG_BOX.variable
+	for _, box in ipairs(NEWS_BOXES) do variables[#variables + 1] = box.variable end
 	for _, variable in ipairs(variables) do
 		if variable ~= from then pcall(Settings.NotifyUpdate, variable) end
 	end
@@ -199,10 +304,12 @@ end)
 	The journal as on a fresh install: each setting on the page back to its default, through its own
 	setter as the panel's Defaults button does (the style first, so the feature boxes find Modern), then
 	the style question asked again. A setting already at its default is left be. The dock box forgets
-	the player's choice instead, so the window docks or not as the style has it (UI/Journal.lua). The style, its
-	features' boxes and its question are this character's, and other characters keep theirs; every
-	other box is the account's, so it goes back for every character. Nothing else is touched:
-	recordings, stat weights, the window's place and the rest of the saved data stay.
+	the player's choice instead, so the window docks or not as the style has it (UI/Journal.lua). The
+	style, its features' boxes, the fog box and the style question are this character's, and other
+	characters keep theirs; every other box is the account's, so it goes back for every character.
+	Nothing else is touched: recordings, stat weights, the window's place, what the character found for
+	Adventure Mode (Core/Discovery.lua: Modern turns Adventure Mode off, its finds kept) and the rest of
+	the saved data stay.
 ]]
 function Options:Reset()
 	for _, entry in ipairs(pageSettings) do
@@ -240,8 +347,15 @@ function Options:CloseSettings()
 	pcall(HideUIPanel, panel)
 end
 
--- /aegis options
+-- /aegis options. Not while the Gamepad UI's HUD mode is up: the game opens its settings window with
+-- ShowUIPanel inside this call (Blizzard_Settings_Shared/Blizzard_SettingsPanel.lua:305-314, its open
+-- event synchronous: SettingsUtilDocumentation.lua:37-40), and HUD mode's listener would run there too
+-- (Core/Compat.lua's ns.Gamepad:ShowPanel); the chat says why they stay shut.
 function Options:Open()
+	if ns.Gamepad:HudUp() then
+		ns.Gamepad:SayHudUp()
+		return
+	end
 	if self.category and Settings.OpenToCategory then
 		Settings.OpenToCategory(self.category:GetID())
 	end

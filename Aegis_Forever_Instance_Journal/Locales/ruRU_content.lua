@@ -162,9 +162,9 @@ L.BOSS_NAMES = {
 	["Kam Deepfury"] = "Кам Глубинная Ярость",
 	["King Gordok"] = "Король Гордок",
 	["Kirtonos the Herald"] = "Киртонос Глашатай",
-	["Kresh"] = "Креш",
+	["Kresh"] = "Криг",
 	["Krol'dok Stronghold"] = "Крепость Крол'док",
-	["Lady Anacondra"] = "Госпожа Анакондра",
+	["Lady Anacondra"] = "Леди Анакондра",
 	["Lady Illucia Barov"] = "Леди Иллюсия Баров",
 	["Lady Sarevess"] = "Госпожа Саревесс",
 	["Landslide"] = "Оползень",
@@ -173,7 +173,7 @@ L.BOSS_NAMES = {
 	["Lord Alexei Barov"] = "Лорд Алексий Баров",
 	["Lord Cobrahn"] = "Лорд Кобран",
 	["Lord Incendius"] = "Лорд Инцендиус",
-	["Lord Pythas"] = "Лорд Пифас",
+	["Lord Pythas"] = "Лорд Питонас",
 	["Lord Roccor"] = "Лорд Роккор",
 	["Lord Serpentis"] = "Лорд Серпентис",
 	["Lord Vyletongue"] = "Лорд Змеиный Язык",
@@ -262,7 +262,7 @@ L.BOSS_NAMES = {
 	["Shadowpriest Sezz'ziz"] = "Темный жрец Сезз'зиз",
 	["Shaper's Terrace"] = "Терраса ваятеля",
 	["Skul"] = "Скул",
-	["Skum"] = "Скум",
+	["Skum"] = "Шкам",
 	["Sneed"] = "Снид",
 	["Sneed's Shredder"] = "Дробилка Снида",
 	["Solakar Flamewreath"] = "Солакар Огненный Венок",
@@ -298,7 +298,7 @@ L.BOSS_NAMES = {
 	["Urok Doomhowl"] = "Урок Зловещий Вой",
 	["Vectus"] = "Вектус",
 	["Veng"] = "Венг",
-	["Verdan the Everliving"] = "Вердан Неумирающий",
+	["Verdan the Everliving"] = "Вердан Вечноживущий",
 	["Verek"] = "Верек",
 	["Viktor the Vile"] = "Виктор Мерзкий",
 	["Viscous Fallout"] = "Вязкие отходы",
@@ -334,8 +334,8 @@ L.BOSS_NAMES = {
 	["Defias Squallshaper"] = "Заклинатель шквалов Братства",
 	["Defias Watchman"] = "Дозорный Братства",
 	["Deviate Adder"] = "Девиант-аспид",
-	["Deviate Dreadfang"] = "Девиант-страхоклык",
-	["Deviate Venomwing"] = "Девиант-ядокрыл",
+	["Deviate Dreadfang"] = "Загадочный страхозуб",
+	["Deviate Venomwing"] = "Загадочный крылояд",
 	["Druid of the Fang"] = "Друид Клыка",
 	["Enraged Apparition"] = "Разъярённый призрак",
 	["Goblin Craftsman"] = "Гоблин-ремесленник",
@@ -347,6 +347,32 @@ L.BOSS_NAMES = {
 	["Irradiated Horror"] = "Облучённый ужас",
 	["Leprous Machinesmith"] = "Прокажённый механик",
 	["Mechano-Flamewalker"] = "Механо-огнеход",
+	-- Razorfen Kraul's, from the owner's run of 2026-11-12 (drafted, to be checked)
+	["Death's Head Acolyte"] = "Послушник Мёртвой Головы",
+	["Death's Head Adept"] = "Адепт Мёртвой Головы",
+	["Death's Head Sage"] = "Мудрец Мёртвой Головы",
+	["Quilguard Champion"] = "Поборник Иглостражей",
+	["Razorfen Beast Trainer"] = "Дрессировщик Иглошкурых",
+	["Razorfen Groundshaker"] = "Сотрясатель земли Иглошкурых",
+	["Razorfen Totemic"] = "Тотемист Иглошкурых",
+	-- Krol'dok Stronghold's, from a player's recorded run (2026-11-13; drafted, to be checked); the Brute and the
+	-- Shaman, Bossman Toof's, from a player's combat log (2026-11-12, the owner's call of 2026-11-14; drafted, to
+	-- be checked)
+	["Krol'dok Brute"] = "Громила Крол'дока",
+	["Krol'dok Centurion"] = "Центурион Крол'дока",
+	["Krol'dok Shaman"] = "Шаман Крол'дока",
+	["Shadowhide Curseweaver"] = "Ткач проклятий из племени Темной Шкуры",
+	["Snarlfang"] = "Рычеклык",
+	["Terrorhowl"] = "Жуткий Вой",
+	["Twilight Warlock"] = "Чернокнижник Сумеречного Молота",
+	-- The Drowned City's, from the owner's recorded run (2026-11-16) and a player's combat log (2026-11-11; drafted, to be checked)
+	["Brinescale Priestess"] = "Жрица Брайнскейл",
+	["Deathless Guardian"] = "Бессмертный страж",
+	["Deathless Sorcerer"] = "Бессмертный колдун",
+	["Deathless Watcher"] = "Бессмертный дозорный",
+	["Saltseer Murderer"] = "Убийца-солтсир",
+	-- The Shaper's Terrace's Izha'Rel, an add on the Ravasaur Hunters' page (2026-11-18): as the game names her
+	["Izha'Rel"] = "Izha'Rel",
 }
 
 -- Spell names, used only where the client gives none (it usually names spells itself).
@@ -486,10 +512,55 @@ L.ABILITY_NAMES = {
 	["War Stomp"] = "Громовая поступь",
 	["Whirling Barrage"] = "Вихревой залп",
 	["Whirlwind"] = "Вихрь",
+	-- Scarlet Monastery's spells from the owner's recording (2026-11-16; drafted, to be checked: the game's own names in this language not read)
+	["Arcane Bubble"] = "Чародейский пузырь",
+	["Crusader Strike"] = "Удар воина Света",
+	["Deep Sleep"] = "Глубокий сон",
+	["Dispel Magic"] = "Рассеивание заклинаний",
+	["Lay on Hands"] = "Возложение рук",
 }
 
 -- Free text: boss descriptions and notes, ability fight texts, phase/extra titles, quest text.
 L.STRINGS = {
+	-- Blackmaw Hold's new notes (facts from players' guides the owner OK'd on 2026-11-18; drafted, to be checked):
+	-- Bonesnout's Ritualists, the Blackmaw Behemoth's Clawbert, the Unbound Spirit's Elder Bramblesnap and totems, the
+	-- way down to Varrox Bleakhoof, and the two rares listed as best guesses. The creatures' own names stay as the game
+	-- names them in English (their names in this language are not known); the Ritualists and the totems by what they are.
+	["An undead boar guarded by four Legashi Ritualists. Each one still alive makes Bonesnout take a quarter less damage, so while all four stand it can't be hurt: kill them first."] = "Кабан-нежить, которого охраняют четыре ритуалиста легаши. Каждый живой ритуалист снижает урон, получаемый Bonesnout, на четверть, так что, пока стоят все четверо, его нельзя ранить: убейте их первыми.",
+	["To reach him, drop through the hole behind the Blackmaw Behemoth: you land in the pool in front of him. An updraft there takes you back up."] = "Чтобы добраться до него, спрыгните в провал за Blackmaw Behemoth: вы упадете в водоем перед ним. Восходящий поток там поднимет вас обратно.",
+	["A huge dire furbolg. Clawbert, a furbolg shaman, fights beside it and keeps healing it: kill him first."] = "Огромный лютый фурболг. Рядом с ним сражается Clawbert, шаман-фурболг, который постоянно его исцеляет: убейте Clawbert первым.",
+	["When Clawbert dies, the Behemoth heals and enrages."] = "Когда Clawbert погибает, Behemoth исцеляется и впадает в ярость.",
+	["An elemental, fought before Varrox Bleakhoof. Elder Bramblesnap, a friendly furbolg, starts it."] = "Элементаль, с которым сражаются перед Varrox Bleakhoof. Бой начинает Elder Bramblesnap, дружелюбный фурболг.",
+	["The Spirit and its three Profane Totems start out immune. Bramblesnap makes the totems breakable one at a time: break each as he does."] = "Дух и три его Оскверненных тотема поначалу неуязвимы. Bramblesnap по одному делает тотемы уязвимыми: разбивайте каждый, как только он это сделает.",
+	["A rare, listed here as a best guess. It may spawn near the ramp down to the Blackmaw Behemoth."] = "Редкий противник, указанный здесь как догадка. Возможно, появляется у пандуса, ведущего вниз к Blackmaw Behemoth.",
+	["A rare spider, listed here as a best guess. Where it spawns is not known yet."] = "Редкий паук, указанный здесь как догадка. Где он появляется, пока неизвестно.",
+	["A rare, listed here as a best guess. Where it spawns is not known yet."] = "Редкий противник, указанный здесь как догадка. Где он появляется, пока неизвестно.",
+	-- Varrox Bleakhoof's drops, the Mark of Xavius's quest known since 2026-11-19 (drafted, to be checked): the
+	-- items and quests by the names the game gives them in English (their names in this language are not known).
+	["Drops the Head of Varrox Bleakhoof, for Blackmaw Reclamation, and, rarely, the Mark of Xavius, for In Demand - Titan Relics."] = "Роняет Head of Varrox Bleakhoof для задания Blackmaw Reclamation и изредка Mark of Xavius для задания In Demand - Titan Relics.",
+	-- The Drowned City's "Pyromancer" Braxton, a rare (the owner's call of 2026-11-18; drafted, to be checked): his
+	-- three notes and his Head Smash's words. His name and Captain Dreadrise's stay as the game names them in English, as
+	-- the city's other bosses keep theirs; Head Smash is told only as a blow to the head: the game's name for it in this
+	-- language is not known.
+	["A rare in the pirates' part of the city, not far from Captain Dreadrise. As a rare, he may not be there every run."] = "Редкий противник в пиратской части города, недалеко от Captain Dreadrise. Как редкий противник, он может быть не в каждом заходе.",
+	["Despite his name, no fire spell is known for him yet: he hits with Head Smash, which stuns for 2 seconds."] = "Несмотря на имя, у него пока не известно ни одного огненного заклинания: он бьет ударом по голове, который оглушает на 2 секунды.",
+	["The kills recorded so far dropped one of his two items about every time."] = "В записанных до сих пор убийствах он примерно каждый раз оставлял один из двух своих предметов.",
+	["Hits his target a little harder than a normal blow and stuns it for 2 seconds."] = "Бьет свою цель чуть сильнее обычного удара и оглушает ее на 2 секунды.",
+	-- Krol'dok Stronghold's Bossman Toof, in the owner's words, with a player's combat log (2026-11-12, the owner's
+	-- call of 2026-11-14; drafted, to be checked): his notes, and his shamans' and brutes' written abilities. His name
+	-- stays as the game names it.
+	["A series of add waves comes at you as you make your way to him. Bossman Toof himself is a warrior, with Mortal Strike, Thunderclap and Demoralizing Shout."] = "По пути к нему на вас нападает несколько волн противников. Сам Bossman Toof — воин: Смертельный удар, Удар грома и Деморализующий крик.",
+	["Two Krol'dok Shamans and two Krol'dok Brutes fight beside him. The shamans cast Lightning Bolt and put Bloodlust on him: purge it if you can."] = "Рядом с ним сражаются два шамана Крол'дока и два громилы Крол'дока. Шаманы применяют Молнию и накладывают на него Жажду крови: снимите ее с него, если можете.",
+	["Lightning Bolt"] = "Молния",
+	["The Krol'dok Shamans cast it at players, one every 4 to 12 seconds between the two of them."] = "Шаманы Крол'дока применяют ее к игрокам: вдвоем по одной каждые 4–12 секунд.",
+	["Cleave"] = "Раскол",
+	["The Krol'dok Brutes' Cleave hits their target and the players next to it."] = "Раскол громил Крол'дока поражает их цель и игроков рядом с ней.",
+	-- Overseer Mugg's weapon changes and Mugg's Fury, on his Abilities tab (a player's combat log of 2026-11-12, the
+	-- owner's call of 2026-11-14; drafted, to be checked). His Crushing Slam is named only as a slam: the game's name
+	-- for it in this language is not known.
+	["He takes up two one-handed maces, and his melee hits harder. It came 52 seconds into one fight and 30 seconds into a faster kill, so it likely comes at a set point of his health (a best guess). With the maces his Crushing Slam can hit three players at once."] = "Он берет две одноручные булавы, и его удары в ближнем бою становятся сильнее. В одном бою это случилось на 52-й секунде, а при более быстром убийстве — на 30-й, так что, скорее всего, это происходит при определенном запасе здоровья (догадка). С булавами его сокрушающий удар может задеть сразу трех игроков.",
+	["He takes up two two-handed mauls, and his melee hits harder again. It came 72 seconds into one fight and 47 seconds into a faster kill, so it likely comes at a set point of his health too (a best guess)."] = "Он берет два двуручных молота, и его удары в ближнем бою становятся еще сильнее. В одном бою это случилось на 72-й секунде, а при более быстром убийстве — на 47-й, так что, скорее всего, это тоже происходит при определенном запасе здоровья (догадка).",
+	["Each of his melee hits makes him attack faster. It starts over each time he changes weapons."] = "Каждый его удар в ближнем бою ускоряет его атаки. Эффект начинается заново при каждой смене оружия.",
 	-- Boss notes (the strings inside `notes = { ... }` in the data files).
 	["A Blackrock orc who can be found in one of four cells."] = "Орк Черной горы, которого можно найти в одной из четырёх камер.",
 	["A Dark Iron dwarf held for his part in the Thandol Span attacks."] = "Дворф Темного Железа, схваченный за участие в нападениях на Танадольский мост.",
@@ -511,7 +582,7 @@ L.STRINGS = {
 	["A rare spawn: not every run meets him. At 15% health he runs for help."] = "Редкое появление: есть не в каждом заходе. На 15% здоровья убегает за помощью.",
 	["A rare. A Stone Rumbler fights with him; interrupt his Lightning Bolt, and finish him before he runs for help at 15% health."] = "Редкий. С ним сражается Каменный грохотун; прерывайте его «Молнию» и добейте его до того, как он убежит за помощью на 15% здоровья.",
 	["A rare. He calls two Burning Servants; interrupt his Fireball, and a priest or a shaman can remove his fire shield."] = "Редкий. Он призывает двух пылающих слуг; прерывайте его «Огненный шар», а жрец или шаман может снять его огненный щит.",
-	["A rare. He cuts the tank's armour by three quarters, and at 15% health runs for help: finish him first."] = "Редкий. Срезает броню танка на три четверти, а на 15% здоровья убегает за помощью: добейте его первым.",
+	["A rare. He cuts the tank's armor by three quarters, and at 15% health runs for help: finish him first."] = "Редкий. Срезает броню танка на три четверти, а на 15% здоровья убегает за помощью: добейте его первым.",
 	["A satyr on the walkway above Jergosh's chamber."] = "Сатир на помосте над залом Джергоша.",
 	["A Searing Blade warlock; clear the cultists around him first."] = "Чернокнижник Раскалённого Клинка; сначала зачистите культистов вокруг него.",
 	["A Stone Rumbler fights at his side; interrupt his Lightning Bolt."] = "Каменный грохотун сражается рядом с ним; прерывайте его «Молнию».",
@@ -523,7 +594,7 @@ L.STRINGS = {
 	["A ward seals his cave: kill the two Death's Head Ward Keepers in front of it to bring it down."] = "Пещеру закрывает оберег: убейте двух Хранителей оберега Мёртвой Головы перед ним, чтобы снять его.",
 	["Acid Splash hurts everyone near him over time. Interrupt his heal below half health; at 15% he runs for help."] = "«Всплеск кислоты» со временем бьёт всех рядом. Прерывайте его исцеление ниже половины здоровья; на 15% он убегает за помощью.",
 	["After the fight, open the room's vaults: about 24 Dwarven Heirlooms for Important Heirlooms, and the stone tablet that starts The Treaty of Understanding."] = "После боя откройте хранилища комнаты: около 24 дворфийских реликвий для «Важных реликвий» и каменную табличку, с которой начинается «Договор о взаимопонимании».",
-	["An ogre foreman with heavy armour who hits hard; the first boss inside."] = "Огр-бригадир в тяжёлой броне, бьёт больно; первый босс внутри.",
+	["An ogre foreman with heavy armor who hits hard; the first boss inside."] = "Огр-бригадир в тяжёлой броне, бьёт больно; первый босс внутри.",
 	["An ogre who throws lightning that jumps between players."] = "Огр, который мечет молнию, перескакивающую между игроками.",
 	["Angry Tomes come out of the buildings as you approach: clear them before the fight."] = "При приближении из зданий вылетают Злые фолианты: зачистите их до боя.",
 	["Anti-Magic Shield guards him against spells for a while, and he hits hard: keep the tank topped up."] = "«Щит от магии» на время защищает его от заклинаний, и он бьёт больно: держите танка на полном здоровье.",
@@ -601,23 +672,46 @@ L.STRINGS = {
 	["Interrupt his Chain Lightning. A priest or a shaman can remove his Bloodlust."] = "Прерывайте его «Цепную молнию». Жрец или шаман может снять его «Жажду крови».",
 	["Interrupt his Chained Bolt, which jumps to a second player."] = "Прерывайте его «Окованную стрелу», которая перескакивает на второго игрока.",
 	["Interrupt his Fear and, at 30% health, his heal. He puts everyone near him to sleep (damage wakes a sleeper), and a mage or a druid can remove his Curse of Blood."] = "Прерывайте его «Страх», а на 30% здоровья — его исцеление. Он усыпляет всех рядом (урон будит спящего), а маг или друид может снять его «Проклятие крови».",
-	["Interrupt his Healing Touch. Thunderclap slows everyone near him."] = "Прерывайте его «Целебное прикосновение». «Удар грома» замедляет всех рядом.",
+	["Interrupt his Healing Touch. Thunderclap slows everyone near him."] = "Прерывайте его «Целительное прикосновение». «Раскат грома» замедляет всех рядом.",
 	["Interrupt his Holy Light. Divine Shield makes him immune for 10 seconds, and he stuns with Hammer of Justice."] = "Прерывайте его «Свет небес». «Божественный щит» делает его неуязвимым на 10 секунд, и он оглушает «Молотом правосудия».",
 	["Interrupt his Immolate or dispel the burn. A mage or a druid can remove his Curse of Weakness."] = "Прерывайте его «Жертвенный огонь» или рассеивайте горение. Маг или друид может снять его «Проклятие слабости».",
-	["Interrupt his Lightning Bolt and Healing Touch. Below 30% health his serpent form hits harder and puts players to sleep."] = "Прерывайте его «Молнию» и «Целебное прикосновение». Ниже 30% здоровья его змеиная форма бьёт сильнее и усыпляет игроков.",
+	["Interrupt his Lightning Bolt and Healing Touch. Below 30% health his serpent form hits harder and puts players to sleep."] = "Прерывайте его «Молнию» и «Целительное прикосновение». Ниже 30% здоровья его змеиная форма бьёт сильнее и усыпляет игроков.",
 	["Interrupt his Molten Metal, which burns and slows."] = "Прерывайте его «Расплавленный металл», который жжёт и замедляет.",
-	["Interrupt his slow Healing Touch and his Lightning Bolt."] = "Прерывайте его медленное «Целебное прикосновение» и его «Молнию».",
+	["Interrupt his slow Healing Touch and his Lightning Bolt."] = "Прерывайте его медленное «Целительное прикосновение» и его «Молнию».",
 	["Interrupt his Void Bolt. He teleports between his ledges, and stuns everyone around him when the tank reaches him."] = "Прерывайте его «Стрелу Бездны». Он телепортируется между выступами и оглушает всех вокруг, когда танк доходит до него.",
 	["Interrupt or dispel his Dominate Mind, which takes over a player; interrupt his Shadow Bolt."] = "Прерывайте или рассеивайте его «Порабощение разума», которое подчиняет игрока; прерывайте его «Стрелу Тьмы».",
 	["Interrupt or dispel his Polymorph. His Silence reaches 15 yards: healers, stand back."] = "Прерывайте или рассеивайте его «Превращение». Его «Безмолвие» достаёт на 15 метров: лекарям встать дальше.",
 	["Interrupt or dispel his Soul Drain, which roots a player and drains their health."] = "Прерывайте или рассеивайте его «Вытягивание души», которое обездвиживает игрока и вытягивает его здоровье.",
 	["It fears a player and slows another's casting."] = "Он пугает одного игрока и замедляет чтение заклинаний другого.",
 	["It roots everyone near it, slows and stuns, and calls Dupe Bugs that its Patch turns into healing."] = "Оно обездвиживает всех рядом, замедляет и оглушает, а также призывает багов-двойников, которых его «Заплатка» превращает в исцеление.",
-	["It whirls at everyone close, and its thorns hurt whoever strikes it or an ally nearby, Ramtusk included."] = "Оно вращается, бьёт всех рядом, а его шипы ранят того, кто бьёт его или союзника поблизости, включая Рамтаска.",
+	-- Overlord Ramtusk's second note, Razorfen Spearhide's own before it became his guards (2026-11-13; drafted, to be
+	-- checked)
+	["His two guards whirl at everyone close, and their thorns hurt whoever strikes them or an ally nearby, Ramtusk included."] = "Два его стража вращаются и бьют всех рядом, а их шипы ранят того, кто бьёт их или союзника поблизости, включая Рамтаска.",
 	["Kill the Dark Iron Summoner first: he keeps bringing adds. Then turn on the elemental."] = "Сначала убейте призывателя Темного Железа: он постоянно приводит подмогу. Затем займитесь элементалем.",
 	["Kill the raptor matriarch in the tall grass. Her death brings a wave of raptors, and Shadetooth comes once they are dead: finish the whole wave before he arrives."] = "Убейте матриарха ящеров в высокой траве. Её смерть приводит волну ящеров, а когда они мертвы, приходит Тенеклык: добейте всю волну до его появления.",
 	["Malfunction winds up for 2 seconds, then hits everyone within 25 yards every 2 seconds for 6 seconds: ranged stay beyond 25 yards, melee step out as the cast starts."] = "«Неисправность» готовится 2 секунды, затем 6 секунд бьёт всех в радиусе 25 метров каждые 2 секунды: стрелкам держаться дальше 25 метров, ближнему бою выйти, как только начнётся применение.",
 	["Manamorph takes a player out of the fight for 8 seconds: dispel it. His Silence hits those close to him, so healers keep their distance."] = "«Манаморф» выводит игрока из боя на 8 секунд: рассеять. Его «Безмолвие» бьёт всех рядом, так что лекарям держаться поодаль.",
+	-- Alcaz Prison's Before you go (the owner's report, 2026-11-12; drafted, to be checked)
+	["Master Mathias Shaw, at SI:7 in Stormwind's Old Town, gives Our Man in Theramore. At the inn in Theramore, the dwarf Sully McCleary sends you to meet him behind the graveyard, then up Jaina Proudmoore's tower in disguise to listen in. After that, he gives The Secret Prison and A Bit of Wet Work."] = "Мастер Матиас Шоу из ШРУ в Старом городе Штормграда дает задание Our Man in Theramore. В таверне Терамора дворф Sully McCleary велит встретиться с ним за кладбищем, а затем подняться переодетым в башню Джайны Праудмур и подслушать. После этого он дает The Secret Prison и A Bit of Wet Work.",
+	-- Alcaz Prison's Before you go, the Horde's (the owner's report, 2026-11-12; drafted, to be checked)
+	["Sergeant Ulka waits outside the prison on Alcaz Island. She sends you in after Commander Folkar and asks for A Little Payback; inside, Folkar sends you looking for King Varian Wrynn."] = "Sergeant Ulka ждет у тюрьмы на острове Алькац. Она отправляет вас внутрь вслед за Commander Folkar и дает задание A Little Payback; внутри Folkar посылает вас на поиски короля Вариана Ринна.",
+	["Mathias Shaw's errand"] = "Поручение Матиаса Шоу",
+	-- Alcaz Prison: the Alcaz Operative Insignia's chain (the owner's steps, 2026-11-13; drafted, to be checked). The
+	-- quest and new NPC names stay English, as the game shows them; the items' names as their pages in the language
+	-- give them (a best guess that they are the game's own, not checked in game); Renzik's name as Forever's quest data
+	-- has it in the language
+	["Toy: Alcaz Operative Insignia"] = "Игрушка: Знак отличия агента с Алькаца",
+	["If you want this toy, skip The Questioner on your way in. At the end, the prisoner Mason Connery sends you back for The Questioner's key, then to the inn at Moonbrook in Westfall for a Document Box: don't sell it. Bring it to Renzik \"The Shiv\" at SI:7 in Stormwind for State Secrets. Six {item:279450:Fractured Insignia:2} make the {item:279471:Alcaz Operative Insignia:3}, and they can be traded."] = "Если вам нужна эта игрушка, не трогайте The Questioner по пути внутрь. В конце пленник Mason Connery отправит вас обратно за ключом The Questioner, а затем в таверну Луноречья в Западном Крае за Ящиком с документами — не продавайте его. Отнесите его Рензику Ножу в ШРУ в Штормграде ради задания State Secrets. Из шести {item:279450:Расколотый знак различия:2} получается {item:279471:Знак отличия агента с Алькаца:3}, и ими можно обмениваться.",
+	["If you want this toy, skip The Questioner on your way in. At the end, the prisoner Mason Connery sends you back for The Questioner's key, then to the inn at Moonbrook in Westfall for a Document Box: don't sell it. Bring it to Nazgrel, in Grommash Hold in Orgrimmar, for State Secrets. Six {item:279450:Fractured Insignia:2} make the {item:279471:Alcaz Operative Insignia:3}, and they can be traded."] = "Если вам нужна эта игрушка, не трогайте The Questioner по пути внутрь. В конце пленник Mason Connery отправит вас обратно за ключом The Questioner, а затем в таверну Луноречья в Западном Крае за Ящиком с документами — не продавайте его. Отнесите его Назгрелу в крепость Громмаша в Оргриммаре ради задания State Secrets. Из шести {item:279450:Расколотый знак различия:2} получается {item:279471:Знак отличия агента с Алькаца:3}, и ими можно обмениваться.",
+	["If you want the Alcaz Operative Insignia toy, or the Alliance's Somber News and Shaw Needs To Know, skip him on your way in: his key is for Mason Connery's quest at the end, The Man in the Iron Chains, which they all need."] = "Если вам нужна игрушка «Знак отличия агента с Алькаца» или задания Альянса Somber News и Shaw Needs To Know, не трогайте его по пути внутрь: его ключ нужен для задания Mason Connery в конце, The Man in the Iron Chains, а оно нужно им всем.",
+	["Mason Connery is a prisoner chained at the end of the prison. The Questioner must still be alive: skip him on your way in, then go back for him once you have this quest. He drops the Ornate Shackle Key. Everyone in the group should hand it in at the same time: once one player frees him, he walks off, and the others can't hand it in. This quest can't be shared."] = "Mason Connery — пленник, прикованный в конце тюрьмы. The Questioner должен быть еще жив: не трогайте его по пути внутрь и вернитесь за ним, когда возьмете это задание. С него падает Узорчатый ключ от оков. Всей группе стоит сдать задание одновременно: как только один игрок освободит его, он уйдет, и остальные уже не смогут сдать задание. Этим заданием нельзя поделиться.",
+	["Mason Connery's treasure, upstairs in the inn at Moonbrook, Westfall"] = "Сокровище Mason Connery, второй этаж таверны в Луноречье, Западный Край",
+	["Mason's note reads \"WF, 43.4, 67.8\": the inn at Moonbrook in Westfall. Upstairs, click the loose floorboard, then hand the quest in at Connery's Trunk beside it. Don't sell the Document Box it gives you (a vendor pays 25 gold): State Secrets needs it. This quest can't be shared."] = "В записке Mason Connery написано «WF, 43.4, 67.8»: это таверна в Луноречье, Западный Край. Наверху щелкните по расшатанной половице, а затем сдайте задание у Connery's Trunk рядом с ней. Не продавайте полученный Ящик с документами (торговец дает за него 25 золотых): он нужен для State Secrets. Этим заданием нельзя поделиться.",
+	["Renzik \"The Shiv\", SI:7, Old Town, Stormwind City"] = "Рензик Нож, ШРУ, Старый город, Штормград",
+	["Renzik \"The Shiv\""] = "Рензик Нож",
+	["Nazgrel, Grommash Hold, Orgrimmar"] = "Назгрел, крепость Громмаша, Оргриммар",
+	["It needs the Document Box from More Valuable Than Gold. Its reward, the {item:279450:Fractured Insignia:2}, can be traded: six of them combine into the {item:279471:Alcaz Operative Insignia:3}, a toy. One run is enough: trade or buy the other five. This quest can't be shared. The Horde has its own State Secrets."] = "Для него нужен Ящик с документами из задания More Valuable Than Gold. Награду, {item:279450:Расколотый знак различия:2}, можно передавать другим игрокам: из шести таких получается игрушка {item:279471:Знак отличия агента с Алькаца:3}. Одного прохождения достаточно: выменяйте или купите остальные пять. Этим заданием нельзя поделиться. У Орды свое задание State Secrets.",
+	["It needs the Document Box from More Valuable Than Gold. Its reward, the {item:279450:Fractured Insignia:2}, can be traded: six of them combine into the {item:279471:Alcaz Operative Insignia:3}, a toy. One run is enough: trade or buy the other five. This quest can't be shared. The Alliance has its own State Secrets."] = "Для него нужен Ящик с документами из задания More Valuable Than Gold. Награду, {item:279450:Расколотый знак различия:2}, можно передавать другим игрокам: из шести таких получается игрушка {item:279471:Знак отличия агента с Алькаца:3}. Одного прохождения достаточно: выменяйте или купите остальные пять. Этим заданием нельзя поделиться. У Альянса свое задание State Secrets.",
 	["Megavolt hits a cone in front of it: only the tank should stand there. Interrupt its Chain Bolt."] = "«Мегавольт» бьёт в конусе перед собой: там должен стоять только танк. Прерывайте его «Цепную стрелу».",
 	["Nothing special on the boss itself: clear the other spiders of the courtyard first, or they join the fight."] = "В самом боссе нет ничего особенного: сначала убейте остальных пауков во дворе, иначе они присоединятся к бою.",
 	["Nothing special seen in the fight yet: he hits, and has a lot of health."] = "В бою пока ничего особенного: он бьёт и у него много здоровья.",
@@ -629,7 +723,7 @@ L.STRINGS = {
 	["Raises skeletons through the fight: kill them, and give the tank time to build threat before using area damage."] = "Поднимает скелетов на протяжении боя: убивайте их и дайте танку время набрать угрозу, прежде чем бить по площади.",
 	["Remove his Veil of Shadow, above all from the tank: healing on them is much weaker."] = "Снимайте его «Покров тени», прежде всего с танка: исцеление на нём гораздо слабее.",
 	["Shadow Bolt Volley and Curse of Thorns together hurt: remove the curse, melee above all. He raises skeletons as Atrexis does."] = "«Залп стрел Тьмы» и «Проклятие шипов» вместе больно бьют: снимите проклятие, прежде всего с ближнего боя. Он поднимает скелетов, как и Атрексис.",
-	["She appears at one of four places. Interrupt her Healing Touch; damage or a magic dispel wakes a sleeping player, and her Thorns Aura hurts melee."] = "Она появляется в одном из четырёх мест. Прерывайте её «Целебное прикосновение»; урон или магическое рассеивание будит спящего игрока, а её «Аура шипов» ранит ближний бой.",
+	["She appears at one of four places. Interrupt her Healing Touch; damage or a magic dispel wakes a sleeping player, and her Thorns Aura hurts melee."] = "Она появляется в одном из четырёх мест. Прерывайте её «Целительное прикосновение»; урон или магическое рассеивание будит спящего игрока, а её «Аура возмездия» ранит ближний бой.",
 	["Shell Shield: for 12 seconds he takes much less damage, and hits slower but harder."] = "«Панцирный щит»: 12 секунд он получает гораздо меньше урона, а бьёт медленнее, но сильнее.",
 	["Shield Slam stuns the tank; at 15% health he runs for help."] = "«Удар щитом» оглушает танка; на 15% здоровья он убегает за помощью.",
 	["Skyborne only"] = "только для Небожителей",
@@ -643,12 +737,55 @@ L.STRINGS = {
 	["Stomps at 75% and again at 50% health, stunning the whole party. It cannot be interrupted."] = "Топает на 75%, а затем на 50% здоровья, оглушая всю группу. Это нельзя прервать.",
 	["Stormwind"] = "Штормград",
 	["Stuns, and calls his guards in when his health runs low."] = "Оглушает и призывает свою стражу, когда у него остаётся мало здоровья.",
+	-- Alcaz Prison's way in from Stormwind (the owner's report, 2026-11-12; drafted, to be checked)
+	["Sully McCleary, behind Theramore's graveyard, Dustwallow Marsh"] = "Sully McCleary, за кладбищем Терамора, Пылевые топи",
+	["Sully leaves the inn first. Wait until he is gone, then meet him behind the graveyard outside town."] = "Sully первым уходит из таверны. Дождитесь, пока он уйдет, и встретьтесь с ним за кладбищем у города.",
+	["Sully's SI:7 Disguise Kit makes you look like a Kul Tiras marine. Don't go near Jaina: she sees through it. If you lose the disguise, Sully gives you another kit."] = "Маскировочный комплект ШРУ от Sully придает вам облик морского пехотинца Кул-Тираса. Не подходите к Джайне: она видит маскировку насквозь. Если маскировка пропадет, Sully даст новый комплект.",
+	-- Krol'dok Stronghold's ways in (the owner's notes of 2026-11-18; drafted, to be checked): the steps' givers and
+	-- takers, the key's smiths and the follow-ups' taker too, and the steps' notes. The new people, places and items
+	-- keep the English names the game gives them; the quests' own names and objectives stay English
+	["Krom'rosh, Rog'mar, Riverglades"] = "Krom'rosh, Rog'mar, Речные отмели",
+	["Tran'gul, Rog'mar, Riverglades"] = "Tran'gul, Rog'mar, Речные отмели",
+	["Kreza Darkthorn, Rog'mar, Riverglades"] = "Kreza Darkthorn, Rog'mar, Речные отмели",
+	["Clubtoe, under a ruined house in Sunnyglade, Riverglades"] = "Clubtoe, под разрушенным домом в Sunnyglade, Речные отмели",
+	["A dead Twilight Brute, in the caves under Sunnyglade, Riverglades"] = "Мертвый Twilight Brute, в пещерах под Sunnyglade, Речные отмели",
+	["Clugfist, Bolder'ok, Riverglades"] = "Clugfist, Bolder'ok, Речные отмели",
+	["Da'grosh, outside Krol'dok Stronghold, Riverglades"] = "Da'grosh, у Крепости Крол'док, Речные отмели",
+	["Crag'rog, in a cave near Da'grosh, Riverglades"] = "Crag'rog, в пещере рядом с Da'grosh, Речные отмели",
+	["Demar Brant, Farholde Keep, Riverglades"] = "Demar Brant, Farholde Keep, Речные отмели",
+	["Ashe Amberhall, Farholde Keep, Riverglades"] = "Ashe Amberhall, Farholde Keep, Речные отмели",
+	["Alphonse Dumas, Farholde Keep, Riverglades"] = "Alphonse Dumas, Farholde Keep, Речные отмели",
+	["Melanie Sable, Farholde Keep, Riverglades"] = "Melanie Sable, Farholde Keep, Речные отмели",
+	["Sergeant Riftan, the Twilight's Shroud, Riverglades"] = "Sergeant Riftan, Twilight's Shroud, Речные отмели",
+	["It can't be shared."] = "Этим заданием нельзя поделиться.",
+	["An elite quest: bring friends. Overlord Kilgar is in the big hut in the Twilight's Shroud, at 26.6, 44.8."] = "Элитное задание: возьмите друзей. Overlord Kilgar находится в большой хижине в Twilight's Shroud, в точке 26.6, 44.8.",
+	["Da'grosh gives you the missive, Blood and Battle. It can't be shared."] = "Da'grosh вручает вам послание, Blood and Battle. Этим заданием нельзя поделиться.",
+	["Few priests show at first: they take the scouts' places as those come back, so kill scouts until enough priests appear."] = "Поначалу жрецов мало: они появляются на месте возрождающихся разведчиков, так что убивайте разведчиков, пока не появится достаточно жрецов.",
+	["Clubtoe is down the stairs into a cellar under a ruined house in Sunnyglade, at 50, 46. Beat him until he gives in (it flags you for PvP)."] = "Clubtoe внизу лестницы, в подвале под разрушенным домом в Sunnyglade, в точке 50, 46. Бейте его, пока он не сдастся (это включает вам режим PvP).",
+	["The circles can't be used while shapeshifted."] = "Круги нельзя использовать в измененном облике.",
+	["An elite quest: bring friends. Chogg'Zac is at the far end of the caves under Sunnyglade."] = "Элитное задание: возьмите друзей. Chogg'Zac находится в самом конце пещер под Sunnyglade.",
+	["Klunk has Skullbasher, the club this asks for. He is in the cave whose way in is at 76, 26, in a small pocket on its left."] = "Skullbasher, нужная заданию дубина, у Klunk. Он в пещере со входом в точке 76, 26, в небольшом закутке слева.",
+	["The Twilight Champions drop the Twilight Keys. The other side's scouts have cages of their own: if a cage won't open, try another."] = "Twilight Champions роняют Twilight Keys. У разведчиков другой стороны свои клетки: если клетка не открывается, попробуйте другую.",
+	["The pages are small white maps on crates in Sunnyglade's ruined houses."] = "Страницы — это маленькие белые карты на ящиках в разрушенных домах Sunnyglade.",
+	-- Krol'dok Stronghold's ways in before you go (the owner's notes of 2026-11-18; drafted, to be checked): each side's
+	-- chain's title and text; the quests' names and the new people and places keep the English the game gives them
+	["The road from Rog'mar"] = "Путь из Rog'mar",
+	["Krom'rosh, in Rog'mar in the Riverglades, gives A Message in Blood and Food for the Taking, then Show Them How It's Done. Tran'gul, in the building just north of him, gives Twilight Missives, then Digging for Answers, which sends you to the ogre Clubtoe, under a ruined house in Sunnyglade. After Clubtoe's quests, take Chogg's head to Tran'gul and on to Clugfist in Bolder'ok, to the north. After his two quests, Clugfist's Decree takes you back to Krom'rosh for The Wayward Warrior. Da'grosh, west of Rog'mar, wants three quests and then his elite Bring Me His Head: bring friends. That opens his A Token of Vengeance, and his It Is Time, Brother... takes you back to Krom'rosh for Eye of Mugg; Tran'gul then gives Tome of Twilight."] = "Krom'rosh в Rog'mar, в Речных отмелях, дает A Message in Blood и Food for the Taking, затем Show Them How It's Done. Tran'gul в здании чуть севернее него дает Twilight Missives, затем Digging for Answers, которое отправляет вас к огру Clubtoe под разрушенным домом в Sunnyglade. После заданий Clubtoe отнесите голову Chogg к Tran'gul, а затем к Clugfist в Bolder'ok, на севере. После двух его заданий Clugfist's Decree возвращает вас к Krom'rosh за The Wayward Warrior. Da'grosh, к западу от Rog'mar, просит выполнить три задания, а затем его элитное задание Bring Me His Head: возьмите друзей. Оно открывает его A Token of Vengeance, а его It Is Time, Brother... возвращает вас к Krom'rosh за Eye of Mugg; затем Tran'gul дает Tome of Twilight.",
+	["The road from Farholde Keep"] = "Путь из Farholde Keep",
+	["In Farholde Keep, in the Riverglades, do Ashe Amberhall's Scraps of Knowledge and Demar Brant's Saving Sunnyglade (one of them may be enough) for Brant's The Western Front, which sends you to Sergeant Riftan in the Twilight's Shroud. Do his No Soldier Left Behind and Carving a Path, then his elite Bring Me His Head: bring friends. Then Riftan gives Twilight Mementos, and Brant Eye of Mugg. Ashe's own Tome of Twilight comes after her Curious Trinkets and A Small Favor."] = "В Farholde Keep, в Речных отмелях, выполните Scraps of Knowledge у Ashe Amberhall и Saving Sunnyglade у Demar Brant (возможно, хватит одного из них), чтобы получить у Brant The Western Front: это задание отправит вас к Sergeant Riftan в Twilight's Shroud. Выполните его No Soldier Left Behind и Carving a Path, затем его элитное задание Bring Me His Head: возьмите друзей. После этого Riftan дает Twilight Mementos, а Brant — Eye of Mugg. Собственное задание Ashe, Tome of Twilight, идет после ее Curious Trinkets и A Small Favor.",
+	-- Alcaz Prison's way in from Orgrimmar (the owner's answer, 2026-11-12; drafted, to be checked)
+	["Orgrimmar's errand"] = "Поручение Оргриммара",
+	["Eitrigg, in Grommash Hold in Orgrimmar, gives The Missing Kor'kron, which sends you to Nazeer Bloodpike in Brackenwall Village. He gives The Elite of the Elite, an elite quest: bring friends to find the missing Kor'kron on Alcaz Island. There, the wounded Sergeant Ulka gives Right Place, Wrong Time."] = "Эйтригг в крепости Громмаша в Оргриммаре дает задание The Missing Kor'kron, которое ведет к Назиру Кровавое Копье в Гиблотопь. Он дает The Elite of the Elite, элитное задание: возьмите друзей и найдите пропавших воинов Кор'крона на острове Алькац. Там раненая Sergeant Ulka дает задание Right Place, Wrong Time.",
+	["Eitrigg, Grommash Hold, Orgrimmar"] = "Эйтригг, крепость Громмаша, Оргриммар",
+	["Nazeer Bloodpike, Brackenwall Village, Dustwallow Marsh"] = "Назир Кровавое Копье, Гиблотопь, Пылевые топи",
+	["Nazeer Bloodpike"] = "Назир Кровавое Копье",
+	["An elite quest: bring friends. Nazeer thinks the Kor'kron went to Alcaz Island."] = "Элитное задание: возьмите друзей. Назир думает, что воины Кор'крона ушли на остров Алькац.",
 	["The braziers of the sanctum open the way to Aku'mai; each one lit calls a wave of enemies, so rest between them."] = "Жаровни святилища открывают путь к Аку'маю; каждая зажжённая призывает волну врагов, так что отдыхайте между ними.",
 	["The hydra at the end of the Deeps, and the hardest fight here: keep a steady tank and healer on it."] = "Гидра в конце Пучины — самый тяжёлый бой здесь: держите ровного танка и лекаря.",
 	["The Kraul's leader, at the end of the thorn maze."] = "Вожак лабиринта, в конце тернистого лабиринта.",
 	["The last boss stands still at the end of the spider trail: click the small panel beside him to wake him."] = "Последний босс неподвижно стоит в конце паучьей тропы: нажмите на маленькую панель рядом с ним, чтобы разбудить его.",
 	["The last boss: Archmage Modera opens the Portal to the Violet Chamber, which leads to him."] = "Последний босс: архимаг Модера открывает портал в Фиолетовую палату, который ведёт к нему.",
-	["The last Fanglord, a plain melee fighter with fewer hit points than Pythas."] = "Последний Повелитель Клыка — простой боец ближнего боя с меньшим запасом здоровья, чем у Пифаса.",
+	["The last Fanglord, a plain melee fighter with fewer hit points than Pythas."] = "Последний Повелитель Клыка — простой боец ближнего боя с меньшим запасом здоровья, чем у Питонаса.",
 	["The longer the fight, the more worgs join him: kill him quickly."] = "Чем дольше бой, тем больше воргов к нему прибегает: убивайте его быстро.",
 	["The longest fight of the dungeon: a large health pool, so keep the interrupts going."] = "Самый долгий бой в подземелье: большой запас здоровья, так что не прекращайте прерывания.",
 	["The prison is tight: a fleeing player can easily run into another cell block and bring it along."] = "Тюрьма тесная: убегающий игрок легко влетит в другой блок камер и приведёт его с собой.",
@@ -656,7 +793,7 @@ L.STRINGS = {
 	["The ship's cook, found aboard the juggernaut."] = "Корабельный кок, которого можно найти на дредноуте.",
 	["The shredder ignores burning, bleeding and stun-style concussion effects."] = "Дробилка игнорирует горение, кровотечение и оглушающие эффекты.",
 	["The toughest Fanglord, with heavy melee and a large health pool."] = "Самый крепкий Повелитель Клыка: тяжёлый ближний бой и большой запас здоровья.",
-	["Thundercrack stuns everyone near him; he also puts players to sleep and fears them."] = "«Раскат грома» оглушает всех рядом; он также усыпляет игроков и пугает их.",
+	["Thundercrack stuns everyone near him; he also puts players to sleep and fears them."] = "«Громовой грохот» оглушает всех рядом; он также усыпляет игроков и пугает их.",
 	["Two Mana Phantoms fight beside him: kill them first, their Mana Burn drains whoever they target."] = "Два манапризрака сражаются рядом с ним: убейте их первыми, их «Сжигание маны» вытягивает ману у цели.",
 	-- Shadowfang Keep: Arugal's note (2026-11-06; drafted, to be checked)
 	["Waits at the top of the keep. When Fenrus the Devourer dies, he appears for a moment to call four Voidwalkers."] = "Ждёт на вершине крепости. Когда Фенрус Пожиратель умирает, он на миг появляется и призывает четырёх стражей Бездны.",
@@ -678,7 +815,7 @@ L.STRINGS = {
 	["Chamber of Atonement"] = "Чертог Искупления",
 	["Crag of the Everliving"] = "Утес Вечноживущего",
 	["Defias Hideout"] = "Убежище Братства Справедливости",
-	["Dreamer's Rock"] = "Покои Спящего",
+	["Dreamer's Rock"] = "Скала Дремлющего",
 	["Dwarven District"] = "Дворфийский квартал",
 	["Feathermoon Stronghold"] = "Крепость Оперенной Луны",
 	["Forlorn Cloister"] = "Покинутый двор",
@@ -709,6 +846,7 @@ L.STRINGS = {
 	["Tinker Town"] = "Городок Механиков",
 	["Undercity"] = "Подгород",
 	["Valanaar"] = "Валанаар",
+	["Winding Chasm"] = "Извилистая расщелина",
 	["Wizard's Sanctum"] = "Святилище чародея",
 
 	["Alba Fairmoon"] = "Альба Фэрмун",
@@ -1126,7 +1264,7 @@ L.STRINGS = {
 	["Bring 12 Essential Artificials to Klockmort Spannerspan in Ironforge."] = "Принесите 12 важных искусственных частей Клокморту Медноключу в Стальгорн.",
 	["Bring 12 Magenta Fungus Caps from inside Uldaman to Jarkal Mossmeld in Kargath."] = "Принесите 12 пурпурных грибных шляпок из Ульдамана Джаркалу Мшистому Плащу в Каргат.",
 	["Bring 12 Magenta Fungus Caps to Ghak Healtouch in Thelsamar."] = "Принесите 12 пурпурных грибных шляпок Гаку Целителю в Телсамар.",
-	["Bring 20 Deviate Hides to Nalpak."] = "Принесите 20 шкур девиантов Налпаку.",
+	["Bring 20 Deviate Hides to Nalpak."] = "Принесите Налпаку 20 искаженных шкур.",
 	["Bring 20 Hearts of Zeal from the Scarlet Monastery to Master Apothecary Faranell."] = "Принесите 20 сердец рвения из Монастыря Алого ордена верховному аптекарю Фаранеллу.",
 	["Bring 20 Hearts of Zeal to Master Apothecary Faranell in the Undercity."] = "Принесите 20 сердец рвения верховному аптекарю Фаранеллу в Подгород.",
 	["Bring 20 Vials of Troll Temper to Trenton Lighthammer in Gadgetzan."] = "Принесите 20 флаконов тролльего закала Трентону Светлому Молоту в Прибамбасск.",
@@ -1134,7 +1272,7 @@ L.STRINGS = {
 	["Bring 4 Carved Stone Urns to Prospector Ironband in Loch Modan."] = "Принесите 4 резные каменные урны старателю Айронбанду в Лок Модан.",
 	["Bring 4 Gromsblood, 10 Giant Silver Veins and Nagmara's Filled Vial to Mistress Nagmara in Blackrock Depths."] = "Принесите 4 громовой крови, 10 жил гигантского серебра и наполненный флакон Нагмары госпоже Нагмаре в Глубинах Черной горы.",
 	["Bring 5 Uncracked Scarab Shells to Tran'rek in Gadgetzan."] = "Принесите 5 целых панцирей скарабеев Тран'реку в Прибамбасск.",
-	["Bring 6 Wailing Essence to Mebok Mizzyrix."] = "Принесите 6 сущностей стенаний Мебоку Миззириксу.",
+	["Bring 6 Wailing Essence to Mebok Mizzyrix."] = "Принесите Мебоку Миззириксу 6 воющих субстанций.",
 	["Bring 8 Collected Dragon Eggs and the Collectronic Module to Tinkee Steamboil at Flame Crest in the Burning Steppes."] = "Принесите 8 собранных драконьих яиц и Коллектронный модуль Тинки Паровому Котлу на Огненный гребень в Пылающих степях.",
 	["Bring 8 Dentrium Power Stones and 8 An'Alleum Power Stones to Rigglefuzz in the Badlands."] = "Принесите 8 камней силы Дентриума и 8 камней силы Ан'Аллеума Ригглфаззу в Бесплодные земли.",
 	["Bring a Prismatic Punch Card to Master Mechanic Castpipe in Ironforge."] = "Принесите радужную перфокарту мастеру-механику Литой Трубе в Стальгорн.",
@@ -1153,7 +1291,6 @@ L.STRINGS = {
 	["Bring Techbot's Memory Core to Tinkmaster Overspark in Ironforge."] = "Принесите ядро памяти Техбота механику-умельцу Оверспарку в Стальгорн.",
 	["Bring the Blood-Stained Letter to Orphan Matron Nightingale."] = "Принесите Окровавленное письмо попечительнице сирот Найтингейл.",
 	["Bring the Book of Ur from Shadowfang Keep to Keeper Bel'dugur."] = "Принесите Книгу Ура из Крепости Темного Клыка хранителю Бель'дугуру.",
-	["Bring the book Rituals of Power, from the Library, to Magus Tirth."] = "Принесите книгу «Ритуалы силы» из Библиотеки магусу Тирту.",
 	["Bring the Brilliant Gold Ring, a Silver Bar, a Moss Agate, and 30 silver coins to Nogg in Orgrimmar."] = "Принесите блестящее золотое кольцо, серебряный слиток, моховой агат и 30 серебряных монет Ноггу в Оргриммар.",
 	["Bring the Brilliant Gold Ring, a Silver Bar, a Moss Agate, and 30 silver coins to Talvash del Kissel in Ironforge."] = "Принесите блестящее золотое кольцо, серебряный слиток, моховой агат и 30 серебряных монет Тальвашу дель Кисселю в Стальгорн.",
 	["Bring the Crest of Lordaeron to the Undercity."] = "Принесите герб Лордерона в Подгород.",
@@ -1165,7 +1302,7 @@ L.STRINGS = {
 	["Bring the First and Second Mosh'aru Tablets to Yeh'kinya in Tanaris."] = "Принесите первую и вторую таблички Моша'ру Е'кинье в Танарис.",
 	["Bring the following to Falrin Treeshaper inside Dire Maul: 1 Jeering Spectre's Essence, 4 Dark Runes and 8 Large Brilliant Shards."] = "Принесите Фальрину Древолюбу в Забытом Городе следующее: 1 сущность глумящегося призрака, 4 тёмные руны и 8 крупных сверкающих осколков.",
 	["Bring the Frozen Eggs to Betina Bigglezink."] = "Принесите замороженные яйца Бетине Бигглзинк.",
-	["Bring the Gems of Cobrahn, Anacondra, Pythas and Serpentis to Nara Wildmane."] = "Принесите самоцветы Кобрана, Анакондры, Пифаса и Серпентиса Наре Дикой Гриве.",
+	["Bring the Gems of Cobrahn, Anacondra, Pythas and Serpentis to Nara Wildmane."] = "Принесите самоцветы Кобрана, Анакондры, Питонаса и Серпентиса Наре Дикой Гриве.",
 	["Bring the Heart of the Mountain to Maxwort Uberglint in the Burning Steppes."] = "Принесите Сердце горы Максворту Сверкающему в Пылающие степи.",
 	["Bring the Lost Thunderbrew Recipe to Ragnar Thunderbrew in Kharanos."] = "Принесите утерянный рецепт Громоварского Рагнару Громовару в Каранос.",
 	["Bring the Lost Thunderbrew Recipe to Vivian Lagrave in Kargath."] = "Принесите утерянный рецепт Громоварского Вивиан Лаграв в Каргат.",
@@ -1254,7 +1391,7 @@ L.STRINGS = {
 	["Kill 10 Defias Prisoners, 8 Defias Convicts, and 8 Defias Insurgents inside The Stockade."] = "Убейте 10 пленников Братства, 8 каторжников Братства и 8 мятежников Братства в Тюрьме.",
 	["Kill 15 Enraged Apparitions and 10 Tormented Souls, then put Anvilmar's spirit to rest."] = "Убейте 15 разъярённых призраков и 10 истерзанных душ, затем упокойте дух Анвилмара.",
 	["Kill 20 Plagued Hatchlings, then return to Betina Bigglezink at the Light's Hope Chapel."] = "Убейте 20 чумных птенцов, затем вернитесь к Бетине Бигглзинк в часовню Озарённой Надежды.",
-	["Kill 7 Deviate Ravagers, 7 Deviate Vipers, 7 Deviate Shamblers and 7 Deviate Dreadfangs."] = "Убейте 7 девиантов-разорителей, 7 девиантов-гадюк, 7 девиантов-шатунов и 7 девиантов-страхоклыков.",
+	["Kill 7 Deviate Ravagers, 7 Deviate Vipers, 7 Deviate Shamblers and 7 Deviate Dreadfangs."] = "Убейте 7 девиантов-разорителей, 7 девиантов-гадюк, 7 загадочных шаркунов и 7 загадочных страхозубов.",
 	["Kill 8 Ragefire Troggs and 8 Ragefire Shamans inside Ragefire Chasm."] = "Убейте 8 троггов Огненной Пропасти и 8 шаманов Огненной Пропасти в Огненной Пропасти.",
 	["Kill 8 Razorfen Battleguard, 8 Razorfen Thornweavers, and 8 Death's Head Cultists and return to Myriam Moonsinger near the entrance to Razorfen Downs."] = "Убейте 8 боевых стражей Иглошкурых, 8 терноткачей Иглошкурых и 8 культистов Мёртвой Головы и вернитесь к Мириам Лунной Певице у входа в Курганы Иглошкурых.",
 	["Kill a Highland Horror within Excavation Sites and bring its root core to Rethiel the Greenwarden in the Wetlands."] = "Убейте Ужас высокогорья в Раскопках и принесите его корневое ядро Ретиэлю Зелёному Стражу в Болотину.",
@@ -1489,7 +1626,7 @@ L.STRINGS = {
 	["Mea Culpa, Lord Valthalak"] = "Моя вина, лорд Валталак",
 	["Menethil's Gift"] = "Дар Менетила",
 	["Message to Maxwell"] = "Послание Максвеллу",
-	["Moonbrook Espionage"] = "Шпионаж в Лунной поляне",
+	["Moonbrook Espionage"] = "Шпионаж в Луноречье",
 	["Mortality Wanes"] = "Смертность угасает",
 	["Mother's Milk"] = "Материнское молоко",
 	["Murdaloc"] = "Мурдалок",
@@ -1704,7 +1841,7 @@ L.STRINGS = {
 	["Master Apothecary Faranell takes the head, and a second Unending Torment follows: four more steps inside the Undercity, the last back to him."] = "Верховный аптекарь Фаранелл забирает голову, и следом идёт вторые «Нескончаемые муки»: ещё четыре шага внутри Подгорода, последний — обратно к нему.",
 	["Needs the Barrens oasis chain first: The Barrens Oases, The Forgotten Pools, The Stagnant Oasis and Altered Beings, then Hamuul Runetotem and Nara Wildmane, before Leaders of the Fang opens."] = "Сначала нужна цепочка оазисов Степей: «Оазисы Степей», «Забытые пруды», «Стоячий оазис» и «Изменённые создания», затем Хамуул Рунический Тотем и Нара Дикая Грива — прежде чем откроется «Вожди Клыка».",
 	["Needs the Defias Brotherhood escort step first."] = "Сначала нужен этап сопровождения Братства Справедливости.",
-	["New in Forever: Arcanist Doan has the book."] = "Новое в Forever: книга у чародея Доана.",
+	["New in Forever. The book is picked up in the monastery, most likely in the Library, not dropped by Arcanist Doan."] = "Новое в Forever. Книгу нужно подобрать в монастыре, скорее всего в Библиотеке: чародей Доан её не роняет.",
 	["Not always in the same place inside Ruins of Lordaeron."] = "Не всегда в одном и том же месте внутри Руин Лордерона.",
 	["One run may not have enough of these creatures to finish it."] = "За один заход может не хватить этих существ, чтобы завершить задание.",
 	["Opens once The Dark Iron War is done."] = "Открывается, когда завершена «Война Темного Железа».",
@@ -1777,7 +1914,7 @@ L.STRINGS = {
 	["He stands still at the end of the spider trail. Click the small panel next to him to wake him."] = "Он неподвижно стоит в конце паучьей тропы. Нажмите на маленькую панель рядом с ним, чтобы разбудить его.",
 	["He waits behind a magic barrier in the middle of the city, with Suffused Treants in front of it. Kill the treants, then talk to Magus Fansy Goodbringer, just south of the barrier: he brings it down."] = "Он ждёт за магическим барьером в центре города, а перед ним — Насыщенные древни. Убейте древней, затем поговорите с магусом Фэнси Добротворцем к югу от барьера: он снимает его.",
 	["He waits in an underwater cave below Twilight Lord Kelris's temple, where groups often miss him. Swim under the temple to reach him."] = "Он ждёт в подводной пещере под храмом сумеречного лорда Келриса, где группы часто его пропускают. Проплывите под храмом, чтобы добраться до него.",
-	["Kill Lady Anacondra, Lord Cobrahn, Lord Pythas and Lord Serpentis, then talk to the Disciple of Naralex at the entrance and escort him to Naralex. Protect him during the ritual: Mutanus comes at the end."] = "Убейте госпожу Анакондру, лорда Кобрана, лорда Пифаса и лорда Серпентиса, затем поговорите с Учеником Наралекса у входа и проводите его к Наралексу. Защищайте его во время ритуала: в конце приходит Мутанус.",
+	["Kill Lady Anacondra, Lord Cobrahn, Lord Pythas and Lord Serpentis, then talk to the Disciple of Naralex at the entrance and escort him to Naralex. Protect him during the ritual: Mutanus comes at the end."] = "Убейте леди Анакондру, лорда Кобрана, лорда Питонаса и лорда Серпентиса, затем поговорите с Учеником Наралекса у входа и проводите его к Наралексу. Защищайте его во время ритуала: в конце приходит Мутанус.",
 	["Kill the raptor matriarch in the tall grass. A wave of raptors comes when she dies, and Shadetooth runs in once they are dead."] = "Убейте матриарха ящеров в высокой траве. Когда она умирает, приходит волна ящеров, а когда они мертвы, вбегает Тенеклык.",
 	["Once Twilight Lord Kelris is dead, light the four Fires of Aku'mai in his room, one after the other. Each one brings a wave of creatures. When all are dead, the door to Aku'mai opens."] = "Когда сумеречный лорд Келрис мёртв, зажгите четыре Огня Аку'мая в его комнате, один за другим. Каждый приводит волну существ. Когда все мертвы, дверь к Аку'маю открывается.",
 	["He is not there at first. In the sewers, past Atrexis, clear the north-east room, the one with market stalls and a small pink Summoning Circle (not Atrexis's large one). A player carrying the Tome of Dalaran then clicks the circle, and Lyn comes out of the large round grated door. To get the tome, loot the Black Tome on the table in Archmage Arugal's room in Shadowfang Keep, after his kill, then use it at the Leyline Focus, a blue crystal in a back room at Ambermill, in Silverpine Forest."] = "Сначала его там нет. В канализации, за Атрексисом, зачистите северо-восточную комнату — ту, где рыночные прилавки и маленький розовый круг призыва (не большой Атрексиса). Игрок с «Фолиантом Даларана» нажимает на круг, и Лин выходит из больших круглых решётчатых дверей. Чтобы получить фолиант, заберите Чёрный фолиант со стола в комнате архимага Аругала в Крепости Темного Клыка после его убийства, затем используйте его у Лей-фокуса — синего кристалла в дальней комнате в Янтарной мельнице, в Серебряном бору.",
@@ -1940,7 +2077,6 @@ L.STRINGS = {
 	["When his mana runs out, he turns the whole group into animals for 8 seconds, then channels Evocation for 6 seconds to refill it."] = "Когда у него кончается мана, он превращает всю группу в животных на 8 секунд, затем 6 секунд поддерживает «Призыв», чтобы восполнить её.",
 	["When his target is close, he knocks down and roots everyone near him for 10 seconds. Ranged players, keep your distance."] = "Когда его цель рядом, он сбивает с ног и обездвиживает всех возле себя на 10 секунд. Стрелкам держать дистанцию.",
 	["When the tank reaches him: Nature damage and a 5-second stun around him."] = "Когда танк доходит до него: урон от силы природы и оглушение вокруг него на 5 секунд.",
-	["Whoever strikes him or an ally near him, Overlord Ramtusk included, takes Nature damage."] = "Тот, кто бьёт его или союзника рядом с ним, включая владыку Рамтаска, получает урон от силы природы.",
 	["With his hammer, below 33% health: a heavy blow that stuns the tank for 3 seconds."] = "С молотом, ниже 33% здоровья: тяжёлый удар, оглушающий танка на 3 секунды.",
 	["With his two axes, from 66% health: extra attacks on the tank."] = "С двумя топорами, с 66% здоровья: дополнительные атаки по танку.",
 	-- Descriptions (bosses and dungeons).
@@ -1950,6 +2086,7 @@ L.STRINGS = {
 	["A raid new in WoW: Forever, on Mount Hyjal. Its bosses and loot are not known yet."] = "Рейд, новый в WoW: Forever, на горе Хиджал. Его боссы и добыча пока неизвестны.",
 	["A raid new in WoW: Forever. Its bosses and loot are not known yet."] = "Рейд, новый в WoW: Forever. Его боссы и добыча пока неизвестны.",
 	["A Titan dig site above Whelgar's Excavation, caught out of time, where the Titans' constructs answer to no one now. Inside: the Lost Marsh, Stalker's Thicket, the Site of the Guardian and the Lost Dig Site."] = "Титанический раскоп над Раскопками Вельгара, вырванный из времени: создания титанов больше никому не подчиняются. Внутри: Затерянное болото, Чаща Сталкера, Место Стража и Затерянный раскоп.",
+	["Inside: the Lost Marsh, Stalker's Thicket, the Site of the Guardian and the Lost Dig Site."] = "Внутри: Затерянное болото, Чаща Сталкера, Место Стража и Затерянный раскоп.",
 	["A titan site hidden in Un'Goro Crater, guarding secrets of the makers among the crater's dinosaurs."] = "Титанический комплекс, скрытый в кратере Ун'Горо: среди динозавров кратера он хранит тайны творцов.",
 	["A Titan vault buried under the Badlands, where Dark Iron dwarves and troggs dig for the secrets of the earthen, and the stone keeper Archaedas guards the deepest hall."] = "Титаническое хранилище под Бесплодными землями, где дворфы Темного Железа и трогги копают в поисках тайн земляных, а каменный хранитель Архаэдас стережёт самый глубокий зал.",
 	["A treant twisted by fel magic, among the Suffused Treants in the streets."] = "Древень, искажённый магией Скверны, среди Насыщенных древней на улицах.",
@@ -1968,11 +2105,11 @@ L.STRINGS = {
 	["Baron Silverlaine's keep above Pyrewood fell to Archmage Arugal, who summoned the worgen to fight the Scourge and lost control of them. Now the keep belongs to Arugal and his pack."] = "Крепость барона Сребролена над Огненной Падью пала от руки архимага Аругала, который призвал воргенов на бой со Плетью и потерял над ними контроль. Теперь крепость принадлежит Аругалу и его стае.",
 	["Behind the furbolg gates in the far north of Azshara lies one of the largest furbolg dens, and something is corrupting it from the depths."] = "За вратами фурболгов на дальнем севере Азшары лежит одно из крупнейших логовищ фурболгов, и из глубин его что-то оскверняет.",
 	["Beneath Ironforge, someone has broken into the tomb of the dwarven kings."] = "Под Стальгорном кто-то вскрыл гробницу дворфийских королей.",
-	["Beneath Moonbrook lie the gold mines Stormwind abandoned during the First War. Edwin VanCleef's Defias Brotherhood has made them its stronghold, and deep inside, in a hidden sea cave, his crew is finishing a warship meant for Stormwind."] = "Под Лунной поляной лежат золотые рудники, брошенные Штормградом в Первую войну. Братство Справедливости Эдвина ван Клифа сделало их своим оплотом, и в глубине, в скрытой морской пещере, его команда достраивает военный корабль, предназначенный Штормграду.",
-	["Beneath Orgrimmar's Cleft of Shadow runs a chasm of lava and stone where troggs, fire elementals and the Searing Blade, a cult of demon-worshippers, have taken root under the Horde's capital."] = "Под Расселиной Теней Оргриммара тянется пропасть из лавы и камня, где трогги, элементали огня и Раскалённый Клинок — культ поклонников демонов — обосновались под столицей Орды.",
+	["Beneath Moonbrook lie the gold mines Stormwind abandoned during the First War. Edwin VanCleef's Defias Brotherhood has made them its stronghold, and deep inside, in a hidden sea cave, his crew is finishing a warship meant for Stormwind."] = "Под Луноречьем лежат золотые рудники, брошенные Штормградом в Первую войну. Братство Справедливости Эдвина ван Клифа сделало их своим оплотом, и в глубине, в скрытой морской пещере, его команда достраивает военный корабль, предназначенный Штормграду.",
 	["Blasts everyone nearby with arcane energy."] = "Бьёт всех рядом магической энергией.",
 	["Clear his room before the pull: a patrol walks by. His head is looted for the quests Abominable Creatures and Unending Torment."] = "Зачистите его комнату перед пулом: мимо ходит патруль. Его голову снимают для заданий «Омерзительные создания» и «Нескончаемые муки».",
 	["Dalaran, the city of the Kirin Tor, stands rebuilt in the Alterac Mountains, its magic barrier gone and its streets overrun. Go in through the sewers, to a portal at the end of a long pipe, then fight up through the streets to the Shade of the Archmage.\n\nImmunities: much of the city takes no Arcane damage. Constructs and elementals ignore bleeds and poisons, and the treants take no Nature damage, though they bleed.\n\nTrash: interrupt the Mana Phantoms' Mana Burn, and stand in the pool a Saturated Remnant leaves behind to regain mana. Every kill gives Kirin Tor reputation."] = "Даларан, город Кирин-Тора, отстроен заново в Альтеракских горах: магический барьер исчез, а улицы заполонены врагами. Входите через канализацию, к порталу в конце длинной трубы, затем пробивайтесь вверх по улицам к Тени Архимага.\n\nИммунитеты: большая часть города не получает урон от тайной магии. Создания и элементали игнорируют кровотечения и яды, а древни не получают урон от силы природы, хотя и кровоточат.\n\nТрэш: прерывайте «Сжигание маны» манапризраков и стойте в луже, что оставляет Насыщенный осколок, чтобы восстановить ману. Каждое убийство даёт репутацию с Кирин-Тором.",
+	["Go in through the sewers, to a portal at the end of a long pipe, then fight up through the streets to the Shade of the Archmage.\n\nImmunities: much of the city takes no Arcane damage. Constructs and elementals ignore bleeds and poisons, and the treants take no Nature damage, though they bleed.\n\nTrash: interrupt the Mana Phantoms' Mana Burn, and stand in the pool a Saturated Remnant leaves behind to regain mana. Every kill gives Kirin Tor reputation."] = "Входите через канализацию, к порталу в конце длинной трубы, затем пробивайтесь вверх по улицам к Тени Архимага.\n\nИммунитеты: большая часть города не получает урон от тайной магии. Создания и элементали игнорируют кровотечения и яды, а древни не получают урон от силы природы, хотя и кровоточат.\n\nТрэш: прерывайте «Сжигание маны» манапризраков и стойте в луже, что оставляет Насыщенный осколок, чтобы восстановить ману. Каждое убийство даёт репутацию с Кирин-Тором.",
 	["Druids of the Cenarion Circle came to these caves to heal the land, but their leader Naralex fell into a nightmare. His disciples, the Druids of the Fang, have turned the caverns into a twisted den of deviate creatures."] = "Друиды Круга Кенария пришли в эти пещеры, чтобы исцелить землю, но их предводитель Наралекс погрузился в кошмар. Его ученики, друиды Клыка, превратили пещеры в искажённое логово девиантов.",
 	["Fights in the arena of the Launch Bay."] = "Сражается на арене Стартовой площадки.",
 	["Fights with his pet Chomper in the trogg cave off the outer ring."] = "Сражается со своим питомцем Хрумом в пещере троггов у внешнего кольца.",
@@ -2015,10 +2152,10 @@ L.STRINGS = {
 	["Sometimes found in the side passage after Rhahk'Zor."] = "Иногда встречается в боковом проходе после Рак'Зора.",
 	["Stormwind's prison beneath the canals has fallen to a riot. Led by Bazil Thredd of the Defias Brotherhood, the inmates have taken the cell blocks, and the Warden wants the ringleaders dealt with."] = "Тюрьма Штормграда под каналами охвачена бунтом. Во главе с Базилом Треддом из Братства Справедливости заключённые захватили блоки камер, и Надзиратель требует разобраться с главарями.",
 	["The broodmother of the black dragonflight waits in her lair beneath the Wyrmbog. Forever's version is not known yet."] = "Праматерь чёрной стаи драконов ждёт в своём логове под Драконьими топями. Версия Forever пока неизвестна.",
+	["Forever's version is not known yet."] = "Версия Forever пока неизвестна.",
 	["The creatures still alive in his room join the fight when he is pulled. Clear the room first."] = "Существа, оставшиеся живыми в его комнате, присоединяются к бою при пуле. Сначала зачистите комнату.",
 	["The Cult of the Damned's school of necromancy in the crypts under Caer Darrow, where Darkmaster Gandling trains new servants for the Scourge."] = "Школа некромантии Культа Проклятых в склепах под Каэр Дарроу, где Тёмный магистр Гандлинг обучает новых слуг Плети.",
 	["The Dark Iron dwarves' capital deep in Blackrock Mountain, ruled by Emperor Dagran Thaurissan in the shadow of the Firelord."] = "Столица дворфов Темного Железа в глубине Черной горы, которой правит император Дагран Тауриссан в тени Владыки Огня.",
-	["The dead side of Stratholme: Baron Rivendare's ziggurats and slaughterhouse, where the Scourge readies its armies."] = "Мёртвая сторона Стратхольма: зиккураты и бойня барона Ривендера, где Плеть готовит свои армии.",
 	["The eastern wing of Eldre'Thalas, the ruined night elf city, overrun by satyrs and corrupted treants under Alzzin the Wildshaper."] = "Восточное крыло Эльдре'Таласа, разрушенного города ночных эльфов, захваченное сатирами и осквернёнными древнями под началом Алззина Дикого Ваятеля.",
 	["The last boss, deep in the Kraul."] = "Последний босс, в глубине лабиринта.",
 	["The last boss, in Honor's Tomb."] = "Последний босс, в Гробнице Доблести.",
@@ -2026,7 +2163,6 @@ L.STRINGS = {
 	["The last boss, in the Purple Parlor of the Violet Citadel."] = "Последний босс, в Пурпурном зале Фиолетовой цитадели.",
 	["The last boss, in Tinkers' Court. Press the buttons on the bomb faces to stop the walking bombs."] = "Последний босс, в Зале изобретателей. Нажимайте кнопки на ликах бомб, чтобы остановить ходячие бомбы.",
 	["The last boss: a stone construct of the Titans."] = "Последний босс: каменное создание титанов.",
-	["The living side of plagued Stratholme, where the Scarlet Crusade holds out against the Scourge under Grand Crusader Dathrohan, the dreadlord Balnazzar in disguise."] = "Живая сторона чумного Стратхольма, где Алый орден держит оборону против Плети под началом верховного крестоносца Датрохана — переодетого дракона ужаса Балназзара.",
 	["The longer the fight, the more worgs join him: a Bleak Worg after 30 to 45 seconds, then a Slavering Worg, then a Lupine Horror."] = "Чем дольше бой, тем больше воргов к нему прибегает: Мрачный ворг через 30–45 секунд, затем Слюнявый ворг, затем Волчий ужас.",
 	["The longest fight of the dungeon. Keep the interrupts going and bring him down."] = "Самый долгий бой в подземелье. Не прекращайте прерывания и одолейте его.",
 	["The lower halls of Blackrock Spire, held by the Blackrock orcs, ogres and trolls that serve Warchief Rend Blackhand."] = "Нижние залы пика Черной горы, занятые орками Черной горы, ограми и троллями, что служат вождю Ренду Черноруку.",
@@ -2036,6 +2172,7 @@ L.STRINGS = {
 	["The prison on Alcaz Island still holds Defias Brotherhood inmates, but naga have taken the island and made the prison their own."] = "Тюрьма на острове Алькац всё ещё удерживает заключённых Братства Справедливости, но наги захватили остров и сделали тюрьму своей.",
 	["The Scarlet Crusade's armory and training halls, where Herod, the Scarlet Champion, drills the Crusade's soldiers."] = "Оружейная и учебные залы Алого ордена, где Герод, Алый Защитник, муштрует солдат ордена.",
 	["The Scarlet Monastery was a seat of Lordaeron's priesthood until the Scarlet Crusade made it their stronghold after the Third War. In its graveyard wing the Crusade's interrogators work, and the dead buried there no longer rest."] = "Монастырь Алого ордена был оплотом жречества Лордерона, пока после Третьей войны Алый орден не сделал его своей крепостью. В его кладбищенском крыле трудятся дознаватели ордена, и погребённые там мертвецы больше не покоятся с миром.",
+	["In its graveyard wing the Crusade's interrogators work, and the dead buried there no longer rest."] = "В его кладбищенском крыле трудятся дознаватели ордена, и погребённые там мертвецы больше не покоятся с миром.",
 	["The Scourge still holds the ruins of the old capital, where a necromancer is building his strength."] = "Плеть всё ещё держит руины старой столицы, где некромант копит силы.",
 	["The sun-baked city of the Sandfury trolls in northern Tanaris, ruled by Chief Ukorz Sandscalp, with the hydra Gahz'rilla in its sacred pool."] = "Выжженный солнцем город троллей Песчаной Ярости на севере Танариса, которым правит вождь Укорз Песчаный Череп, а в его священном пруду обитает гидра Газ'рилла.",
 	["The tank is feared several times in this fight. A shaman's Tremor Totem helps."] = "В этом бою танка несколько раз пугают. Помогает тотем трепета шамана.",
@@ -2698,6 +2835,8 @@ L.STRINGS = {
 	["Rizzle's Schematics"] = "Чертежи Риззла",
 	["Shattered Necklace"] = "Поврежденное ожерелье",
 	["Optional: it leads to The Hidden Chamber."] = "Необязательное: ведёт к «Потайной палате».",
+	-- Uldaman's Restoring the Necklace: take it before Archaedas (2026-11-18; drafted, to be checked)
+	["Hand in Find the Gems with the phial and take this before you fight Archaedas: he drops the power source only while it is in your log."] = "Сдайте «Найди самоцветы» с помощью фиала и возьмите это задание до боя с Архаэдасом: источник силы падает с него, только пока задание есть в вашем журнале.",
 	["The Executioner's Key"] = "Ключ палача",
 	["The Sandfury Executioner drops the {item:8444:Executioner's Key:1}. In the original game, it opened the prisoners' cages on the pyramid, and freeing them started the fight on the stairs. This is not yet checked on Forever. Sergeant Bly drops the rod Chief Engineer Bilgewhizzle asks for."] = "Палач Песчаной Ярости роняет {item:8444:Executioner's Key:1}. В исходной игре он открывал клетки пленников на пирамиде, а их освобождение начинало бой на лестнице. На Forever это еще не проверено. Сержант Блай роняет жезл, который просит главный инженер Трюмнос Шипящий.",
 	["Gahz'rilla, a hidden boss"] = "Газ'рилла, скрытый босс",
@@ -2717,7 +2856,8 @@ L.STRINGS = {
 	["Offered once one of the four More Components of Importance quests is done. Three Kings of Flame also needs your side's Bodley's Unfortunate Fate, after your class's Anthion's Parting Words."] = "Предлагается после выполнения одного из четырех заданий «Еще одна важная составляющая заклинания». Для задания «Три властелина огня» также нужно задание вашей фракции «Злосчастная доля Бодли», а перед ним — задание вашего класса «Прощальные слова Антиона».",
 	["Duke Nicholas Zverenhoff then sends you to Lord Maxwell Tyrosus at Light's Hope Chapel, who gives The Argent Hold: open it for a choice of Argent Avenger, Argent Defender or Argent Crusader."] = "Затем герцог Николас Зверенхоф отправляет вас к лорду Максвеллу Тиросусу в Часовню Последней Надежды, и тот дает задание «Оплот Серебряного Рассвета»: откройте хранилище и выберите Серебряного мстителя, Серебряного защитника или Серебряного рыцаря.",
 	["Stratholme's Key to the City"] = "Ключ от города Стратхольма",
-	["Magistrate Barthilas always drops the {item:12382:Key to the City:2}. It is not the key from the City of Dalaran's quest of the same name. In the original game, it opened the Service Entrance's gate from outside, so a group could go straight to the Baron's side. This is not yet checked on Forever."] = "Магистрат Бартилас всегда роняет {item:12382:Key to the City:2}. Это не ключ из одноименного задания в городе Даларан. В исходной игре он открывал снаружи ворота служебного входа, чтобы группа могла сразу пройти на сторону барона. На Forever это еще не проверено.",
+	-- (0.39.22: the Service Gate, as the page names that door; reworded, drafted, to be checked)
+	["Magistrate Barthilas always drops the {item:12382:Key to the City:2}. It is not the key from the City of Dalaran's quest of the same name. In the original game, it opened the Service Gate from outside, so a group could go straight to the Baron's side. This is not yet checked on Forever."] = "Магистрат Бартилас всегда роняет {item:12382:Key to the City:2}. Это не ключ из одноименного задания в городе Даларан. В исходной игре он открывал снаружи Черный ход, чтобы группа могла сразу пройти на сторону барона. На Forever это еще не проверено.",
 	-- Forever's own dungeons: Before you go's notes (the Dark Iron Map, the Titan Relic), the Treaty of Understanding and two quest notes (Unending Torment, part 2; Changing Tastes) (2026-10-30; drafted, to be checked)
 	["Treaty of Understanding"] = "Договор о взаимопонимании",
 	["The Dark Iron Map"] = "Карта Темного Железа",
@@ -2755,7 +2895,6 @@ L.STRINGS = {
 	["A Crumpled Up Note, dropped by foes inside Blackrock Depths"] = "Смятая записка, роняют противники внутри Глубин Черной горы",
 	-- Another dungeon's quest giver on a chain's step, named as several wings share it or by the one wing keeping it (2026-10-30; drafted, to be checked)
 	["Ysida Harmon, inside Stratholme"] = "Исида Хармон, внутри Стратхольма",
-	["Ysida Harmon, inside Stratholme: Service Gate"] = "Исида Хармон, внутри Стратхольма (черный ход)",
 	["Shen'dralar Ancient, inside Dire Maul: Capital Gardens"] = "Древний Шен'дралар, внутри Забытого Города (запад)",
 	["Ancient Equine Spirit, inside Dire Maul: Capital Gardens"] = "Дух древнего коня, внутри Забытого Города (запад)",
 	-- Quests that start from an item: where the item is, without "Item start:" or "Use" (the Quests tab shows it on its own line) (2026-10-30; drafted, to be checked)
@@ -2858,7 +2997,7 @@ L.STRINGS = {
 	["Needs the two earlier Hidden Enemies steps from Thrall. The first asks for a Lieutenant's Insignia, dropped by the Burning Blade Fanatics and Apprentices in Durotar."] = "Нужны два более ранних этапа «Скрытых врагов» от Тралла. Для первого нужен знак лейтенанта, его роняют фанатики и ученики Пылающего Клинка в Дуротаре.",
 	["The quest itself gives no item; its follow-up, In Nightmares, does."] = "Само задание не даёт предмета; его продолжение «В кошмарах» — даёт.",
 	["Mutanus the Devourer, a hidden boss"] = "Мутанус Пожиратель, скрытый босс",
-	["Kill the four Fanglords: Lady Anacondra, Lord Cobrahn, Lord Pythas and Lord Serpentis. Then talk to the Disciple of Naralex at the entrance and escort him to Naralex. Mutanus comes at the end of the ritual. He drops the {item:10441:Glowing Shard}, which starts the quest The Glowing Shard."] = "Убейте четырёх Повелителей Клыка: госпожу Анакондру, лорда Кобрана, лорда Пифаса и лорда Серпентиса. Затем поговорите с Учеником Наралекса у входа и проводите его к Наралексу. В конце ритуала приходит Мутанус. С него падает {item:10441:Glowing Shard}, который начинает задание «Светящийся осколок».",
+	["Kill the four Fanglords: Lady Anacondra, Lord Cobrahn, Lord Pythas and Lord Serpentis. Then talk to the Disciple of Naralex at the entrance and escort him to Naralex. Mutanus comes at the end of the ritual. He drops the {item:10441:Glowing Shard}, which starts the quest The Glowing Shard."] = "Убейте четырёх Повелителей Клыка: леди Анакондру, лорда Кобрана, лорда Питонаса и лорда Серпентиса. Затем поговорите с Учеником Наралекса у входа и проводите его к Наралексу. В конце ритуала приходит Мутанус. С него падает {item:10441:Glowing Shard}, который начинает задание «Светящийся осколок».",
 	-- The owner's calls of 2026-11-03: The Test of Righteousness listed as the step done here (its objective), Grubbis before you go, and the Drowned City's two Horde quests (their names and objectives) (2026-11-03; drafted, to be checked)
 	["Using Jordan's Weapon Notes, find some Whitestone Oak Lumber, Bailor's Refined Ore Shipment, Jordan's Smithing Hammer, and a Kor Gem, and return them to Jordan Stilwell in Ironforge."] = "С помощью оружейных заметок Джордана найдите дубовую древесину с Белокаменной мельницы, партию очищенной руды Бейлора, кузнечный молот Джордана и самоцвет Кор и отнесите их Джордану Стилвеллу в Стальгорн.",
 	["Grubbis, a hidden boss"] = "Граббис, скрытый босс",
@@ -2941,8 +3080,8 @@ L.STRINGS = {
 	["Saving the Best for Last"] = "Лучшее напоследок",
 	["Back to the Beginning"] = "Назад к началу",
 	["Speak with Shoni"] = "Поговорите с Шони",
-	["Talk to Furen Longbeard in Stormwind to get your armour."] = "Поговорите с Фьюреном Длиннобородом в Штормграде, чтобы получить доспех.",
-	["Talk to Thun'grim Firegaze in the Barrens to get your armour."] = "Поговорите с Тун'гримом Огневзором в Степях, чтобы получить доспех.",
+	["Talk to Furen Longbeard in Stormwind to get your armor."] = "Поговорите с Фьюреном Длиннобородом в Штормграде, чтобы получить доспех.",
+	["Talk to Thun'grim Firegaze in the Barrens to get your armor."] = "Поговорите с Тун'гримом Огневзором в Степях, чтобы получить доспех.",
 	["Kill 12 Mana Surges in the allowed time limit."] = "Убейте 12 всплесков маны за отведённое время.",
 	["Talk to Tabetha in Dustwallow Marsh for your reward."] = "Поговорите с Табетой в Пылевых топях, чтобы получить награду.",
 	["Bring a Kor Gem to Thundris Windweaver in Darkshore."] = "Принесите самоцвет Кор Тундрису Ветроткачу на Тёмный берег.",
@@ -3001,7 +3140,6 @@ L.STRINGS = {
 	["Then Falrin Treeshaper gives The Challenge, done at the Ring of Law in Blackrock Depths."] = "Затем Фалрин Садовник дает задание «Вызов», которое выполняется на Кольце Закона в Глубинах Черной горы.",
 	["Then Lord Grayson Shadowbreaker gives The Divination Scryer. The chain ends with Judgment and Redemption in Scholomance."] = "Затем лорд Грейсон Тенелом дает задание «Магический кристалл». Цепочка заканчивается заданием «Суд и расплата» в Некроситете.",
 	["Then Anthion Harmon gives Anthion's Strange Request. The chain goes on to Anthion's Old Friend in Dire Maul."] = "Затем Антион Хармон дает задание «Странная просьба Антиона». Цепочка продолжается заданием «Старый друг Антиона» в Забытом Городе.",
-	["Then Duke Nicholas Zverenhoff gives Above and Beyond, done at the Service Gate."] = "Затем герцог Николас Зверенхоф дает задание «Сверх всяких ожиданий», которое выполняется за черным ходом.",
 	["Optional: it leads to Blackfathom Villainy."] = "Необязательное: ведёт к заданию «Злодейство Непроглядной Пучины».",
 	-- City of Dalaran: the Horde's Heart of Disruption names who starts the chain, as the Image of Archmage Modera gives the quest itself (2026-11-03; drafted, to be checked)
 	["Magus Wordeen Voidglare in Tarren Mill starts the chain with Prison Break In and Key to the City. At the Lordamere Internment Camp, kill four traitors for their artifacts (they take 5 to 10 minutes to come back) and take the Grimy Key from the Warden's Footlocker, upstairs in the two-storey building. Blood in the Streets then leads through the north sewers to the Image of Archmage Modera. It gives the Dalaran Sewer Key, and Shrewd Negotiations follows, to Archmage Celindra. The mote drops from the Shade of the Archmage, the last boss."] = "Магус Вордин Пустоглаз в Мельнице Таррен начинает цепочку с заданий «Проникнуть в тюрьму» и «Ключ от города». В лагере Лордамер убейте четырёх предателей ради их артефактов (они возвращаются за 5–10 минут) и заберите Грязный ключ из сундука надзирателя наверху двухэтажного здания. Затем «Кровь на улицах» ведёт через северную канализацию к Образу архимага Модеры. Он даёт ключ от даларанской канализации, а следом идёт «Хитрые переговоры» к архимагу Селиндре. Частица падает с Тени Архимага, последнего босса.",
@@ -3074,6 +3212,16 @@ L.STRINGS = {
 	["Answer Parqual Fintallas' question successfully and then speak to him again. He will remain in the Undercity until you are ready."] = "Правильно ответьте на вопрос Паркваля Финталласа, затем поговорите с ним снова. Он будет ждать вас в Подгороде, пока вы не будете готовы.",
 	["Travel to the Dwarven District in Stormwind and find an engineer who can help."] = "Отправляйтесь в Дворфийский квартал Штормграда и найдите инженера, который сможет помочь.",
 	["Return to Alba Fairmoon in Westfall."] = "Вернитесь к Альбе Фэрмун в Западный Край.",
+	-- The quest check of 2026-11-05 (the owner's calls of that day): Elemental Aid's second giver, and Before you go's Viewing Room Key, Postmaster Malown, Stratholme's Scarlet Key and Uldaman's Keystone (2026-11-05; drafted, to be checked)
+	["Rau Cliffrunner (or Prate Cloudseer), Thousand Needles"] = "Рау Скальный Бегун (или Пратта Заклинательница Туч), Тысяча Игл",
+	["The Viewing Room Key"] = "Ключ от Демонстрационной комнаты",
+	["Rattlegore drops the {item:13873:Viewing Room Key:1}. In the original game, it opened the Viewing Room door, the way on to Vectus and Marduk Blackpool, and one key did for the whole group. This is not yet checked on Forever."] = "Грохотокост роняет {item:13873:Viewing Room Key:1}. В исходной игре он открывал дверь Демонстрационной комнаты, путь к Вектусу и Мардуку Черному Омуту, и одного ключа хватало на всю группу. На Forever это еще не проверено.",
+	["Postmaster Malown, a hidden boss"] = "Почтальон Малоун, скрытый босс",
+	["The Stratholme Courier drops the city's postbox keys. In the original game, each locked postbox you opened brought out guards, and Postmaster Malown came with the third. This is not yet checked on Forever."] = "Курьер Стратхольма роняет ключи от почтовых ящиков города. В исходной игре каждый открытый запертый почтовый ящик выпускал стражей, а с третьим приходил почтальон Малоун. На Forever это еще не проверено.",
+	["{item:7146:The Scarlet Key:2} is in Doan's Strongbox, in the Scarlet Monastery's Library. In the original game, it also opened the Bastion Door and the door of the Hall of High Command here, and a rogue could pick both locks. This is not yet checked on Forever."] = "{item:7146:The Scarlet Key:2} лежит в сундуке Доана, в Библиотеке Монастыря Алого ордена. В исходной игре он открывал здесь и дверь Бастиона, и дверь Зала Верховного командования, а разбойник мог вскрыть оба замка. На Forever это еще не проверено.",
+	["The Keystone"] = "Замковый камень",
+	-- Uldaman's Keystone for both sides, reworded: the owner's report, 2026-11-05 (drafted, to be checked)
+	["Revelosh drops {item:7741:The Shaft of Tsol:1}. Put together with the {item:7740:Gni'kiv Medallion} from Baelog's Chest, behind the Lost Dwarves, it makes the {item:7733:Staff of Prehistoria}, which works the Keystone in the Map Chamber, past Revelosh, and opens Ironaya's door. This is not yet checked on Forever."] = "Ревелош роняет {item:7741:The Shaft of Tsol:1}. Его можно соединить с предметом {item:7740:Gni'kiv Medallion} из Сундука Бейлога, за потерянными дворфами, и получится {item:7733:Staff of Prehistoria}, который приводит в действие Замковый камень в Зале Карт, за Ревелошем, и открывает дверь Айронаи. На Forever это еще не проверено.",
 	-- The steps the Quests tab now lists one by one in a chain, numbered as parts of a name (The Tome of Valor, The True Masters, Down the Scarlet Path, Prospect of Faith, Passing Word of a Threat, The Smoldering Ruins of Thaurissan, Detonation at a Distance): their objectives and givers (2026-11-06; drafted, to be checked)
 	["Talk to someone in Stormwind Intelligence about acquiring a remote detonator."] = "Поговорите с кем-нибудь из разведки Штормграда о том, как раздобыть дистанционный детонатор.",
 	["Bring the Remote Detonator Kit to Sprite Jumpsprocket in the Dwarven District of Stormwind."] = "Отнесите набор дистанционного детонатора Спрайту Прыг-Шестерёнке в Дворфийский квартал Штормграда.",
@@ -3104,6 +3252,45 @@ L.STRINGS = {
 	["Royal Historian Archesonus, Ironforge"] = "Королевский историк Архесоний, Стальгорн",
 	["Duthorian Rall, Stormwind City"] = "Дуториан Ралл, Штормград",
 	["Daphne Stilwell, Westfall"] = "Дафна Стилвелл, Западный Край",
+	-- Adventure Mode: the door rumours (Data/Authored/Rumours.lua), the owner's 38 lines of 2026-11-07
+	["Someone in Ironforge pays good coin for heirlooms brought up from the kings' resting place."] = "Кто-то в Стальгорне хорошо платит за фамильные реликвии, вынесенные из усыпальницы королей.",
+	["Brill folk swear the plague's dead still walk the courtyards where the human kings once ruled."] = "Жители Брилла клянутся, что жертвы чумы до сих пор бродят по дворам, где когда-то правили короли людей.",
+	["At the end of a hidden dig in the Wetlands hills, a Titan figure of stone waits to be woken."] = "В конце потайной штольни в холмах Болотины каменное изваяние титанов ждёт, когда его пробудят.",
+	["Fishers on Lordamere Lake say wild magic has taken the mages' city, and even its books attack."] = "Рыбаки с озера Лордамер говорят, что дикая магия захватила город магов и там нападают даже книги.",
+	["Guards in Orgrimmar say chanting rises from the caves deep below the city."] = "Стражники Оргриммара говорят, что из пещер глубоко под городом доносятся песнопения.",
+	["Barrens herders say the caves have twisted every creature inside, druids included."] = "Пастухи в Степях говорят, что пещеры исказили всех тварей внутри, даже друидов.",
+	["Westfall farmers see the Defias vanish into the Moonbrook mine and hear hammering below."] = "Фермеры Западного Края видят, как люди из Братства Справедливости исчезают в руднике Луноречья, и слышат стук молотов из-под земли.",
+	["Travelers warn Pyrewood is not safe at night, and strange sounds can be heard from the keep!"] = "Путники предупреждают, что в Огненной Пади ночью небезопасно, а из замка доносятся странные звуки!",
+	["Zoram fishers see lights far under the waves, where cultists guard a shrine the sea took."] = "Рыбаки Зорамского взморья видят огни глубоко под волнами, где культисты стерегут святилище, поглощённое морем.",
+	["From Lakeshire to Darkshire, bounties are posted on outlaws who run free in Stormwind's prison."] = "От Приозерья до Тёмнолесья развешаны объявления о награде за преступников, что хозяйничают в штормградских застенках.",
+	["Gnome refugees mourn their lost home, still glowing from what they unleashed on the troggs."] = "Беженцы-гномы оплакивают потерянный дом и до сих пор светятся от того, что сами обрушили на троггов.",
+	["Word on the Barrens road is that a goblin trader is held captive deep in quilboar country."] = "На дорогах Степей поговаривают, что в глубине земель свинобразов держат в плену гоблина-торговца.",
+	["Anyone the Crusade suspects of carrying the plague is dragged to its crypts, and few come back."] = "Любого, кого крестоносцы сочтут носителем чумы, утаскивают в их склепы, и назад мало кто возвращается.",
+	["Scholars in Ironforge and the Undercity alike want books the zealots guard with hounds."] = "Учёные и в Стальгорне, и в Подгороде мечтают заполучить книги, которые фанатики стерегут с помощью гончих.",
+	["Steel clashes from dawn to dusk where red-clad recruits train beside racks of fine weapons."] = "От рассвета до заката звенит сталь там, где новобранцы в красном тренируются у стоек с отборными клинками.",
+	["Old knights whisper that the truth of the Ashbringer's death waits beside the Crusade's high altar."] = "Старые рыцари шепчутся, что правда о гибели Испепелителя ждёт у главного алтаря крестоносцев.",
+	["By the road to Thousand Needles, quilboar bow to the walking dead among their burial mounds."] = "У дороги в Тысячу Игл свинобразы преклоняются перед ходячими мертвецами среди своих могильников.",
+	["Badlands prospectors say troggs pour from a vault older than the dwarves, where Dark Irons now dig."] = "Старатели Бесплодных земель говорят, что из хранилища древнее самих дворфов лезут трогги, а теперь там копают дворфы Темного Железа.",
+	["Gadgetzan traders buy scarab shells and troll potions from anyone who dares enter the desert city."] = "Торговцы Прибамбасска скупают панцири жуков-скарабеев и тролльи снадобья у всех, кто решится войти в город в пустыне.",
+	["The centaurs of Desolace guard the grave of a god's son, where even the rocks attack intruders."] = "Кентавры Пустошей стерегут могилу сына бога, где даже камни нападают на чужаков.",
+	["Swamp of Sorrows hunters hear troll drums from a flooded pit, beating for a god of blood."] = "Охотники на Болоте Печали слышат, как из залитой водой ямы гремят тролльи барабаны во славу бога крови.",
+	["Searing Gorge miners swear the Dark Irons built a whole city of fire inside the mountain."] = "Горняки Тлеющего ущелья клянутся, что дворфы Темного Железа выстроили внутри горы целый огненный город.",
+	["An orc who calls himself warchief is gathering an army halfway up the mountain, scouts report."] = "Разведчики докладывают, что орк, называющий себя вождём, собирает армию на полпути к вершине горы.",
+	["Black dragons are bred for war at the mountain's peak, they say, and the way up is sealed."] = "Говорят, на вершине горы для войны выводят чёрных драконов, а дорога туда запечатана.",
+	["Feralas tales say the satyrs of the old city were elves once, until demons twisted them."] = "В Фераласе рассказывают, что сатиры из древних руин когда-то были эльфами, пока их не исказили демоны.",
+	["A gnome chained up among the ogres begs passers-by for cloth and leather to sew a disguise."] = "Гном, закованный в цепи среди огров, умоляет прохожих принести ткань и кожу, чтобы сшить себе маскировку.",
+	["Anyone who brings lost books home to the elves of the western halls earns a fine reward."] = "Тот, кто вернёт эльфам западных залов их утерянные книги, получит щедрую награду.",
+	["Boatmen won't row to the island in Darrowmere Lake, where the living learn to raise the dead."] = "Лодочники ни за что не поплывут к острову на озере Дарроумир, где живые учатся поднимать мертвецов.",
+	["The Argent Dawn warns that the Crusade's leader in the burned city is not what he seems."] = "Серебряный Рассвет предупреждает, что предводитель крестоносцев в сожжённом городе не тот, за кого себя выдаёт.",
+	["A ghost outside the walls begs the living to save the woman he loves before time runs out."] = "Призрак за городскими стенами умоляет живых спасти его возлюбленную, пока не стало слишком поздно.",
+	["Dustwallow trappers know of a black dragon in the Wyrmbog caves, guarded by swarms of whelps."] = "Охотники Пылевых топей знают о чёрном драконе в пещерах Драконьих топей, которого охраняют стаи дракончиков.",
+	["Night elves will not speak of the vaults beneath their forests, or of who was locked inside."] = "Ночные эльфы не говорят ни о подземных чертогах под их лесами, ни о тех, кто был там заперт.",
+	["Druids on the mountain call for fighters to guard the great tree against an old enemy."] = "Друиды на горе созывают бойцов, чтобы защитить великое древо от давнего врага.",
+	["Booty Bay sailors say the sea gave back an old troll city, and pirates got there first."] = "Моряки Пиратской Бухты говорят, что море вернуло древнюю твердыню троллей, но пираты успели туда первыми.",
+	["The ogres of the Riverglades have new friends in Twilight robes."] = "У огров Речных отмелей появились новые друзья в сумеречных балахонах.",
+	["Naga swarm the island jail off the Dustwallow coast, and its Defias inmates never got out."] = "Наги кишат в островной темнице у побережья Пылевых топей, а её узники из Братства Справедливости так и не выбрались.",
+	["Travelers say the furbolg of northern Azshara have gone mad, sickened by something below."] = "Путники говорят, что фурболги на севере Азшары обезумели: их отравляет что-то, скрытое внизу.",
+	["Past the dinosaurs lie stone halls that no one has mapped yet, or so the explorers whisper."] = "Исследователи шепчутся, что за землями динозавров лежат каменные залы, которых ещё нет ни на одной карте.",
 	-- Ruins of Lordaeron: Unending Torment's objectives (parts 2, 4 and 5), and where Remember That I Love You
 	-- goes next (2026-11-10; drafted, to be checked)
 	["Bring the Head of the Baron to Othmar's body, the Unfinished Abomination, in the Undercity."] = "Отнесите голову Барона к телу Отмара, Недоделанному поганищу, в Подгороде.",
@@ -3120,6 +3307,104 @@ L.STRINGS = {
 	["The Keystone"] = "Замковый камень",
 	-- Uldaman's Keystone for both sides, reworded: the owner's report, 2026-11-05 (drafted, to be checked)
 	["Revelosh drops {item:7741:The Shaft of Tsol:1}. Put together with the {item:7740:Gni'kiv Medallion} from Baelog's Chest, behind the Lost Dwarves, it makes the {item:7733:Staff of Prehistoria}, which works the Keystone in the Map Chamber, past Revelosh, and opens Ironaya's door. This is not yet checked on Forever."] = "Ревелош роняет {item:7741:The Shaft of Tsol:1}. Его можно соединить с предметом {item:7740:Gni'kiv Medallion} из Сундука Бейлога, за потерянными дворфами, и получится {item:7733:Staff of Prehistoria}, который приводит в действие Замковый камень в Зале Карт, за Ревелошем, и открывает дверь Айронаи. На Forever это еще не проверено.",
+	-- Stratholme as one dungeon (0.39.22, the owner's calls of 2026-11-12): its description, its two doors' names (the zone
+	-- map's door pins, the boss list's side rows) and what follows The Truth Comes Crashing Down (drafted, to be checked)
+	["Plagued Stratholme is split in two: the Scarlet Crusade holds the Main Gate's side under Grand Crusader Dathrohan, the dreadlord Balnazzar in disguise, and Baron Rivendare's Scourge holds the ziggurats and slaughterhouse past the Service Gate."] = "Чумной Стратхольм разделен надвое: сторону главных врат держит Алый орден под началом верховного крестоносца Датрохана — переодетого повелителя ужаса Балназзара, а зиккураты и бойня за черным ходом принадлежат Плети барона Ривендера.",
+	["Then Duke Nicholas Zverenhoff gives Above and Beyond."] = "Затем герцог Николас Зверенхоф дает задание «Сверх всяких ожиданий».",
+	["Main Gate"] = "Главные врата",
+	["Service Gate"] = "Черный ход",
+	-- The Library: Rituals of Power's whole chain for mages, Items of Power, Mage's Wand, the road to it before you go
+	-- and Journey to the Marsh's other trainers (the owner's chain, 2026-11-13; drafted, to be checked)
+	["Items of Power"] = "Предметы силы",
+	["Bring 1 Jade and the Bolt Charged Bramble to Tabetha in Dustwallow Marsh."] = "Принесите 1 нефрит и заряженную молнией колючку Табете в Пылевые топи.",
+	["Jade comes from tin, iron and gold veins, chests, lockboxes and gem sacks. Witherbark trolls in Arathi Highlands drop Witherbark Totem Sticks: use 10 of them at the Stone of Outer Binding there (52, 51) to make the Bolt Charged Bramble."] = "Нефрит добывают из оловянных, железных и золотых жил, находят в сундуках, сейфах и мешочках с самоцветами. Тролли Сухокожих в Нагорье Арати роняют тотемные палки Сухокожих: используйте 10 из них у Камня внешних уз там (52, 51), чтобы получить заряженную молнией колючку.",
+	["Mage's Wand"] = "Жезл мага",
+	["Speak with Tabetha after her ritual."] = "Поговорите с Табетой после ее ритуала.",
+	["The road to Rituals of Power"] = "Путь к заданию «Ритуалы силы»",
+	["A mage trainer in Stormwind, Ironforge, Orgrimmar, Thunder Bluff or the Undercity gives Journey to the Marsh, to Tabetha in Dustwallow Marsh. Her Hidden Secrets sends you to Magus Tirth in the Shimmering Flats, in Thousand Needles. After his Get the Scoop, take Rituals of Power from him before you go in: the book is in the Library."] = "Наставник магов в Штормграде, Стальгорне, Оргриммаре, Громовом Утёсе или Подгороде дает задание «Путь в болото» к Табете в Пылевые топи. Ее задание «Великие тайны» отправляет вас к Магусу Тирту на Мерцающую равнину в Тысяче Игл. После его задания «Волшебное слово» возьмите у него «Ритуалы силы», прежде чем войти: книга в Библиотеке.",
+	["Jennea Cannon, Stormwind City"] = "Джинния Пушка, Штормград",
+	["Anastasia Hartwell, Undercity"] = "Анастасия Хартвелл, Подгород",
+	["Deino, Orgrimmar"] = "Дейно, Оргриммар",
+	["Bink, Ironforge"] = "Бинк, Стальгорн",
+	["Also given by Jennea Cannon (Stormwind City)."] = "Также выдаёт Джинния Пушка (Штормград).",
+	["Magus Tirth, Thousand Needles"] = "Магус Тирт, Тысяча Игл",
+	-- Scarlet Monastery's abilities from the owner's recording (2026-11-16; drafted, to be checked)
+	["At half health he becomes immune to all attacks and spells for 8 seconds, while he casts Detonation."] = "На половине здоровья он на 8 секунд становится неуязвим для всех атак и заклинаний, пока применяет «Детонацию».",
+	["Removes a helpful magic effect from a player, or a harmful one from himself or an ally."] = "Снимает полезный магический эффект с игрока или вредный — с себя или союзника.",
+	["Hits his target, which then takes more Holy damage; it stacks up to 5 times."] = "Бьёт цель, которая затем получает больше урона от светлой магии; суммируется до 5 раз.",
+	["Once Whitemane raises him, he heals her fully."] = "Как только Уайтмейн поднимает его, он полностью исцеляет её.",
+	["Puts everyone near her to sleep for up to 10 seconds, just before she raises Mograine. Damage wakes a sleeper."] = "Усыпляет всех рядом с ней до 10 секунд прямо перед тем, как поднять Могрейна. Урон будит спящего.",
+	-- The Crest of Lordaeron's five places, each mark's line on the Ruins of Lordaeron map (2026-11-17; drafted, to be
+	-- checked)
+	["Mausoleum in the far north-west corner, on the wall"] = "Мавзолей в дальнем северо-западном углу, на стене",
+	["West tower, top floor, on the wall left of the doors"] = "Западная башня, верхний этаж, на стене слева от дверей",
+	["North-west tower, at the bottom, in front of the split staircase"] = "Северо-западная башня, внизу, перед раздвоенной лестницей",
+	["Behind the closed crypt doors, on the pitch-black wall"] = "За закрытыми дверями склепа, на непроглядно-чёрной стене",
+	["East tower, top floor, on the wall left of the doors"] = "Восточная башня, верхний этаж, на стене слева от дверей",
+	-- The Shaper's Terrace filled in (2026-11-18; drafted, to be checked): where it is, the overview's note, Before
+	-- you go's note on how the four console bosses and Nanaya come (one since 2026-11-19), and its six quests'
+	-- givers and notes. The bosses' names, the quests' names and objectives, and the places and things new
+	-- in Forever (the Pillar of Assimilation, the Achromatic Crystal, the cartographer's kit) stay as the game names
+	-- them in English; the Power Crystals are item links, named by the client.
+	["Four of the bosses are summoned with Power Crystals, 15 of one color at each one's console: see Before you go. Nanaya, the last boss, comes once those four are dead; the other five bosses are optional. To leave, jump off the edge of the terrace."] = "Четырех боссов вызывают кристаллами силы, по 15 одного цвета у пульта каждого: см. «Перед походом». Nanaya, последний босс, появляется, когда эти четверо мертвы; остальные пять боссов необязательны. Чтобы выйти, спрыгните с края террасы.",
+	-- Before you go's one note on summoning the Shaper's Terrace's bosses, in place of its six (the owner's call of
+	-- 2026-11-19), in the owner's short form of 2026-11-20 (drafted, to be checked)
+	["Summoning the bosses"] = "Как призвать боссов",
+	["Four bosses must be summoned and killed before you can summon Nanaya, the last boss. Summon each at its console:\n• Cinder: 15 × {item:11186:Red Power Crystal:1}, on the hill with the red crystals (southwest)\n• Snowtalon: 15 × {item:11184:Blue Power Crystal:1}, in the cave behind the left waterfall (northwest)\n• Bolt: 15 × {item:11188:Yellow Power Crystal:1}, by the yellow crystals south of the tar pits\n• Vitrix: 15 × {item:11185:Green Power Crystal:1}, in a cavern on the north side\nThen summon Nanaya at the console on the Pillar of Assimilation's island."] = "Четырех боссов нужно призвать и убить, прежде чем вы сможете призвать Nanaya, последнего босса. Призовите каждого у его пульта:\n• Cinder: 15 × {item:11186:Red Power Crystal:1}, на холме с красными кристаллами (юго-запад)\n• Snowtalon: 15 × {item:11184:Blue Power Crystal:1}, в пещере за левым водопадом (северо-запад)\n• Bolt: 15 × {item:11188:Yellow Power Crystal:1}, у желтых кристаллов к югу от смоляных ям\n• Vitrix: 15 × {item:11185:Green Power Crystal:1}, в пещере на северной стороне\nЗатем призовите Nanaya у пульта на острове Pillar of Assimilation.",
+	["Curator Thorius, Hall of Explorers, Ironforge"] = "Curator Thorius, Зал Исследователей, Стальгорн",
+	["Curator Thorius — Hall of Explorers"] = "Curator Thorius — Зал Исследователей",
+	["Chemist Fuely, the Apothecarium, Undercity"] = "Chemist Fuely, Аптекариум, Подгород",
+	["Chemist Fuely — the Apothecarium"] = "Chemist Fuely — Аптекариум",
+	["Mayena Earthseeker, Mulgore"] = "Mayena Earthseeker, Мулгор",
+	["Venomridge, a great diemetradon, is one of the optional bosses, on the plain south of the tar pits."] = "Venomridge, огромный диметродон, — один из необязательных боссов, на равнине к югу от смоляных ям.",
+	["Use the Explorers' League Cartographer's Kit you are given at the Pillar of Assimilation, the Achromatic Crystal, the Western Gates, the Regrowth Vestibule and the Unearthed Stone Watcher. It can't be shared."] = "Используйте выданный вам Explorers' League Cartographer's Kit у Pillar of Assimilation, Achromatic Crystal, Western Gates, Regrowth Vestibule и Unearthed Stone Watcher. Этим заданием нельзя поделиться.",
+	["Who gives it is not listed yet. The pages drop from the ravasaurs inside. It can't be shared."] = "Кто выдает это задание, пока неизвестно. Страницы падают с равазавров внутри. Этим заданием нельзя поделиться.",
+	["Each most likely comes from a crystal fragment of its kind in the terrace. They are not the Power Crystals the consoles take."] = "Каждый, скорее всего, добывается из осколка кристалла своего вида на террасе. Это не те кристаллы силы, что принимают пульты.",
+	["The essence drops from the small slimes in the pools by the Achromatic Crystal."] = "Сущность падает с маленьких слизней в лужах у Achromatic Crystal.",
+	["The fragment lies on the ground near the Achromatic Crystal, a colorless crystal in the terrace."] = "Осколок лежит на земле у Achromatic Crystal, бесцветного кристалла на террасе.",
+}
+
+-- Adventure Mode's masking: what its rules can't tell of this language's names (Core/Discovery.lua;
+-- Locales/enUS.lua says what each list is for). Drafted, to be checked.
+L.MASK_GROUP_WORDS = { "Сумеречный", "Песчаной", "Ярости", "Палач", "Темного", "Железа", "Интендант", "Курьер",
+	"Магистрат", "Принц", "Мастер-канонир", "Оружейник", "Глашатай", "Тлеющая",
+	"Гордок", "Криводрев" }
+L.MASK_PLACES = { "Магни Бронзобород", "Покинутый двор" }
+-- (on a boss's page and in a dungeon's description, a faction, a group or a word, not the quest of its name)
+L.MASK_NAMES = { "Братство Справедливости" }
+L.MASK_BOSS_FORMS = {
+	-- (a quest's giver, Doan Karhan, has his name: his strongbox is named whole)
+	["Arcanist Doan"] = { "сундуке Доана" },
+	-- (the notes write their names so)
+	["Prince Tortheldrin"] = { "Тортелдрин" },
+	-- (and with the title the notes give him, "властитель", whole)
+	["Overlord Wyrmthalak"] = { "властитель Змейталак", "властителя Змейталак", "Змейталак" },
+	["Goraluk Anvilcrack"] = { "Горалук Треснувшая Наковальня" },
+	["Azshir the Sleepless"] = { "Азшир" },
+	["Fallen Champion"] = { "Павший воитель" },
+	["Captain Kromcrush"] = { "Давигром" },
+	["The Beast"] = { "Зверя" },
+	["Baelog"] = { "Бейлог" },
+	["Obsidian Sentinel"] = { "Обсидианов" },
+	-- (the names the quests give him: "Падший скакун Темного Терзателя", Darkreaver's Fallen Charger, and
+	-- "Угроза Темного Губителя", The Darkreaver Menace)
+	["Death Knight Darkreaver"] = { "Темного Терзател", "Темный Терзател", "Темного Губител", "Темный Губител" },
+}
+-- The notes name these quests otherwise than their own names.
+L.MASK_QUEST_FORMS = {
+	[877] = { "Застывший оазис" },
+	[880] = { "Измененные существа" },
+	[964] = { "обломками скелетов", "обломков скелетов" },
+	[5537] = { "обломками скелетов", "обломков скелетов" },
+	[5803] = { "скарабеем Араджа", "скарабея Араджа" },
+	[5804] = { "скарабеем Араджа", "скарабея Араджа" },
+	[914] = { "Повелители Змей" },
+	[1490] = { "Нара Буйногривая" },
+	[2841] = { "Техновойны" },
+	[2843] = { "Поехалиии!" },
+	-- (declined, as a note says it of the quest's own name: "прежде чем идти к главному инженеру Скути")
+	[2842] = { "главному инженеру Скути" },
+	[4981] = { "Агент Биджу" },
 }
 
 -- The client's own names for the bosses, factions and places, which what it says of them (and the

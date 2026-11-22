@@ -145,13 +145,13 @@ ns.AddInstance({
 				{
 					itemID = 273046,
 					name = "Guardian's Dualblade",
-					slot = "Weapon",
+					slot = "Two-Hand, Axe",
 					quality = 3,
 				},
 				{
 					itemID = 273047,
 					name = "Unstable Crystalline Shoulderpads",
-					slot = "Shoulder",
+					slot = "Shoulder, Leather",
 					quality = 3,
 				},
 				{
@@ -163,7 +163,7 @@ ns.AddInstance({
 				{
 					itemID = 273099,
 					name = "Blueprint: Spinning Wheel",
-					slot = "Blueprint",
+					slot = "Recipe, Tailoring",
 					quality = 2,
 				},
 			},
@@ -242,8 +242,14 @@ ns.AddInstance({
 		{
 			name = "Lyn the Ignored",
 			npcID = 247032,
+			-- His level, 31: two players' guides give it, and a players' list too (read 2026-11-19); one of the guides
+			-- gives the other bosses' levels here as we have them. Forever's NPC data and the client give none.
+			level = 31,
 			description = "A hidden elite you summon yourself.",
-			rare = true,
+			-- A hidden boss the players summon, no rare (the owner, 2026-11-17); his page's bullet says so
+			-- (UI/EncounterPage.lua's BossBullets: summonedBullet)
+			summoned = true,
+			summonedBullet = true,
 			displayID = 130235,
 			loot = {
 				{

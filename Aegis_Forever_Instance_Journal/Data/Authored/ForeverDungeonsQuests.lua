@@ -34,7 +34,7 @@ local _, ns = ...
 ]]
 
 ns.AmendInstance("HallOfThanes", {
-	-- Before you go (the overview): where the Dark Iron Map comes from, and the quests that lead to it.
+	-- Before you go (the Quests tab): where the Dark Iron Map comes from, and the quests that lead to it.
 	prepare = {
 		{
 			faction = "Alliance",
@@ -72,7 +72,7 @@ ns.AmendInstance("RuinsOfLordaeron", {
 })
 
 ns.AmendInstance("ExcavationSiteWetlands", {
-	-- Before you go (the overview): each side's Titan Relic, which drops inside, and the quests that
+	-- Before you go (the Quests tab): each side's Titan Relic, which drops inside, and the quests that
 	-- lead to the dungeon's own. A plain note, not a key: the relic is not needed to get in, the last
 	-- boss drops it and it starts a quest (the deep audit of 2026-10-30, g09-13; the owner's call,
 	-- 2026-11-03).

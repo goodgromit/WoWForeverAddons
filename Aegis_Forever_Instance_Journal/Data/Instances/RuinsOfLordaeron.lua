@@ -201,13 +201,13 @@ ns.AddInstance({
 				{
 					itemID = 273085,
 					name = "Blueprint: Fermenter",
-					slot = "Blueprint",
+					slot = "Recipe, Alchemy",
 					quality = 2,
 				},
 				{
 					itemID = 273103,
 					name = "Blueprint: Arcane Salvager",
-					slot = "Blueprint",
+					slot = "Recipe, Enchanting",
 					quality = 2,
 				},
 			},

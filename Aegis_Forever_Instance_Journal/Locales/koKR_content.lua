@@ -41,8 +41,7 @@ L.INSTANCE_NAMES = {
 	["Scholomance"] = "스칼로맨스",
 	["ShadowfangKeep"] = "그림자송곳니 성채",
 	["ShapersTerrace"] = "구체자의 정원",
-	["StratholmeMainGate"] = "스트라솔름: 정문",
-	["StratholmeServiceGate"] = "스트라솔름: 공무용 입구",
+	["Stratholme"] = "스트라솔름",
 	["TempleOfAtalHakkar"] = "아탈학카르 신전",
 	["TheDeadmines"] = "죽음의 폐광",
 	["TheDrownedCity"] = "가라앉은 도시",
@@ -164,6 +163,15 @@ L.SUBMAP_LEVELS = {
 	-- Prismatic Talus (drafted, to be checked: the client's tables have the cave only as its building's name, in English)
 	["Shaper's Terrace"] = "구체자의 정원",
 	["Prismatic Talus"] = "프리즘 비탈",
+	-- Blackmaw Hold's map (Data/Authored/Upcoming.lua's floor names): the dungeon's name, its cave, the Festering
+	-- Grotto, and the four levels of its depths, as Santiago Reyes's maps label them (drafted, to be checked: the
+	-- client's tables keep the hold's own names in encrypted rows)
+	["Blackmaw Hold"] = "검은아귀 요새",
+	["Festering Grotto"] = "곪은 동굴",
+	["Depths of the Fallen Grove"] = "쓰러진 숲의 심연",
+	["Depths of the Elders"] = "장로의 심연",
+	["Depths of the Burrow"] = "굴의 심연",
+	["Depths of Forbidden Magic"] = "금지된 마법의 심연",
 }
 
 L.BOSS_NAMES = {
@@ -460,6 +468,32 @@ L.BOSS_NAMES = {
 	["Irradiated Horror"] = "방사능 공포",
 	["Leprous Machinesmith"] = "나병 기계공",
 	["Mechano-Flamewalker"] = "기계화 불꽃걷는자",
+	-- Razorfen Kraul's, from the owner's run of 2026-11-12 (drafted, to be checked)
+	["Death's Head Acolyte"] = "죽음의 머리교 수행사제",
+	["Death's Head Adept"] = "죽음의 머리교 숙련자",
+	["Death's Head Sage"] = "죽음의 머리교 현자",
+	["Quilguard Champion"] = "가시경비대 용사",
+	["Razorfen Beast Trainer"] = "가시덩굴일족 야수조련사",
+	["Razorfen Groundshaker"] = "가시덩굴일족 대지파괴자",
+	["Razorfen Totemic"] = "가시덩굴일족 토템술사",
+	-- Krol'dok Stronghold's, from a player's recorded run (2026-11-13; drafted, to be checked); the Brute and the
+	-- Shaman, Bossman Toof's, from a player's combat log (2026-11-12, the owner's call of 2026-11-14; drafted, to
+	-- be checked)
+	["Krol'dok Brute"] = "크롤독 난폭자",
+	["Krol'dok Centurion"] = "크롤독 백부장",
+	["Krol'dok Shaman"] = "크롤독 주술사",
+	["Shadowhide Curseweaver"] = "그림자가죽 저주술사",
+	["Snarlfang"] = "으르렁송곳니",
+	["Terrorhowl"] = "공포울음",
+	["Twilight Warlock"] = "황혼의 흑마법사",
+	-- The Drowned City's, from the owner's recorded run (2026-11-16) and a player's combat log (2026-11-11; drafted, to be checked)
+	["Brinescale Priestess"] = "브라인스케일 여사제",
+	["Deathless Guardian"] = "불사의 수호병",
+	["Deathless Sorcerer"] = "불사의 마법사",
+	["Deathless Watcher"] = "불사의 감시자",
+	["Saltseer Murderer"] = "솔트시어 살인마",
+	-- The Shaper's Terrace's Izha'Rel, an add on the Ravasaur Hunters' page (2026-11-18): as the game names her
+	["Izha'Rel"] = "Izha'Rel",
 }
 
 L.ABILITY_NAMES = {
@@ -596,9 +630,54 @@ L.ABILITY_NAMES = {
 	["War Stomp"] = "전투 발구르기",
 	["Whirling Barrage"] = "소용돌이 탄막",
 	["Whirlwind"] = "소용돌이",
+	-- Scarlet Monastery's spells from the owner's recording (2026-11-16; drafted, to be checked: the game's own names in this language not read)
+	["Arcane Bubble"] = "비전 거품",
+	["Crusader Strike"] = "성전사의 일격",
+	["Deep Sleep"] = "깊은 잠",
+	["Dispel Magic"] = "마법 무효화",
+	["Lay on Hands"] = "신의 축복",
 }
 
 L.STRINGS = {
+	-- Blackmaw Hold's new notes (facts from players' guides the owner OK'd on 2026-11-18; drafted, to be checked):
+	-- Bonesnout's Ritualists, the Blackmaw Behemoth's Clawbert, the Unbound Spirit's Elder Bramblesnap and totems, the
+	-- way down to Varrox Bleakhoof, and the two rares listed as best guesses. The creatures' own names stay as the game
+	-- names them in English (their names in this language are not known); the Ritualists and the totems by what they are.
+	["An undead boar guarded by four Legashi Ritualists. Each one still alive makes Bonesnout take a quarter less damage, so while all four stand it can't be hurt: kill them first."] = "레가시 의식술사 넷이 지키는 언데드 멧돼지입니다. 살아 있는 의식술사 하나마다 Bonesnout이 받는 피해가 4분의 1씩 줄어들어, 넷이 모두 살아 있는 동안에는 피해를 입힐 수 없습니다. 의식술사를 먼저 처치하십시오.",
+	["To reach him, drop through the hole behind the Blackmaw Behemoth: you land in the pool in front of him. An updraft there takes you back up."] = "그에게 가려면 Blackmaw Behemoth 뒤의 구멍으로 뛰어내리십시오. 그의 앞에 있는 웅덩이에 떨어집니다. 그곳의 상승 기류를 타면 다시 위로 올라갑니다.",
+	["A huge dire furbolg. Clawbert, a furbolg shaman, fights beside it and keeps healing it: kill him first."] = "거대하고 흉포한 퍼볼그입니다. 퍼볼그 주술사 Clawbert가 곁에서 함께 싸우며 계속 치유합니다. 그를 먼저 처치하십시오.",
+	["When Clawbert dies, the Behemoth heals and enrages."] = "Clawbert가 죽으면 Behemoth가 생명력을 회복하고 격노합니다.",
+	["An elemental, fought before Varrox Bleakhoof. Elder Bramblesnap, a friendly furbolg, starts it."] = "Varrox Bleakhoof보다 먼저 싸우는 정령입니다. 우호적인 퍼볼그 Elder Bramblesnap이 전투를 시작합니다.",
+	["The Spirit and its three Profane Totems start out immune. Bramblesnap makes the totems breakable one at a time: break each as he does."] = "영혼과 불경한 토템 셋은 처음에 면역 상태입니다. Bramblesnap이 토템을 하나씩 부술 수 있게 만듭니다. 그때마다 하나씩 부수십시오.",
+	["A rare, listed here as a best guess. It may spawn near the ramp down to the Blackmaw Behemoth."] = "희귀 몹으로, 추정으로 여기에 넣었습니다. Blackmaw Behemoth에게 내려가는 경사로 근처에 나타날 수 있습니다.",
+	["A rare spider, listed here as a best guess. Where it spawns is not known yet."] = "희귀 거미로, 추정으로 여기에 넣었습니다. 어디에 나타나는지는 아직 알려지지 않았습니다.",
+	["A rare, listed here as a best guess. Where it spawns is not known yet."] = "희귀 몹으로, 추정으로 여기에 넣었습니다. 어디에 나타나는지는 아직 알려지지 않았습니다.",
+	-- Varrox Bleakhoof's drops, the Mark of Xavius's quest known since 2026-11-19 (drafted, to be checked): the
+	-- items and quests by the names the game gives them in English (their names in this language are not known).
+	["Drops the Head of Varrox Bleakhoof, for Blackmaw Reclamation, and, rarely, the Mark of Xavius, for In Demand - Titan Relics."] = "Head of Varrox Bleakhoof(Blackmaw Reclamation용)를 떨어뜨리며, 드물게 Mark of Xavius(In Demand - Titan Relics용)도 떨어뜨립니다.",
+	-- The Drowned City's "Pyromancer" Braxton, a rare (the owner's call of 2026-11-18; drafted, to be checked): his
+	-- three notes and his Head Smash's words. His name and Captain Dreadrise's stay as the game names them in English, as
+	-- the city's other bosses keep theirs; Head Smash is told only as a blow to the head: the game's name for it in this
+	-- language is not known.
+	["A rare in the pirates' part of the city, not far from Captain Dreadrise. As a rare, he may not be there every run."] = "도시의 해적 구역에 있는 희귀 몹으로, Captain Dreadrise에서 멀지 않습니다. 희귀 몹이라 매번 있지는 않을 수 있습니다.",
+	["Despite his name, no fire spell is known for him yet: he hits with Head Smash, which stuns for 2 seconds."] = "이름과 달리 아직 알려진 화염 주문은 없습니다. 머리를 내려치는 공격을 하며, 2초 동안 기절시킵니다.",
+	["The kills recorded so far dropped one of his two items about every time."] = "지금까지 기록된 처치에서는 거의 매번 그의 두 아이템 중 하나가 나왔습니다.",
+	["Hits his target a little harder than a normal blow and stuns it for 2 seconds."] = "대상을 보통 공격보다 조금 더 세게 때리고 2초 동안 기절시킵니다.",
+	-- Krol'dok Stronghold's Bossman Toof, in the owner's words, with a player's combat log (2026-11-12, the owner's
+	-- call of 2026-11-14; drafted, to be checked): his notes, and his shamans' and brutes' written abilities. His name
+	-- stays as the game names it.
+	["A series of add waves comes at you as you make your way to him. Bossman Toof himself is a warrior, with Mortal Strike, Thunderclap and Demoralizing Shout."] = "그에게 가는 길에 적이 여러 차례 몰려옵니다. Bossman Toof 자신은 전사로, 죽음의 일격, 천둥벼락, 사기의 외침을 사용합니다.",
+	["Two Krol'dok Shamans and two Krol'dok Brutes fight beside him. The shamans cast Lightning Bolt and put Bloodlust on him: purge it if you can."] = "크롤독 주술사 둘과 크롤독 난폭자 둘이 그와 함께 싸웁니다. 주술사는 번개 화살을 시전하고 그에게 피의 욕망을 겁니다. 가능하면 해제하십시오.",
+	["Lightning Bolt"] = "번개 화살",
+	["The Krol'dok Shamans cast it at players, one every 4 to 12 seconds between the two of them."] = "크롤독 주술사 둘이 합쳐 4~12초마다 한 번씩 플레이어에게 시전합니다.",
+	["Cleave"] = "회전베기",
+	["The Krol'dok Brutes' Cleave hits their target and the players next to it."] = "크롤독 난폭자의 회전베기는 대상과 그 옆의 플레이어들을 함께 공격합니다.",
+	-- Overseer Mugg's weapon changes and Mugg's Fury, on his Abilities tab (a player's combat log of 2026-11-12, the
+	-- owner's call of 2026-11-14; drafted, to be checked). His Crushing Slam is named only as a slam: the game's name
+	-- for it in this language is not known.
+	["He takes up two one-handed maces, and his melee hits harder. It came 52 seconds into one fight and 30 seconds into a faster kill, so it likely comes at a set point of his health (a best guess). With the maces his Crushing Slam can hit three players at once."] = "한손 둔기 두 자루를 들고 근접 공격이 더 강해집니다. 한 전투에서는 52초, 더 빠른 처치에서는 30초에 나왔으므로 생명력이 일정 수준에 이르면 나오는 것으로 보입니다(추정). 둔기를 든 동안에는 내려치기가 플레이어 세 명을 한꺼번에 맞힐 수 있습니다.",
+	["He takes up two two-handed mauls, and his melee hits harder again. It came 72 seconds into one fight and 47 seconds into a faster kill, so it likely comes at a set point of his health too (a best guess)."] = "양손 망치 두 자루를 들고 근접 공격이 더욱 강해집니다. 한 전투에서는 72초, 더 빠른 처치에서는 47초에 나왔으므로 이것도 생명력이 일정 수준에 이르면 나오는 것으로 보입니다(추정).",
+	["Each of his melee hits makes him attack faster. It starts over each time he changes weapons."] = "근접 공격이 적중할 때마다 공격 속도가 빨라집니다. 무기를 바꿀 때마다 처음부터 다시 쌓입니다.",
 	["120 Merchant's Favor"] = "120 상인의 호의",
 	["1200 Merchant's Favor"] = "1200 상인의 호의",
 	["1500 Merchant's Favor"] = "1500 상인의 호의",
@@ -668,7 +747,7 @@ L.STRINGS = {
 	["A rare spawn: not every run meets him. At 15% health he runs for help."] = "희귀 몬스터라서 매번 만날 수 있는 것은 아닙니다. 생명력이 15%가 되면 도움을 청하러 도망칩니다.",
 	["A rare. A Stone Rumbler fights with him; interrupt his Lightning Bolt, and finish him before he runs for help at 15% health."] = "희귀 몬스터입니다. 바위 정령이 함께 싸웁니다. 번개 화살을 차단하고, 생명력이 15%가 되어 도움을 청하러 도망치기 전에 처치하십시오.",
 	["A rare. He calls two Burning Servants; interrupt his Fireball, and a priest or a shaman can remove his fire shield."] = "희귀 몬스터입니다. 불타는 하수인 둘을 불러냅니다. 화염구를 차단하십시오. 화염 보호막은 사제나 주술사가 해제할 수 있습니다.",
-	["A rare. He cuts the tank's armour by three quarters, and at 15% health runs for help: finish him first."] = "희귀 몬스터입니다. 방어 전담의 방어도를 4분의 3만큼 깎으며, 생명력이 15%가 되면 도움을 청하러 달아납니다. 달아나기 전에 처치하십시오.",
+	["A rare. He cuts the tank's armor by three quarters, and at 15% health runs for help: finish him first."] = "희귀 몬스터입니다. 방어 전담의 방어도를 4분의 3만큼 깎으며, 생명력이 15%가 되면 도움을 청하러 달아납니다. 달아나기 전에 처치하십시오.",
 	["A Reliquary of Purity"] = "정화의 성물함",
 	["A satyr on the walkway above Jergosh's chamber."] = "제로쉬의 방 위쪽 통로에 있는 사티로스입니다.",
 	["A Searing Blade warlock; clear the cultists around him first."] = "이글거리는 칼날단 흑마법사입니다. 주위의 이교도부터 처치하십시오.",
@@ -684,6 +763,7 @@ L.STRINGS = {
 	["A threshadon in the underwater cave; optional. He only melees."] = "수중 동굴에 있는 트레샤돈입니다. 처치하지 않아도 됩니다. 근접 공격만 합니다.",
 	["A thunder lizard in the water; killing him is optional."] = "물속에 있는 천둥도마뱀입니다. 처치하지 않아도 됩니다.",
 	["A Titan dig site above Whelgar's Excavation, caught out of time, where the Titans' constructs answer to no one now. Inside: the Lost Marsh, Stalker's Thicket, the Site of the Guardian and the Lost Dig Site."] = "웰가르의 발굴현장 위쪽에 있는 티탄의 발굴지로, 시간의 흐름에서 벗어난 이곳에서는 티탄의 피조물들이 더 이상 누구의 명령도 따르지 않습니다. 내부: 잃어버린 늪, 추적자의 숲, 수호자의 터, 잃어버린 발굴 현장.",
+	["Inside: the Lost Marsh, Stalker's Thicket, the Site of the Guardian and the Lost Dig Site."] = "내부: 잃어버린 늪, 추적자의 숲, 수호자의 터, 잃어버린 발굴 현장.",
 	["A titan site hidden in Un'Goro Crater, guarding secrets of the makers among the crater's dinosaurs."] = "운고로 분화구에 숨겨진 티탄의 유적으로, 분화구의 공룡들 사이에서 창조주의 비밀을 지키고 있습니다.",
 	["A Titan vault buried under the Badlands, where Dark Iron dwarves and troggs dig for the secrets of the earthen, and the stone keeper Archaedas guards the deepest hall."] = "황야의 땅 아래 묻힌 티탄의 금고입니다. 검은무쇠 드워프와 트로그가 토석인의 비밀을 찾아 땅을 파헤치고 있으며, 바위 문지기 아카에다스가 가장 깊은 전당을 지키고 있습니다.",
 	["A treant twisted by fel magic, among the Suffused Treants in the streets."] = "지옥 마력에 뒤틀린 나무정령으로, 거리의 마력 스민 나무정령들 사이에 있습니다.",
@@ -736,7 +816,7 @@ L.STRINGS = {
 	["An Ancient Grudge"] = "오래된 원한",
 	["An arcane golem by the Magus Commerce Exchange, guarded by Angry Tomes. Its Malfunction hits everyone within 25 yards."] = "마법사 교역소 옆에 있는 비전 골렘으로, 성난 고서들이 지키고 있습니다. 기능 장애는 25미터 내의 모두에게 피해를 줍니다.",
 	["An escort: Grark is held at the Blackrock fortress in the Burning Steppes."] = "호위 퀘스트: 그랄크는 불타는 평원의 검은바위 요새에 붙잡혀 있습니다.",
-	["An ogre foreman with heavy armour who hits hard; the first boss inside."] = "두꺼운 갑옷을 입고 강력하게 공격하는 오우거 작업반장으로, 안에서 처음 만나는 우두머리입니다.",
+	["An ogre foreman with heavy armor who hits hard; the first boss inside."] = "두꺼운 갑옷을 입고 강력하게 공격하는 오우거 작업반장으로, 안에서 처음 만나는 우두머리입니다.",
 	["An ogre stronghold packed with warriors, where the Twilight's Hammer has found willing allies."] = "전사들로 가득한 오우거 요새로, 황혼의 망치단이 기꺼이 손을 잡을 동맹을 찾아낸 곳입니다.",
 	["An ogre who throws lightning that jumps between players."] = "플레이어 사이를 튀어 다니는 번개를 던지는 오우거입니다.",
 	["An ooze soaked in radiation, in the Hall of Gears."] = "톱니바퀴의 전당에 있는, 방사능에 흠뻑 젖은 진흙괴물입니다.",
@@ -840,7 +920,6 @@ L.STRINGS = {
 	["Beneath Ironforge, Dun Morogh"] = "던 모로 아이언포지 지하",
 	["Beneath Ironforge, someone has broken into the tomb of the dwarven kings."] = "아이언포지 지하에서 누군가 드워프 왕들의 무덤에 침입했습니다.",
 	["Beneath Moonbrook lie the gold mines Stormwind abandoned during the First War. Edwin VanCleef's Defias Brotherhood has made them its stronghold, and deep inside, in a hidden sea cave, his crew is finishing a warship meant for Stormwind."] = "문브룩 지하에는 1차 대전쟁 때 스톰윈드가 버린 금광이 있습니다. 에드윈 밴클리프의 데피아즈단이 이곳을 근거지로 삼았으며, 깊숙한 곳의 숨겨진 바다 동굴에서는 그의 일당이 스톰윈드를 노린 전함을 완성해 가고 있습니다.",
-	["Beneath Orgrimmar's Cleft of Shadow runs a chasm of lava and stone where troggs, fire elementals and the Searing Blade, a cult of demon-worshippers, have taken root under the Horde's capital."] = "오그리마 어둠의 틈 아래로는 용암과 바위로 이루어진 협곡이 뻗어 있습니다. 호드의 수도 밑에 트로그와 불의 정령, 그리고 악마를 숭배하는 이교 집단인 이글거리는 칼날단이 자리를 잡았습니다.",
 	["Betina Bigglezink"] = "베티나 비글징크",
 	["Betina Bigglezink, Eastern Plaguelands"] = "베티나 비글징크, 동부 역병지대",
 	["Bijou's Belongings"] = "비쥬의 물건들",
@@ -1051,6 +1130,7 @@ L.STRINGS = {
 	["Dalaran"] = "달라란",
 	["Dalaran Patrols"] = "달라란 순찰",
 	["Dalaran, the city of the Kirin Tor, stands rebuilt in the Alterac Mountains, its magic barrier gone and its streets overrun. Go in through the sewers, to a portal at the end of a long pipe, then fight up through the streets to the Shade of the Archmage.\n\nImmunities: much of the city takes no Arcane damage. Constructs and elementals ignore bleeds and poisons, and the treants take no Nature damage, though they bleed.\n\nTrash: interrupt the Mana Phantoms' Mana Burn, and stand in the pool a Saturated Remnant leaves behind to regain mana. Every kill gives Kirin Tor reputation."] = "키린 토의 도시 달라란이 알터랙 산맥에 다시 세워졌지만, 마법 보호막은 사라지고 거리는 적들로 들끓고 있습니다. 하수구로 들어가 긴 배수관 끝에 있는 차원문을 지난 뒤, 거리를 뚫고 올라가 대마법사의 망령에게 가야 합니다.\n\n면역: 도시의 많은 적이 비전 피해를 받지 않습니다. 골렘 같은 피조물과 정령은 출혈과 독에 걸리지 않으며, 나무정령은 자연 피해를 받지 않지만 출혈에는 걸립니다.\n\n일반 몬스터: 마나 환영의 마나 연소를 차단하고, 포화된 잔재가 남기는 웅덩이에 서서 마나를 회복하십시오. 적을 처치할 때마다 키린 토 평판을 얻습니다.",
+	["Go in through the sewers, to a portal at the end of a long pipe, then fight up through the streets to the Shade of the Archmage.\n\nImmunities: much of the city takes no Arcane damage. Constructs and elementals ignore bleeds and poisons, and the treants take no Nature damage, though they bleed.\n\nTrash: interrupt the Mana Phantoms' Mana Burn, and stand in the pool a Saturated Remnant leaves behind to regain mana. Every kill gives Kirin Tor reputation."] = "하수구로 들어가 긴 배수관 끝에 있는 차원문을 지난 뒤, 거리를 뚫고 올라가 대마법사의 망령에게 가야 합니다.\n\n면역: 도시의 많은 적이 비전 피해를 받지 않습니다. 골렘 같은 피조물과 정령은 출혈과 독에 걸리지 않으며, 나무정령은 자연 피해를 받지 않지만 출혈에는 걸립니다.\n\n일반 몬스터: 마나 환영의 마나 연소를 차단하고, 포화된 잔재가 남기는 웅덩이에 서서 마나를 회복하십시오. 적을 처치할 때마다 키린 토 평판을 얻습니다.",
 	["Damp Note"] = "축축한 쪽지",
 	["Dark Iron Legacy"] = "검은무쇠단 유물",
 	["Darkreaver's Fallen Charger, inside the dungeon"] = "다크리버 군마의 영혼, 던전 내부",
@@ -1515,7 +1595,9 @@ L.STRINGS = {
 	["It fears a player and slows another's casting."] = "한 플레이어에게 공포를 걸고, 다른 플레이어의 시전 속도를 늦춥니다.",
 	["It keeps calling small Arcane Manalings. Kill them with area damage."] = "작은 비전 마나의 정령을 계속 불러냅니다. 광역 공격으로 처치하십시오.",
 	["It roots everyone near it, slows and stuns, and calls Dupe Bugs that its Patch turns into healing."] = "근처의 모든 대상을 묶고, 느리게 하거나 기절시키며, 복제 버그를 불러낸 뒤 패치로 이를 치유로 바꿉니다.",
-	["It whirls at everyone close, and its thorns hurt whoever strikes it or an ally nearby, Ramtusk included."] = "근처의 모든 대상에게 회오리 공격을 하며, 자신이나 근처의 아군(램터스크 포함)을 공격하는 대상은 가시에 피해를 입습니다.",
+	-- Overlord Ramtusk's second note, Razorfen Spearhide's own before it became his guards (2026-11-13; drafted, to be
+	-- checked)
+	["His two guards whirl at everyone close, and their thorns hurt whoever strikes them or an ally nearby, Ramtusk included."] = "그의 경비병 둘은 근처의 모든 대상에게 회오리 공격을 하며, 그들이나 근처의 아군(램터스크 포함)을 공격하는 대상은 가시에 피해를 입습니다.",
 	["Its attack on the tank between the beams, a 1.5-second cast."] = "광선 사이사이에 방어 전담에게 쓰는 공격입니다. 시전 시간 1.5초.",
 	["Its Fathom Stone also calls up Baron Aquanis, an optional fight."] = "심연의 돌을 사용하면 군주 아쿠아니스도 나타납니다. 그와의 전투는 선택 사항입니다.",
 	["Jail Break!"] = "탈옥!",
@@ -1684,9 +1766,30 @@ L.STRINGS = {
 	["Master Apothecary Faranell, the Apothecarium, Undercity"] = "수석 연금술사 파라넬, 연금술 실험실, 언더시티",
 	["Master Apothecary Faranell, Undercity"] = "수석 연금술사 파라넬, 언더시티",
 	["Master Gadrin, Durotar"] = "장로 가드린, 듀로타",
+	-- Alcaz Prison's Before you go (the owner's report, 2026-11-12; drafted, to be checked)
+	["Master Mathias Shaw, at SI:7 in Stormwind's Old Town, gives Our Man in Theramore. At the inn in Theramore, the dwarf Sully McCleary sends you to meet him behind the graveyard, then up Jaina Proudmoore's tower in disguise to listen in. After that, he gives The Secret Prison and A Bit of Wet Work."] = "스톰윈드 구 시가지의 정보국에 있는 마스터 마티아스 쇼가 Our Man in Theramore를 줍니다. 테라모어 여관의 드워프 Sully McCleary가 묘지 뒤에서 만나자고 한 뒤, 변장한 채 제이나 프라우드무어의 탑에 올라가 엿듣게 합니다. 그다음 그가 The Secret Prison과 A Bit of Wet Work를 줍니다.",
+	-- Alcaz Prison's Before you go, the Horde's (the owner's report, 2026-11-12; drafted, to be checked)
+	["Sergeant Ulka waits outside the prison on Alcaz Island. She sends you in after Commander Folkar and asks for A Little Payback; inside, Folkar sends you looking for King Varian Wrynn."] = "Sergeant Ulka가 알카즈 섬의 감옥 밖에서 기다립니다. 그녀는 Commander Folkar를 뒤쫓아 안으로 들여보내며 A Little Payback을 줍니다. 안에서는 Folkar가 국왕 바리안 린을 찾아보라고 합니다.",
 	["Master Mechanic Castpipe — Tinker Town, Ironforge"] = "수석수리공 캐스트파이프 — 땜장이 마을, 아이언포지",
 	["Master Mechanic Castpipe, Ironforge"] = "수석수리공 캐스트파이프, 아이언포지",
 	["Material Assistance"] = "물질적인 부탁",
+	-- Alcaz Prison's Before you go (the owner's report, 2026-11-12; drafted, to be checked)
+	["Mathias Shaw's errand"] = "마티아스 쇼의 임무",
+	-- Alcaz Prison: the Alcaz Operative Insignia's chain (the owner's steps, 2026-11-13; drafted, to be checked). The
+	-- quest, item and new NPC names stay English (no page in the language gives them); Renzik's name as Forever's quest
+	-- data has it in the language
+	["Toy: Alcaz Operative Insignia"] = "장난감: Alcaz Operative Insignia",
+	["If you want this toy, skip The Questioner on your way in. At the end, the prisoner Mason Connery sends you back for The Questioner's key, then to the inn at Moonbrook in Westfall for a Document Box: don't sell it. Bring it to Renzik \"The Shiv\" at SI:7 in Stormwind for State Secrets. Six {item:279450:Fractured Insignia:2} make the {item:279471:Alcaz Operative Insignia:3}, and they can be traded."] = "이 장난감을 원한다면 들어가는 길에 The Questioner를 건너뛰십시오. 마지막에 죄수 Mason Connery가 The Questioner의 열쇠를 가져오라고 되돌려 보내고, 이어서 서부 몰락지대 문브룩의 여관으로 Document Box를 찾으러 보냅니다. 팔지 마십시오. 스톰윈드 정보국의 칼잡이 렌직에게 가져가 State Secrets를 받으십시오. {item:279450:Fractured Insignia:2} 여섯 개로 {item:279471:Alcaz Operative Insignia:3}를 만들 수 있으며, 거래할 수 있습니다.",
+	["If you want this toy, skip The Questioner on your way in. At the end, the prisoner Mason Connery sends you back for The Questioner's key, then to the inn at Moonbrook in Westfall for a Document Box: don't sell it. Bring it to Nazgrel, in Grommash Hold in Orgrimmar, for State Secrets. Six {item:279450:Fractured Insignia:2} make the {item:279471:Alcaz Operative Insignia:3}, and they can be traded."] = "이 장난감을 원한다면 들어가는 길에 The Questioner를 건너뛰십시오. 마지막에 죄수 Mason Connery가 The Questioner의 열쇠를 가져오라고 되돌려 보내고, 이어서 서부 몰락지대 문브룩의 여관으로 Document Box를 찾으러 보냅니다. 팔지 마십시오. 오그리마 그롬마쉬 요새의 나즈그렐에게 가져가 State Secrets를 받으십시오. {item:279450:Fractured Insignia:2} 여섯 개로 {item:279471:Alcaz Operative Insignia:3}를 만들 수 있으며, 거래할 수 있습니다.",
+	["If you want the Alcaz Operative Insignia toy, or the Alliance's Somber News and Shaw Needs To Know, skip him on your way in: his key is for Mason Connery's quest at the end, The Man in the Iron Chains, which they all need."] = "Alcaz Operative Insignia 장난감이나 얼라이언스의 Somber News와 Shaw Needs To Know를 원한다면 들어가는 길에 그를 건너뛰십시오. 그의 열쇠는 마지막에 Mason Connery가 주는 퀘스트 The Man in the Iron Chains에 필요하며, 이 퀘스트가 모두에게 필요합니다.",
+	["Mason Connery is a prisoner chained at the end of the prison. The Questioner must still be alive: skip him on your way in, then go back for him once you have this quest. He drops the Ornate Shackle Key. Everyone in the group should hand it in at the same time: once one player frees him, he walks off, and the others can't hand it in. This quest can't be shared."] = "Mason Connery는 감옥 끝에 사슬로 묶인 죄수입니다. The Questioner가 살아 있어야 합니다. 들어가는 길에는 건너뛰고, 이 퀘스트를 받은 뒤 다시 돌아가 처치하십시오. 그가 Ornate Shackle Key를 떨어뜨립니다. 파티원 모두가 동시에 퀘스트를 완료해야 합니다. 한 명이 그를 풀어 주면 그가 떠나 버려서 나머지는 완료할 수 없습니다. 이 퀘스트는 공유할 수 없습니다.",
+	["Mason Connery's treasure, upstairs in the inn at Moonbrook, Westfall"] = "Mason Connery의 보물, 서부 몰락지대 문브룩 여관 2층",
+	["Mason's note reads \"WF, 43.4, 67.8\": the inn at Moonbrook in Westfall. Upstairs, click the loose floorboard, then hand the quest in at Connery's Trunk beside it. Don't sell the Document Box it gives you (a vendor pays 25 gold): State Secrets needs it. This quest can't be shared."] = "Mason의 쪽지에는 \"WF, 43.4, 67.8\"이라고 적혀 있습니다. 서부 몰락지대 문브룩의 여관입니다. 2층에서 헐거운 마룻바닥을 클릭한 다음, 그 옆의 Connery's Trunk에서 퀘스트를 완료하십시오. 보상으로 받는 Document Box는 팔지 마십시오(상인에게 25골드). State Secrets에 필요합니다. 이 퀘스트는 공유할 수 없습니다.",
+	["Renzik \"The Shiv\", SI:7, Old Town, Stormwind City"] = "칼잡이 렌직, 스톰윈드 구 시가지 정보국",
+	["Renzik \"The Shiv\""] = "칼잡이 렌직",
+	["Nazgrel, Grommash Hold, Orgrimmar"] = "나즈그렐, 오그리마 그롬마쉬 요새",
+	["It needs the Document Box from More Valuable Than Gold. Its reward, the {item:279450:Fractured Insignia:2}, can be traded: six of them combine into the {item:279471:Alcaz Operative Insignia:3}, a toy. One run is enough: trade or buy the other five. This quest can't be shared. The Horde has its own State Secrets."] = "More Valuable Than Gold에서 얻은 Document Box가 필요합니다. 보상인 {item:279450:Fractured Insignia:2}는 거래할 수 있으며, 여섯 개를 합치면 장난감 {item:279471:Alcaz Operative Insignia:3}가 됩니다. 한 번이면 충분합니다. 나머지 다섯 개는 거래하거나 구입하십시오. 이 퀘스트는 공유할 수 없습니다. 호드에는 호드의 State Secrets가 있습니다.",
+	["It needs the Document Box from More Valuable Than Gold. Its reward, the {item:279450:Fractured Insignia:2}, can be traded: six of them combine into the {item:279471:Alcaz Operative Insignia:3}, a toy. One run is enough: trade or buy the other five. This quest can't be shared. The Alliance has its own State Secrets."] = "More Valuable Than Gold에서 얻은 Document Box가 필요합니다. 보상인 {item:279450:Fractured Insignia:2}는 거래할 수 있으며, 여섯 개를 합치면 장난감 {item:279471:Alcaz Operative Insignia:3}가 됩니다. 한 번이면 충분합니다. 나머지 다섯 개는 거래하거나 구입하십시오. 이 퀘스트는 공유할 수 없습니다. 얼라이언스에는 얼라이언스의 State Secrets가 있습니다.",
 	["Mathiel, Darnassus"] = "메시엘, 다르나서스",
 	["Mathrengyl Bearwalker, Darnassus"] = "마스렌길 베어워커, 다르나서스",
 	["Maur Grimtotem's corpse, Ragefire Chasm"] = "마우르 그림토템의 시체, 성난불길 협곡",
@@ -1763,7 +1866,7 @@ L.STRINGS = {
 	["Neeru Fireblade"] = "네루 파이어블레이드",
 	["Neeru Fireblade, Cleft of Shadow, Orgrimmar"] = "네루 파이어블레이드, 오그리마 어둠의 틈",
 	["Nekrum's Medallion"] = "네크룸의 메달",
-	["New in Forever: Arcanist Doan has the book."] = "포에버 신규: 신비술사 도안이 책을 가지고 있습니다.",
+	["New in Forever. The book is picked up in the monastery, most likely in the Library, not dropped by Arcanist Doan."] = "포에버 신규: 책은 수도원 안에서 주워야 하며, 아마 도서관에 있습니다. 신비술사 도안이 떨어뜨리지 않습니다.",
 	["New in Forever: part 2, given in the Undercity once the Abominable Head is with Master Apothecary Faranell."] = "포에버 신규: 2단계. 흉측한 머리를 수석 연금술사 파라넬에게 전달하면 언더시티에서 받습니다.",
 	["New in Forever: part 3, in the Undercity."] = "포에버 신규: 3단계, 언더시티에서 진행합니다.",
 	["New in Forever: part 4, in the Undercity."] = "포에버 신규: 4단계, 언더시티에서 진행합니다.",
@@ -1907,6 +2010,49 @@ L.STRINGS = {
 	["Rethiel the Greenwarden — Wetlands"] = "신록의수호자 레시엘 — 저습지",
 	["Rethiel the Greenwarden, Wetlands"] = "신록의수호자 레시엘, 저습지",
 	["Retrieve a Fel Infused Blossom from Dalaran's central garden."] = "달라란 중앙 정원에서 지옥 마력이 주입된 꽃을 가져와야 합니다.",
+	-- Alcaz Prison's way in from Stormwind (the owner's report, 2026-11-12; drafted, to be checked)
+	["Sully McCleary, behind Theramore's graveyard, Dustwallow Marsh"] = "Sully McCleary, 테라모어 묘지 뒤, 먼지진흙 습지대",
+	["Sully leaves the inn first. Wait until he is gone, then meet him behind the graveyard outside town."] = "Sully가 먼저 여관을 나갑니다. 그가 떠날 때까지 기다렸다가 마을 밖 묘지 뒤에서 만나십시오.",
+	["Sully's SI:7 Disguise Kit makes you look like a Kul Tiras marine. Don't go near Jaina: she sees through it. If you lose the disguise, Sully gives you another kit."] = "Sully의 정보국 변장 도구를 쓰면 쿨 티라스 해병처럼 보입니다. 제이나에게 다가가지 마십시오. 변장을 꿰뚫어 봅니다. 변장이 풀리면 Sully가 새 도구를 줍니다.",
+	-- Krol'dok Stronghold's ways in (the owner's notes of 2026-11-18; drafted, to be checked): the steps' givers and
+	-- takers, the key's smiths and the follow-ups' taker too, and the steps' notes. The new people, places and items
+	-- keep the English names the game gives them; the quests' own names and objectives stay English
+	["Krom'rosh, Rog'mar, Riverglades"] = "Krom'rosh, Rog'mar, 강물터",
+	["Tran'gul, Rog'mar, Riverglades"] = "Tran'gul, Rog'mar, 강물터",
+	["Kreza Darkthorn, Rog'mar, Riverglades"] = "Kreza Darkthorn, Rog'mar, 강물터",
+	["Clubtoe, under a ruined house in Sunnyglade, Riverglades"] = "Clubtoe, Sunnyglade의 무너진 집 아래, 강물터",
+	["A dead Twilight Brute, in the caves under Sunnyglade, Riverglades"] = "죽은 Twilight Brute, Sunnyglade 아래 동굴, 강물터",
+	["Clugfist, Bolder'ok, Riverglades"] = "Clugfist, Bolder'ok, 강물터",
+	["Da'grosh, outside Krol'dok Stronghold, Riverglades"] = "Da'grosh, 크롤도크 보루 바깥, 강물터",
+	["Crag'rog, in a cave near Da'grosh, Riverglades"] = "Crag'rog, Da'grosh 근처 동굴, 강물터",
+	["Demar Brant, Farholde Keep, Riverglades"] = "Demar Brant, Farholde Keep, 강물터",
+	["Ashe Amberhall, Farholde Keep, Riverglades"] = "Ashe Amberhall, Farholde Keep, 강물터",
+	["Alphonse Dumas, Farholde Keep, Riverglades"] = "Alphonse Dumas, Farholde Keep, 강물터",
+	["Melanie Sable, Farholde Keep, Riverglades"] = "Melanie Sable, Farholde Keep, 강물터",
+	["Sergeant Riftan, the Twilight's Shroud, Riverglades"] = "Sergeant Riftan, Twilight's Shroud, 강물터",
+	["It can't be shared."] = "이 퀘스트는 공유할 수 없습니다.",
+	["An elite quest: bring friends. Overlord Kilgar is in the big hut in the Twilight's Shroud, at 26.6, 44.8."] = "정예 퀘스트입니다. 동료와 함께 가십시오. Overlord Kilgar는 Twilight's Shroud의 큰 오두막 안, 26.6, 44.8에 있습니다.",
+	["Da'grosh gives you the missive, Blood and Battle. It can't be shared."] = "Da'grosh가 전갈 Blood and Battle을 건네줍니다. 이 퀘스트는 공유할 수 없습니다.",
+	["Few priests show at first: they take the scouts' places as those come back, so kill scouts until enough priests appear."] = "처음에는 사제가 적게 나옵니다. 정찰병이 다시 나타날 때 그 자리에 사제가 나오기도 하므로, 사제가 충분히 나올 때까지 정찰병을 처치하십시오.",
+	["Clubtoe is down the stairs into a cellar under a ruined house in Sunnyglade, at 50, 46. Beat him until he gives in (it flags you for PvP)."] = "Clubtoe는 Sunnyglade의 무너진 집 아래 지하실, 계단을 내려간 곳인 50, 46에 있습니다. 그가 굴복할 때까지 때리십시오(PvP가 활성화됩니다).",
+	["The circles can't be used while shapeshifted."] = "변신 상태에서는 마법진을 사용할 수 없습니다.",
+	["An elite quest: bring friends. Chogg'Zac is at the far end of the caves under Sunnyglade."] = "정예 퀘스트입니다. 동료와 함께 가십시오. Chogg'Zac은 Sunnyglade 아래 동굴의 가장 안쪽에 있습니다.",
+	["Klunk has Skullbasher, the club this asks for. He is in the cave whose way in is at 76, 26, in a small pocket on its left."] = "퀘스트가 요구하는 몽둥이 Skullbasher는 Klunk가 가지고 있습니다. 그는 입구가 76, 26에 있는 동굴 안, 왼쪽의 작은 구석에 있습니다.",
+	["The Twilight Champions drop the Twilight Keys. The other side's scouts have cages of their own: if a cage won't open, try another."] = "Twilight Champion이 Twilight Key를 떨어뜨립니다. 상대 진영 정찰병의 우리는 따로 있으니, 열리지 않는 우리가 있으면 다른 우리를 시도하십시오.",
+	["The pages are small white maps on crates in Sunnyglade's ruined houses."] = "페이지는 Sunnyglade의 무너진 집들 안 상자 위에 놓인 작은 흰색 지도입니다.",
+	-- Krol'dok Stronghold's ways in before you go (the owner's notes of 2026-11-18; drafted, to be checked): each side's
+	-- chain's title and text; the quests' names and the new people and places keep the English the game gives them
+	["The road from Rog'mar"] = "Rog'mar에서 시작하는 길",
+	["Krom'rosh, in Rog'mar in the Riverglades, gives A Message in Blood and Food for the Taking, then Show Them How It's Done. Tran'gul, in the building just north of him, gives Twilight Missives, then Digging for Answers, which sends you to the ogre Clubtoe, under a ruined house in Sunnyglade. After Clubtoe's quests, take Chogg's head to Tran'gul and on to Clugfist in Bolder'ok, to the north. After his two quests, Clugfist's Decree takes you back to Krom'rosh for The Wayward Warrior. Da'grosh, west of Rog'mar, wants three quests and then his elite Bring Me His Head: bring friends. That opens his A Token of Vengeance, and his It Is Time, Brother... takes you back to Krom'rosh for Eye of Mugg; Tran'gul then gives Tome of Twilight."] = "강물터의 Rog'mar에 있는 Krom'rosh가 A Message in Blood와 Food for the Taking을, 그다음 Show Them How It's Done을 줍니다. 그 바로 북쪽 건물 안의 Tran'gul이 Twilight Missives를 주고, 그다음 Digging for Answers로 Sunnyglade의 무너진 집 아래에 있는 오우거 Clubtoe에게 보냅니다. Clubtoe의 퀘스트를 마치면 Chogg의 머리를 Tran'gul에게, 이어서 북쪽 Bolder'ok에 있는 Clugfist에게 가져가십시오. 그의 퀘스트 두 개를 마치면 Clugfist's Decree가 The Wayward Warrior를 위해 Krom'rosh에게 돌려보냅니다. Rog'mar 서쪽의 Da'grosh는 퀘스트 세 개와 정예 퀘스트 Bring Me His Head를 요구합니다. 동료와 함께 가십시오. 그 퀘스트로 그의 A Token of Vengeance가 열리고, 그의 It Is Time, Brother...가 Eye of Mugg를 위해 Krom'rosh에게 돌려보냅니다. 그 뒤 Tran'gul이 Tome of Twilight를 줍니다.",
+	["The road from Farholde Keep"] = "Farholde Keep에서 시작하는 길",
+	["In Farholde Keep, in the Riverglades, do Ashe Amberhall's Scraps of Knowledge and Demar Brant's Saving Sunnyglade (one of them may be enough) for Brant's The Western Front, which sends you to Sergeant Riftan in the Twilight's Shroud. Do his No Soldier Left Behind and Carving a Path, then his elite Bring Me His Head: bring friends. Then Riftan gives Twilight Mementos, and Brant Eye of Mugg. Ashe's own Tome of Twilight comes after her Curious Trinkets and A Small Favor."] = "강물터의 Farholde Keep에서 Ashe Amberhall의 Scraps of Knowledge와 Demar Brant의 Saving Sunnyglade를 하십시오(둘 중 하나로 충분할 수도 있습니다). 그러면 Brant가 The Western Front를 주고, 이 퀘스트가 Twilight's Shroud의 Sergeant Riftan에게 보냅니다. 그의 No Soldier Left Behind와 Carving a Path를 하고, 이어서 정예 퀘스트 Bring Me His Head를 하십시오. 동료와 함께 가십시오. 그 뒤 Riftan이 Twilight Mementos를, Brant가 Eye of Mugg를 줍니다. Ashe의 Tome of Twilight는 그녀의 Curious Trinkets와 A Small Favor 다음에 나옵니다.",
+	-- Alcaz Prison's way in from Orgrimmar (the owner's answer, 2026-11-12; drafted, to be checked)
+	["Orgrimmar's errand"] = "오그리마의 임무",
+	["Eitrigg, in Grommash Hold in Orgrimmar, gives The Missing Kor'kron, which sends you to Nazeer Bloodpike in Brackenwall Village. He gives The Elite of the Elite, an elite quest: bring friends to find the missing Kor'kron on Alcaz Island. There, the wounded Sergeant Ulka gives Right Place, Wrong Time."] = "오그리마 그롬마쉬 요새의 아이트리그가 The Missing Kor'kron을 주며, 이 퀘스트는 담쟁이 마을의 나지르 블러드파이크에게 보냅니다. 그가 정예 퀘스트 The Elite of the Elite를 줍니다. 동료와 함께 알카즈 섬에서 실종된 코르크론을 찾으십시오. 그곳에서 부상당한 Sergeant Ulka가 Right Place, Wrong Time을 줍니다.",
+	["Eitrigg, Grommash Hold, Orgrimmar"] = "아이트리그, 오그리마 그롬마쉬 요새",
+	["Nazeer Bloodpike, Brackenwall Village, Dustwallow Marsh"] = "나지르 블러드파이크, 담쟁이 마을, 먼지진흙 습지대",
+	["Nazeer Bloodpike"] = "나지르 블러드파이크",
+	["An elite quest: bring friends. Nazeer thinks the Kor'kron went to Alcaz Island."] = "정예 퀘스트입니다. 동료와 함께 가십시오. 나지르는 코르크론이 알카즈 섬으로 갔다고 생각합니다.",
 	-- A Green Sample's note (the owner, 2026-11-11; drafted, to be checked)
 	["The Fel Infused Blossom grows on the ground near the Fel Ancient, in the central garden: pick it up there."] = "지옥 마력이 주입된 꽃은 중앙 정원의 지옥의 고대정령 근처 땅에서 자랍니다. 그곳에서 주우세요.",
 	["Retrieve Mythology of the Titans from the Monastery and bring it to Librarian Mae Paledust in Ironforge."] = "수도원에서 티탄 신화를 찾아 아이언포지에 있는 사서 메이 페일더스트에게 가져가야 합니다.",
@@ -2169,6 +2315,7 @@ L.STRINGS = {
 	["The Book of Ur"] = "우르의 책",
 	["The braziers of the sanctum open the way to Aku'mai; each one lit calls a wave of enemies, so rest between them."] = "성소의 화로를 밝히면 아쿠마이에게 가는 길이 열립니다. 화로를 하나 밝힐 때마다 적이 몰려오므로 그 사이에 휴식하십시오.",
 	["The broodmother of the black dragonflight waits in her lair beneath the Wyrmbog. Forever's version is not known yet."] = "검은용군단의 어미용이 용의 둥지 아래 은신처에서 기다리고 있습니다. 포에버 버전은 아직 알려지지 않았습니다.",
+	["Forever's version is not known yet."] = "포에버 버전은 아직 알려지지 않았습니다.",
 	["The chain starts with the Dark Iron Map, which Dark Iron Spies and Captain Beld in Dun Morogh drop."] = "이 연계 퀘스트는 던 모로의 검은무쇠단 비밀요원과 벨드 대장이 떨어뜨리는 검은무쇠 지도로 시작됩니다.",
 	["The Challenge"] = "도전",
 	["The Champion of the Horde"] = "호드의 용사",
@@ -2184,7 +2331,6 @@ L.STRINGS = {
 	["The Darkreaver Menace"] = "다크리버의 위협",
 	["The Darkstone Tablet"] = "다크스톤 서판",
 	["The Day After"] = "그날 이후",
-	["The dead side of Stratholme: Baron Rivendare's ziggurats and slaughterhouse, where the Scourge readies its armies."] = "스트라솔름의 죽은 자들의 구역으로, 남작 리븐데어의 지구라트와 도살장이 있는 곳입니다. 스컬지가 이곳에서 군대를 정비하고 있습니다.",
 	["The Debt"] = "빚",
 	["The Defias Brotherhood"] = "데피아즈단",
 	["The Demon Forge"] = "악마의 룬",
@@ -2254,7 +2400,6 @@ L.STRINGS = {
 	["The Lich, Ras Frostwhisper"] = "리치, 라스 프로스트위스퍼",
 	["The Light and How To Swing It"] = "빛과 정의에 관하여",
 	["The Light and How to Swing It"] = "빛과 정의에 관하여",
-	["The living side of plagued Stratholme, where the Scarlet Crusade holds out against the Scourge under Grand Crusader Dathrohan, the dreadlord Balnazzar in disguise."] = "역병에 물든 스트라솔름의 산 자들의 구역으로, 붉은십자군이 십자군사령관 다스로한의 지휘 아래 스컬지에 맞서 버티고 있습니다. 다스로한의 정체는 변장한 공포의 군주 발나자르입니다.",
 	["The locked vaults"] = "잠긴 금고",
 	["The longer the fight, the more worgs join him: a Bleak Worg after 30 to 45 seconds, then a Slavering Worg, then a Lupine Horror."] = "전투가 길어질수록 더 많은 검은늑대가 합류합니다. 30~45초 뒤 사나운 검은늑대가, 이어서 굶주린 검은늑대가, 그다음 늑대 망령이 나타납니다.",
 	["The longer the fight, the more worgs join him: kill him quickly."] = "전투가 길어질수록 더 많은 검은늑대가 합류합니다. 빠르게 처치하십시오.",
@@ -2301,6 +2446,7 @@ L.STRINGS = {
 	["The Scarlet Crusade's armory and training halls, where Herod, the Scarlet Champion, drills the Crusade's soldiers."] = "붉은십자군의 무기고이자 훈련장으로, 붉은십자군 용사 헤로드가 십자군 병사들을 단련시키는 곳입니다.",
 	["The Scarlet Crusaders of every wing carry the hearts, and so do their leaders."] = "모든 구역의 붉은십자군 병사와 그 우두머리들이 열정의 증거를 지니고 있습니다.",
 	["The Scarlet Monastery was a seat of Lordaeron's priesthood until the Scarlet Crusade made it their stronghold after the Third War. In its graveyard wing the Crusade's interrogators work, and the dead buried there no longer rest."] = "붉은십자군 수도원은 로데론 성직자들의 본산이었으나, 3차 대전쟁 이후 붉은십자군이 이곳을 근거지로 삼았습니다. 묘지 구역에서는 붉은십자군의 심문관들이 일하고 있으며, 그곳에 묻힌 망자들은 더 이상 편히 잠들지 못합니다.",
+	["In its graveyard wing the Crusade's interrogators work, and the dead buried there no longer rest."] = "묘지 구역에서는 붉은십자군의 심문관들이 일하고 있으며, 그곳에 묻힌 망자들은 더 이상 편히 잠들지 못합니다.",
 	["The Scepter of Celebras"] = "셀레브라스의 홀",
 	["The Scourge still holds the ruins of the old capital, where a necromancer is building his strength."] = "스컬지가 여전히 옛 수도의 폐허를 장악하고 있으며, 그곳에서 한 강령술사가 힘을 키우고 있습니다.",
 	["The Shattered Necklace"] = "부서진 목걸이",
@@ -2526,7 +2672,6 @@ L.STRINGS = {
 	["When pulled, he calls the creatures within 30 yards to join him. Clear around him first."] = "전투가 시작되면 30미터 안의 몬스터를 불러 합류시킵니다. 주변을 먼저 정리하십시오.",
 	["When the tank reaches him: Nature damage and a 5-second stun around him."] = "방어 전담이 다가오면 주위에 자연 피해를 입히고 5초 동안 기절시킵니다.",
 	["Where the demigod Agamaggan fell, his blood grew into a sprawl of giant thorns, and the quilboar made it their sacred home. Undead envoys have lately been seen among them, and Charlga Razorflank rules the Kraul from its heart."] = "반신 아감마간이 쓰러진 자리에서 그의 피가 거대한 가시덩굴로 자라났고, 멧돼지인간은 이곳을 성스러운 보금자리로 삼았습니다. 최근에는 그들 사이에서 언데드 사절들이 목격되고 있으며, 서슬깃 차를가가 가시덩굴 우리의 심장부에서 이곳을 다스리고 있습니다.",
-	["Whoever strikes him or an ally near him, Overlord Ramtusk included, takes Nature damage."] = "그나 근처의 아군(대군주 램터스크 포함)을 공격하는 대상은 자연 피해를 입습니다.",
 	["Wilder Thistlenettle"] = "빌더 시슬네틀",
 	["Wilder Thistlenettle, Stormwind"] = "빌더 시슬네틀, 스톰윈드",
 	["Wilder Thistlenettle, the Dwarven District, Stormwind"] = "빌더 시슬네틀, 스톰윈드 드워프 지구",
@@ -2703,6 +2848,8 @@ L.STRINGS = {
 	["Rizzle's Schematics"] = "리즐의 설계도",
 	["Shattered Necklace"] = "부서진 목걸이",
 	["Optional: it leads to The Hidden Chamber."] = "선택 사항: '비밀 석실'로 이어집니다.",
+	-- Uldaman's Restoring the Necklace: take it before Archaedas (2026-11-18; drafted, to be checked)
+	["Hand in Find the Gems with the phial and take this before you fight Archaedas: he drops the power source only while it is in your log."] = "유리병으로 '보석 찾기'를 완료하고, 아카에다스와 싸우기 전에 이 퀘스트를 받으세요. 이 퀘스트가 퀘스트 목록에 있을 때만 그가 마력원천을 떨어뜨립니다.",
 	["The Executioner's Key"] = "사형집행인의 열쇠",
 	["The Sandfury Executioner drops the {item:8444:Executioner's Key:1}. In the original game, it opened the prisoners' cages on the pyramid, and freeing them started the fight on the stairs. This is not yet checked on Forever. Sergeant Bly drops the rod Chief Engineer Bilgewhizzle asks for."] = "성난모래부족 사형집행인이 {item:8444:Executioner's Key:1}를 떨어뜨립니다. 원래 게임에서는 이 열쇠로 피라미드 위 포로들의 우리를 열었고, 포로를 풀어 주면 계단 전투가 시작되었습니다. Forever에서는 아직 확인되지 않았습니다. 하사관 블라이는 선임기술자 빌지위즐이 찾는 탐사막대를 떨어뜨립니다.",
 	["Gahz'rilla, a hidden boss"] = "가즈릴라, 숨겨진 우두머리",
@@ -2722,7 +2869,8 @@ L.STRINGS = {
 	["Offered once one of the four More Components of Importance quests is done. Three Kings of Flame also needs your side's Bodley's Unfortunate Fate, after your class's Anthion's Parting Words."] = "'또 다른 중요한 요소' 퀘스트 네 가지 중 하나를 완료하면 받을 수 있습니다. '세 고위 정령의 불꽃'을 받으려면 자신의 직업에 맞는 '안시온의 작별 인사' 뒤에 이어지는, 자기 진영의 '보들리의 불행한 운명'도 완료해야 합니다.",
 	["Duke Nicholas Zverenhoff then sends you to Lord Maxwell Tyrosus at Light's Hope Chapel, who gives The Argent Hold: open it for a choice of Argent Avenger, Argent Defender or Argent Crusader."] = "그 다음 공작 니콜라스 즈바른호프가 희망의 빛 예배당의 맥스웰 티로서스 경에게 보내고, 그가 '여명회의 궤'를 줍니다. 궤를 열어 은빛 복수자, 은빛 수호자, 은빛 성전사 중 하나를 고르십시오.",
 	["Stratholme's Key to the City"] = "스트라솔름의 도시로 통하는 열쇠",
-	["Magistrate Barthilas always drops the {item:12382:Key to the City:2}. It is not the key from the City of Dalaran's quest of the same name. In the original game, it opened the Service Entrance's gate from outside, so a group could go straight to the Baron's side. This is not yet checked on Forever."] = "집정관 발실라스는 항상 {item:12382:Key to the City:2}를 떨어뜨립니다. 달라란의 같은 이름 퀘스트에서 얻는 열쇠가 아닙니다. 원래 게임에서는 이 열쇠로 바깥에서 공무용 입구의 문을 열어, 일행이 곧바로 남작이 있는 쪽으로 갈 수 있었습니다. Forever에서는 아직 확인되지 않았습니다.",
+	-- (0.39.22: the Service Gate, as the page names that door; reworded, drafted, to be checked)
+	["Magistrate Barthilas always drops the {item:12382:Key to the City:2}. It is not the key from the City of Dalaran's quest of the same name. In the original game, it opened the Service Gate from outside, so a group could go straight to the Baron's side. This is not yet checked on Forever."] = "집정관 발실라스는 항상 {item:12382:Key to the City:2}를 떨어뜨립니다. 달라란의 같은 이름 퀘스트에서 얻는 열쇠가 아닙니다. 원래 게임에서는 이 열쇠로 바깥에서 공무용 입구를 열어, 일행이 곧바로 남작이 있는 쪽으로 갈 수 있었습니다. Forever에서는 아직 확인되지 않았습니다.",
 	-- Forever's own dungeons: Before you go's notes (the Dark Iron Map, the Titan Relic), the Treaty of Understanding and two quest notes (Unending Torment, part 2; Changing Tastes) (2026-10-30; drafted, to be checked)
 	["Treaty of Understanding"] = "상호 이해 조약",
 	["The Dark Iron Map"] = "검은무쇠 지도",
@@ -2760,7 +2908,6 @@ L.STRINGS = {
 	["A Crumpled Up Note, dropped by foes inside Blackrock Depths"] = "꼬깃꼬깃한 쪽지, 검은바위 나락 내부의 적에게서 획득",
 	-- Another dungeon's quest giver on a chain's step, named as several wings share it or by the one wing keeping it (2026-10-30; drafted, to be checked)
 	["Ysida Harmon, inside Stratholme"] = "이시다 하몬, 스트라솔름 내부",
-	["Ysida Harmon, inside Stratholme: Service Gate"] = "이시다 하몬, 스트라솔름: 공무용 입구 내부",
 	["Shen'dralar Ancient, inside Dire Maul: Capital Gardens"] = "셴드랄라 고대인, 혈투의 전장: 수도 정원 내부",
 	["Ancient Equine Spirit, inside Dire Maul: Capital Gardens"] = "고대 준마의 영혼, 혈투의 전장: 수도 정원 내부",
 	-- Quests that start from an item: where the item is, without "Item start:" or "Use" (the Quests tab shows it on its own line) (2026-10-30; drafted, to be checked)
@@ -2948,8 +3095,8 @@ L.STRINGS = {
 	["The Brassbolts Brothers"] = "브라스볼츠 형제",
 	["The Corruption Abroad"] = "먼 곳에 퍼진 타락",
 	["Speak with Shoni"] = "쇼니와의 대화",
-	["Talk to Furen Longbeard in Stormwind to get your armour."] = "스톰윈드의 푸렌 롱비어드와 대화하여 갑옷을 받아야 합니다.",
-	["Talk to Thun'grim Firegaze in the Barrens to get your armour."] = "불모의 땅의 툰그림 파이어게이즈와 대화하여 갑옷을 받아야 합니다.",
+	["Talk to Furen Longbeard in Stormwind to get your armor."] = "스톰윈드의 푸렌 롱비어드와 대화하여 갑옷을 받아야 합니다.",
+	["Talk to Thun'grim Firegaze in the Barrens to get your armor."] = "불모의 땅의 툰그림 파이어게이즈와 대화하여 갑옷을 받아야 합니다.",
 	["Kill 12 Mana Surges in the allowed time limit."] = "제한 시간 안에 마나 굽이 12마리를 처치해야 합니다.",
 	["Talk to Tabetha in Dustwallow Marsh for your reward."] = "먼지진흙 습지대의 타베사와 대화하여 보상을 받아야 합니다.",
 	["Bring a Kor Gem to Thundris Windweaver in Darkshore."] = "어둠의 해안의 툰드리스 윈드위버에게 코르석을 가져가야 합니다.",
@@ -3008,7 +3155,6 @@ L.STRINGS = {
 	["Then Falrin Treeshaper gives The Challenge, done at the Ring of Law in Blackrock Depths."] = "그 후 팔린 트리셰이퍼가 '도전'을 주며, 이 퀘스트는 검은바위 나락의 법의 심판장에서 진행합니다.",
 	["Then Lord Grayson Shadowbreaker gives The Divination Scryer. The chain ends with Judgment and Redemption in Scholomance."] = "그 후 그레이슨 섀도브레이커 경이 '예언의 탐지기'를 줍니다. 연계 퀘스트는 스칼로맨스의 '심판과 구원의 손길'로 끝납니다.",
 	["Then Anthion Harmon gives Anthion's Strange Request. The chain goes on to Anthion's Old Friend in Dire Maul."] = "그 후 안시온 하몬이 '안시온의 이상한 부탁'을 줍니다. 연계 퀘스트는 혈투의 전장의 '안시온의 오랜 친구'로 이어집니다.",
-	["Then Duke Nicholas Zverenhoff gives Above and Beyond, done at the Service Gate."] = "그 후 공작 니콜라스 즈바른호프가 '뛰어난 존재'를 주며, 이 퀘스트는 공무용 입구에서 진행합니다.",
 	["Optional: it leads to Blackfathom Villainy."] = "선택 사항: '검은심연의 음모'로 이어집니다.",
 	-- City of Dalaran: the Horde's Heart of Disruption names who starts the chain, as the Image of Archmage Modera gives the quest itself (2026-11-03; drafted, to be checked)
 	["Magus Wordeen Voidglare in Tarren Mill starts the chain with Prison Break In and Key to the City. At the Lordamere Internment Camp, kill four traitors for their artifacts (they take 5 to 10 minutes to come back) and take the Grimy Key from the Warden's Footlocker, upstairs in the two-storey building. Blood in the Streets then leads through the north sewers to the Image of Archmage Modera. It gives the Dalaran Sewer Key, and Shrewd Negotiations follows, to Archmage Celindra. The mote drops from the Shade of the Archmage, the last boss."] = "타렌 밀농장의 학자 워딘 보이드글레어가 '감옥 습격'과 '도시로 통하는 열쇠'로 퀘스트 줄기를 시작합니다. 로다미어 포로수용소에서 배반자 넷을 처치해 유물을 얻고(다시 나타나기까지 5~10분 걸립니다), 2층 건물 위층에 있는 교도관의 사물함에서 더러운 열쇠를 꺼내십시오. 이어지는 '피로 물든 거리'는 북쪽 하수구를 지나 대마법사 모데라의 환영에게로 안내합니다. 이 퀘스트로 달라란 하수구 열쇠를 얻으며, 이어서 '기민한 협상'으로 대마법사 셀린드라에게 갑니다. 티끌은 마지막 우두머리인 대마법사의 망령이 떨어뜨립니다.",
@@ -3081,6 +3227,16 @@ L.STRINGS = {
 	["Answer Parqual Fintallas' question successfully and then speak to him again. He will remain in the Undercity until you are ready."] = "파쿠알 핀탈라스의 질문에 올바르게 답한 뒤 다시 말을 거십시오. 준비가 될 때까지 그는 언더시티에 머뭅니다.",
 	["Travel to the Dwarven District in Stormwind and find an engineer who can help."] = "스톰윈드의 드워프 지구로 가서 도움을 줄 수 있는 기술자를 찾으십시오.",
 	["Return to Alba Fairmoon in Westfall."] = "서부 몰락지대의 알바 페어문에게 돌아가십시오.",
+	-- The quest check of 2026-11-05 (the owner's calls of that day): Elemental Aid's second giver, and Before you go's Viewing Room Key, Postmaster Malown, Stratholme's Scarlet Key and Uldaman's Keystone (2026-11-05; drafted, to be checked)
+	["Rau Cliffrunner (or Prate Cloudseer), Thousand Needles"] = "라우 클리프러너(또는 프레이트 클라우드시어), 버섯구름 봉우리",
+	["The Viewing Room Key"] = "스칼로맨스 강당 열쇠",
+	["Rattlegore drops the {item:13873:Viewing Room Key:1}. In the original game, it opened the Viewing Room door, the way on to Vectus and Marduk Blackpool, and one key did for the whole group. This is not yet checked on Forever."] = "들창어금니가 {item:13873:Viewing Room Key:1}를 떨어뜨립니다. 원래 게임에서는 이 열쇠로 스칼로맨스 강당 문을 열었고, 그 문을 지나야 벡투스와 마르두크 블랙풀에게 갈 수 있었으며, 일행 중 한 명만 열쇠가 있으면 됐습니다. Forever에서는 아직 확인되지 않았습니다.",
+	["Postmaster Malown, a hidden boss"] = "우체국장 말로운, 숨겨진 우두머리",
+	["The Stratholme Courier drops the city's postbox keys. In the original game, each locked postbox you opened brought out guards, and Postmaster Malown came with the third. This is not yet checked on Forever."] = "스트라솔름 급사가 도시의 우체통 열쇠를 떨어뜨립니다. 원래 게임에서는 잠긴 우체통을 열 때마다 경비병이 나왔고, 세 번째에 우체국장 말로운이 나왔습니다. Forever에서는 아직 확인되지 않았습니다.",
+	["{item:7146:The Scarlet Key:2} is in Doan's Strongbox, in the Scarlet Monastery's Library. In the original game, it also opened the Bastion Door and the door of the Hall of High Command here, and a rogue could pick both locks. This is not yet checked on Forever."] = "{item:7146:The Scarlet Key:2}는 붉은십자군 수도원 도서관의 도안의 금고에 들어 있습니다. 원래 게임에서는 이 열쇠로 이곳의 성채 문과 최고 사령부 전당의 문도 열 수 있었고, 도적은 두 자물쇠를 모두 딸 수 있었습니다. Forever에서는 아직 확인되지 않았습니다.",
+	["The Keystone"] = "쐐기돌",
+	-- Uldaman's Keystone for both sides, reworded: the owner's report, 2026-11-05 (drafted, to be checked)
+	["Revelosh drops {item:7741:The Shaft of Tsol:1}. Put together with the {item:7740:Gni'kiv Medallion} from Baelog's Chest, behind the Lost Dwarves, it makes the {item:7733:Staff of Prehistoria}, which works the Keystone in the Map Chamber, past Revelosh, and opens Ironaya's door. This is not yet checked on Forever."] = "레벨로쉬가 {item:7741:The Shaft of Tsol:1}를 떨어뜨립니다. 길 잃은 드워프 뒤에 있는 밸로그의 궤짝에서 나오는 {item:7740:Gni'kiv Medallion}과 합치면 {item:7733:Staff of Prehistoria}가 되며, 이 지팡이로 레벨로쉬를 지나 지도의 방에 있는 쐐기돌을 작동시켜 아이로나야의 문을 엽니다. Forever에서는 아직 확인되지 않았습니다.",
 	-- The steps the Quests tab now lists one by one in a chain, numbered as parts of a name (The Tome of Valor, The True Masters, Down the Scarlet Path, Prospect of Faith, Passing Word of a Threat, The Smoldering Ruins of Thaurissan, Detonation at a Distance): their objectives and givers (2026-11-06; drafted, to be checked)
 	["Talk to someone in Stormwind Intelligence about acquiring a remote detonator."] = "원격 기폭 장치를 구하는 일에 대해 스톰윈드 정보국의 누군가와 대화하십시오.",
 	["Bring the Remote Detonator Kit to Sprite Jumpsprocket in the Dwarven District of Stormwind."] = "원격 기폭 장치 꾸러미를 스톰윈드 드워프 지구의 스프라이트 점프스프로켓에게 가져가십시오.",
@@ -3111,6 +3267,45 @@ L.STRINGS = {
 	["Royal Historian Archesonus, Ironforge"] = "왕실 역사가 아케소누스, 아이언포지",
 	["Duthorian Rall, Stormwind City"] = "두소리안 랄, 스톰윈드",
 	["Daphne Stilwell, Westfall"] = "다프네 스틸웰, 서부 몰락지대",
+	-- Adventure Mode: the door rumours (Data/Authored/Rumours.lua), the owner's 38 lines of 2026-11-07
+	["Someone in Ironforge pays good coin for heirlooms brought up from the kings' resting place."] = "아이언포지의 누군가가 왕들의 안식처에서 가져온 가보에 후한 값을 쳐준다고 합니다.",
+	["Brill folk swear the plague's dead still walk the courtyards where the human kings once ruled."] = "브릴 사람들은 옛 인간 왕들이 다스리던 궁정 안뜰을 역병에 죽은 자들이 아직도 거닌다고 장담합니다.",
+	["At the end of a hidden dig in the Wetlands hills, a Titan figure of stone waits to be woken."] = "저습지 언덕 속 숨겨진 굴착지 끝에서 돌로 된 티탄의 형상이 깨어날 때를 기다리고 있습니다.",
+	["Fishers on Lordamere Lake say wild magic has taken the mages' city, and even its books attack."] = "로다미어 호수의 어부들은 마법사들의 도시가 날뛰는 마법에 휩싸여 책들마저 사람을 덮친다고 말합니다.",
+	["Guards in Orgrimmar say chanting rises from the caves deep below the city."] = "오그리마 경비병들은 도시 저 아래 깊은 동굴에서 무언가 읊조리는 소리가 올라온다고 말합니다.",
+	["Barrens herders say the caves have twisted every creature inside, druids included."] = "불모의 땅 목동들은 그 동굴 안의 생물이 드루이드까지 하나같이 뒤틀려 있다고 말합니다.",
+	["Westfall farmers see the Defias vanish into the Moonbrook mine and hear hammering below."] = "서부 몰락지대 농부들은 데피아즈단이 문브룩 광산으로 사라지는 것을 보고, 땅 밑에서 울리는 망치질 소리를 듣습니다.",
+	["Travelers warn Pyrewood is not safe at night, and strange sounds can be heard from the keep!"] = "여행자들은 장작나무 마을이 밤에는 위험하고, 성에서 이상한 소리가 들려온다고 경고합니다!",
+	["Zoram fishers see lights far under the waves, where cultists guard a shrine the sea took."] = "조람 해안 어부들은 바다가 삼킨 성소를 광신도들이 지키는 파도 아래 깊은 곳에서 불빛을 봅니다.",
+	["From Lakeshire to Darkshire, bounties are posted on outlaws who run free in Stormwind's prison."] = "레이크샤이어에서 다크샤이어까지, 스톰윈드의 옥중에서 활개 치는 무법자들에게 현상금이 걸려 있습니다.",
+	["Gnome refugees mourn their lost home, still glowing from what they unleashed on the troggs."] = "노움 피난민들은 트로그에게 풀어놓은 그것 때문에 아직도 빛을 내는 잃어버린 고향을 애도합니다.",
+	["Word on the Barrens road is that a goblin trader is held captive deep in quilboar country."] = "불모의 땅 길목에는 멧돼지인간의 땅 깊숙한 곳에 고블린 상인이 붙잡혀 있다는 말이 돕니다.",
+	["Anyone the Crusade suspects of carrying the plague is dragged to its crypts, and few come back."] = "십자군이 역병 보균자로 의심하는 자는 누구든 그들의 지하 납골당으로 끌려가고, 돌아오는 이는 거의 없습니다.",
+	["Scholars in Ironforge and the Undercity alike want books the zealots guard with hounds."] = "아이언포지와 언더시티의 학자들 모두 광신도들이 사냥개를 풀어 지키는 책들을 손에 넣고 싶어 합니다.",
+	["Steel clashes from dawn to dusk where red-clad recruits train beside racks of fine weapons."] = "붉은 옷의 신병들이 멋진 무기가 늘어선 진열대 곁에서 훈련하는 그곳에서는 새벽부터 해 질 녘까지 쇠 부딪는 소리가 그치지 않습니다.",
+	["Old knights whisper that the truth of the Ashbringer's death waits beside the Crusade's high altar."] = "늙은 기사들은 파멸의 인도자의 죽음에 얽힌 진실이 십자군의 대제단 곁에서 기다리고 있다고 속삭입니다.",
+	["By the road to Thousand Needles, quilboar bow to the walking dead among their burial mounds."] = "버섯구름 봉우리로 가는 길목, 봉분들 사이에서 멧돼지인간들이 걸어 다니는 시체에게 고개를 숙입니다.",
+	["Badlands prospectors say troggs pour from a vault older than the dwarves, where Dark Irons now dig."] = "황야의 땅 탐광꾼들은 드워프보다 오래된 금고에서 트로그가 쏟아져 나오고, 지금은 검은무쇠단이 그곳을 파헤친다고 말합니다.",
+	["Gadgetzan traders buy scarab shells and troll potions from anyone who dares enter the desert city."] = "가젯잔 상인들은 사막의 도시에 감히 발을 들이는 이라면 누구에게서든 왕쇠똥구리 껍데기와 트롤의 물약을 사들입니다.",
+	["The centaurs of Desolace guard the grave of a god's son, where even the rocks attack intruders."] = "잊혀진 땅의 켄타우로스들은 신의 아들이 잠든 묘소를 지키며, 그 안에서는 바위마저 침입자를 덮칩니다.",
+	["Swamp of Sorrows hunters hear troll drums from a flooded pit, beating for a god of blood."] = "슬픔의 늪 사냥꾼들은 물에 잠긴 구덩이에서 피의 신을 위해 울리는 트롤의 북소리를 듣습니다.",
+	["Searing Gorge miners swear the Dark Irons built a whole city of fire inside the mountain."] = "이글거리는 협곡의 광부들은 검은무쇠 드워프들이 산속에 불의 도시를 통째로 세웠다고 장담합니다.",
+	["An orc who calls himself warchief is gathering an army halfway up the mountain, scouts report."] = "정찰병들의 보고에 따르면, 스스로 호드의 수장이라 칭하는 오크가 산 중턱에서 군대를 모으고 있습니다.",
+	["Black dragons are bred for war at the mountain's peak, they say, and the way up is sealed."] = "산꼭대기에서는 전쟁에 쓸 검은 용을 길러 내고 있으며, 그리로 오르는 길은 봉인되어 있다고 합니다.",
+	["Feralas tales say the satyrs of the old city were elves once, until demons twisted them."] = "페랄라스에 전해지는 이야기에 따르면, 옛 도시의 사티로스들은 본래 엘프였으나 악마에게 뒤틀렸다고 합니다.",
+	["A gnome chained up among the ogres begs passers-by for cloth and leather to sew a disguise."] = "오우거들 사이에 사슬로 묶인 노움이 변장 옷을 지을 천과 가죽을 달라며 지나가는 이들에게 애원합니다.",
+	["Anyone who brings lost books home to the elves of the western halls earns a fine reward."] = "잃어버린 책을 서쪽 전당의 엘프들에게 되찾아 주는 이는 누구든 후한 보상을 받습니다.",
+	["Boatmen won't row to the island in Darrowmere Lake, where the living learn to raise the dead."] = "뱃사공들은 산 자가 죽은 자를 일으키는 법을 배운다는 다로우미어 호수의 섬으로는 노를 저으려 하지 않습니다.",
+	["The Argent Dawn warns that the Crusade's leader in the burned city is not what he seems."] = "은빛 여명회는 불타 버린 도시에 있는 십자군 지도자가 겉보기와 다른 존재라고 경고합니다.",
+	["A ghost outside the walls begs the living to save the woman he loves before time runs out."] = "성벽 밖의 한 유령이 시간이 다하기 전에 사랑하는 여인을 구해 달라고 산 자들에게 애원합니다.",
+	["Dustwallow trappers know of a black dragon in the Wyrmbog caves, guarded by swarms of whelps."] = "먼지진흙 습지대의 덫사냥꾼들은 새끼 용 무리가 지키는 늪지 동굴 속 검은 용에 대해 알고 있습니다.",
+	["Night elves will not speak of the vaults beneath their forests, or of who was locked inside."] = "나이트 엘프들은 자신들의 숲 아래 지하 석실에 대해서도, 그 안에 누가 갇혔는지에 대해서도 입을 열지 않습니다.",
+	["Druids on the mountain call for fighters to guard the great tree against an old enemy."] = "산 위의 드루이드들이 오랜 적으로부터 세계수를 지킬 용사들을 찾고 있습니다.",
+	["Booty Bay sailors say the sea gave back an old troll city, and pirates got there first."] = "무법항 선원들은 바다가 옛 트롤 도시를 다시 토해 냈고, 해적들이 먼저 그곳을 차지했다고 말합니다.",
+	["The ogres of the Riverglades have new friends in Twilight robes."] = "강물터의 오우거들에게 황혼의 로브를 걸친 새 친구들이 생겼습니다.",
+	["Naga swarm the island jail off the Dustwallow coast, and its Defias inmates never got out."] = "먼지진흙 습지대 앞바다의 섬 수용소에 나가가 들끓고, 그곳의 데피아즈단 수감자들은 끝내 빠져나오지 못했습니다.",
+	["Travelers say the furbolg of northern Azshara have gone mad, sickened by something below."] = "여행자들은 아즈샤라 북부의 펄볼그들이 땅 밑의 무언가에 병들어 미쳐 버렸다고 말합니다.",
+	["Past the dinosaurs lie stone halls that no one has mapped yet, or so the explorers whisper."] = "탐험가들은 공룡들 너머에 아직 아무도 지도에 담은 적 없는 돌의 전당이 있다고 수군거립니다.",
 	-- Ruins of Lordaeron: Unending Torment's objectives (parts 2, 4 and 5), and where Remember That I Love You
 	-- goes next (2026-11-10; drafted, to be checked)
 	["Bring the Head of the Baron to Othmar's body, the Unfinished Abomination, in the Undercity."] = "남작의 머리를 언더시티에 있는 미완성 누더기골렘인 오스마르의 몸에 가져가야 합니다.",
@@ -3127,6 +3322,85 @@ L.STRINGS = {
 	["The Keystone"] = "쐐기돌",
 	-- Uldaman's Keystone for both sides, reworded: the owner's report, 2026-11-05 (drafted, to be checked)
 	["Revelosh drops {item:7741:The Shaft of Tsol:1}. Put together with the {item:7740:Gni'kiv Medallion} from Baelog's Chest, behind the Lost Dwarves, it makes the {item:7733:Staff of Prehistoria}, which works the Keystone in the Map Chamber, past Revelosh, and opens Ironaya's door. This is not yet checked on Forever."] = "레벨로쉬가 {item:7741:The Shaft of Tsol:1}를 떨어뜨립니다. 길 잃은 드워프 뒤에 있는 밸로그의 궤짝에서 나오는 {item:7740:Gni'kiv Medallion}과 합치면 {item:7733:Staff of Prehistoria}가 되며, 이 지팡이로 레벨로쉬를 지나 지도의 방에 있는 쐐기돌을 작동시켜 아이로나야의 문을 엽니다. Forever에서는 아직 확인되지 않았습니다.",
+	-- Stratholme as one dungeon (0.39.22, the owner's calls of 2026-11-12): its description, its two doors' names (the zone
+	-- map's door pins, the boss list's side rows) and what follows The Truth Comes Crashing Down (drafted, to be checked)
+	["Plagued Stratholme is split in two: the Scarlet Crusade holds the Main Gate's side under Grand Crusader Dathrohan, the dreadlord Balnazzar in disguise, and Baron Rivendare's Scourge holds the ziggurats and slaughterhouse past the Service Gate."] = "역병에 물든 스트라솔름은 둘로 나뉘어 있습니다. 정문 쪽 구역은 붉은십자군이 십자군사령관 다스로한의 지휘 아래 지키고 있으며, 다스로한의 정체는 변장한 공포의 군주 발나자르입니다. 공무용 입구 너머의 지구라트와 도살장은 남작 리븐데어의 스컬지가 차지하고 있습니다.",
+	["Then Duke Nicholas Zverenhoff gives Above and Beyond."] = "그 후 공작 니콜라스 즈바른호프가 '뛰어난 존재'를 줍니다.",
+	["Main Gate"] = "정문",
+	["Service Gate"] = "공무용 입구",
+	-- The Library: Rituals of Power's whole chain for mages, Items of Power, Mage's Wand, the road to it before you go
+	-- and Journey to the Marsh's other trainers (the owner's chain, 2026-11-13; drafted, to be checked)
+	["Items of Power"] = "힘의 물건",
+	["Bring 1 Jade and the Bolt Charged Bramble to Tabetha in Dustwallow Marsh."] = "비취 1개와 번개 맞은 가시덤불을 먼지진흙 습지대의 타베사에게 가져가야 합니다.",
+	["Jade comes from tin, iron and gold veins, chests, lockboxes and gem sacks. Witherbark trolls in Arathi Highlands drop Witherbark Totem Sticks: use 10 of them at the Stone of Outer Binding there (52, 51) to make the Bolt Charged Bramble."] = "비취는 주석, 철, 금 광맥과 상자, 잠긴 상자, 보석 주머니에서 나옵니다. 아라시 고원의 마른나무껍질부족 트롤이 마른나무껍질부족 토템 막대를 떨어뜨립니다. 그곳의 외부 결속의 돌(52, 51)에서 10개를 사용하면 번개 맞은 가시덤불을 얻습니다.",
+	["Mage's Wand"] = "마법사의 마법봉",
+	["Speak with Tabetha after her ritual."] = "의식이 끝난 뒤 타베사와 대화하십시오.",
+	["The road to Rituals of Power"] = "'마력의 의식'까지 가는 길",
+	["A mage trainer in Stormwind, Ironforge, Orgrimmar, Thunder Bluff or the Undercity gives Journey to the Marsh, to Tabetha in Dustwallow Marsh. Her Hidden Secrets sends you to Magus Tirth in the Shimmering Flats, in Thousand Needles. After his Get the Scoop, take Rituals of Power from him before you go in: the book is in the Library."] = "스톰윈드, 아이언포지, 오그리마, 썬더 블러프, 언더시티의 마법사 상급자가 '습지대로의 여행'을 주며, 먼지진흙 습지대의 타베사에게 보냅니다. 그녀의 '숨겨진 비밀'은 버섯구름 봉우리 소금 평원의 학자 틸스에게 보냅니다. 그의 '주문 알아오기'를 마친 뒤, 들어가기 전에 그에게서 '마력의 의식'을 받으십시오. 책은 도서관에 있습니다.",
+	["Jennea Cannon, Stormwind City"] = "제니아 캐논, 스톰윈드",
+	["Anastasia Hartwell, Undercity"] = "아나스타샤 하트웰, 언더시티",
+	["Deino, Orgrimmar"] = "다이노, 오그리마",
+	["Bink, Ironforge"] = "빙크, 아이언포지",
+	["Also given by Jennea Cannon (Stormwind City)."] = "제니아 캐논(스톰윈드)에게서도 받을 수 있습니다.",
+	["Magus Tirth, Thousand Needles"] = "학자 틸스, 버섯구름 봉우리",
+	-- Scarlet Monastery's abilities from the owner's recording (2026-11-16; drafted, to be checked)
+	["At half health he becomes immune to all attacks and spells for 8 seconds, while he casts Detonation."] = "생명력이 절반이 되면 8초 동안 모든 공격과 주문에 면역이 되며, 그동안 폭발을 시전합니다.",
+	["Removes a helpful magic effect from a player, or a harmful one from himself or an ally."] = "플레이어에게서 이로운 마법 효과를, 또는 자신이나 아군에게서 해로운 효과를 하나 제거합니다.",
+	["Hits his target, which then takes more Holy damage; it stacks up to 5 times."] = "대상을 공격하며, 대상은 이후 신성 피해를 더 받습니다. 최대 5번까지 중첩됩니다.",
+	["Once Whitemane raises him, he heals her fully."] = "화이트메인이 그를 되살리면 그녀의 생명력을 완전히 회복시킵니다.",
+	["Puts everyone near her to sleep for up to 10 seconds, just before she raises Mograine. Damage wakes a sleeper."] = "모그레인을 되살리기 직전에 그녀 주위의 모두를 최대 10초 동안 잠재웁니다. 피해를 입으면 깨어납니다.",
+	-- The Crest of Lordaeron's five places, each mark's line on the Ruins of Lordaeron map (2026-11-17; drafted, to be
+	-- checked)
+	["Mausoleum in the far north-west corner, on the wall"] = "북서쪽 맨 끝 영묘의 벽",
+	["West tower, top floor, on the wall left of the doors"] = "서쪽 탑 꼭대기 층, 문 왼쪽 벽",
+	["North-west tower, at the bottom, in front of the split staircase"] = "북서쪽 탑 맨 아래층, 갈라진 계단 앞",
+	["Behind the closed crypt doors, on the pitch-black wall"] = "닫힌 묘실 문 안쪽의 칠흑같이 어두운 벽",
+	["East tower, top floor, on the wall left of the doors"] = "동쪽 탑 꼭대기 층, 문 왼쪽 벽",
+	-- The Shaper's Terrace filled in (2026-11-18; drafted, to be checked): where it is, the overview's note, Before
+	-- you go's note on how the four console bosses and Nanaya come (one since 2026-11-19), and its six quests'
+	-- givers and notes. The bosses' names, the quests' names and objectives, and the places and things new
+	-- in Forever (the Pillar of Assimilation, the Achromatic Crystal, the cartographer's kit) stay as the game names
+	-- them in English; the Power Crystals are item links, named by the client.
+	["The northern rim of Un'Goro Crater, up the stairs from Marshal's Refuge"] = "운고로 분화구의 북쪽 가장자리, 마샬의 야영지에서 계단을 올라간 곳",
+	["Four of the bosses are summoned with Power Crystals, 15 of one color at each one's console: see Before you go. Nanaya, the last boss, comes once those four are dead; the other five bosses are optional. To leave, jump off the edge of the terrace."] = "우두머리 넷은 힘의 수정으로 불러냅니다. 각 우두머리의 제어반에 한 가지 색의 수정을 15개씩 넣습니다. 출발 전에를 참고하십시오. 마지막 우두머리인 Nanaya는 이 넷이 죽으면 나타나며, 나머지 우두머리 다섯은 선택 사항입니다. 나가려면 테라스 가장자리에서 뛰어내리십시오.",
+	-- Before you go's one note on summoning the Shaper's Terrace's bosses, in place of its six (the owner's call of
+	-- 2026-11-19), in the owner's short form of 2026-11-20 (drafted, to be checked)
+	["Summoning the bosses"] = "우두머리 소환하기",
+	["Four bosses must be summoned and killed before you can summon Nanaya, the last boss. Summon each at its console:\n• Cinder: 15 × {item:11186:Red Power Crystal:1}, on the hill with the red crystals (southwest)\n• Snowtalon: 15 × {item:11184:Blue Power Crystal:1}, in the cave behind the left waterfall (northwest)\n• Bolt: 15 × {item:11188:Yellow Power Crystal:1}, by the yellow crystals south of the tar pits\n• Vitrix: 15 × {item:11185:Green Power Crystal:1}, in a cavern on the north side\nThen summon Nanaya at the console on the Pillar of Assimilation's island."] = "우두머리 넷을 소환해 처치해야 마지막 우두머리인 Nanaya를 소환할 수 있습니다. 각 우두머리는 자기 제어반에서 소환하십시오:\n• Cinder: 15 × {item:11186:Red Power Crystal:1}, 붉은 수정이 있는 언덕 위 (남서쪽)\n• Snowtalon: 15 × {item:11184:Blue Power Crystal:1}, 왼쪽 폭포 뒤의 동굴 안 (북서쪽)\n• Bolt: 15 × {item:11188:Yellow Power Crystal:1}, 타르 구덩이 남쪽의 노란 수정 옆\n• Vitrix: 15 × {item:11185:Green Power Crystal:1}, 북쪽에 있는 동굴 안\n그런 다음 Pillar of Assimilation 섬의 제어반에서 Nanaya를 소환하십시오.",
+	["Curator Thorius, Hall of Explorers, Ironforge"] = "Curator Thorius, 탐험가의 전당, 아이언포지",
+	["Curator Thorius — Hall of Explorers"] = "Curator Thorius — 탐험가의 전당",
+	["Chemist Fuely, the Apothecarium, Undercity"] = "Chemist Fuely, 연금술 실험실, 언더시티",
+	["Chemist Fuely — the Apothecarium"] = "Chemist Fuely — 연금술 실험실",
+	["Mayena Earthseeker, Mulgore"] = "Mayena Earthseeker, 멀고어",
+	["Venomridge, a great diemetradon, is one of the optional bosses, on the plain south of the tar pits."] = "거대한 디메트라돈인 Venomridge는 선택 우두머리 중 하나로, 타르 구덩이 남쪽 평원에 있습니다.",
+	["Use the Explorers' League Cartographer's Kit you are given at the Pillar of Assimilation, the Achromatic Crystal, the Western Gates, the Regrowth Vestibule and the Unearthed Stone Watcher. It can't be shared."] = "받은 Explorers' League Cartographer's Kit를 Pillar of Assimilation, Achromatic Crystal, Western Gates, Regrowth Vestibule, Unearthed Stone Watcher에서 사용하십시오. 이 퀘스트는 공유할 수 없습니다.",
+	["Who gives it is not listed yet. The pages drop from the ravasaurs inside. It can't be shared."] = "누가 주는 퀘스트인지는 아직 알려지지 않았습니다. 페이지는 안에 있는 랩터들이 떨어뜨립니다. 이 퀘스트는 공유할 수 없습니다.",
+	["Each most likely comes from a crystal fragment of its kind in the terrace. They are not the Power Crystals the consoles take."] = "각 수정은 아마도 테라스에 있는 같은 종류의 수정 조각에서 얻을 수 있습니다. 제어반에 넣는 힘의 수정이 아닙니다.",
+	["The essence drops from the small slimes in the pools by the Achromatic Crystal."] = "정수는 Achromatic Crystal 옆 웅덩이에 사는 작은 슬라임이 떨어뜨립니다.",
+	["The fragment lies on the ground near the Achromatic Crystal, a colorless crystal in the terrace."] = "조각은 테라스의 무색 수정인 Achromatic Crystal 근처 땅에 놓여 있습니다.",
+}
+
+-- Adventure Mode's masking: what its rules can't tell of this language's names (Core/Discovery.lua;
+-- Locales/enUS.lua says what each list is for). Drafted, to be checked.
+L.MASK_GROUP_WORDS = { "황혼의", "성난모래부족", "사형집행인", "검은무쇠단", "병참장교", "급사", "집정관", "왕자", "포병대장",
+	"사자", "검제작자", "가시덩굴일족",
+	-- (Shade, of Shade of the Archmage: "학카르의 망령", the Shade of Hakkar, is no boss)
+	"망령" }
+L.MASK_PLACES = { "험상궂은 주정뱅이 선술집", "마그니 브론즈비어드" }
+-- (on a boss's page and in a dungeon's description, a faction, a group or a word, not the quest of its name)
+L.MASK_NAMES = { "데피아즈단", "송곳니의 드루이드 우두머리", "악몽" }
+L.MASK_BOSS_FORMS = {
+	-- (a quest's giver, Doan Karhan, has his name: his strongbox is named whole)
+	["Arcanist Doan"] = { "도안의 금고" },
+}
+-- The notes name this quest otherwise than its own name.
+L.MASK_QUEST_FORMS = {
+	[3528] = { "학카르 신" },
+	-- (Before you go names the right piece of Lord Valthalak's amulet so)
+	[8989] = { "오른쪽 조각" },
+	[8990] = { "오른쪽 조각" },
+	[8991] = { "오른쪽 조각" },
+	[8992] = { "오른쪽 조각" },
 }
 
 -- The client's own names for the bosses, factions and places, which what it says of them (and the

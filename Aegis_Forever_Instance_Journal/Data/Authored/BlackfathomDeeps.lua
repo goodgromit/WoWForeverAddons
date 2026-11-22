@@ -15,7 +15,7 @@ ns.AmendInstance("BlackfathomDeeps", {
 		"Aku'mai's Lair" },
 
 	--[[
-		Before you go (the overview), from the quest audit of 2026-10-29 (Dev/docs/audit_2026-10-29,
+		Before you go (the Quests tab), from the quest audit of 2026-10-29 (Dev/docs/audit_2026-10-29,
 		step 9 of its plan): Baron Aquanis, the boss the Horde calls up. From QuestieDB's Forever data:
 		the Fathom Stone (object 177964, inside) gives the Fathom Core (16762) that Amongst the Ruins
 		(6921, Je'neu Sancrea's) asks for, and he drops the Strange Water Globe (16782), which starts
@@ -137,3 +137,9 @@ ns.AmendInstance("BlackfathomDeeps", {
 		},
 	},
 })
+
+-- The fog of war (UI/DungeonFog.lua's Counts; the owner's answer of 2026-11-13, a boss who may never be recorded killed
+-- holds nothing back): Baron Aquanis is called up by the Horde's quest at the fathom stone, so he holds back no fog at
+-- all (the owner's rule of 2026-11-14 for summoned bosses: his walkway clears with the Moonshrine Ruins, his kill
+-- changes nothing). The fog's data says the same (Data/Fog/BlackfathomDeeps.lua's counts).
+ns.AmendInstance("BlackfathomDeeps", { bosses = { ["Baron Aquanis"] = { summoned = true } } })

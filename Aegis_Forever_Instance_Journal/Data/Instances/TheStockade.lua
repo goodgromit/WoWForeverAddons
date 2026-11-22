@@ -348,13 +348,6 @@ ns.AddInstance({
 			trash = true,
 			loot = {
 				{
-					itemID = 2909,
-					name = "Red Wool Bandana",
-					slot = "Quest",
-					quality = 1,
-					droppedBy = "Defias prisoners, convicts, inmates and insurgents",
-				},
-				{
 					itemID = 274092,
 					name = "Sharpened Cutlery",
 					slot = "Thrown",

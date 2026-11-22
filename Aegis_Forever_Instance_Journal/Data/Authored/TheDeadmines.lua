@@ -21,7 +21,7 @@ ns.AmendInstance("TheDeadmines", {
 	areas = { "The Deadmines", "Mast Room", "Goblin Foundry", "Ironclad Cove" },
 
 	--[[
-		Before you go (the overview): the two Alliance chains done outside before their dungeon steps
+		Before you go (the Quests tab): the two Alliance chains done outside before their dungeon steps
 		open (the deep audit of 2026-10-30, G01-17). From QuestieDB's Forever data: The Defias
 		Brotherhood runs 65 > 132 > 135 > 141 > 142 > 155 (Gryan Stoutmantle at Sentinel Hill, Wiley the
 		Black in Lakeshire, Mathias Shaw in Stormwind, the Defias Messenger, then the Defias Traitor's
@@ -61,7 +61,7 @@ ns.AmendInstance("TheDeadmines", {
 		["Rhahk'Zor"] = {
 			area = "The Deadmines",
 			encounterID = 2741,
-			notes = { "An ogre foreman with heavy armour who hits hard; the first boss inside." },
+			notes = { "An ogre foreman with heavy armor who hits hard; the first boss inside." },
 		},
 		["Miner Johnson"] = {
 			area = "The Deadmines",

@@ -32,10 +32,11 @@ ns.AddInstance({
 			},
 		},
 	},
+	-- The portal, where the game puts a player who enters (two recorded entries agree, 2026-11-12 and 2026-11-13)
 	zoneEntrance = {
 		mapID = 1413,
-		x = 0.429,
-		y = 0.902,
+		x = 0.4224,
+		y = 0.8983,
 	},
 	bosses = {
 		{
@@ -251,7 +252,7 @@ ns.AddInstance({
 				{
 					itemID = 273103,
 					name = "Blueprint: Arcane Salvager",
-					slot = "Blueprint",
+					slot = "Recipe, Enchanting",
 					quality = 2,
 				},
 				{
@@ -316,17 +317,7 @@ ns.AddInstance({
 			},
 			order = 8,
 		},
-		{
-			name = "Razorfen Spearhide",
-			npcID = 4438,
-			displayID = 6078,
-			loot = {
-				{
-					itemID = 6679,
-				},
-			},
-			order = 9,
-		},
+		-- No Razorfen Spearhide here: the two are Overlord Ramtusk's guards, his adds (Data/Authored/RazorfenKraul.lua).
 		{
 			name = "Trash Drops",
 			trash = true,
@@ -476,7 +467,11 @@ ns.AddInstance({
 			pickup = "Heralath Fallowbrook, inside Razorfen Kraul",
 			turnin = "Treshala Fallowbrook, Darnassus",
 			rewards = {
-				xp = 3050,
+				-- 7,250 on Forever (the original game's 3,050 until 0.39.22): the owner's recording of 2026-11-12 read
+				-- 7,468 at the turn-in, the sleeping bag's +3% over 7,250 (7,468 / 1.03, rounded as the game rounds quest
+				-- XP); Willix the Importer, handed in the same run, read 7,467 for its 7,250. Confirmed by the owner
+				-- (2026-11-13), so never marked as the original game's (CONFIRMED in Dev/build_original_xp.py).
+				xp = 7250,
 				reputation = {
 					{
 						faction = "Darnassus",
