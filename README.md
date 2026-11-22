@@ -25,15 +25,19 @@ git submodule update --init --recursive
 
 ## 포함된 애드온
 
-| 애드온 | 제작자 | 라이선스 | 비고 |
-|---|---|---|---|
-| diminfo | Loshine, EK, gromit | - | 서브모듈 → [goodgromit/diminfo](https://github.com/goodgromit/diminfo) |
-| autoswitchrep_forever | Gromit | - | 서브모듈 → [goodgromit/autoswitchrep_forever](https://github.com/goodgromit/autoswitchrep_forever) |
-| AtlasLootClassic (+ _Collections, _Crafting, _Data, _DungeonsAndRaids, _Factions, _Options, _PvP) | sliccer | GPL v2 (`AtlasLootClassic/LICENSE`) | |
-| AtlasBIStooltips | - | 표시 없음 | AtlasLootClassic 필요 |
-| WhatsTraining | Sveng | MIT (`WhatsTraining/LICENSE`) | |
-| RangeDisplay (+ RangeDisplay_Options) | mitch0 | Public Domain | |
-| ForeverNameplateRange | Maro | 표시 없음 | |
+| 애드온 | 기능 | 제작자 | 버전 | 라이선스 | 비고 |
+|---|---|---|---|---|---|
+| diminfo | 화면 위 정보 바 (메모리, FPS, 친구, 길드, 소지금, 내구도, 가방, 지역) | Loshine, EK, gromit | F1.0 | - | 서브모듈 → [goodgromit/diminfo](https://github.com/goodgromit/diminfo) |
+| autoswitchrep_forever | 평판이 바뀌면 평판 바를 그 평판으로 자동 전환 | Gromit | F1.0 | - | 서브모듈 → [goodgromit/autoswitchrep_forever](https://github.com/goodgromit/autoswitchrep_forever) |
+| Aegis_Forever_Instance_Journal | 리테일식 던전 도감과 던전 지도 (Shift+J) | Aegis | 0.40.1 | All Rights Reserved | |
+| ForeverFishing | 낚시 보조 (장비, 미끼, 통계, 낚시 도감) | Forever Addon Family | 0.9.224 | 표시 없음 | |
+| ForeverLootSparkles | 퀘스트 아이템, 광맥, 약초에 반짝임 효과 항상 표시 | Ashtar Senior | v1.3.1 | GPL-3.0 (`ForeverLootSparkles/LICENSE`) | |
+| ForeverNameplateRange | 선택한 적 이름표 왼쪽에 거리 구간 표시 (`/npr`) | Maro | 1.1.0 | 표시 없음 | |
+| ForeverQuestMark | 진행 중인 퀘스트와 관련된 대상의 이름표에 퀘스트 아이콘 표시 (`/fqm`) | Ugge Zen | 1.6.1 | MIT (`ForeverQuestMark/LICENSE`) | |
+| Leatrix_Maps | 세계 지도 기능 개선 | Leatrix | 1.60.28 | 표시 없음 | |
+| RangeDisplay (+ RangeDisplay_Options) | 대상과의 예상 거리 표시 (`/rangedisplay`) | mitch0 | v6.3.7 | Public Domain | |
+| RareScanner | 희귀 NPC, 보물, 이벤트를 미니맵에서 찾아 소리와 함께 알림 | maqjav, Maggie Wazosky | 1.60.1.10 | All Rights Reserved | |
+| WhatsTraining | 직업 전문가에게 배울 수 있는 기술 표시 | Sveng | 11.4.9 | MIT (`WhatsTraining/LICENSE`) | |
 
 다른 사람이 만든 애드온은 원래 배포본을 그대로 넣은 것이며, 저작권은 각 제작자에게 있습니다.
 
