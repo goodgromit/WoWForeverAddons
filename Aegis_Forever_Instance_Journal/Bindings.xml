@@ -1,5 +1,0 @@
-<Bindings>
-	<Binding name="AEGISJOURNAL_TOGGLE" category="ADDONS">
-		AegisJournal_Toggle()
-	</Binding>
-</Bindings>
